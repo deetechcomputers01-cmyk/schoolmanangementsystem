@@ -5,8 +5,6 @@ const PUBLIC_PATHS   = ["/login", "/reset-password"];
 const AUTH_API       = "/api/auth/";
 const STATIC_SKIP    = ["/_next/static", "/_next/image", "/favicon.ico", "/manifest.json", "/sw.js"];
 
-const STUDENT_GUARDIAN_PORTALS = ["/student-portal", "/parent-portal", "/dashboard"];
-
 // Role → allowed page prefixes
 const ROLE_ROUTES: Record<string, string[]> = {
   super_admin: ["/"],
@@ -64,17 +62,13 @@ export async function middleware(request: NextRequest) {
 
   if (isApi) return NextResponse.next({ request: { headers } });
 
-  // Redirect student/guardian away from general pages to their portal
   const role = payload.role;
-  if (role === "student" && !STUDENT_GUARDIAN_PORTALS.some((p) => pathname.startsWith(p))) {
-    return NextResponse.redirect(new URL("/student-portal", request.url));
-  }
-  if (role === "guardian" && !STUDENT_GUARDIAN_PORTALS.some((p) => pathname.startsWith(p))) {
-    return NextResponse.redirect(new URL("/parent-portal", request.url));
-  }
-
   if (!canAccess(role, pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    const home =
+      role === "student"  ? "/student-portal"  :
+      role === "guardian" ? "/parent-portal"   :
+      "/dashboard";
+    return NextResponse.redirect(new URL(home, request.url));
   }
 
   return NextResponse.next({ request: { headers } });
