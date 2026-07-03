@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { createTerm } from "@/lib/services/academic.service";
-import { termSchema } from "@/lib/validation/academic";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { createTerm } from "@backend/services/academic.service";
+import { termSchema } from "@backend/validation/academic";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function POST(request: NextRequest) {

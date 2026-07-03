@@ -1,6 +1,6 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getHealthRecord, upsertHealthRecord } from "@/lib/services/health.service";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getHealthRecord, upsertHealthRecord } from "@backend/services/health.service";
 import { ok, unauthorized, notFound } from "@/lib/http";
 
 export async function GET(_req: NextRequest, { params }: { params: { studentId: string } }) {

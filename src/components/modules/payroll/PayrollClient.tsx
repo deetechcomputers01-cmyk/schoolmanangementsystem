@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { currency } from "@/lib/utils";
+import { currency } from "@backend/utils";
 import { Banknote, CheckCircle2, Loader2, Plus } from "lucide-react";
 
 type Num = { toString(): string } | number | string;

@@ -1,7 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { submitScores } from "@/lib/services/exam.service";
-import { scoreEntrySchema } from "@/lib/validation/exams";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { submitScores } from "@backend/services/exam.service";
+import { scoreEntrySchema } from "@backend/validation/exams";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {

@@ -6,8 +6,8 @@ import { Plus, Search } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Table } from "@/components/ui/Table";
-import { listStaff } from "@/lib/services/staff.service";
-import { requireRole } from "@/lib/auth/page-guard";
+import { listStaff } from "@backend/services/staff.service";
+import { requireRole } from "@backend/auth/page-guard";
 import styles from "./StaffScreen.module.css";
 
 export const dynamic = "force-dynamic";

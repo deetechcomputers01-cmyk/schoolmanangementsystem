@@ -6,10 +6,10 @@ import { BarChart3 } from "lucide-react";
 import { AttendanceGrid } from "@/components/modules/attendance/AttendanceGrid";
 import { AttendanceSummary } from "@/components/modules/attendance/AttendanceSummary";
 import { Button } from "@/components/ui/Button";
-import { listAttendance } from "@/lib/services/attendance.service";
-import { getClasses } from "@/lib/services/dashboard.service";
-import { listStudents } from "@/lib/services/student.service";
-import { requireRole } from "@/lib/auth/page-guard";
+import { listAttendance } from "@backend/services/attendance.service";
+import { getClasses } from "@backend/services/dashboard.service";
+import { listStudents } from "@backend/services/student.service";
+import { requireRole } from "@backend/auth/page-guard";
 import styles from "./AttendanceScreen.module.css";
 
 export const dynamic = "force-dynamic";

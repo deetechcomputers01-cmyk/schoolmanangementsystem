@@ -2,8 +2,8 @@
  * ParentPortalScreen — desktop view for the Parent/Guardian Portal.
  */
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getGuardianPortalData } from "@/lib/services/portal.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getGuardianPortalData } from "@backend/services/portal.service";
 import { GuardianPortal } from "@/components/modules/portal/GuardianPortal";
 import styles from "./ParentPortalScreen.module.css";
 

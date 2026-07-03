@@ -1,11 +1,11 @@
 ﻿/**
  * LibraryScreen — desktop view for the Library module.
  */
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listBooks, listCheckouts } from "@/lib/services/library.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listBooks, listCheckouts } from "@backend/services/library.service";
 import { LibraryClient } from "@/components/modules/library/LibraryClient";
-import { requireRole } from "@/lib/auth/page-guard";
-import { prisma } from "@/lib/prisma";
+import { requireRole } from "@backend/auth/page-guard";
+import { prisma } from "@backend/prisma";
 import styles from "./LibraryScreen.module.css";
 
 export const dynamic = "force-dynamic";

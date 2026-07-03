@@ -6,8 +6,8 @@ import { Download, Filter, Plus, Search } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { StudentTable } from "@/components/modules/students/StudentTable";
-import { listStudents } from "@/lib/services/student.service";
-import { requireRole } from "@/lib/auth/page-guard";
+import { listStudents } from "@backend/services/student.service";
+import { requireRole } from "@backend/auth/page-guard";
 import styles from "./StudentsScreen.module.css";
 
 export const dynamic = "force-dynamic";

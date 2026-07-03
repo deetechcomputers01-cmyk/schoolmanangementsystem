@@ -1,7 +1,7 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { handleApiError, ok } from "@/lib/http";
-import { listAttendance, recordAttendance } from "@/lib/services/attendance.service";
-import { attendanceSchema } from "@/lib/validation/attendance";
+import { listAttendance, recordAttendance } from "@backend/services/attendance.service";
+import { attendanceSchema } from "@backend/validation/attendance";
 
 export async function GET() {
   try {

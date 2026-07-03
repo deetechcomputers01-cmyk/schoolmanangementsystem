@@ -3,7 +3,7 @@
  */
 import Link from "next/link";
 import { Heart, Activity } from "lucide-react";
-import { listStudentsWithHealthRecords } from "@/lib/services/health.service";
+import { listStudentsWithHealthRecords } from "@backend/services/health.service";
 import styles from "./HealthScreen.module.css";
 
 export const dynamic = "force-dynamic";

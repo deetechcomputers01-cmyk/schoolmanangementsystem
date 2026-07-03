@@ -2,8 +2,8 @@
  * PayrollScreen — desktop view for Payroll Management.
  */
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listStaffWithSalaries, listPayslips } from "@/lib/services/payroll.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listStaffWithSalaries, listPayslips } from "@backend/services/payroll.service";
 import { PayrollClient } from "@/components/modules/payroll/PayrollClient";
 import styles from "./PayrollScreen.module.css";
 

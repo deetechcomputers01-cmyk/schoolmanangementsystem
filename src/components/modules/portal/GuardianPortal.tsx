@@ -1,13 +1,13 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { currency, gradeFromScore } from "@/lib/utils";
+import { currency, gradeFromScore } from "@backend/utils";
 import {
   BookOpen, CalendarDays, CheckCircle2, GraduationCap,
   Receipt, XCircle, AlertCircle, Clock, Phone, Users
 } from "lucide-react";
 
-type Props = { data: Awaited<ReturnType<typeof import("@/lib/services/portal.service").getGuardianPortalData>> };
+type Props = { data: Awaited<ReturnType<typeof import("@backend/services/portal.service").getGuardianPortalData>> };
 
 const statusIcon: Record<string, React.ReactNode> = {
   present:  <CheckCircle2 size={14} className="text-emerald" />,

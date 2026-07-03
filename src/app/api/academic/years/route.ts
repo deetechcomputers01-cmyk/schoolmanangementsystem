@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listAcademicYears, createAcademicYear } from "@/lib/services/academic.service";
-import { academicYearSchema } from "@/lib/validation/academic";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listAcademicYears, createAcademicYear } from "@backend/services/academic.service";
+import { academicYearSchema } from "@backend/validation/academic";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET() {

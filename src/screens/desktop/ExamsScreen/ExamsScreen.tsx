@@ -5,11 +5,11 @@ import Link from "next/link";
 import { CalendarDays, ClipboardList, Users } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { listExams } from "@/lib/services/exam.service";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getCurrentAcademicContext } from "@/lib/services/academic.service";
+import { listExams } from "@backend/services/exam.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getCurrentAcademicContext } from "@backend/services/academic.service";
 import { ExamCreateButton } from "@/components/modules/exams/ExamCreateButton";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@backend/prisma";
 import styles from "./ExamsScreen.module.css";
 
 export const dynamic = "force-dynamic";

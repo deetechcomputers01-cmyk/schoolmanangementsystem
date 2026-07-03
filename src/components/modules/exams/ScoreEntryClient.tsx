@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { CheckCircle2, Loader2, Save } from "lucide-react";
-import { gradeFromScore } from "@/lib/utils";
+import { gradeFromScore } from "@backend/utils";
 
 type Student = { id: string; firstName: string; lastName: string; admissionNo: string };
 type ScoreMap = Record<string, { score: number | string; remarks: string }>;

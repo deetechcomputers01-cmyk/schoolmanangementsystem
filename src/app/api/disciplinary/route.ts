@@ -1,6 +1,6 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listDisciplinaryRecords, createDisciplinaryRecord } from "@/lib/services/disciplinary.service";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listDisciplinaryRecords, createDisciplinaryRecord } from "@backend/services/disciplinary.service";
 import { ok, badRequest, unauthorized } from "@/lib/http";
 import { z } from "zod";
 

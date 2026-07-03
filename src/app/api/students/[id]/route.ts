@@ -1,7 +1,7 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { fail, handleApiError, ok } from "@/lib/http";
-import { getStudent, removeStudent, updateStudent } from "@/lib/services/student.service";
-import { studentUpdateSchema } from "@/lib/validation/students";
+import { getStudent, removeStudent, updateStudent } from "@backend/services/student.service";
+import { studentUpdateSchema } from "@backend/validation/students";
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   try {

@@ -2,7 +2,7 @@
  * GradebookReportsScreen — desktop view for Grade Reports.
  */
 import { GradeReport } from "@/components/modules/gradebook/GradeReport";
-import { listGrades } from "@/lib/services/grade.service";
+import { listGrades } from "@backend/services/grade.service";
 import styles from "./GradebookReportsScreen.module.css";
 
 export const dynamic = "force-dynamic";

@@ -2,8 +2,8 @@
  * AuditLogsScreen — desktop view for the System Audit Trail.
  */
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { prisma } from "@backend/prisma";
 import { Badge } from "@/components/ui/Badge";
 import { ScrollText } from "lucide-react";
 import styles from "./AuditLogsScreen.module.css";

@@ -1,7 +1,7 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { handleApiError, ok } from "@/lib/http";
-import { createPayment } from "@/lib/services/fee.service";
-import { paymentSchema } from "@/lib/validation/fees";
+import { createPayment } from "@backend/services/fee.service";
+import { paymentSchema } from "@backend/validation/fees";
 
 export async function POST(request: Request) {
   try {

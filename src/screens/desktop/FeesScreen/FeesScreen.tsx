@@ -6,8 +6,8 @@ import { CreditCard, FileText } from "lucide-react";
 import { FeeCard } from "@/components/modules/fees/FeeCard";
 import { InvoiceTable } from "@/components/modules/fees/InvoiceTable";
 import { Button } from "@/components/ui/Button";
-import { listFees } from "@/lib/services/fee.service";
-import { requireRole } from "@/lib/auth/page-guard";
+import { listFees } from "@backend/services/fee.service";
+import { requireRole } from "@backend/auth/page-guard";
 import styles from "./FeesScreen.module.css";
 
 export const dynamic = "force-dynamic";

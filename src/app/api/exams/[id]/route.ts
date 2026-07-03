@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getExam, deleteExam } from "@/lib/services/exam.service";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getExam, deleteExam } from "@backend/services/exam.service";
 import { ok, forbidden, unauthorized, notFound } from "@/lib/http";
 
 export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {

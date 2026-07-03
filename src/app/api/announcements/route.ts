@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listAnnouncements, listAllAnnouncements, createAnnouncement } from "@/lib/services/announcement.service";
-import { createAnnouncementSchema } from "@/lib/validation/announcements";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listAnnouncements, listAllAnnouncements, createAnnouncement } from "@backend/services/announcement.service";
+import { createAnnouncementSchema } from "@backend/validation/announcements";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET() {

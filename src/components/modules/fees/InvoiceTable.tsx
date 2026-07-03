@@ -1,6 +1,6 @@
-import { Table } from "@/components/ui/Table";
+﻿import { Table } from "@/components/ui/Table";
 import { Badge } from "@/components/ui/Badge";
-import { currency } from "@/lib/utils";
+import { currency } from "@backend/utils";
 
 type Fee = { id: string; term: string; description: string; amountDue: string | number | { toString(): string }; status: string; student: { firstName: string; lastName: string; class: { name: string } } };
 

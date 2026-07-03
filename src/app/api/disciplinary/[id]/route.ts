@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { deleteDisciplinaryRecord } from "@/lib/services/disciplinary.service";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { deleteDisciplinaryRecord } from "@backend/services/disciplinary.service";
 import { ok, unauthorized } from "@/lib/http";
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {

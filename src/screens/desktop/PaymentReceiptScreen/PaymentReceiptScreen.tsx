@@ -2,7 +2,7 @@
  * PaymentReceiptScreen — desktop view for recording fee payments.
  */
 import { PaymentForm } from "@/components/modules/fees/PaymentForm";
-import { listFees } from "@/lib/services/fee.service";
+import { listFees } from "@backend/services/fee.service";
 import styles from "./PaymentReceiptScreen.module.css";
 
 export const dynamic = "force-dynamic";

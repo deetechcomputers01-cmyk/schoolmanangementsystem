@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listBlockedIPs, blockIP, isIPBlocked } from "@/lib/services/blocked-ip.service";
-import { blockIPSchema } from "@/lib/validation/users";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listBlockedIPs, blockIP, isIPBlocked } from "@backend/services/blocked-ip.service";
+import { blockIPSchema } from "@backend/validation/users";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET(request: NextRequest) {

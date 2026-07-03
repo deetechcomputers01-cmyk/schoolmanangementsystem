@@ -3,9 +3,9 @@
  * Covers: user management, role assignments, and blocked IP management.
  */
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listUsers } from "@/lib/services/user.service";
-import { listBlockedIPs } from "@/lib/services/blocked-ip.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listUsers } from "@backend/services/user.service";
+import { listBlockedIPs } from "@backend/services/blocked-ip.service";
 import { UserManagementClient } from "@/components/modules/admin/UserManagementClient";
 import { BlockedIPClient } from "@/components/modules/admin/BlockedIPClient";
 import styles from "./UserRoleScreen.module.css";

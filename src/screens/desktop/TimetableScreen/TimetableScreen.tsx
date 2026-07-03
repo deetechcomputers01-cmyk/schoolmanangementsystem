@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Settings } from "lucide-react";
 import { TimetableGrid } from "@/components/modules/timetable/TimetableGrid";
 import { Button } from "@/components/ui/Button";
-import { listTimetable } from "@/lib/services/timetable.service";
+import { listTimetable } from "@backend/services/timetable.service";
 import styles from "./TimetableScreen.module.css";
 
 export const dynamic = "force-dynamic";

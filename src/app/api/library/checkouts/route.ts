@@ -1,6 +1,6 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listCheckouts, checkoutBook } from "@/lib/services/library.service";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listCheckouts, checkoutBook } from "@backend/services/library.service";
 import { ok, badRequest, unauthorized } from "@/lib/http";
 import { z } from "zod";
 

@@ -4,11 +4,11 @@
 import { BarChart3, Banknote, CalendarCheck, GraduationCap } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Table } from "@/components/ui/Table";
-import { currency } from "@/lib/utils";
-import { listAttendance } from "@/lib/services/attendance.service";
-import { listFees } from "@/lib/services/fee.service";
-import { listGrades } from "@/lib/services/grade.service";
-import { listStudents } from "@/lib/services/student.service";
+import { currency } from "@backend/utils";
+import { listAttendance } from "@backend/services/attendance.service";
+import { listFees } from "@backend/services/fee.service";
+import { listGrades } from "@backend/services/grade.service";
+import { listStudents } from "@backend/services/student.service";
 import styles from "./ReportsScreen.module.css";
 
 export const dynamic = "force-dynamic";

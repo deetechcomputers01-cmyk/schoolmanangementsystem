@@ -1,8 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { updateUserRole, toggleUserActive, deleteUser } from "@/lib/services/user.service";
-import { isIPBlocked } from "@/lib/services/blocked-ip.service";
-import { updateRoleSchema, toggleActiveSchema } from "@/lib/validation/users";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { updateUserRole, toggleUserActive, deleteUser } from "@backend/services/user.service";
+import { isIPBlocked } from "@backend/services/blocked-ip.service";
+import { updateRoleSchema, toggleActiveSchema } from "@backend/validation/users";
 import { ok, badRequest, forbidden, unauthorized, notFound } from "@/lib/http";
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {

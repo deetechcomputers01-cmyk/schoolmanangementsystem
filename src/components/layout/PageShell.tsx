@@ -1,7 +1,7 @@
-import { Sidebar } from "./Sidebar";
+﻿import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { MobileNav } from "./MobileNav";
-import { getCurrentUser } from "@/lib/auth/cookies";
+import { getCurrentUser } from "@backend/auth/cookies";
 
 export async function PageShell({
   title,

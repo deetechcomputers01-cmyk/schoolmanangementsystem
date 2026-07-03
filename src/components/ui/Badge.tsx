@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+﻿import { cn } from "@backend/utils";
 
 const roleStyles: Record<string, string> = {
   super_admin: "bg-purple-100 text-purple-700",

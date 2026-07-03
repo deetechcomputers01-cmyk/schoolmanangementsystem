@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { listAnnouncements } from "@/lib/services/announcement.service";
+﻿import Link from "next/link";
+import { listAnnouncements } from "@backend/services/announcement.service";
 import { Bell, Pin } from "lucide-react";
 
 export async function AnnouncementsWidget({ role }: { role: string }) {

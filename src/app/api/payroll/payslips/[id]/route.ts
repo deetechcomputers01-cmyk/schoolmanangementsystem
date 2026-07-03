@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { updatePayslipStatus } from "@/lib/services/payroll.service";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { updatePayslipStatus } from "@backend/services/payroll.service";
 import { ok, unauthorized } from "@/lib/http";
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {

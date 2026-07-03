@@ -1,10 +1,10 @@
 ﻿/**
  * AdmissionsScreen — desktop view for Admissions.
  */
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listApplications } from "@/lib/services/admission.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listApplications } from "@backend/services/admission.service";
 import { AdmissionsClient } from "@/components/modules/admissions/AdmissionsClient";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@backend/prisma";
 import styles from "./AdmissionsScreen.module.css";
 
 export const dynamic = "force-dynamic";

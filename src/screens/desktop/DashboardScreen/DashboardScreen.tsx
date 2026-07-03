@@ -1,4 +1,4 @@
-/**
+﻿/**
  * DashboardScreen — desktop view for the Dashboard module.
  * Wrapped by (app)/layout.tsx which provides sidebar + topbar.
  * Design: PENDING — Stitch "Institutional Excellence" desktop spec.
@@ -11,14 +11,14 @@ import { FloatingQuickAction } from "@/components/modules/dashboard/FloatingQuic
 import { PaymentActionsMenu } from "@/components/modules/dashboard/PaymentActionsMenu";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { currency } from "@/lib/utils";
-import { listAttendance } from "@/lib/services/attendance.service";
-import { getDashboardStats } from "@/lib/services/dashboard.service";
-import { listFees } from "@/lib/services/fee.service";
-import { getCurrentUser } from "@/lib/auth/cookies";
+import { currency } from "@backend/utils";
+import { listAttendance } from "@backend/services/attendance.service";
+import { getDashboardStats } from "@backend/services/dashboard.service";
+import { listFees } from "@backend/services/fee.service";
+import { getCurrentUser } from "@backend/auth/cookies";
 import { TeacherDashboard } from "@/components/modules/dashboard/TeacherDashboard";
 import { StaffDashboard } from "@/components/modules/dashboard/StaffDashboard";
-import { getTeacherDashboardData, getStaffDashboardData, getSuperAdminExtras } from "@/lib/services/portal.service";
+import { getTeacherDashboardData, getStaffDashboardData, getSuperAdminExtras } from "@backend/services/portal.service";
 import { AnnouncementsWidget } from "@/components/modules/announcements/AnnouncementsWidget";
 import styles from "./DashboardScreen.module.css";
 

@@ -3,8 +3,8 @@
  */
 import Link from "next/link";
 import { FileText, GraduationCap } from "lucide-react";
-import { getCurrentAcademicContext } from "@/lib/services/academic.service";
-import { prisma } from "@/lib/prisma";
+import { getCurrentAcademicContext } from "@backend/services/academic.service";
+import { prisma } from "@backend/prisma";
 import styles from "./ReportCardsScreen.module.css";
 
 export const dynamic = "force-dynamic";

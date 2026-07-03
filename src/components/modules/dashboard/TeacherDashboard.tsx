@@ -1,10 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { BookOpen, CalendarDays, ClipboardList, GraduationCap, Users } from "lucide-react";
 
 type Props = {
-  data: Awaited<ReturnType<typeof import("@/lib/services/portal.service").getTeacherDashboardData>>;
+  data: Awaited<ReturnType<typeof import("@backend/services/portal.service").getTeacherDashboardData>>;
   userName: string;
 };
 

@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getSettings, updateSettings } from "@/lib/services/settings.service";
-import { updateSettingsSchema } from "@/lib/validation/settings";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getSettings, updateSettings } from "@backend/services/settings.service";
+import { updateSettingsSchema } from "@backend/validation/settings";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET() {

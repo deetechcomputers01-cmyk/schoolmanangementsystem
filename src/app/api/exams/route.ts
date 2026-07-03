@@ -1,7 +1,7 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listExams, createExam } from "@/lib/services/exam.service";
-import { createExamSchema } from "@/lib/validation/exams";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listExams, createExam } from "@backend/services/exam.service";
+import { createExamSchema } from "@backend/validation/exams";
 import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET(request: NextRequest) {

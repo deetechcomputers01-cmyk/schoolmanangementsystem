@@ -3,7 +3,7 @@
  */
 import { Badge } from "@/components/ui/Badge";
 import { Table } from "@/components/ui/Table";
-import { listAttendance } from "@/lib/services/attendance.service";
+import { listAttendance } from "@backend/services/attendance.service";
 import styles from "./AttendanceReportsScreen.module.css";
 
 export const dynamic = "force-dynamic";

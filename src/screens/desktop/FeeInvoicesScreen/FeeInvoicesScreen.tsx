@@ -3,8 +3,8 @@
  */
 import { FeeRecordForm } from "@/components/modules/fees/FeeRecordForm";
 import { InvoiceTable } from "@/components/modules/fees/InvoiceTable";
-import { listFees } from "@/lib/services/fee.service";
-import { listStudents } from "@/lib/services/student.service";
+import { listFees } from "@backend/services/fee.service";
+import { listStudents } from "@backend/services/student.service";
 import styles from "./FeeInvoicesScreen.module.css";
 
 export const dynamic = "force-dynamic";

@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { deleteBook } from "@/lib/services/library.service";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { deleteBook } from "@backend/services/library.service";
 import { ok, unauthorized } from "@/lib/http";
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {

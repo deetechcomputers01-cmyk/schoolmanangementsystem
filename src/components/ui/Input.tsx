@@ -1,5 +1,5 @@
-import type { InputHTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+﻿import type { InputHTMLAttributes } from "react";
+import { cn } from "@backend/utils";
 
 type Props = InputHTMLAttributes<HTMLInputElement> & { label?: string };
 

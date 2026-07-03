@@ -1,13 +1,13 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { currency, gradeFromScore } from "@/lib/utils";
+import { currency, gradeFromScore } from "@backend/utils";
 import {
   BookOpen, CalendarDays, CheckCircle2, GraduationCap,
   Receipt, XCircle, AlertCircle, Clock
 } from "lucide-react";
 
-type Props = { data: Awaited<ReturnType<typeof import("@/lib/services/portal.service").getStudentPortalData>> };
+type Props = { data: Awaited<ReturnType<typeof import("@backend/services/portal.service").getStudentPortalData>> };
 
 const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 

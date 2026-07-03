@@ -1,8 +1,8 @@
 ﻿/**
  * AcademicCalendarScreen — desktop view for Academic Calendar.
  */
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listAcademicYears } from "@/lib/services/academic.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listAcademicYears } from "@backend/services/academic.service";
 import { AcademicCalendarClient } from "@/components/modules/academic/AcademicCalendarClient";
 import styles from "./AcademicCalendarScreen.module.css";
 

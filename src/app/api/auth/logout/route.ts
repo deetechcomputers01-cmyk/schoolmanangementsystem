@@ -1,4 +1,4 @@
-import { clearAuthCookies } from "@/lib/auth/cookies";
+﻿import { clearAuthCookies } from "@backend/auth/cookies";
 import { ok } from "@/lib/http";
 
 export async function POST() {

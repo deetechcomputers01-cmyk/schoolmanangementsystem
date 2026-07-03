@@ -1,7 +1,7 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { handleApiError, ok } from "@/lib/http";
-import { removeTimetableSlot, updateTimetableSlot } from "@/lib/services/timetable.service";
-import { timetableSchema } from "@/lib/validation/timetable";
+import { removeTimetableSlot, updateTimetableSlot } from "@backend/services/timetable.service";
+import { timetableSchema } from "@backend/validation/timetable";
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   try {

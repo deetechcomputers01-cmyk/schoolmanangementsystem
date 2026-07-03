@@ -1,5 +1,5 @@
-import type { SelectHTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+﻿import type { SelectHTMLAttributes } from "react";
+import { cn } from "@backend/utils";
 
 type Props = SelectHTMLAttributes<HTMLSelectElement> & { label?: string };
 

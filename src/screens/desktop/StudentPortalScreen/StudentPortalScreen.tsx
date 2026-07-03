@@ -2,8 +2,8 @@
  * StudentPortalScreen — desktop view for the Student Portal.
  */
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getStudentPortalData } from "@/lib/services/portal.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getStudentPortalData } from "@backend/services/portal.service";
 import { StudentPortal } from "@/components/modules/portal/StudentPortal";
 import styles from "./StudentPortalScreen.module.css";
 

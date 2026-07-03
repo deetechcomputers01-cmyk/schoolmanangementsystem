@@ -6,10 +6,10 @@ import { FileText } from "lucide-react";
 import { GradeEntryRow } from "@/components/modules/gradebook/GradeEntryRow";
 import { GradeReport } from "@/components/modules/gradebook/GradeReport";
 import { Button } from "@/components/ui/Button";
-import { getSubjects } from "@/lib/services/dashboard.service";
-import { listGrades } from "@/lib/services/grade.service";
-import { listStudents } from "@/lib/services/student.service";
-import { requireRole } from "@/lib/auth/page-guard";
+import { getSubjects } from "@backend/services/dashboard.service";
+import { listGrades } from "@backend/services/grade.service";
+import { listStudents } from "@backend/services/student.service";
+import { requireRole } from "@backend/auth/page-guard";
 import styles from "./GradebookScreen.module.css";
 
 export const dynamic = "force-dynamic";

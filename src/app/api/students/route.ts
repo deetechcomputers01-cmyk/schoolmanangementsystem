@@ -1,8 +1,8 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { handleApiError, ok } from "@/lib/http";
-import { saveStudentPhoto } from "@/lib/uploads/student-photo";
-import { createStudent, listStudents } from "@/lib/services/student.service";
-import { studentSchema } from "@/lib/validation/students";
+import { saveStudentPhoto } from "@backend/uploads/student-photo";
+import { createStudent, listStudents } from "@backend/services/student.service";
+import { studentSchema } from "@backend/validation/students";
 
 export const runtime = "nodejs";
 

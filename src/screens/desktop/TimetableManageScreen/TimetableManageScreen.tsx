@@ -3,7 +3,7 @@
  */
 import { Card } from "@/components/ui/Card";
 import { TimetableSlotForm } from "@/components/modules/timetable/TimetableSlotForm";
-import { getClasses, getSubjects } from "@/lib/services/dashboard.service";
+import { getClasses, getSubjects } from "@backend/services/dashboard.service";
 import styles from "./TimetableManageScreen.module.css";
 
 export const dynamic = "force-dynamic";

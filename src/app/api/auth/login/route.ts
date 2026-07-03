@@ -1,7 +1,7 @@
-import { loginSchema } from "@/lib/validation/auth";
-import { login } from "@/lib/services/auth.service";
+﻿import { loginSchema } from "@backend/validation/auth";
+import { login } from "@backend/services/auth.service";
 import { handleApiError, ok } from "@/lib/http";
-import { setAuthCookies } from "@/lib/auth/cookies";
+import { setAuthCookies } from "@backend/auth/cookies";
 
 export async function POST(request: Request) {
   try {

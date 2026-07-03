@@ -1,7 +1,7 @@
-import { getCurrentUser } from "@/lib/auth/cookies";
+﻿import { getCurrentUser } from "@backend/auth/cookies";
 import { handleApiError, ok } from "@/lib/http";
-import { createGrade, listGrades } from "@/lib/services/grade.service";
-import { gradeSchema } from "@/lib/validation/grades";
+import { createGrade, listGrades } from "@backend/services/grade.service";
+import { gradeSchema } from "@backend/validation/grades";
 
 export async function GET() {
   try {

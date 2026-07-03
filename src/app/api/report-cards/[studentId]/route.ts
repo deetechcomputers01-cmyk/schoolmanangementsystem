@@ -1,6 +1,6 @@
-import { type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { getReportCardData } from "@/lib/services/exam.service";
+﻿import { type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getReportCardData } from "@backend/services/exam.service";
 import { ok, forbidden, unauthorized, notFound } from "@/lib/http";
 
 export async function GET(request: NextRequest, { params }: { params: { studentId: string } }) {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: { studentI
 
   // Students can only view their own report card
   if (user.role === "student") {
-    const { prisma } = await import("@/lib/prisma");
+    const { prisma } = await import("@backend/prisma");
     const linked = await prisma.student.findFirst({ where: { userId: user.id } });
     if (!linked || linked.id !== params.studentId) return forbidden();
   }

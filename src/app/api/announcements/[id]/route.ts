@@ -1,7 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { updateAnnouncement, deleteAnnouncement } from "@/lib/services/announcement.service";
-import { updateAnnouncementSchema } from "@/lib/validation/announcements";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { updateAnnouncement, deleteAnnouncement } from "@backend/services/announcement.service";
+import { updateAnnouncementSchema } from "@backend/validation/announcements";
 import { ok, badRequest, forbidden, unauthorized, notFound } from "@/lib/http";
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {

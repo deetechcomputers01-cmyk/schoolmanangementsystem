@@ -1,11 +1,11 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Banknote, GraduationCap, Receipt } from "lucide-react";
-import { currency } from "@/lib/utils";
+import { currency } from "@backend/utils";
 
 type Props = {
-  data: Awaited<ReturnType<typeof import("@/lib/services/portal.service").getStaffDashboardData>>;
+  data: Awaited<ReturnType<typeof import("@backend/services/portal.service").getStaffDashboardData>>;
   userName: string;
 };
 

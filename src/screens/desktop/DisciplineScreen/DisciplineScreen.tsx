@@ -1,11 +1,11 @@
 ﻿/**
  * DisciplineScreen — desktop view for Disciplinary Records.
  */
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listDisciplinaryRecords } from "@/lib/services/disciplinary.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listDisciplinaryRecords } from "@backend/services/disciplinary.service";
 import { DisciplinaryClient } from "@/components/modules/disciplinary/DisciplinaryClient";
-import { requireRole } from "@/lib/auth/page-guard";
-import { prisma } from "@/lib/prisma";
+import { requireRole } from "@backend/auth/page-guard";
+import { prisma } from "@backend/prisma";
 import styles from "./DisciplineScreen.module.css";
 
 export const dynamic = "force-dynamic";

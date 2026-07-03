@@ -1,8 +1,8 @@
 ﻿/**
  * AnnouncementsScreen — desktop view for Announcements.
  */
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { listAnnouncements, listAllAnnouncements } from "@/lib/services/announcement.service";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listAnnouncements, listAllAnnouncements } from "@backend/services/announcement.service";
 import { AnnouncementsClient } from "@/components/modules/announcements/AnnouncementsClient";
 import styles from "./AnnouncementsScreen.module.css";
 

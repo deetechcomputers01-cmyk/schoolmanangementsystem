@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth/cookies";
-import { setSalary, generatePayslip } from "@/lib/services/payroll.service";
+﻿import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { setSalary, generatePayslip } from "@backend/services/payroll.service";
 import { ok, forbidden, unauthorized } from "@/lib/http";
 
 export async function POST(request: NextRequest, { params }: { params: { staffId: string } }) {
