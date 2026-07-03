@@ -18,7 +18,10 @@ export async function AttendanceScreen() {
   await requireRole("super_admin", "principal", "teacher");
   const [students, classes, attendance] = await Promise.all([listStudents(), getClasses(), listAttendance()]);
   const classId = classes[0]?.id ?? "";
-  const classStudents = students.filter((s) => s.classId === classId);
+  // Strip Prisma-only fields (Decimal, nested objects) before crossing server→client boundary
+  const classStudents = students
+    .filter((s) => s.classId === classId)
+    .map(({ id, firstName, lastName, classId: cid }) => ({ id, firstName, lastName, classId: cid }));
   return (
     <div className={styles.root}>
       <section className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -35,7 +38,7 @@ export async function AttendanceScreen() {
           absent={attendance.filter((r) => r.status === "absent").length}
           late={attendance.filter((r) => r.status === "late").length}
         />
-        <AttendanceGrid students={classStudents} classId={classId} classes={classes} existingRecords={attendance} />
+        <AttendanceGrid students={classStudents} classId={classId} />
       </div>
     </div>
   );

@@ -8,13 +8,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard, Bell, Users, UserCheck, LogIn, ClipboardList,
+  BookOpen, FileText, Calendar, Megaphone, Shield, Heart, Bus,
+  Home, Wallet, Receipt, BarChart2, Package, UserCog, Wifi,
+  Settings, GraduationCap, type LucideIcon,
+} from "lucide-react";
+import type { NavIconKey } from "@/lib/nav";
 import styles from "./MobileBottomNav.module.css";
+
+const ICON_MAP: Record<NavIconKey, LucideIcon> = {
+  LayoutDashboard, Bell, Users, UserCheck, LogIn, ClipboardList,
+  BookOpen, FileText, Calendar, Megaphone, Shield, Heart, Bus,
+  Home, Wallet, Receipt, BarChart2, Package, UserCog, Wifi,
+  Settings, GraduationCap,
+};
 
 export interface MobileNavTab {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: NavIconKey;
 }
 
 interface MobileBottomNavProps {
@@ -27,7 +40,7 @@ export function MobileBottomNav({ tabs }: MobileBottomNavProps) {
   return (
     <nav className={styles.nav} aria-label="Bottom navigation">
       {tabs.map((tab) => {
-        const Icon = tab.icon;
+        const Icon = ICON_MAP[tab.icon];
         const isActive = pathname === tab.href || pathname.startsWith(tab.href + "/");
         return (
           <Link

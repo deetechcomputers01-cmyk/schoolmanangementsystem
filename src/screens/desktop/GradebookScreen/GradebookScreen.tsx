@@ -28,7 +28,10 @@ export async function GradebookScreen() {
         <Link href="/gradebook/reports"><Button variant="secondary"><FileText size={18} /> Reports</Button></Link>
       </section>
       <div className="grid gap-6">
-        <GradeEntryRow students={students} subjects={subjects} />
+        <GradeEntryRow
+          students={students.map(({ id, firstName, lastName }) => ({ id, firstName, lastName }))}
+          subjects={subjects}
+        />
         <GradeReport grades={grades} />
       </div>
     </div>

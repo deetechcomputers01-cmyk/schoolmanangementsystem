@@ -9,13 +9,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard, Bell, Users, UserCheck, LogIn, ClipboardList,
+  BookOpen, FileText, Calendar, Megaphone, Shield, Heart, Bus,
+  Home, Wallet, Receipt, BarChart2, Package, UserCog, Wifi,
+  Settings, GraduationCap, type LucideIcon,
+} from "lucide-react";
+import type { NavIconKey } from "@/lib/nav";
 import styles from "./DesktopSidebar.module.css";
+
+const ICON_MAP: Record<NavIconKey, LucideIcon> = {
+  LayoutDashboard, Bell, Users, UserCheck, LogIn, ClipboardList,
+  BookOpen, FileText, Calendar, Megaphone, Shield, Heart, Bus,
+  Home, Wallet, Receipt, BarChart2, Package, UserCog, Wifi,
+  Settings, GraduationCap,
+};
 
 export interface DesktopNavItem {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: NavIconKey;
   group?: string;
 }
 
@@ -67,7 +80,7 @@ export function DesktopSidebar({
               <p className={styles.navGroupLabel}>{group}</p>
             )}
             {items.map((item) => {
-              const Icon = item.icon;
+              const Icon = ICON_MAP[item.icon];
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <Link

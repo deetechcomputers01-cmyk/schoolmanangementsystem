@@ -18,7 +18,11 @@ export async function FeeInvoicesScreen() {
         <h1 className="font-heading text-[32px] font-semibold leading-10 text-navy">Fee Invoices</h1>
       </section>
       <div className="grid gap-6">
-        <FeeRecordForm students={students} />
+        <FeeRecordForm
+          students={students.map(({ id, firstName, lastName, class: cls }) => ({
+            id, firstName, lastName, class: { name: cls.name },
+          }))}
+        />
         <InvoiceTable fees={fees} />
       </div>
     </div>

@@ -35,7 +35,7 @@ export async function HealthScreen() {
                     ? <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-600">{s.healthRecord.bloodGroup}</span>
                     : <span className="text-muted">—</span>}
                 </td>
-                <td className="px-5 py-3 text-muted">{s.healthRecord?.visits?.length ?? 0}</td>
+                <td className="px-5 py-3 text-muted">{s.healthRecord?._count?.visits ?? 0}</td>
                 <td className="px-5 py-3">
                   <Link href={`/health/${s.id}`} className="text-xs font-semibold text-emerald hover:underline">View Records</Link>
                 </td>
