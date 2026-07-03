@@ -1,0 +1,10 @@
+﻿/**
+ * Dropdown.module.css — scoped to Dropdown component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Contextual action menu anchored to a trigger element. */
+  /* Design fills all visual properties below */
+}

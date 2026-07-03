@@ -1,0 +1,10 @@
+﻿/**
+ * EmptyState.module.css — scoped to EmptyState component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Placeholder for empty lists/search/filtered views with optional CTA. */
+  /* Design fills all visual properties below */
+}

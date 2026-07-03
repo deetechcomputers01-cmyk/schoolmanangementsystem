@@ -1,0 +1,10 @@
+﻿/**
+ * Select.module.css — scoped to Select component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Dropdown select with label and error state. */
+  /* Design fills all visual properties below */
+}

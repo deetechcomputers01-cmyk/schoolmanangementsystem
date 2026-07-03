@@ -1,0 +1,10 @@
+﻿/**
+ * Overlay.module.css — scoped to Overlay component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Semi-transparent backdrop. Used behind Modal, Drawer, Sheet. */
+  /* Design fills all visual properties below */
+}

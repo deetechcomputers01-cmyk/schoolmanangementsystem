@@ -1,0 +1,467 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  super_admin
+  principal
+  teacher
+  staff
+  student
+  guardian
+}
+
+enum AttendanceStatus {
+  present
+  absent
+  late
+  excused
+}
+
+enum PaymentMethod {
+  cash
+  mobile_money
+  bank_transfer
+  card
+}
+
+enum FeeStatus {
+  unpaid
+  partial
+  paid
+}
+
+enum ApplicationStatus {
+  pending
+  approved
+  rejected
+  enrolled
+}
+
+enum PayslipStatus {
+  draft
+  approved
+  paid
+}
+
+model User {
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  passwordHash String
+  role         Role
+  isActive     Boolean     @default(true)
+  staff        Staff?
+  guardian     Guardian?
+  student      Student?
+  auditLogs    AuditLog[]
+  blockedIPs   BlockedIP[]
+  createdExams          Exam[]
+  announcements         Announcement[]         @relation("AnnouncementAuthor")
+  reviewedApplications  AdmissionApplication[] @relation("ApplicationReviewer")
+  disciplinaryReports   DisciplinaryRecord[]   @relation("DisciplinaryReporter")
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Student {
+  id          String       @id @default(cuid())
+  admissionNo String       @unique
+  firstName   String
+  lastName    String
+  gender      String
+  dateOfBirth DateTime
+  address     String
+  photoUrl    String?
+  classId     String
+  class       Class        @relation(fields: [classId], references: [id])
+  userId      String?      @unique
+  user        User?        @relation(fields: [userId], references: [id])
+  guardians           Guardian[]
+  attendance          Attendance[]
+  grades              Grade[]
+  feeRecords          FeeRecord[]
+  examScores          ExamScore[]
+  disciplinaryRecords DisciplinaryRecord[]
+  healthRecord        HealthRecord?
+  bookCheckouts       BookCheckout[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Guardian {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  relation  String
+  userId    String?  @unique
+  user      User?    @relation(fields: [userId], references: [id])
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Staff {
+  id               String    @id @default(cuid())
+  staffNo          String    @unique
+  firstName        String
+  lastName         String
+  phone            String
+  roleTitle        String
+  isTeaching       Boolean      @default(true)
+  userId           String?      @unique
+  user             User?        @relation(fields: [userId], references: [id])
+  subjects         Subject[]
+  salary           StaffSalary?
+  payslips         Payslip[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Class {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  level     String
+  students  Student[]
+  subjects  Subject[]
+  timetable TimetableSlot[]
+  exams     Exam[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Subject {
+  id        String          @id @default(cuid())
+  name      String
+  code      String          @unique
+  classId   String
+  class     Class           @relation(fields: [classId], references: [id])
+  staffId   String?
+  staff     Staff?          @relation(fields: [staffId], references: [id])
+  grades    Grade[]
+  timetable TimetableSlot[]
+  exams     Exam[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Attendance {
+  id        String           @id @default(cuid())
+  studentId String
+  student   Student          @relation(fields: [studentId], references: [id])
+  classId   String
+  date      DateTime
+  status    AttendanceStatus
+  note      String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([studentId, date])
+}
+
+model Grade {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  term      String
+  score     Float
+  remarks   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FeeRecord {
+  id          String    @id @default(cuid())
+  studentId   String
+  student     Student   @relation(fields: [studentId], references: [id])
+  term        String
+  description String
+  amountDue   Decimal   @db.Decimal(10, 2)
+  status      FeeStatus @default(unpaid)
+  payments    Payment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  feeRecordId String
+  feeRecord   FeeRecord     @relation(fields: [feeRecordId], references: [id])
+  amount      Decimal       @db.Decimal(10, 2)
+  method      PaymentMethod
+  reference   String
+  paidAt      DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+}
+
+model TimetableSlot {
+  id        String   @id @default(cuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  day       String
+  startsAt  String
+  endsAt    String
+  room      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlockedIP {
+  id          String    @id @default(cuid())
+  ip          String    @unique
+  reason      String?
+  blockedById String
+  blockedBy   User      @relation(fields: [blockedById], references: [id])
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  audience    String[]  // role names; empty = everyone
+  isPinned    Boolean   @default(false)
+  publishedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  authorId    String
+  author      User      @relation("AnnouncementAuthor", fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SchoolSettings {
+  id           String   @id @default("singleton")
+  name         String   @default("ScholarSphere Academy")
+  address      String   @default("")
+  motto        String   @default("")
+  phone        String   @default("")
+  email        String   @default("")
+  logoUrl      String?
+  reportFooter String   @default("")
+  timezone     String   @default("Africa/Accra")
+  gradingScale Json?
+  updatedAt    DateTime @updatedAt
+}
+
+model Exam {
+  id          String      @id @default(cuid())
+  title       String
+  termId      String?
+  term        Term?       @relation(fields: [termId], references: [id])
+  subjectId   String
+  subject     Subject     @relation(fields: [subjectId], references: [id])
+  classId     String
+  class       Class       @relation(fields: [classId], references: [id])
+  scheduledAt DateTime
+  maxScore    Float       @default(100)
+  scores      ExamScore[]
+  createdById String
+  createdBy   User        @relation(fields: [createdById], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model ExamScore {
+  id        String   @id @default(cuid())
+  examId    String
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  score     Float
+  remarks   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([examId, studentId])
+}
+
+model AcademicYear {
+  id        String   @id @default(cuid())
+  name      String   @unique  // e.g. "2025/2026"
+  startDate DateTime
+  endDate   DateTime
+  isCurrent Boolean  @default(false)
+  terms     Term[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Term {
+  id             String       @id @default(cuid())
+  name           String
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  startDate      DateTime
+  endDate        DateTime
+  isCurrent      Boolean      @default(false)
+  exams          Exam[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([academicYearId, name])
+}
+
+// ── Admissions ────────────────────────────────────────────────────────────────
+
+model AdmissionApplication {
+  id               String            @id @default(cuid())
+  firstName        String
+  lastName         String
+  gender           String
+  dateOfBirth      DateTime
+  address          String
+  applyingForClass String
+  guardianName     String
+  guardianPhone    String
+  guardianEmail    String?
+  guardianRelation String
+  status           ApplicationStatus @default(pending)
+  admissionNo      String?
+  notes            String?
+  reviewedById     String?
+  reviewedBy       User?             @relation("ApplicationReviewer", fields: [reviewedById], references: [id])
+  reviewedAt       DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+// ── Payroll ───────────────────────────────────────────────────────────────────
+
+model StaffSalary {
+  id            String    @id @default(cuid())
+  staffId       String    @unique
+  staff         Staff     @relation(fields: [staffId], references: [id])
+  basicSalary   Decimal   @db.Decimal(10, 2)
+  allowances    Decimal   @db.Decimal(10, 2) @default(0)
+  deductions    Decimal   @db.Decimal(10, 2) @default(0)
+  effectiveFrom DateTime
+  payslips      Payslip[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Payslip {
+  id          String        @id @default(cuid())
+  staffId     String
+  staff       Staff         @relation(fields: [staffId], references: [id])
+  salaryId    String
+  salary      StaffSalary   @relation(fields: [salaryId], references: [id])
+  month       String        // "2026-06"
+  basicSalary Decimal       @db.Decimal(10, 2)
+  allowances  Decimal       @db.Decimal(10, 2)
+  deductions  Decimal       @db.Decimal(10, 2)
+  netPay      Decimal       @db.Decimal(10, 2)
+  status      PayslipStatus @default(draft)
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@unique([staffId, month])
+}
+
+// ── Disciplinary ──────────────────────────────────────────────────────────────
+
+model DisciplinaryRecord {
+  id           String   @id @default(cuid())
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id])
+  category     String
+  description  String
+  action       String
+  date         DateTime
+  reportedById String
+  reportedBy   User     @relation("DisciplinaryReporter", fields: [reportedById], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ── Health Records ────────────────────────────────────────────────────────────
+
+model HealthRecord {
+  id               String        @id @default(cuid())
+  studentId        String        @unique
+  student          Student       @relation(fields: [studentId], references: [id])
+  bloodGroup       String?
+  allergies        String?
+  conditions       String?
+  emergencyContact String?
+  emergencyPhone   String?
+  visits           SickVisit[]
+  vaccinations     Vaccination[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model SickVisit {
+  id             String       @id @default(cuid())
+  healthRecordId String
+  healthRecord   HealthRecord @relation(fields: [healthRecordId], references: [id], onDelete: Cascade)
+  date           DateTime     @default(now())
+  complaint      String
+  treatment      String?
+  notes          String?
+  createdAt      DateTime     @default(now())
+}
+
+model Vaccination {
+  id             String       @id @default(cuid())
+  healthRecordId String
+  healthRecord   HealthRecord @relation(fields: [healthRecordId], references: [id], onDelete: Cascade)
+  vaccineName    String
+  date           DateTime
+  nextDue        DateTime?
+  notes          String?
+  createdAt      DateTime     @default(now())
+}
+
+// ── Library ───────────────────────────────────────────────────────────────────
+
+model Book {
+  id        String         @id @default(cuid())
+  title     String
+  author    String
+  isbn      String?        @unique
+  category  String
+  quantity  Int            @default(1)
+  available Int            @default(1)
+  checkouts BookCheckout[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model BookCheckout {
+  id           String    @id @default(cuid())
+  bookId       String
+  book         Book      @relation(fields: [bookId], references: [id])
+  studentId    String
+  student      Student   @relation(fields: [studentId], references: [id])
+  checkedOutAt DateTime  @default(now())
+  dueDate      DateTime
+  returnedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

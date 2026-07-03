@@ -1,0 +1,10 @@
+﻿/**
+ * Tooltip.module.css — scoped to Tooltip component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Accessible tooltip shown on hover/focus. Positions: top, right, bottom, left. */
+  /* Design fills all visual properties below */
+}

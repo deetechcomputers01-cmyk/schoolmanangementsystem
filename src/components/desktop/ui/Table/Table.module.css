@@ -1,0 +1,10 @@
+﻿/**
+ * Table.module.css — scoped to Table component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Data table wrapper with head/body slots. Handles overflow scroll. */
+  /* Design fills all visual properties below */
+}

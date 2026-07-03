@@ -1,0 +1,10 @@
+﻿/**
+ * Card.module.css — scoped to Card component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Content container with optional header, footer, padding variants and shadow. */
+  /* Design fills all visual properties below */
+}

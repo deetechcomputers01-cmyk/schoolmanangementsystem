@@ -1,0 +1,25 @@
+/**
+ * DesktopLayout.module.css
+ * Structural grid only. No colours — colours live in tokens.css + child modules.
+ */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--layout-sidebar-w) 1fr;
+  min-height: 100dvh;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  /* Offset so content starts after the fixed sidebar */
+  margin-left: var(--layout-sidebar-w);
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: var(--layout-content-max);
+  padding: var(--layout-content-pad);
+}

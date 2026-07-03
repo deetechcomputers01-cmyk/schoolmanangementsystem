@@ -1,0 +1,10 @@
+﻿/**
+ * Checkbox.module.css — scoped to Checkbox component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Labelled checkbox with indeterminate state support. */
+  /* Design fills all visual properties below */
+}

@@ -1,0 +1,80 @@
+/**
+ * MobileHeader.module.css — scoped to MobileHeader only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ */
+
+.header {
+  position: sticky;
+  top: 0;
+  height: var(--mobile-header-h);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  z-index: var(--z-sticky);
+  /* Design fills: background, border-bottom, padding, shadow */
+}
+
+.backBtn {
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  /* Design fills: size, color, border-radius */
+}
+
+.titleBlock {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Design fills: color */
+}
+
+.subtitle {
+  font-size: var(--text-xs);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Design fills: color */
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* Minimum 44px tap target */
+  min-width: 44px;
+  min-height: 44px;
+  /* Design fills: color, background, border-radius */
+}
+
+.notifDot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid;
+  /* Design fills: background (error), border-color (header bg) */
+}

@@ -1,0 +1,10 @@
+﻿/**
+ * Button.module.css — scoped to Button component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Primary action trigger. Variants: primary, secondary, ghost, danger, link. Sizes: sm, md, lg. */
+  /* Design fills all visual properties below */
+}

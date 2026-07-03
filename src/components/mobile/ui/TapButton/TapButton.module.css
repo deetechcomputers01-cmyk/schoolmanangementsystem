@@ -1,0 +1,11 @@
+﻿/**
+ * TapButton.module.css — scoped to TapButton component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Full-width touch-friendly button. Variants: primary, secondary, ghost, danger. Minimum 48px height. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

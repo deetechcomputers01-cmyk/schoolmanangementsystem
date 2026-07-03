@@ -1,0 +1,52 @@
+/**
+ * MobileBottomNav.module.css — scoped to MobileBottomNav only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-bottom-h);
+  display: flex;
+  align-items: stretch;
+  z-index: var(--z-sticky);
+  /* Safe area for notched phones */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  /* Design fills: background, border-top, shadow */
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-height: 44px;
+  /* Design fills: color */
+}
+
+.tab:active {
+  /* Design fills: active/pressed state */
+}
+
+.tabActive {
+  /* Design fills: active color, indicator */
+}
+
+.tabIcon {
+  /* Design fills: color (inherited from tab) */
+}
+
+.tabLabel {
+  font-size: 10px;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  /* Design fills: color (inherited from tab) */
+}
+
+.tabActive .tabLabel {
+  font-weight: var(--weight-semibold);
+}

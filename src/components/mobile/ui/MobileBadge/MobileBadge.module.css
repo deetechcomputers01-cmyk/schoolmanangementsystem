@@ -1,0 +1,11 @@
+﻿/**
+ * MobileBadge.module.css — scoped to MobileBadge component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Compact inline status label. Tones: neutral, success, warning, error, info. Optimised for small text. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

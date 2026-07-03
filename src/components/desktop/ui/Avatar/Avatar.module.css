@@ -1,0 +1,10 @@
+﻿/**
+ * Avatar.module.css — scoped to Avatar component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* User avatar: initials or image, with size and status indicator. */
+  /* Design fills all visual properties below */
+}

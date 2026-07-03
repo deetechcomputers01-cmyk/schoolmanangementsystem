@@ -1,0 +1,10 @@
+﻿/**
+ * Badge.module.css — scoped to Badge component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Inline status label. Tones: neutral, success, warning, error, info, primary. */
+  /* Design fills all visual properties below */
+}

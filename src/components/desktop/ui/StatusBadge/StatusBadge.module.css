@@ -1,0 +1,10 @@
+﻿/**
+ * StatusBadge.module.css — scoped to StatusBadge component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Semantic status chip for records: active, inactive, pending, suspended. */
+  /* Design fills all visual properties below */
+}

@@ -1,0 +1,14 @@
+{
+  "name": "ScholarSphere Design System Builder",
+  "id": "scholarsphere-ds-builder-2025",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "dev"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"],
+    "devAllowedDomains": ["ws://localhost:3001", "http://localhost:3002"],
+    "reasoning": "Connects to a local Claude-Figma bridge server for live AI design generation"
+  }
+}

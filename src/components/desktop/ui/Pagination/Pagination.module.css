@@ -1,0 +1,10 @@
+﻿/**
+ * Pagination.module.css — scoped to Pagination component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Page navigation: prev/next + page numbers. Controlled component. */
+  /* Design fills all visual properties below */
+}

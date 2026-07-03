@@ -1,0 +1,11 @@
+﻿/**
+ * MobileCard.module.css — scoped to MobileCard component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Content block with optional tap state and swipe-to-reveal action affordance. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

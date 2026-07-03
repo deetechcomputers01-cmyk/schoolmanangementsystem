@@ -1,0 +1,11 @@
+﻿/**
+ * MobileToast.module.css — scoped to MobileToast component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Temporary feedback notification appearing at the bottom of the screen above the nav bar. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

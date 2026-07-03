@@ -1,0 +1,17 @@
+{
+  "name": "ScholarSphere Pro School MS",
+  "short_name": "School MS",
+  "description": "Offline-ready school management for Ghanaian schools",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f7f8f3",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

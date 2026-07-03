@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, ui-sans-serif, sans-serif; background: #0f172a; color: #fff; padding: 20px; }
+  .header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .dot { width: 28px; height: 28px; background: #10b981; border-radius: 8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
+  .title { font-size: 14px; font-weight: 700; }
+  .sub   { font-size: 11px; color: #64748b; }
+  .status-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: 8px; margin-bottom: 14px;
+    font-size: 12px; font-weight: 600;
+    background: #1e293b; border: 1px solid #1e293b;
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .connected    { border-color: #10b981; }
+  .connected .status-dot { background: #10b981; }
+  .disconnected { border-color: #e11d48; }
+  .disconnected .status-dot { background: #e11d48; }
+  .connecting   { border-color: #f59e0b; }
+  .connecting .status-dot { background: #f59e0b; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h3 { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 8px; }
+  .phase-btns { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .btn {
+    padding: 10px 14px; border-radius: 8px; border: 1px solid #1e293b;
+    background: #1e293b; color: #fff; font-size: 12px; font-weight: 600;
+    cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px;
+    transition: all 0.15s;
+  }
+  .btn:hover:not(:disabled) { background: #10b981; border-color: #10b981; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-sub { font-size: 10px; font-weight: 400; color: #94a3b8; display:block; margin-top:2px; }
+  .btn:hover:not(:disabled) .btn-sub { color: rgba(255,255,255,0.7); }
+
+  .log-wrap { background: #020617; border-radius: 8px; overflow: hidden; }
+  .log-header { padding: 8px 12px; background: #0f172a; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+  .log { height: 140px; overflow-y: auto; padding: 8px 12px; }
+  .log-line { font-size: 10px; font-family: 'Courier New', monospace; line-height: 1.9; color: #64748b; }
+  .log-line.ok   { color: #10b981; }
+  .log-line.err  { color: #e11d48; }
+  .log-line.send { color: #f59e0b; }
+  .log-line.info { color: #94a3b8; }
+
+  .reconnect-btn {
+    margin-top: 8px; width: 100%; padding: 8px; border-radius: 6px;
+    background: #1e293b; border: 1px solid #334155; color: #94a3b8;
+    font-size: 11px; cursor: pointer;
+  }
+  .reconnect-btn:hover { background: #334155; color: #fff; }
+
+  .tip { margin-top: 12px; font-size: 10px; color: #475569; line-height: 1.6; }
+  .tip strong { color: #64748b; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="dot">S</div>
+  <div><div class="title">ScholarSphere</div><div class="sub">Claude ↔ Figma Bridge</div></div>
+</div>
+
+<div class="status-bar connecting" id="statusBar">
+  <div class="status-dot"></div>
+  <span id="statusText">Connecting to bridge server…</span>
+</div>
+
+<h3>Quick Build</h3>
+<div class="phase-btns" id="phaseBtns">
+  <button class="btn" onclick="runPhase('foundation')" disabled>
+    <span>🎨</span>
+    <span><div>Phase 1 — Foundation</div><span class="btn-sub">Colors · Typography · Spacing · Shadows</span></span>
+  </button>
+  <button class="btn" onclick="runPhase('components')" disabled>
+    <span>🧩</span>
+    <span><div>Phase 2 — Components</div><span class="btn-sub">Buttons · Inputs · Badges · Avatars</span></span>
+  </button>
+  <button class="btn" onclick="runPhase('composite')" disabled>
+    <span>🏗️</span>
+    <span><div>Phase 3 — Composite</div><span class="btn-sub">Cards · Modals · Tables · Toast</span></span>
+  </button>
+  <button class="btn" onclick="runPhase('screens')" disabled>
+    <span>📱</span>
+    <span><div>Phase 4 — Screens</div><span class="btn-sub">Dashboard · Portal · Mobile</span></span>
+  </button>
+</div>
+
+<div class="log-wrap">
+  <div class="log-header">Live Command Log</div>
+  <div class="log" id="log"></div>
+</div>
+<button class="reconnect-btn" onclick="connect()">↻ Reconnect to bridge</button>
+
+<div class="tip">
+  <strong>How it works:</strong> Keep the bridge server running
+  (<code>node figma-bridge/server.js</code>), then Claude sends
+  design commands directly here in real time.
+</div>
+
+<script>
+let ws = null;
+let cmdCallbacks = new Map();
+
+function log(msg, cls) {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  line.className = 'log-line' + (cls ? ' ' + cls : '');
+  line.textContent = new Date().toLocaleTimeString() + ' ' + msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(state, text) {
+  const bar = document.getElementById('statusBar');
+  bar.className = 'status-bar ' + state;
+  document.getElementById('statusText').textContent = text;
+  const btns = document.querySelectorAll('#phaseBtns .btn');
+  btns.forEach(b => b.disabled = (state !== 'connected'));
+}
+
+function connect() {
+  if (ws) { try { ws.close(); } catch(e){} }
+  setStatus('connecting', 'Connecting to bridge server…');
+  log('Connecting to ws://localhost:3001…', 'info');
+
+  ws = new WebSocket('ws://localhost:3001');
+
+  ws.onopen = () => {
+    setStatus('connected', 'Connected — Claude can now design in Figma');
+    log('Bridge connected ✓', 'ok');
+  };
+
+  ws.onmessage = (e) => {
+    const msg = JSON.parse(e.data);
+    // It's a command from the bridge server (sent by Claude)
+    if (msg.action) {
+      log('← ' + msg.action + (msg.name ? ' "' + msg.name + '"' : ''), 'send');
+      // Forward to code.js
+      parent.postMessage({ pluginMessage: { type: 'bridge_command', cmd: msg } }, '*');
+    }
+  };
+
+  ws.onerror = () => {
+    setStatus('disconnected', 'Bridge not running — start server first');
+    log('Connection failed. Run: node figma-bridge/server.js', 'err');
+  };
+
+  ws.onclose = () => {
+    setStatus('disconnected', 'Disconnected — reconnect or restart server');
+    log('Connection closed', 'err');
+    // Auto-reconnect after 5s
+    setTimeout(connect, 5000);
+  };
+}
+
+function runPhase(phase) {
+  parent.postMessage({ pluginMessage: { type: 'run', phase } }, '*');
+  log('Running ' + phase + '…', 'info');
+}
+
+// Receive results from code.js and send back to bridge server
+window.onmessage = (e) => {
+  const msg = e.data.pluginMessage;
+  if (!msg) return;
+
+  if (msg.type === 'bridge_result') {
+    // Send result back to bridge server
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ id: msg.id, result: msg.result, error: msg.error }));
+      if (msg.error) log('✗ ' + msg.error, 'err');
+      else log('✓ Done', 'ok');
+    }
+  }
+
+  if (msg.type === 'progress') log(msg.message, 'info');
+  if (msg.type === 'step')     log('✓ ' + msg.message, 'ok');
+  if (msg.type === 'head')     log('▶ ' + msg.message, 'info');
+  if (msg.type === 'done')     log('🎉 Phase complete!', 'ok');
+  if (msg.type === 'error')    log('✗ ' + msg.message, 'err');
+};
+
+// Start connecting immediately
+connect();
+</script>
+</body>
+</html>

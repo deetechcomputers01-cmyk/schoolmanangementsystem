@@ -1,0 +1,23 @@
+﻿/**
+ * MobileUserRoleScreen.module.css — scoped to MobileUserRoleScreen only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ */
+
+.root {
+  width: 100%;
+  min-height: 100%;
+  /* Design fills: background, padding */
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-6) var(--sp-4);
+  min-height: 50vh;
+  opacity: 0.5;
+}
+.label  { font-size: var(--text-lg); font-weight: var(--weight-semibold); text-align: center; }
+.hint   { font-size: var(--text-xs); text-align: center; }

@@ -1,0 +1,149 @@
+/**
+ * ScholarSphere Design Tokens
+ * Single source of truth for all visual values.
+ * Import this in globals.css — do NOT copy values inline elsewhere.
+ * Colours chosen for institutional calm: readable by all ages, low fatigue.
+ */
+
+:root {
+  /* ─── Brand / Primary ─────────────────────────────────────────────── */
+  --clr-primary:         #1e3a5f;   /* Institutional navy — deep, calm       */
+  --clr-primary-hover:   #163152;
+  --clr-primary-light:   #2d5282;
+  --clr-primary-subtle:  #ebf0f8;   /* Tinted bg for selected rows, chips    */
+
+  --clr-accent:          #2d6a4f;   /* Sage green — softer than lime/emerald */
+  --clr-accent-hover:    #245c43;
+  --clr-accent-light:    #40916c;
+  --clr-accent-subtle:   #edf7f2;
+
+  /* ─── Semantic ────────────────────────────────────────────────────── */
+  --clr-success:         #276749;
+  --clr-success-bg:      #edf7f2;
+  --clr-success-border:  #b7e4cc;
+
+  --clr-warning:         #92400e;
+  --clr-warning-bg:      #fffbeb;
+  --clr-warning-border:  #fde68a;
+
+  --clr-error:           #9b2335;
+  --clr-error-bg:        #fef2f2;
+  --clr-error-border:    #fecaca;
+
+  --clr-info:            #1d4ed8;
+  --clr-info-bg:         #eff6ff;
+  --clr-info-border:     #bfdbfe;
+
+  /* ─── Neutral Surface ─────────────────────────────────────────────── */
+  --clr-ink:             #1a2332;   /* Primary text                          */
+  --clr-text-secondary:  #344155;
+  --clr-text-muted:      #5a6a7e;
+  --clr-text-disabled:   #9aa5b4;
+  --clr-text-on-dark:    #f8fafc;
+
+  --clr-surface:         #ffffff;
+  --clr-surface-raised:  #f7f9fc;   /* Cards on light bg                     */
+  --clr-bg:              #f0f4f8;   /* Page background                       */
+  --clr-bg-alt:          #e8edf4;   /* Slight contrast section bg            */
+
+  --clr-border:          #dde3ec;
+  --clr-border-strong:   #c0ccdb;
+  --clr-border-focus:    #2d6a4f;
+
+  /* ─── Overlay ─────────────────────────────────────────────────────── */
+  --clr-overlay:         rgba(26, 35, 50, 0.48);
+  --clr-overlay-light:   rgba(26, 35, 50, 0.12);
+
+  /* ─── Typography ──────────────────────────────────────────────────── */
+  --font-sans:      Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:      ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
+
+  /* Scale — 16px base, 1.25 ratio, even steps */
+  --text-xs:        0.75rem;     /*  12px */
+  --text-sm:        0.875rem;    /*  14px */
+  --text-base:      1rem;        /*  16px */
+  --text-md:        1.0625rem;   /*  17px — slightly larger for form labels  */
+  --text-lg:        1.125rem;    /*  18px */
+  --text-xl:        1.25rem;     /*  20px */
+  --text-2xl:       1.5rem;      /*  24px */
+  --text-3xl:       1.875rem;    /*  30px */
+  --text-4xl:       2.25rem;     /*  36px */
+
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  --weight-normal:   400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  --tracking-tight:  -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.03em;
+  --tracking-widest:  0.08em;     /* ALL-CAPS labels                        */
+
+  /* ─── Spacing ─────────────────────────────────────────────────────── */
+  --sp-1:    0.25rem;   /*  4px  */
+  --sp-2:    0.5rem;    /*  8px  */
+  --sp-3:    0.75rem;   /* 12px  */
+  --sp-4:    1rem;      /* 16px  */
+  --sp-5:    1.25rem;   /* 20px  */
+  --sp-6:    1.5rem;    /* 24px  */
+  --sp-8:    2rem;      /* 32px  */
+  --sp-10:   2.5rem;    /* 40px  */
+  --sp-12:   3rem;      /* 48px  */
+  --sp-16:   4rem;      /* 64px  */
+  --sp-20:   5rem;      /* 80px  */
+
+  /* ─── Border Radius ───────────────────────────────────────────────── */
+  --radius-xs:   0.1875rem;  /*  3px */
+  --radius-sm:   0.3125rem;  /*  5px */
+  --radius-md:   0.5rem;     /*  8px */
+  --radius-lg:   0.75rem;    /* 12px */
+  --radius-xl:   1rem;       /* 16px */
+  --radius-2xl:  1.5rem;     /* 24px */
+  --radius-full: 9999px;
+
+  /* ─── Shadow ──────────────────────────────────────────────────────── */
+  --shadow-xs:   0 1px 2px 0 rgba(26,35,50,0.05);
+  --shadow-sm:   0 1px 3px 0 rgba(26,35,50,0.08), 0 1px 2px -1px rgba(26,35,50,0.05);
+  --shadow-md:   0 4px 6px -1px rgba(26,35,50,0.07), 0 2px 4px -2px rgba(26,35,50,0.05);
+  --shadow-lg:   0 10px 15px -3px rgba(26,35,50,0.08), 0 4px 6px -4px rgba(26,35,50,0.05);
+  --shadow-xl:   0 20px 25px -5px rgba(26,35,50,0.09), 0 8px 10px -6px rgba(26,35,50,0.05);
+  --shadow-inset: inset 0 1px 2px rgba(26,35,50,0.06);
+
+  /* ─── Z-index layers ──────────────────────────────────────────────── */
+  --z-base:       0;
+  --z-raised:    10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+
+  /* ─── Motion ──────────────────────────────────────────────────────── */
+  --dur-instant: 80ms;
+  --dur-fast:    120ms;
+  --dur-base:    180ms;
+  --dur-slow:    280ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Desktop layout dims ─────────────────────────────────────────── */
+  --layout-sidebar-w:   260px;
+  --layout-topbar-h:     64px;
+  --layout-content-max: 1440px;
+  --layout-content-pad:  var(--sp-8);
+
+  /* ─── Mobile layout dims ──────────────────────────────────────────── */
+  --mobile-header-h:  56px;
+  --mobile-bottom-h:  64px;
+  --mobile-pad:       var(--sp-4);
+
+  /* ─── Focus ring (shared across all interactive elements) ─────────── */
+  --focus-ring: 0 0 0 3px rgba(45,106,79,0.35);
+}

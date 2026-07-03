@@ -1,0 +1,184 @@
+/**
+ * DesktopSidebar.module.css
+ * Scoped to this component only. No global selectors.
+ * DESIGN PENDING — Stitch "Institutional Excellence" design system.
+ * All values will be filled in from Stitch desktop sidebar spec.
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--layout-sidebar-w);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: var(--z-sticky);
+  /* Design fills: background, border-right */
+}
+
+/* ── Brand ──────────────────────────────────────────────────────── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+  /* Design fills: padding, border-bottom */
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-weight: var(--weight-bold);
+  /* Design fills: size, background, color, border-radius */
+}
+
+.brandName {
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  /* Design fills: color */
+}
+
+.brandTagline {
+  font-size: var(--text-xs);
+  /* Design fills: color */
+}
+
+/* ── Nav ────────────────────────────────────────────────────────── */
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  overflow-y: auto;
+  /* Design fills: padding */
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.navGroupLabel {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  /* Design fills: color, padding */
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+  /* Design fills: padding, border-radius, color, background */
+}
+
+.navItem:hover {
+  /* Design fills: hover background, hover color */
+}
+
+.navItemActive {
+  font-weight: var(--weight-semibold);
+  /* Design fills: active background, active color */
+}
+
+.navIcon {
+  flex-shrink: 0;
+  /* Design fills: color (inherited from navItem) */
+}
+
+.navLabel {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activeBar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  /* Design fills: width, height, background, border-radius */
+}
+
+/* ── Sync status ─────────────────────────────────────────────────── */
+.syncStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+  /* Design fills: padding, background, border-radius, margin */
+}
+
+.syncDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  /* Design fills: background per variant */
+}
+
+.syncText {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  /* Design fills: color */
+}
+
+.sync_online  .syncDot { background: var(--clr-success); }
+.sync_syncing .syncDot { background: var(--clr-warning); animation: pulse 1.2s ease-in-out infinite; }
+.sync_offline .syncDot { background: var(--clr-error); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── User profile ────────────────────────────────────────────────── */
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+  /* Design fills: padding, border-top, background */
+}
+
+.userAvatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  /* Design fills: size, background, color, border-radius */
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Design fills: color */
+}
+
+.userRole {
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Design fills: color */
+}

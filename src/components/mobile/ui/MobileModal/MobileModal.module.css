@@ -1,0 +1,11 @@
+﻿/**
+ * MobileModal.module.css — scoped to MobileModal component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Full-screen-height modal for complex forms or multi-step flows on mobile. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

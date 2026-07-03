@@ -1,0 +1,10 @@
+﻿/**
+ * LoadingState.module.css — scoped to LoadingState component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Full-area loading spinner with optional label. For async data loads. */
+  /* Design fills all visual properties below */
+}

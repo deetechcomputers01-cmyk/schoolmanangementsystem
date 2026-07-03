@@ -1,0 +1,10 @@
+﻿/**
+ * Input.module.css — scoped to Input component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Text input field with label, helper text, error and leading/trailing slots. */
+  /* Design fills all visual properties below */
+}

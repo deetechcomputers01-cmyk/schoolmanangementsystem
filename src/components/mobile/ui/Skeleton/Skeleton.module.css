@@ -1,0 +1,11 @@
+﻿/**
+ * Skeleton.module.css — scoped to Skeleton component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Content placeholder skeleton. Variants: text, circle, rect. Matches mobile card/list shapes. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

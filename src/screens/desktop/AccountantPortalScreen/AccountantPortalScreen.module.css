@@ -1,0 +1,25 @@
+﻿/**
+ * AccountantPortalScreen.module.css — scoped to AccountantPortalScreen only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" desktop spec.
+ * All visual values come from tokens.css custom properties.
+ */
+
+.root {
+  width: 100%;
+  min-height: 100%;
+  /* Design fills: background, padding */
+}
+
+/* ── Placeholder (remove when Stitch design is applied) ── */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-10);
+  min-height: 60vh;
+  opacity: 0.5;
+}
+.label  { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
+.hint   { font-size: var(--text-sm); }

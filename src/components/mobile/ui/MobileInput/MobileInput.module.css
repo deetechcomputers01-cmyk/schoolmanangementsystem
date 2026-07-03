@@ -1,0 +1,11 @@
+﻿/**
+ * MobileInput.module.css — scoped to MobileInput component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Touch-optimised text input with label, error, and icon slots. 48px height for tap accuracy. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

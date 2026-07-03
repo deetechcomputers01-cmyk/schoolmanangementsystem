@@ -1,0 +1,11 @@
+﻿/**
+ * LoadingState.module.css — scoped to LoadingState component only.
+ * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Centered spinner + label for async data loads on mobile views. */
+  /* Design fills all visual properties below */
+  min-height: 44px; /* Minimum tap target */
+}

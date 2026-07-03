@@ -1,0 +1,10 @@
+﻿/**
+ * Toast.module.css — scoped to Toast component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Temporary feedback notification. Types: success, warning, error, info. */
+  /* Design fills all visual properties below */
+}

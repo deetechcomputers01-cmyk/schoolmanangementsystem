@@ -1,0 +1,10 @@
+﻿/**
+ * Modal.module.css — scoped to Modal component only.
+ * DESIGN PENDING — values filled from Stitch "Institutional Excellence" desktop spec.
+ * Use CSS custom properties from tokens.css; never hard-code raw values here.
+ */
+
+.root {
+  /* Accessible dialog overlay. Manages focus trap and scroll lock. */
+  /* Design fills all visual properties below */
+}
