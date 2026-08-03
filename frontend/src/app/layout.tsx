@@ -9,6 +9,17 @@ import "@/styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
+// Every page in this app is per-request/authenticated (live DB reads, session
+// cookies) — none of it should ever be statically prerendered at build time.
+// Route segment config only takes effect when exported directly from a
+// page/layout/route file (not from an imported component module — several
+// screens/*/Screen.tsx files export `dynamic = "force-dynamic"` themselves,
+// but that's inert, Next.js never reads it there). Setting it once here on
+// the root layout cascades to every route, which is what was actually
+// missing and why Vercel's build tried to prerender ~100 pages against a
+// database it doesn't have (no DATABASE_URL at build time) and failed.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ScholarSphere Pro",
   description: "School management system for Ghanaian schools",
