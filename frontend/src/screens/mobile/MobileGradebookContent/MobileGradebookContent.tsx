@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Users, ClipboardList, TrendingUp, BarChart3, Star, Save } from "lucide-react";
+import Link from "next/link";
+import { Users, ClipboardList, TrendingUp, BarChart3, Star, Save, Send } from "lucide-react";
 import { gradeFromScore, type GradeBand } from "@backend/utils";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./MobileGradebookContent.module.css";
 
 export interface MobileGradeRow {
@@ -39,8 +42,11 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
   const [tab, setTab] = useState<Tab>("entry");
   const [scores, setScores] = useState<Record<string, { value: string; dirty: boolean }>>({});
   const [saving, setSaving] = useState(false);
+  const [showPublishModal, setShowPublishModal] = useState(false);
 
   const classSubjects = useMemo(() => subjects.filter((s) => s.classId === classId), [subjects, classId]);
+  const selectedClassName = classes.find((c) => c.id === classId)?.name ?? "this class";
+  const selectedSubjectName = classSubjects.find((s) => s.id === subjectId)?.name ?? "this subject";
   const roster = useMemo(() => studentsByClass[classId] ?? [], [studentsByClass, classId]);
 
   useEffect(() => {
@@ -86,7 +92,10 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
     }, null);
   }, [roster, scores]);
 
-  async function handleSave() {
+  // Mirrors desktop GradebookContent's saveDraft(): both the plain "Save Draft"
+  // button and the "Publish Now" confirm call this same save — the only
+  // difference is Publish gates it behind a confirmation step first.
+  async function saveDraft(successMessage: string) {
     if (!subjectId) { showToast("Select a subject first.", "error"); return; }
     const dirty = roster.filter((s) => scores[s.studentId]?.dirty && scores[s.studentId]?.value !== "");
     if (dirty.length === 0) { showToast("No changes to save."); return; }
@@ -106,10 +115,15 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
         dirty.forEach((s) => { next[s.studentId] = { ...next[s.studentId], dirty: false }; });
         return next;
       });
-      showToast(failed > 0 ? `Saved with ${failed} error(s).` : "Grades saved successfully.", failed > 0 ? "error" : "success");
+      showToast(failed > 0 ? `Saved with ${failed} error(s).` : successMessage, failed > 0 ? "error" : "success");
     } finally {
       setSaving(false);
     }
+  }
+
+  async function handlePublishConfirm() {
+    await saveDraft("Grades published successfully.");
+    setShowPublishModal(false);
   }
 
   return (
@@ -147,6 +161,7 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
       <div className={styles.tabs}>
         <button type="button" className={`${styles.tab} ${tab === "entry" ? styles.tabActive : ""}`} onClick={() => setTab("entry")}>Entry</button>
         <button type="button" className={`${styles.tab} ${tab === "summary" ? styles.tabActive : ""}`} onClick={() => setTab("summary")}>Summary</button>
+        <Link href="/gradebook/reports" className={styles.tab}>Reports</Link>
       </div>
 
       {tab === "entry" ? (
@@ -179,9 +194,29 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
               );
             })}
           </div>
-          <button type="button" className={styles.saveBtn} onClick={handleSave} disabled={saving || !subjectId}>
-            <Save size={16} /> {saving ? "Saving…" : "Save Grades"}
-          </button>
+          <div className={styles.footerRow}>
+            <button type="button" className={styles.saveDraftBtn} onClick={() => saveDraft("Grades saved successfully.")} disabled={saving || !subjectId}>
+              <Save size={16} /> {saving ? "Saving…" : "Save Draft"}
+            </button>
+            <button type="button" className={styles.publishBtn} onClick={() => setShowPublishModal(true)} disabled={saving || !subjectId}>
+              <Send size={16} /> Publish
+            </button>
+          </div>
+
+          <MobileSheet
+            open={showPublishModal}
+            onClose={() => setShowPublishModal(false)}
+            title="Publish gradebook updates?"
+            eyebrow="Publish Report"
+            footer={<>
+              <button type="button" className={kit.btnOutline} onClick={() => setShowPublishModal(false)} disabled={saving}>Cancel</button>
+              <button type="button" className={kit.btnPrimary} onClick={handlePublishConfirm} disabled={saving}>{saving ? "Publishing…" : "Publish Now"}</button>
+            </>}
+          >
+            <p className={kit.helperText}>
+              This will publish the current scores for {selectedClassName} in {selectedSubjectName}.
+            </p>
+          </MobileSheet>
         </>
       ) : (
         <>

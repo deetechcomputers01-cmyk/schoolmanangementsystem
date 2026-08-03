@@ -47,6 +47,9 @@
   background: var(--clr-app-surface-alt);
 }
 .tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   height: 36px;
   border: 0;
@@ -55,6 +58,8 @@
   color: var(--clr-app-muted);
   font-size: var(--text-sm);
   font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
 }
 .tabActive { background: var(--clr-app-surface); color: var(--clr-app-accent); box-shadow: var(--shadow-xs); }
 
@@ -129,6 +134,23 @@
   cursor: pointer;
 }
 .saveBtn:disabled { opacity: 0.6; }
+
+.footerRow { display: flex; gap: 10px; }
+.saveDraftBtn, .publishBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+.saveDraftBtn { border: 1px solid var(--clr-app-border); background: var(--clr-app-surface); color: var(--clr-app-text); }
+.publishBtn { border: 0; background: var(--clr-app-accent); color: #ffffff; }
+.saveDraftBtn:disabled, .publishBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .card {
   display: flex;
