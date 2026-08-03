@@ -1,0 +1,177 @@
+.root { display: flex; flex-direction: column; gap: 14px; }
+
+/* ── Privacy banner ───────────────────────────────────────────────────── */
+.privacyBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+.privacyBanner svg { color: var(--clr-app-accent); flex-shrink: 0; }
+
+/* ── KPI grid ──────────────────────────────────────────────────────────── */
+.kpiGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.kpiLabel { color: var(--clr-app-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.kpiBottom { display: flex; align-items: flex-end; justify-content: space-between; }
+.kpiValue { color: var(--clr-app-text); font-size: var(--text-lg); font-weight: 800; line-height: 1; }
+.kpiValueError { color: var(--clr-error); font-size: var(--text-lg); font-weight: 800; line-height: 1; }
+.kpiValueWarn { color: var(--clr-warning); font-size: var(--text-lg); font-weight: 800; line-height: 1; }
+.kpiValueAccent { color: var(--clr-app-accent); font-size: var(--text-lg); font-weight: 800; line-height: 1; }
+.kpiIconError { color: var(--clr-error); opacity: 0.6; }
+.kpiIconWarn { color: var(--clr-warning); opacity: 0.6; }
+.kpiIconAccent { color: var(--clr-app-accent); opacity: 0.6; }
+.kpiIconMuted { color: var(--clr-app-muted); opacity: 0.6; }
+
+/* ── Filter chips ──────────────────────────────────────────────────────── */
+.chipRow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chipRow::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chipActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+
+/* ── Log Sick Visit button ────────────────────────────────────────────── */
+.logBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── List / cards ──────────────────────────────────────────────────────── */
+.list { display: flex; flex-direction: column; gap: 10px; }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.cardSevere { border-color: var(--clr-error); }
+.cardMeds { border-color: var(--clr-warning); }
+.cardAlert { border-color: var(--clr-app-accent); }
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.cardHeaderText { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.cardTopRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.timeText { display: inline-flex; align-items: center; gap: 3px; color: var(--clr-app-muted); font-size: 11px; flex-shrink: 0; }
+.studentName { color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.studentMeta { color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.triageBadge { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.triageRoutine { background: var(--clr-info-bg); color: var(--clr-info); }
+.triageScheduled { background: var(--clr-app-surface-alt); color: var(--clr-app-muted); }
+.triageUrgent { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.triageEmergency { background: var(--clr-error); color: #ffffff; }
+
+.complaintBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+.complaintTop { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.complaintText { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
+.vitalsTemp { flex-shrink: 0; color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 700; font-family: var(--font-mono); }
+.vitalsFever { color: var(--clr-error); }
+.noteQuote { margin: 0; color: var(--clr-app-muted); font-size: var(--text-xs); font-style: italic; line-height: 1.4; }
+.guardianRow { display: flex; align-items: center; gap: 6px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.alertBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--clr-error-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-error-bg);
+  color: var(--clr-error);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.alertBox svg { flex-shrink: 0; margin-top: 1px; }
+
+/* ── Expanded actions ──────────────────────────────────────────────────── */
+.actionArea { padding-top: 10px; border-top: 1px solid var(--clr-app-border); }
+.actionRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.actionBtnResolve { margin-left: auto; border-color: var(--clr-success-border); background: var(--clr-success-bg); color: var(--clr-success); }
+
+.noteEditor { display: flex; flex-direction: column; gap: 8px; }
+.noteEditorActions { display: flex; gap: 8px; justify-content: flex-end; }
+.noteEditorActions button { flex: 0 0 auto; height: 38px; padding: 0 16px; }

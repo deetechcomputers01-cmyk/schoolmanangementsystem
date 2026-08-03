@@ -2,6 +2,7 @@ import { requireRole } from "@backend/auth/page-guard";
 import { prisma } from "@backend/prisma";
 import { HealthContent } from "./HealthContent";
 import type { ClinicVisit, HealthClinicProps } from "./HealthContent";
+import { MobileHealthContent } from "@/screens/mobile/MobileHealthContent/MobileHealthContent";
 
 export const dynamic = "force-dynamic";
 
@@ -115,16 +116,21 @@ export async function HealthScreen() {
     vaxDueThisMonth,
   };
 
+  const students = studentRows.map(s => ({
+    id:        s.id,
+    firstName: s.firstName,
+    lastName:  s.lastName,
+    className: s.class.name,
+  }));
+
   return (
-    <HealthContent
-      visits={clinicVisits}
-      stats={stats}
-      students={studentRows.map(s => ({
-        id:        s.id,
-        firstName: s.firstName,
-        lastName:  s.lastName,
-        className: s.class.name,
-      }))}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileHealthContent visits={clinicVisits} stats={stats} students={students} />
+      </div>
+      <div className="desktopOnly">
+        <HealthContent visits={clinicVisits} stats={stats} students={students} />
+      </div>
+    </>
   );
 }

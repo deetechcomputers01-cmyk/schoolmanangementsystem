@@ -9,8 +9,6 @@ import {
   Stethoscope, BedSingle, Pill, CheckCircle2, XCircle, History, ShieldAlert, IdCard, Droplet,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./HealthScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -143,8 +141,7 @@ function VisitModal({
   }
 
   return (
-    <>
-    <div className={`${styles.modalOverlay} desktopOnly`} onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className={styles.modalOverlay} onClick={e => e.target === e.currentTarget && onClose()}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <div className={styles.modalHeaderLeft}>
@@ -200,63 +197,6 @@ function VisitModal({
         </form>
       </div>
     </div>
-
-    {/* Log Sick Visit sheet — mobile */}
-    <div className="mobileOnly">
-      <MobileSheet
-        open
-        onClose={onClose}
-        title="Log Sick Visit"
-        footer={<>
-          <button type="button" className={kit.btnOutline} onClick={onClose} disabled={busy}>Cancel</button>
-          <button type="button" className={kit.btnPrimary} onClick={() => submit({ preventDefault: () => {} } as React.FormEvent)} disabled={busy || !form.complaint.trim()}>{busy ? "Recording…" : "Log Visit"}</button>
-        </>}
-      >
-        <div className={kit.field}>
-          <label>Student *</label>
-          <select className={kit.select} value={form.studentId} onChange={e => set("studentId", e.target.value)}>
-            {students.map(s => (
-              <option key={s.id} value={s.id}>{s.firstName} {s.lastName} — {s.className}</option>
-            ))}
-          </select>
-        </div>
-        <div className={kit.field}>
-          <label>Complaint *</label>
-          <textarea className={kit.textarea} value={form.complaint} onChange={e => set("complaint", e.target.value)} placeholder="Describe the complaint…" rows={3} />
-        </div>
-        <div className={kit.field}>
-          <label>Triage</label>
-          <div className={kit.segmented}>
-            {(["routine", "scheduled", "urgent", "emergency"] as const).map(t => (
-              <button
-                key={t}
-                type="button"
-                className={`${kit.segBtn} ${form.triage === t ? kit.segBtnActive : ""}`}
-                style={form.triage === t && (t === "urgent" || t === "emergency") ? { background: "var(--clr-error)" } : undefined}
-                onClick={() => set("triage", t)}
-              >
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className={kit.fieldRow}>
-          <div className={kit.field}>
-            <label>Temp (°C)</label>
-            <input type="text" className={kit.input} value={form.vitalsTemp} onChange={e => set("vitalsTemp", e.target.value)} placeholder="37.0" />
-          </div>
-          <div className={kit.field}>
-            <label>Blood Pressure</label>
-            <input type="text" className={kit.input} value={form.vitalsBp} onChange={e => set("vitalsBp", e.target.value)} placeholder="120/80" />
-          </div>
-        </div>
-        <div className={kit.field}>
-          <label>Notes</label>
-          <textarea className={kit.textarea} value={form.notes} onChange={e => set("notes", e.target.value)} placeholder="Additional notes…" rows={2} />
-        </div>
-      </MobileSheet>
-    </div>
-    </>
   );
 }
 

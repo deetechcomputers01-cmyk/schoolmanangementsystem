@@ -2,6 +2,7 @@ import { requireRole } from "@backend/auth/page-guard";
 import { getCurrentUser } from "@backend/auth/cookies";
 import { prisma } from "@backend/prisma";
 import { LibraryContent } from "./LibraryContent";
+import { MobileLibraryContent } from "@/screens/mobile/MobileLibraryContent/MobileLibraryContent";
 import type {
   LibraryBook,
   LibraryCheckout,
@@ -106,12 +107,25 @@ export async function LibraryScreen() {
     user.role === "staff";
 
   return (
-    <LibraryContent
-      books={libraryBooks}
-      checkouts={libraryCheckouts}
-      students={libraryStudents}
-      stats={stats}
-      canManage={canManage}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileLibraryContent
+          books={libraryBooks}
+          checkouts={libraryCheckouts}
+          students={libraryStudents}
+          stats={stats}
+          canManage={canManage}
+        />
+      </div>
+      <div className="desktopOnly">
+        <LibraryContent
+          books={libraryBooks}
+          checkouts={libraryCheckouts}
+          students={libraryStudents}
+          stats={stats}
+          canManage={canManage}
+        />
+      </div>
+    </>
   );
 }

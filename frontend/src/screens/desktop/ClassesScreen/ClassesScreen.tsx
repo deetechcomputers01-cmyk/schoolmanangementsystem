@@ -3,6 +3,7 @@ import { getClasses, getSubjects } from "@backend/services/dashboard.service";
 import { listStaff } from "@backend/services/staff.service";
 import { prisma } from "@backend/prisma";
 import { ClassesContent } from "./ClassesContent";
+import { MobileClassesContent } from "@/screens/mobile/MobileClassesContent/MobileClassesContent";
 
 export const dynamic = "force-dynamic";
 
@@ -80,12 +81,26 @@ export async function ClassesScreen() {
     role: s.roleTitle,
   }));
 
+  const subjectRowsOut = subjectRows.length > 0 ? subjectRows.map((s) => ({ id: s.id, name: s.name, code: s.code, className: s.className, teacherName: s.teacherName, status: s.status })) : [];
+
   return (
-    <ClassesContent
-      classes={finalClasses}
-      subjects={subjectRows.length > 0 ? subjectRows.map((s) => ({ id: s.id, name: s.name, code: s.code, className: s.className, teacherName: s.teacherName, status: s.status })) : []}
-      staff={staffRows}
-      stats={stats}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileClassesContent
+          classes={finalClasses}
+          subjects={subjectRowsOut}
+          staff={staffRows}
+          stats={stats}
+        />
+      </div>
+      <div className="desktopOnly">
+        <ClassesContent
+          classes={finalClasses}
+          subjects={subjectRowsOut}
+          staff={staffRows}
+          stats={stats}
+        />
+      </div>
+    </>
   );
 }

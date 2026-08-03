@@ -3,6 +3,7 @@ import { getCurrentAcademicContext } from "@backend/services/academic.service";
 import { listCalendarEvents } from "@backend/services/calendar.service";
 import { prisma } from "@backend/prisma";
 import { AcademicCalendarContent } from "./AcademicCalendarContent";
+import { MobileAcademicCalendarContent } from "@/screens/mobile/MobileAcademicCalendarContent/MobileAcademicCalendarContent";
 
 export const dynamic = "force-dynamic";
 
@@ -25,38 +26,52 @@ export async function AcademicCalendarScreen({ initialTab }: { initialTab?: "cal
     }),
   ]);
 
+  const initialEvents = events.map((e) => ({
+    id:          e.id,
+    title:       e.title,
+    description: e.description,
+    category:    e.category as "academic"|"exams"|"sports"|"pta"|"staff"|"holidays",
+    dateISO:     e.date.toISOString().slice(0, 10),
+    time:        e.time    ?? undefined,
+    endTime:     e.endTime ?? undefined,
+    location:    e.location ?? undefined,
+    audience:    e.audience ?? undefined,
+    approved:    e.approved,
+  }));
+
   return (
-    <AcademicCalendarContent
-      yearName={ctx.year?.name ?? "2026/2027"}
-      termName={ctx.term?.name ?? "Term 1"}
-      todayISO={today}
-      initialTab={initialTab ?? "calendar"}
-      initialEvents={events.map((e) => ({
-        id:          e.id,
-        title:       e.title,
-        description: e.description,
-        category:    e.category as "academic"|"exams"|"sports"|"pta"|"staff"|"holidays",
-        dateISO:     e.date.toISOString().slice(0, 10),
-        time:        e.time    ?? undefined,
-        endTime:     e.endTime ?? undefined,
-        location:    e.location ?? undefined,
-        audience:    e.audience ?? undefined,
-        approved:    e.approved,
-      }))}
-      years={years.map((y) => ({
-        id:        y.id,
-        name:      y.name,
-        startDate: y.startDate.toISOString().slice(0, 10),
-        endDate:   y.endDate.toISOString().slice(0, 10),
-        isCurrent: y.isCurrent,
-        terms: y.terms.map((t) => ({
-          id:        t.id,
-          name:      t.name,
-          startDate: t.startDate.toISOString().slice(0, 10),
-          endDate:   t.endDate.toISOString().slice(0, 10),
-          isCurrent: t.isCurrent,
-        })),
-      }))}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileAcademicCalendarContent
+          yearName={ctx.year?.name ?? "2026/2027"}
+          termName={ctx.term?.name ?? "Term 1"}
+          todayISO={today}
+          initialEvents={initialEvents}
+        />
+      </div>
+      <div className="desktopOnly">
+        <AcademicCalendarContent
+          yearName={ctx.year?.name ?? "2026/2027"}
+          termName={ctx.term?.name ?? "Term 1"}
+          todayISO={today}
+          initialTab={initialTab ?? "calendar"}
+          initialEvents={initialEvents}
+          years={years.map((y) => ({
+            id:        y.id,
+            name:      y.name,
+            startDate: y.startDate.toISOString().slice(0, 10),
+            endDate:   y.endDate.toISOString().slice(0, 10),
+            isCurrent: y.isCurrent,
+            terms: y.terms.map((t) => ({
+              id:        t.id,
+              name:      t.name,
+              startDate: t.startDate.toISOString().slice(0, 10),
+              endDate:   t.endDate.toISOString().slice(0, 10),
+              isCurrent: t.isCurrent,
+            })),
+          }))}
+        />
+      </div>
+    </>
   );
 }

@@ -1,0 +1,198 @@
+.root { display: flex; flex-direction: column; gap: 14px; padding-bottom: 72px; }
+
+/* ── Month nav ── */
+.monthNav { display: flex; align-items: center; justify-content: space-between; }
+.monthNavBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: 50%;
+  background: var(--clr-app-surface);
+  color: var(--clr-app-accent);
+  cursor: pointer;
+}
+.monthNavBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.monthTitle { margin: 0; color: var(--clr-app-accent); font-size: var(--text-lg); font-weight: 700; }
+
+/* ── Date strip ── */
+.dateStrip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.dateStrip::-webkit-scrollbar { display: none; }
+.dateCell {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 48px;
+  padding: 8px 0 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  cursor: pointer;
+  position: relative;
+}
+.dateCellDow { font-size: 11px; font-weight: 600; }
+.dateCellNum { font-size: var(--text-base); font-weight: 700; }
+.dateCellActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+.dateCellToday { border-color: var(--clr-app-accent); color: var(--clr-app-accent); }
+.dateCellDot { position: absolute; bottom: 4px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+.dateCellActive .dateCellDot { background: #ffffff; }
+
+/* ── Category summary chips ── */
+.summaryRow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.summaryRow::-webkit-scrollbar { display: none; }
+.summaryChip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.summaryChip strong { font-weight: 700; }
+.summaryDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Agenda header ── */
+.agendaHeader { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+.agendaTitle { margin: 0; color: var(--clr-app-accent); font-size: var(--text-lg); font-weight: 700; }
+.agendaBadge {
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── Event list ── */
+.eventList { display: flex; flex-direction: column; gap: 12px; }
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 0;
+  color: var(--clr-app-muted);
+}
+.emptyIcon { color: var(--clr-app-accent); opacity: 0.6; }
+.emptyState p { margin: 0; font-size: var(--text-sm); }
+
+.eventCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--clr-app-border);
+  border-left: 4px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+
+.eventCardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+.eventCardTopLeft { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.categoryBadge {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.eventTitle { margin: 0; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; line-height: 1.25; }
+.chevIcon { flex-shrink: 0; color: var(--clr-app-muted); margin-top: 2px; }
+
+.eventMeta { display: flex; flex-direction: column; gap: 4px; }
+.eventMeta span { display: flex; align-items: center; gap: 6px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.eventMeta svg { color: var(--clr-app-accent); flex-shrink: 0; }
+
+.pendingPill, .approvedPill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+}
+.pendingPill { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.approvedPill { background: var(--clr-success-bg); color: var(--clr-success); }
+
+.holidayNote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--clr-warning-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-warning-bg);
+  color: var(--clr-warning);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.eventDesc { margin: 0; color: var(--clr-app-muted); font-size: var(--text-xs); line-height: 1.5; }
+
+.eventActions { display: flex; padding-top: 8px; border-top: 1px solid var(--clr-app-border); }
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--clr-error-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-error-bg);
+  color: var(--clr-error);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.deleteBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── FAB ── */
+.fab {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--mobile-bottom-h) + 16px + env(safe-area-inset-bottom));
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  z-index: var(--z-sticky);
+}
