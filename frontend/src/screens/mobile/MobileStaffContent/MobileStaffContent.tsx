@@ -1,15 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Search, Plus, MoreVertical, User, Edit2, BookPlus, CalendarOff, GraduationCap, Landmark, Bus,
-  Stethoscope, ShieldCheck, Briefcase, Phone, X,
+  Stethoscope, ShieldCheck, Briefcase, Phone, Camera, UploadCloud,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import { SwipeRow } from "@/components/mobile/ui/SwipeRow/SwipeRow";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./MobileStaffContent.module.css";
 
 export interface MobileStaffRow {
@@ -57,30 +59,59 @@ export function MobileStaffContent({ staffList, totalStaff, teachers, supportSta
   const [deactivating, setDeactivating] = useState<string | null>(null);
   const [deactivatedIds, setDeactivatedIds] = useState<Set<string>>(new Set());
   const [addOpen, setAddOpen] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [staffNo, setStaffNo] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [roleTitle, setRoleTitle] = useState("");
   const [category, setCategory] = useState("teaching");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [docFiles, setDocFiles] = useState<File[]>([]);
+  const photoRef = useRef<HTMLInputElement>(null);
+  const docRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const onLeave = 0; // no leave-tracking feature exists yet — honestly zero, not fabricated
 
+  function openAddSheet() {
+    const year = new Date().getFullYear();
+    const seq = String(Math.floor(1000 + Math.random() * 9000));
+    setStaffNo(`STF-${year}-${seq}`);
+    setFirstName(""); setLastName(""); setPhone(""); setEmail(""); setRoleTitle(""); setCategory("teaching");
+    setPhotoFile(null); setPhotoPreview(null); setDocFiles([]); setError(null);
+    setAddOpen(true);
+  }
+
+  function handlePhotoPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  }
+
   async function submitAddStaff() {
-    if (!fullName.trim() || !staffNo.trim() || !phone.trim() || !roleTitle.trim()) {
-      setError("Full name, staff no, phone, and role title are required.");
+    if (!firstName.trim() || !lastName.trim() || !phone.trim() || !roleTitle.trim()) {
+      setError("First name, last name, phone, and role title are required.");
       return;
     }
     setSaving(true); setError(null);
     try {
-      const [firstName, ...rest] = fullName.trim().split(" ");
-      const lastName = rest.join(" ") || firstName;
-      const res = await fetch("/api/staff", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, staffNo: staffNo.trim(), phone: phone.trim(), roleTitle: roleTitle.trim(), staffCategory: category, isTeaching: category === "teaching" }),
-      });
+      const formData = new FormData();
+      formData.append("staffNo", staffNo);
+      formData.append("firstName", firstName.trim());
+      formData.append("lastName", lastName.trim());
+      formData.append("phone", `+233${phone}`);
+      formData.append("roleTitle", roleTitle.trim());
+      formData.append("email", email);
+      formData.append("staffCategory", category);
+      formData.append("isTeaching", String(category === "teaching"));
+      if (photoFile) formData.append("photo", photoFile);
+      docFiles.forEach((file) => formData.append("documents", file));
+
+      const res = await fetch("/api/staff", { method: "POST", body: formData });
       if (!res.ok) {
         const payload = await res.json().catch(() => null);
         setError(payload?.message ?? payload?.error ?? "Failed to save. Please check all fields.");
@@ -88,8 +119,7 @@ export function MobileStaffContent({ staffList, totalStaff, teachers, supportSta
         return;
       }
       setAddOpen(false); setSaving(false);
-      setFullName(""); setStaffNo(""); setPhone(""); setRoleTitle("");
-      showToast("Staff member added.");
+      showToast("Staff record saved successfully");
       router.refresh();
     } catch {
       setError("Network error. Please try again.");
@@ -149,7 +179,7 @@ export function MobileStaffContent({ staffList, totalStaff, teachers, supportSta
       </div>
 
       {canManage && (
-        <button type="button" className={styles.addBtn} onClick={() => setAddOpen(true)}>
+        <button type="button" className={styles.addBtn} onClick={openAddSheet}>
           <Plus size={18} /> Add Staff
         </button>
       )}
@@ -222,47 +252,83 @@ export function MobileStaffContent({ staffList, totalStaff, teachers, supportSta
         })}
       </div>
 
-      {addOpen && (
-        <div className={styles.sheetBackdrop} onClick={() => !saving && setAddOpen(false)}>
-          <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.sheetHeader}>
-              <h3 className={styles.sheetTitle}>Add Staff</h3>
-              <button type="button" className={styles.sheetClose} onClick={() => setAddOpen(false)} aria-label="Close"><X size={20} /></button>
-            </div>
-            <div className={styles.sheetBody}>
-              {error && <p className={styles.errorText}>{error}</p>}
-              <div className={styles.field}>
-                <label>Full Name *</label>
-                <input className={styles.input} value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="e.g. Kwame Owusu" />
-              </div>
-              <div className={styles.fieldRow}>
-                <div className={styles.field}>
-                  <label>Staff No *</label>
-                  <input className={styles.input} value={staffNo} onChange={(e) => setStaffNo(e.target.value)} placeholder="STF-0001" />
-                </div>
-                <div className={styles.field}>
-                  <label>Phone *</label>
-                  <input className={styles.input} value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+233…" />
-                </div>
-              </div>
-              <div className={styles.field}>
-                <label>Role Title *</label>
-                <input className={styles.input} value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)} placeholder="e.g. Mathematics Teacher" />
-              </div>
-              <div className={styles.field}>
-                <label>Category</label>
-                <select className={styles.input} value={category} onChange={(e) => setCategory(e.target.value)}>
-                  {FILTERS.filter((f) => f !== "all").map((f) => <option key={f} value={f}>{CATEGORY_LABELS[f]}</option>)}
-                </select>
-              </div>
-            </div>
-            <div className={styles.sheetFooter}>
-              <button type="button" className={styles.btnOutline} onClick={() => setAddOpen(false)} disabled={saving}>Cancel</button>
-              <button type="button" className={styles.btnPrimary} onClick={submitAddStaff} disabled={saving}>{saving ? "Saving…" : "Save Staff"}</button>
-            </div>
+      <MobileSheet
+        open={addOpen}
+        onClose={() => !saving && setAddOpen(false)}
+        title="Add New Staff Member"
+        subtitle="Enter staff details to create a new institutional record."
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={() => setAddOpen(false)} disabled={saving}>Cancel</button>
+          <button type="button" className={kit.btnPrimary} onClick={submitAddStaff} disabled={saving}>{saving ? "Saving…" : "Save Staff Member"}</button>
+        </>}
+      >
+        {error && <p className={kit.errorText}>{error}</p>}
+
+        <div className={kit.dropzone} onClick={() => photoRef.current?.click()}>
+          {photoPreview
+            ? <img src={photoPreview} alt="" style={{ width: 64, height: 64, borderRadius: "var(--radius-sm)", objectFit: "cover" }} />
+            : <Camera size={20} color="var(--clr-app-muted)" />}
+          <p className={kit.dropzoneText}>{photoPreview ? "Tap to change photo" : "Upload a photo — JPG, PNG, max 2MB"}</p>
+        </div>
+        <input ref={photoRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }} onChange={handlePhotoPick} />
+
+        <div className={kit.field}>
+          <label>Staff Number</label>
+          <input className={kit.input} value={staffNo} disabled readOnly />
+        </div>
+        <div className={kit.fieldRow}>
+          <div className={kit.field}>
+            <label>First Name *</label>
+            <input className={kit.input} value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="e.g. Kwesi" />
+          </div>
+          <div className={kit.field}>
+            <label>Last Name *</label>
+            <input className={kit.input} value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="e.g. Mensah" />
           </div>
         </div>
-      )}
+
+        <div className={kit.field}>
+          <label>Role Category *</label>
+          <select className={kit.select} value={category} onChange={(e) => setCategory(e.target.value)}>
+            {FILTERS.filter((f) => f !== "all").map((f) => <option key={f} value={f}>{CATEGORY_LABELS[f]}</option>)}
+          </select>
+          {category !== "teaching" && (
+            <p className={kit.helperText}>This staff member will <strong>not</strong> be assignable to classes or subjects.</p>
+          )}
+        </div>
+        <div className={kit.field}>
+          <label>Role Title *</label>
+          <input
+            className={kit.input}
+            value={roleTitle}
+            onChange={(e) => setRoleTitle(e.target.value)}
+            placeholder={category === "teaching" ? "e.g. Mathematics Teacher" : category === "nurse" ? "e.g. School Nurse" : category === "driver" ? "e.g. School Bus Driver" : "e.g. Head Caterer"}
+          />
+        </div>
+
+        <div className={kit.field}>
+          <label>Phone Number *</label>
+          <div style={{ display: "flex", gap: 8 }}>
+            <span className={kit.chip} style={{ cursor: "default" }}>+233</span>
+            <input className={kit.input} style={{ flex: 1 }} value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="24 000 0000" />
+          </div>
+        </div>
+        <div className={kit.field}>
+          <label>Email <span style={{ fontWeight: 400, textTransform: "none" }}>(optional — for system access)</span></label>
+          <input className={kit.input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="k.mensah@school.edu.gh" />
+        </div>
+
+        <div className={kit.field}>
+          <label>Staff Documents</label>
+          <div className={kit.dropzone} onClick={() => docRef.current?.click()}>
+            <UploadCloud size={24} color="var(--clr-app-muted)" />
+            <p className={kit.dropzoneText}>Click to upload or drag and drop</p>
+            <p className={kit.dropzoneText}>Certificates, ID Copies, and CV (PDF, DOCX up to 10MB)</p>
+            {docFiles.length > 0 && <p className={kit.dropzoneText}>{docFiles.length} file{docFiles.length > 1 ? "s" : ""} selected</p>}
+          </div>
+          <input ref={docRef} type="file" multiple accept=".pdf,.doc,.docx,image/*" style={{ display: "none" }} onChange={(e) => setDocFiles(Array.from(e.target.files ?? []))} />
+        </div>
+      </MobileSheet>
     </div>
   );
 }
