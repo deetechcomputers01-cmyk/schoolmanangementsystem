@@ -43,27 +43,29 @@ function gradeTone(score: number | null): "good" | "mid" | "bad" | "" {
   return "bad";
 }
 
-/** Mobile bottom-sheet view of a student's report card. Reflows the exact
- *  same ReportCardData used by ReportCardBody (the printable document) into
- *  a single-column layout — no fabricated fields, same grade matrix/
- *  attendance/rank data, same grading scale. Print/Download still trigger
- *  window.print() on this same content (the print media query below hides
- *  the header/footer buttons, same pattern as the desktop modal). */
+/** Mobile bottom-sheet view of a student's report card — same real
+ *  ReportCardData as the desktop modal / printable ReportCardBody, just
+ *  reflowed for a narrow single-column sheet. No fabricated fields. */
 export function MobileReportCardDetailContent(props: MobileReportCardProps) {
   const {
     studentName, admissionNo, className, subjects, terms, lastTerm, gradeMatrix,
-    attendance, avgLast, rank, gradingScale, minAttendanceRate, alertThreshold, reportFooter,
+    attendance, avgLast, rank, gradingScale, reportFooter,
   } = props;
 
   return (
     <div className={styles.root}>
+      <p className={`${styles.eyebrow} no-print`}>Report Cards</p>
       <div className={`${styles.header} no-print`}>
         <span className={styles.avatar}>{initials(studentName)}</span>
         <div className={styles.headerInfo}>
           <h3 className={styles.name}>{studentName}</h3>
-          <p className={styles.sub}>{admissionNo} · {className}</p>
+          <div className={styles.metaRow}>
+            <span>{admissionNo}</span>
+            <span>•</span>
+            <span>{className}</span>
+            <span className={styles.statusPill}>Published</span>
+          </div>
         </div>
-        <span className={styles.statusPill}>Published</span>
       </div>
 
       <div className={styles.statRow}>
@@ -72,7 +74,7 @@ export function MobileReportCardDetailContent(props: MobileReportCardProps) {
           <strong className={styles.statValue}>{avgLast !== null ? `${avgLast}%` : "—"}</strong>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statLabel}>Rank</span>
+          <span className={styles.statLabel}>Class Rank</span>
           <strong className={styles.statValue}>{rank ? `${ordinal(rank.position)}/${rank.outOf}` : "—"}</strong>
         </div>
         <div className={styles.statCard}>
@@ -86,19 +88,19 @@ export function MobileReportCardDetailContent(props: MobileReportCardProps) {
         {subjects.length === 0 || terms.length === 0 ? (
           <p className={styles.emptyText}>No grades recorded yet.</p>
         ) : (
-          <div className={styles.subjectList}>
-            {subjects.map((subj) => {
+          <div className={styles.subjectCard}>
+            {subjects.map((subj, i) => {
               const lastEntry = lastTerm ? (gradeMatrix[subj][lastTerm] ?? null) : null;
               const lastScore = lastEntry?.score ?? null;
               const tone = gradeTone(lastScore);
               return (
-                <div key={subj} className={styles.subjectRow}>
+                <div key={subj} className={`${styles.subjectRow} ${i % 2 === 1 ? styles.subjectRowAlt : ""}`}>
                   <div className={styles.subjectInfo}>
                     <p className={styles.subjectName}>{subj}</p>
                     <div className={styles.termScores}>
                       {terms.map((t) => {
                         const entry = gradeMatrix[subj][t];
-                        return <span key={t} className={styles.termScore}>{t}: {entry ? entry.score.toFixed(0) : "—"}</span>;
+                        return <span key={t}>{t}: <strong>{entry ? entry.score.toFixed(0) : "—"}</strong></span>;
                       })}
                     </div>
                   </div>
@@ -118,13 +120,10 @@ export function MobileReportCardDetailContent(props: MobileReportCardProps) {
           <p className={styles.emptyText}>No attendance records yet.</p>
         ) : (
           <div className={styles.attGrid}>
-            <div className={styles.attTile}><span className={styles.attValue}>{attendance.present}</span><span className={styles.attLabel}>Present</span></div>
-            <div className={styles.attTile}><span className={styles.attValue}>{attendance.absent}</span><span className={styles.attLabel}>Absent</span></div>
-            <div className={styles.attTile}><span className={styles.attValue}>{attendance.late}</span><span className={styles.attLabel}>Late</span></div>
-            <div className={styles.attTile}>
-              <span className={`${styles.attValue} ${attendance.pct >= minAttendanceRate ? styles.attGood : attendance.pct >= alertThreshold ? styles.attWarn : styles.attBad}`}>{attendance.pct}%</span>
-              <span className={styles.attLabel}>Rate</span>
-            </div>
+            <div className={styles.attPill}><span>Present</span><strong>{attendance.present}</strong></div>
+            <div className={styles.attPill}><span>Absent</span><strong className={styles.attBad}>{attendance.absent}</strong></div>
+            <div className={styles.attPill}><span>Late</span><strong className={styles.attWarn}>{attendance.late}</strong></div>
+            <div className={styles.attPill}><span>Rate</span><strong>{attendance.pct}%</strong></div>
           </div>
         )}
       </section>
