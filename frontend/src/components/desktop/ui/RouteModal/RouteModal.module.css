@@ -87,3 +87,14 @@
     padding-top: 8px;
   }
 }
+
+/* Content inside a modal (e.g. a report card) can trigger window.print() —
+   without this, the dark backdrop, panel shadow/border, and close button
+   would print too. Let the content's own print styles (e.g. `.no-print`)
+   take over cleanly instead. */
+@media print {
+  .overlay { position: static; padding: 0; background: none; backdrop-filter: none; }
+  .panel { width: 100%; max-height: none; border: none; box-shadow: none; }
+  .panelBody { overflow: visible; padding: 0; }
+  .closeBtn, .dragHandle { display: none !important; }
+}

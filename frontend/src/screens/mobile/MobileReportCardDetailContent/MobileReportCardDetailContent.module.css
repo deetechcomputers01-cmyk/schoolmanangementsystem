@@ -1,0 +1,117 @@
+.root { display: flex; flex-direction: column; gap: 18px; }
+
+.header { display: flex; align-items: center; gap: 12px; }
+.avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.headerInfo { flex: 1; min-width: 0; }
+.name { margin: 0; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.sub { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.statusPill {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-success-bg);
+  color: var(--clr-success);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.statRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 4px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.statLabel { color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+.statValue { color: var(--clr-app-accent); font-size: var(--text-base); font-weight: 700; }
+
+.sectionTitle {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--clr-app-border);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.emptyText { margin: 0; color: var(--clr-app-muted); font-size: var(--text-xs); text-align: center; padding: 12px 0; }
+
+.subjectList { display: flex; flex-direction: column; gap: 8px; }
+.subjectRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.subjectInfo { flex: 1; min-width: 0; }
+.subjectName { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
+.termScores { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 3px; }
+.termScore { color: var(--clr-app-muted); font-size: 11px; }
+
+.gradeBadge {
+  flex-shrink: 0;
+  min-width: 34px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-align: center;
+}
+.grade_good { background: var(--clr-success-bg); color: var(--clr-success); }
+.grade_mid { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.grade_bad { background: var(--clr-error-bg); color: var(--clr-error); }
+
+.attGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.attTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.attValue { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.attGood { color: var(--clr-success); }
+.attWarn { color: var(--clr-warning); }
+.attBad { color: var(--clr-error); }
+.attLabel { color: var(--clr-app-muted); font-size: 10px; font-weight: 600; text-transform: uppercase; }
+
+.footerNote { margin: 0; padding-top: 12px; border-top: 1px solid var(--clr-app-border); color: var(--clr-app-muted); font-size: var(--text-xs); text-align: center; }
+
+.actionRow { display: flex; flex-direction: column; gap: 8px; }
+.btnPrimary, .btnOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+.btnPrimary { border: 0; background: var(--clr-app-accent); color: #ffffff; }
+.btnOutline { border: 1px solid var(--clr-app-border); background: var(--clr-app-surface); color: var(--clr-app-text); }
