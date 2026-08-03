@@ -4,6 +4,7 @@
 import { getCurrentAcademicContext } from "@backend/services/academic.service";
 import { prisma } from "@backend/prisma";
 import { ReportCardsClient } from "./ReportCardsClient";
+import { MobileReportCardsContent } from "@/screens/mobile/MobileReportCardsContent/MobileReportCardsContent";
 import styles from "./ReportCardsScreen.module.css";
 
 export const dynamic = "force-dynamic";
@@ -57,15 +58,22 @@ export async function ReportCardsScreen() {
 
   const academicContext = `${context.year?.name ?? "No active year"} · ${context.term?.name ?? "No active term"}`;
 
+  const props = {
+    classes: classesWithAverages,
+    years: years.map((y) => ({ id: y.id, name: y.name, terms: y.terms.map((t) => ({ id: t.id, name: t.name })) })),
+    currentYearId: context.year?.id ?? null,
+    currentTermName: context.term?.name ?? null,
+    academicContext,
+  };
+
   return (
     <div className={styles.root}>
-      <ReportCardsClient
-        classes={classesWithAverages}
-        years={years.map((y) => ({ id: y.id, name: y.name, terms: y.terms.map((t) => ({ id: t.id, name: t.name })) }))}
-        currentYearId={context.year?.id ?? null}
-        currentTermName={context.term?.name ?? null}
-        academicContext={academicContext}
-      />
+      <div className="mobileOnly">
+        <MobileReportCardsContent {...props} />
+      </div>
+      <div className="desktopOnly">
+        <ReportCardsClient {...props} />
+      </div>
     </div>
   );
 }

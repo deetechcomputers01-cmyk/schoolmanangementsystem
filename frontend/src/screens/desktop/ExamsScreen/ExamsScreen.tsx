@@ -5,6 +5,7 @@ import { getSettings } from "@backend/services/settings.service";
 import { prisma } from "@backend/prisma";
 import { gradeFromScore, gradeRemark, type GradeBand } from "@backend/utils";
 import { ExamsContent } from "./ExamsContent";
+import { MobileExamsContent } from "@/screens/mobile/MobileExamsContent/MobileExamsContent";
 
 export const dynamic = "force-dynamic";
 
@@ -109,15 +110,28 @@ export async function ExamsScreen({ initialExamId }: { initialExamId?: string } 
   const termOptions = ctx.year?.terms.map((t) => ({ id: t.id, name: t.name })) ?? [];
 
   return (
-    <ExamsContent
-      exams={examRows}
-      stats={stats}
-      classOptions={classOptions}
-      subjectOptions={subjectOptions}
-      termOptions={termOptions}
-      initialExamId={initialExamId}
-      recentPerformance={recentPerformance}
-      termPassRate={termPassRate}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileExamsContent
+          exams={examRows}
+          stats={stats}
+          classOptions={classOptions}
+          subjectOptions={subjectOptions}
+          termOptions={termOptions}
+        />
+      </div>
+      <div className="desktopOnly">
+        <ExamsContent
+          exams={examRows}
+          stats={stats}
+          classOptions={classOptions}
+          subjectOptions={subjectOptions}
+          termOptions={termOptions}
+          initialExamId={initialExamId}
+          recentPerformance={recentPerformance}
+          termPassRate={termPassRate}
+        />
+      </div>
+    </>
   );
 }

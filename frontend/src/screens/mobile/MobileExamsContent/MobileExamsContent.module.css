@@ -1,0 +1,131 @@
+.root { display: flex; flex-direction: column; gap: 14px; padding-bottom: 8px; }
+
+.statsRow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.statPill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.statValue { color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.statValueGood { color: var(--clr-success); }
+.statLabel { color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+
+.contextLine { margin: 0; color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 600; }
+
+.chipRow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chipRow::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.chipActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.list { display: flex; flex-direction: column; gap: 10px; }
+
+.card {
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  overflow: hidden;
+}
+.cardUpcoming { border-color: var(--clr-app-accent); }
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+.cardTopLeft { min-width: 0; }
+.examTitle { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.examSub { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.statusPill { flex-shrink: 0; padding: 3px 10px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.statusScored { background: var(--clr-success-bg); color: var(--clr-success); }
+.statusPending { background: var(--clr-warning-bg); color: var(--clr-warning); }
+
+.metaRow { display: flex; gap: 12px; padding: 0 14px 12px; color: var(--clr-app-muted); font-size: 11px; }
+.metaRow span { display: inline-flex; align-items: center; gap: 4px; }
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--clr-app-border);
+}
+.actionBtnPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  height: 38px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.scoredHint { display: inline-flex; align-items: center; gap: 4px; color: var(--clr-success); font-size: 11px; font-weight: 600; }
+
+.rosterList { display: flex; flex-direction: column; gap: 8px; }
+.rosterRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+.rosterInfo { flex: 1; min-width: 0; }
+.rosterName { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rosterAdm { margin: 1px 0 0; color: var(--clr-app-muted); font-size: 11px; }
+.rosterInput {
+  width: 64px;
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.rosterInput:focus { border-color: var(--clr-app-accent); }

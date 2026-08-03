@@ -9,8 +9,6 @@ import {
   ChevronDown, ChevronLeft, Lightbulb, TrendingUp, ListChecks,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./ExamsScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -1022,68 +1020,6 @@ Name the capital of Ghana,Kumasi,Accra,Tamale,Cape Coast,B,1`}
           </div>
         </div>
       )}
-
-      {/* Schedule New Exam sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          title="Schedule New Exam"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowModal(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={saveExam} disabled={!mTitle || !mClassId || !mSubjId || !mDate}>Schedule Exam</button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Exam Title *</label>
-            <input className={kit.input} value={mTitle} onChange={(e) => setMTitle(e.target.value)} placeholder="e.g. Mathematics Mid-Term" />
-          </div>
-          <div className={kit.field}>
-            <label>Class *</label>
-            <select className={kit.select} value={mClassId} onChange={(e) => { setMClassId(e.target.value); setMSubjId(""); }}>
-              <option value="">Select class</option>
-              {classOptions.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-          </div>
-          <div className={kit.field}>
-            <label>Subject *</label>
-            <select className={kit.select} value={mSubjId} onChange={(e) => setMSubjId(e.target.value)}>
-              <option value="">Select subject</option>
-              {filteredSubjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-            </select>
-          </div>
-          <div className={kit.field}>
-            <label>Term</label>
-            <select className={kit.select} value={mTermId} onChange={(e) => setMTermId(e.target.value)}>
-              <option value="">No term</option>
-              {termOptions.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-            </select>
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Date *</label>
-              <input className={kit.input} type="date" value={mDate} onChange={(e) => setMDate(e.target.value)} />
-            </div>
-            <div className={kit.field}>
-              <label>Max Score *</label>
-              <input className={kit.input} type="number" min={1} value={mMax} onChange={(e) => setMMax(e.target.value)} />
-            </div>
-          </div>
-          <label className={kit.checkboxRow}>
-            <input type="checkbox" checked={mOnline} onChange={(e) => setMOnline(e.target.checked)} />
-            <span>
-              <span className={kit.checkboxLabel}>Online Exam</span>
-              <span className={kit.checkboxSub}>Students can take this exam digitally.</span>
-            </span>
-          </label>
-          {mOnline && (
-            <div className={kit.field}>
-              <label>Duration (minutes)</label>
-              <input className={kit.input} type="number" min={1} max={480} placeholder="Untimed" value={mDuration} onChange={(e) => setMDuration(e.target.value)} />
-            </div>
-          )}
-        </MobileSheet>
-      </div>
 
       {/* ── Full-screen Question Preview Overlay ─────────────────────────── */}
       {showPreview && selectedExam && (
