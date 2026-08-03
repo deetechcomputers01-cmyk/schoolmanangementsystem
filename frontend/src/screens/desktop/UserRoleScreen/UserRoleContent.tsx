@@ -451,7 +451,7 @@ export function UserRoleContent({ users, currentUserId }: Props) {
             </select>
           </div>
           <div className={`${kit.banner} ${kit.bannerWarn}`}>
-            Changing this user's role immediately updates their access permissions.
+            Changing this user&apos;s role immediately updates their access permissions.
           </div>
         </MobileSheet>
       </div>
