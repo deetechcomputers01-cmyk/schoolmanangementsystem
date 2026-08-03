@@ -17,6 +17,8 @@ import {
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import styles from "./HostelScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 interface Occupant {
   allocationId: string;
@@ -140,7 +142,8 @@ function RoomModal({ flatRooms, unallocatedStudents, initialRoomId, onClose, onS
   }
 
   return (
-    <div className={styles.modalOverlay} onClick={() => !saving && onClose()}>
+    <>
+    <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && onClose()}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div>
@@ -224,6 +227,96 @@ function RoomModal({ flatRooms, unallocatedStudents, initialRoomId, onClose, onS
         </div>
       </div>
     </div>
+
+    {/* Manage Room sheet — mobile */}
+    <div className="mobileOnly">
+      <MobileSheet
+        open
+        onClose={() => !saving && onClose()}
+        title="Manage Room"
+        subtitle="View occupants, vacate beds, or allocate a student."
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={onClose} disabled={saving}>Cancel</button>
+          {selected && hasSpace && (
+            <button type="button" className={kit.btnPrimary} onClick={submitAllocate} disabled={saving || !selectedStudentId}>
+              {saving ? "Allocating…" : "Allocate"}
+            </button>
+          )}
+        </>}
+      >
+        {error && <p className={kit.errorText}>{error}</p>}
+        <div className={kit.field}>
+          <label>Room</label>
+          <select className={kit.select} value={roomId} onChange={(e) => selectRoom(e.target.value)}>
+            <option value="">Select a room…</option>
+            {flatRooms.map((f) => (
+              <option key={f.room.id} value={f.room.id}>
+                {f.hostelName} · {f.room.name} ({f.room.occupants.length}/{f.room.capacity})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {selected && (
+          <>
+            <p className={kit.pickCount}>{selected.hostelName} · {selected.room.name} — {selected.room.occupants.length}/{selected.room.capacity} occupied</p>
+
+            <div className={kit.field}>
+              <label>Current Occupants</label>
+              <div className={kit.pickList}>
+                {selected.room.occupants.length === 0 && <p className={kit.emptyText}>No occupants yet.</p>}
+                {selected.room.occupants.map((o) => (
+                  <div key={o.allocationId} className={kit.pickRow}>
+                    <div className={kit.pickAvatar}>{initials(o.name)}</div>
+                    <div className={kit.pickInfo}>
+                      <p className={kit.pickName}>Bed {o.bedNumber} · {o.name}</p>
+                      <p className={kit.pickSub}>{o.admissionNo} · {o.className}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => vacate(o.studentId)}
+                      disabled={vacatingId === o.studentId}
+                      style={{ flexShrink: 0, border: "none", background: "transparent", color: "var(--clr-error)", fontSize: "var(--text-xs)", fontWeight: 600, cursor: "pointer", padding: "4px 6px" }}
+                    >
+                      {vacatingId === o.studentId ? "…" : "Vacate"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {hasSpace && (
+              <>
+                <div className={kit.field}>
+                  <label>Allocate Student</label>
+                  <div className={kit.searchWrap}>
+                    <Search size={14} className={kit.searchIcon} />
+                    <input className={`${kit.input} ${kit.searchInput}`} placeholder="Search unallocated students…" value={studentSearch} onChange={(e) => setStudentSearch(e.target.value)} />
+                  </div>
+                </div>
+                <div className={kit.pickList}>
+                  {filteredStudents.map((s) => (
+                    <div key={s.id} className={`${kit.pickRow} ${selectedStudentId === s.id ? kit.pickRowActive : ""}`} onClick={() => setSelectedStudentId(s.id)}>
+                      <div className={kit.pickAvatar}>{initials(s.name)}</div>
+                      <div className={kit.pickInfo}>
+                        <p className={kit.pickName}>{s.name}</p>
+                        <p className={kit.pickSub}>{s.admissionNo} · {s.className}</p>
+                      </div>
+                    </div>
+                  ))}
+                  {filteredStudents.length === 0 && <p className={kit.emptyText}>No unallocated students match.</p>}
+                </div>
+                <div className={kit.field}>
+                  <label>Bed Number</label>
+                  <input className={kit.input} type="number" min={1} value={bedNumber} onChange={(e) => setBedNumber(e.target.value)} />
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </MobileSheet>
+    </div>
+    </>
   );
 }
 
@@ -254,7 +347,8 @@ function IncidentModal({ onClose, onSuccess, onError }: { onClose: () => void; o
   }
 
   return (
-    <div className={styles.modalOverlay} onClick={() => !saving && onClose()}>
+    <>
+    <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && onClose()}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Log Maintenance Incident</h2>
@@ -273,6 +367,26 @@ function IncidentModal({ onClose, onSuccess, onError }: { onClose: () => void; o
         </div>
       </div>
     </div>
+
+    {/* Log Maintenance Incident sheet — mobile */}
+    <div className="mobileOnly">
+      <MobileSheet
+        open
+        onClose={() => !saving && onClose()}
+        title="Log Maintenance Incident"
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={onClose} disabled={saving}>Cancel</button>
+          <button type="button" className={kit.btnPrimary} onClick={submit} disabled={saving}>{saving ? "Saving…" : "Log Incident"}</button>
+        </>}
+      >
+        {error && <p className={kit.errorText}>{error}</p>}
+        <div className={kit.field}>
+          <label>Description *</label>
+          <textarea className={kit.textarea} rows={4} value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="What happened?" />
+        </div>
+      </MobileSheet>
+    </div>
+    </>
   );
 }
 

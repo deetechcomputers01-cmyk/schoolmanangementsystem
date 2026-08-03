@@ -604,7 +604,7 @@ export function StudentDetailContent(props: StudentProps) {
               <Edit2 size={16} /> Edit Profile
             </button>
           )}
-          <button className={styles.actionOutlineBtn}>
+          <button className={`${styles.actionOutlineBtn} ${styles.headerActionUnwired}`}>
               <CalendarDays size={16} /> Record Attendance
           </button>
           <Link className={styles.actionPrimaryBtn} href={recentPaymentHref}>

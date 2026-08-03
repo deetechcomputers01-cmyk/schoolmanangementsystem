@@ -54,6 +54,7 @@ export function DesktopFormModal({
       aria-modal="true"
       aria-label={title}
     >
+      {!inline && <div className={styles.dragHandle} aria-hidden />}
       <div className={styles.header}>
         <div className={styles.heading}>
           {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}

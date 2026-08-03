@@ -7,6 +7,7 @@ import {
   StaffDetailContent,
   type StaffDetailProps,
 } from "./StaffDetailContent";
+import { MobileStaffDetailContent } from "@/screens/mobile/MobileStaffDetailContent/MobileStaffDetailContent";
 
 export const dynamic = "force-dynamic";
 
@@ -117,5 +118,10 @@ export async function StaffDetailScreen({ id, tab, edit, isModal }: { id: string
     passwordResetDue,
   };
 
-  return <StaffDetailContent {...props} />;
+  return (
+    <>
+      <div className="mobileOnly"><MobileStaffDetailContent {...props} /></div>
+      <div className="desktopOnly"><StaffDetailContent {...props} /></div>
+    </>
+  );
 }

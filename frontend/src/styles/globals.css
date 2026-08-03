@@ -104,11 +104,17 @@ ul, ol {
 
 /* Desktop/mobile presentational split — screens that render two entirely
    different component trees (not just a CSS reflow) toggle visibility here,
-   at the same 1024px breakpoint the app shell switches sidebar vs bottom nav. */
-.mobileOnly { display: none; }
+   at the same 1024px breakpoint the app shell switches sidebar vs bottom nav.
+   The "hide" declarations are !important: several screens apply this class
+   alongside a CSS-module class that sets its own `display` (e.g. a one-off
+   `.modalOverlay { display: flex }`), which is equal specificity and can
+   win on source order alone — !important guarantees the visibility toggle
+   always wins regardless. The "show" declarations stay plain `block` (not
+   !important) so they don't clobber a shown element's own `flex`/`grid`. */
+.mobileOnly { display: none !important; }
 .desktopOnly { display: block; }
 
 @media (max-width: 1024px) {
   .mobileOnly { display: block; }
-  .desktopOnly { display: none; }
+  .desktopOnly { display: none !important; }
 }

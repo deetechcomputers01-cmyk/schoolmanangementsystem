@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { gradeFromScore, type GradeBand } from "@backend/utils";
 import styles from "./GradebookReportsScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 export interface ClassPerf {
   classId: string;
@@ -286,7 +288,7 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
 
       {/* Generate Report modal */}
       {showGenerateModal && (
-        <div className={styles.modalOverlay} onClick={() => setShowGenerateModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowGenerateModal(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div className={styles.modalHeaderLeft}>
@@ -335,6 +337,47 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
           </div>
         </div>
       )}
+
+      {/* Report Configuration sheet — mobile (desktop's Generate button has no real backend wiring — it
+          just closes the modal; this mirrors that exact non-functional parity, no fetch invented) */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showGenerateModal}
+          onClose={() => setShowGenerateModal(false)}
+          title="Report Configuration"
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowGenerateModal(false)}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={() => setShowGenerateModal(false)}>
+              Generate Report
+            </button>
+          </>}
+        >
+          <div className={kit.field}>
+            <label>Select Target Year/Term</label>
+            <select className={kit.select}>
+              <option>2026/2027 Academic Year - Term 1</option>
+              <option>2026/2027 Academic Year - Term 2 (Preview)</option>
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Academic Level</label>
+            <select className={kit.select}>
+              <option>All Levels</option>
+              {classPerf.map(c => (
+                <option key={c.classId}>{c.className}</option>
+              ))}
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Report Type</label>
+            <select className={kit.select}>
+              <option>Full Term Report</option>
+              <option>Subject Summary</option>
+              <option>Class Comparison</option>
+            </select>
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

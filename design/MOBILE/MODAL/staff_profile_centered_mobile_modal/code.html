@@ -1,0 +1,350 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Staff Profile - ScholarSphere</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4e41e8",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#001c37",
+                        "surface-bright": "#fcf8ff",
+                        "error": "#C24747",
+                        "inverse-on-surface": "#f3effd",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-tertiary-container": "#ffe8de",
+                        "text-primary": "#16161D",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#464555",
+                        "on-primary-fixed": "#100069",
+                        "surface-container-low": "#f6f2ff",
+                        "outline": "#E4E4EC",
+                        "on-primary": "#ffffff",
+                        "secondary": "#0061a7",
+                        "inverse-surface": "#302f39",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fcf8ff",
+                        "success": "#1B5E20",
+                        "surface-container-highest": "#e4e1ee",
+                        "secondary-container": "#55a7fe",
+                        "surface-variant": "#e4e1ee",
+                        "surface-container": "#f0ecfa",
+                        "text-secondary": "#858791",
+                        "surface-container-high": "#eae6f4",
+                        "on-surface": "#1b1b24",
+                        "primary": "#4131dc",
+                        "tertiary": "#8c3900",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "on-tertiary-fixed": "#341100",
+                        "surface": "#FFFFFF",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#341100",
+                        "on-background": "#1b1b24",
+                        "on-primary-container": "#edeaff",
+                        "inverse-primary": "#c3c0ff",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c7c4d8",
+                        "on-secondary-fixed-variant": "#00487f",
+                        "on-secondary-container": "#003b69",
+                        "tertiary-container": "#b34b00",
+                        "primary-container": "#5b50f5",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#a1c9ff",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-dim": "#dcd8e6",
+                        "secondary-fixed": "#d2e4ff",
+                        "primary-fixed": "#e3dfff",
+                        "warning": "#FF8F00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "24px",
+                        "xs": "4px",
+                        "header-height": "56px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f4f9; overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { height: 0px; display: none; }
+        .bottom-sheet { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); }
+        .bottom-sheet.open { transform: translateY(0); }
+        .scrim { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .scrim.active { opacity: 1; pointer-events: auto; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-md">
+<!-- Trigger Button (For Demo) -->
+<button class="bg-primary-container text-on-primary px-xl py-sm rounded-xl font-label-md text-label-md shadow-lg" onclick="toggleBottomSheet()">
+        Open Staff Profile
+    </button>
+<!-- Scrim -->
+<div class="scrim fixed inset-0 bg-black/40 z-40" id="scrim" onclick="toggleBottomSheet()"></div>
+<!-- Bottom Sheet Container (390px Mobile Width) -->
+<div class="bottom-sheet fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[390px] h-[813px] bg-surface shadow-2xl z-50 flex flex-col overflow-hidden rounded-xl open absolute" id="bottomSheet">
+<!-- Drag Handle & Close -->
+<div class="relative w-full flex items-center justify-center py-md shrink-0">
+<div class="w-10 h-1 bg-outline-variant rounded-full"></div>
+<button class="absolute right-md top-md text-on-surface-variant hover:bg-surface-container-low p-xs rounded-full transition-colors" onclick="toggleBottomSheet()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Content Area (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-md pb-xl custom-scrollbar">
+<!-- Header Section -->
+<header class="flex items-start gap-md px-md pt-sm pb-md">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-on-primary text-headline-md font-bold shrink-0">
+                    KO
+                </div>
+<div class="flex-1">
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-md text-headline-md text-text-primary tracking-tight">Kwame Owusu</h1>
+<span class="bg-[#E6F4EA] text-[#1B5E20] text-[10px] px-sm py-0.5 rounded-full font-bold uppercase tracking-wider">Active</span>
+</div>
+<p class="font-body-md text-body-md text-text-secondary mt-1">
+                        STF-0142 • Mathematics Teacher <br>
+                        Joined 12 Sep 2022
+                    </p>
+</div>
+</header>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-sm mb-lg">
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 rounded-lg active:scale-[0.98] transition-transform">
+                    Generate Report
+                </button>
+<button class="w-full border border-primary text-primary font-label-md text-label-md py-3 rounded-lg active:bg-surface-container-low transition-colors">
+                    Edit Profile
+                </button>
+</div>
+<!-- Horizontal Tabs -->
+<div class="border-b border-outline mb-lg overflow-x-auto custom-scrollbar flex gap-lg whitespace-nowrap">
+<button class="font-label-md text-label-md text-primary border-b-2 border-primary pb-sm transition-colors">Overview</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Timetable</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Attendance</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Classes</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Subjects</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Documents</button>
+<button class="font-label-md text-label-md text-text-secondary hover:text-primary pb-sm transition-colors">Audit Log</button>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-sm mb-lg">
+<div class="p-md border border-outline rounded-lg bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Years of Service</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">3</div>
+</div>
+<div class="p-md border border-outline rounded-lg bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Classes Assigned</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">4</div>
+</div>
+<div class="p-md border border-outline rounded-lg bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Subjects Taught</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">2</div>
+</div>
+<div class="p-md border border-outline rounded-lg bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Leave Days Left</span>
+<div class="font-headline-md text-headline-md text-warning mt-1">12</div>
+</div>
+<div class="col-span-2 p-md border border-outline rounded-lg bg-surface-container-lowest flex justify-between items-center">
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Attendance Rate</span>
+<div class="font-headline-md text-headline-md text-success mt-1">98%</div>
+</div>
+<div class="w-12 h-12 rounded-full border-[3px] border-success border-r-outline-variant rotate-45"></div>
+</div>
+</div>
+<!-- Current Assignment Section -->
+<div class="mb-lg">
+<h3 class="font-label-md text-label-md text-text-primary mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">school</span>
+                    Current Assignments
+                </h3>
+<div class="space-y-sm">
+<div class="p-md border border-outline rounded-lg flex gap-md items-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-text-primary">Basic 6A — Mathematics &amp; Science</div>
+<div class="font-label-sm text-label-sm text-text-secondary">32 Students • Morning Session</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">chevron_right</span>
+</div>
+<div class="p-md border border-outline rounded-lg flex gap-md items-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-text-primary">Basic 6B — Mathematics</div>
+<div class="font-label-sm text-label-sm text-text-secondary">28 Students • Afternoon Session</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Profile Details Accordion -->
+<div class="mb-lg border border-outline rounded-xl overflow-hidden divide-y divide-outline">
+<!-- Personal Details (Expanded) -->
+<div class="bg-surface">
+<button class="w-full px-md py-sm flex items-center justify-between font-label-md text-label-md text-text-primary" onclick="toggleAccordion(this)">
+                        Personal Details
+                        <span class="material-symbols-outlined transition-transform duration-300 rotate-180">expand_more</span>
+</button>
+<div class="px-md pb-md grid grid-cols-2 gap-y-sm gap-x-md transition-all">
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary block">First Name</span>
+<span class="font-body-md text-body-md text-text-primary">Kwame</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary block">Last Name</span>
+<span class="font-body-md text-body-md text-text-primary">Owusu</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary block">Gender</span>
+<span class="font-body-md text-body-md text-text-primary">Male</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary block">Phone</span>
+<span class="font-body-md text-body-md text-text-primary">+233 555 012 3456</span>
+</div>
+</div>
+</div>
+<!-- Employment (Collapsed) -->
+<div class="bg-surface">
+<button class="w-full px-md py-sm flex items-center justify-between font-label-md text-label-md text-text-primary" onclick="toggleAccordion(this)">
+                        Employment
+                        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden px-md pb-md text-body-md text-text-secondary">Details restricted to HR admins.</div>
+</div>
+<!-- Salary (Collapsed) -->
+<div class="bg-surface">
+<button class="w-full px-md py-sm flex items-center justify-between font-label-md text-label-md text-text-primary" onclick="toggleAccordion(this)">
+                        Salary Summary
+                        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden px-md pb-md">Content goes here...</div>
+</div>
+<!-- Leave Balance (Collapsed) -->
+<div class="bg-surface">
+<button class="w-full px-md py-sm flex items-center justify-between font-label-md text-label-md text-text-primary" onclick="toggleAccordion(this)">
+                        Leave Balance
+                        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden px-md pb-md">Content goes here...</div>
+</div>
+<!-- System Access (Collapsed) -->
+<div class="bg-surface">
+<button class="w-full px-md py-sm flex items-center justify-between font-label-md text-label-md text-text-primary" onclick="toggleAccordion(this)">
+                        System Access
+                        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden px-md pb-md">Content goes here...</div>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="mb-md">
+<h3 class="font-label-md text-label-md text-text-primary mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">history</span>
+                    Recent Activity
+                </h3>
+<div class="space-y-md relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline">
+<div class="relative flex gap-md pl-8">
+<div class="absolute left-0 top-1 w-[22px] h-[22px] rounded-full bg-primary-container border-4 border-surface z-10"></div>
+<div class="flex-1 border-b border-outline pb-sm">
+<div class="font-label-md text-label-md text-text-primary">Monthly Assessment Uploaded</div>
+<div class="font-label-sm text-label-sm text-text-secondary">2 hours ago</div>
+</div>
+</div>
+<div class="relative flex gap-md pl-8">
+<div class="absolute left-0 top-1 w-[22px] h-[22px] rounded-full bg-outline-variant border-4 border-surface z-10"></div>
+<div class="flex-1 border-b border-outline pb-sm">
+<div class="font-label-md text-label-md text-text-primary">Attendance Logged</div>
+<div class="font-label-sm text-label-sm text-text-secondary">Yesterday</div>
+</div>
+</div>
+<div class="relative flex gap-md pl-8">
+<div class="absolute left-0 top-1 w-[22px] h-[22px] rounded-full bg-success border-4 border-surface z-10"></div>
+<div class="flex-1 pb-sm">
+<div class="font-label-md text-label-md text-text-primary">Leave Request Approved</div>
+<div class="font-label-sm text-label-sm text-text-secondary">14 Sep 2023</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        function toggleBottomSheet() {
+            const sheet = document.getElementById('bottomSheet');
+            const scrim = document.getElementById('scrim');
+            sheet.classList.toggle('open');
+            scrim.classList.toggle('active');
+        }
+
+        function toggleAccordion(btn) {
+            const icon = btn.querySelector('.material-symbols-outlined');
+            const content = btn.nextElementSibling;
+            
+            // Toggle icon rotation
+            icon.classList.toggle('rotate-180');
+            
+            // Toggle visibility (Simple toggle for demo)
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                content.classList.add('block');
+            } else {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            }
+        }
+
+        // Initialize open for immediate visual on load (Demo purpose)
+        window.onload = () => {
+            setTimeout(toggleBottomSheet, 500);
+        };
+    </script>
+
+
+
+
+</body></html>

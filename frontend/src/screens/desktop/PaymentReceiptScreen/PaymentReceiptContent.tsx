@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Printer, RotateCcw, X, CheckCircle, AlertTriangle, ChevronDown, ChevronLeft } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./PaymentReceiptScreen.module.css";
 
 export interface SiblingPayment {
@@ -493,7 +495,7 @@ export function PaymentReceiptContent({ payments, defaultPaymentId }: ReceiptPro
 
       {/* ── Reverse Payment modal ── */}
       {showReverse && (
-        <div className={styles.modalOverlay} onClick={() => setShowReverse(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowReverse(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div className={styles.modalHeaderLeft}>
@@ -540,6 +542,48 @@ export function PaymentReceiptContent({ payments, defaultPaymentId }: ReceiptPro
           </div>
         </div>
       )}
+
+      {/* ── Reverse Payment sheet — mobile ── */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showReverse}
+          onClose={() => setShowReverse(false)}
+          title="Reverse Payment"
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowReverse(false)}>Cancel</button>
+            <button
+              type="button"
+              className={kit.btnDanger}
+              disabled={!reverseReason.trim() || !reverseConfirmed || reversing}
+              onClick={confirmReversal}
+            >
+              {reversing ? "Reversing…" : "Reverse Payment"}
+            </button>
+          </>}
+        >
+          <div className={`${kit.banner} ${kit.bannerDanger}`}>
+            This will reverse the payment and the invoice will revert to Unpaid. This action cannot be undone.
+          </div>
+          <div className={kit.field}>
+            <label>Reason for reversal</label>
+            <textarea
+              className={kit.textarea}
+              rows={3}
+              placeholder="Enter reason…"
+              value={reverseReason}
+              onChange={e => setReverseReason(e.target.value)}
+            />
+          </div>
+          <div className={kit.checkboxRow}>
+            <input
+              type="checkbox"
+              checked={reverseConfirmed}
+              onChange={e => setReverseConfirmed(e.target.checked)}
+            />
+            <label className={kit.checkboxLabel}>I confirm this reversal is authorized and cannot be undone</label>
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

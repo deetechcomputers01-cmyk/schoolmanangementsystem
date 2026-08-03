@@ -6,6 +6,8 @@ import { Award, ShieldCheck, PieChart, Hourglass, Ban, Search, Plus, X, ChevronD
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import styles from "./ScholarshipsScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 interface ScholarshipRow {
   id: string;
@@ -351,7 +353,7 @@ export function ScholarshipsContent({ scholarships, students, years }: Props) {
       </div>
 
       {showModal && (
-        <div className={styles.modalOverlay} onClick={() => !saving && setShowModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Award Scholarship</h2>
@@ -412,6 +414,67 @@ export function ScholarshipsContent({ scholarships, students, years }: Props) {
           </div>
         </div>
       )}
+
+      {/* Award Scholarship sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showModal}
+          onClose={() => !saving && setShowModal(false)}
+          title="Award Scholarship"
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowModal(false)} disabled={saving}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={submitScholarship} disabled={saving}>
+              {saving ? "Applying…" : "Award Scholarship"}
+            </button>
+          </>}
+        >
+          {error && <p className={kit.errorText}>{error}</p>}
+          <div className={kit.field}>
+            <label>Students *</label>
+            <div className={kit.searchWrap}>
+              <Search size={14} className={kit.searchIcon} />
+              <input className={`${kit.input} ${kit.searchInput}`} placeholder="Search students…" value={modalSearch} onChange={(e) => setModalSearch(e.target.value)} />
+            </div>
+          </div>
+          <p className={kit.pickCount}>{selectedIds.size} selected</p>
+          <div className={kit.pickList}>
+            {filteredModalStudents.map((s) => (
+              <div key={s.id} className={`${kit.pickRow} ${selectedIds.has(s.id) ? kit.pickRowActive : ""}`} onClick={() => toggleStudent(s.id)}>
+                <input type="checkbox" checked={selectedIds.has(s.id)} onChange={() => toggleStudent(s.id)} onClick={(e) => e.stopPropagation()} />
+                <div className={kit.pickAvatar}>{initials(s.name)}</div>
+                <div className={kit.pickInfo}>
+                  <p className={kit.pickName}>{s.name}</p>
+                  <p className={kit.pickSub}>{s.admissionNo} · {s.className}</p>
+                </div>
+              </div>
+            ))}
+            {filteredModalStudents.length === 0 && <p className={kit.emptyText}>No students match.</p>}
+          </div>
+
+          <div className={kit.field}>
+            <label>Discount Type</label>
+            <div className={kit.segmented}>
+              <button type="button" className={`${kit.segBtn} ${type === "percent" ? kit.segBtnActive : ""}`} onClick={() => setType("percent")}>Percentage</button>
+              <button type="button" className={`${kit.segBtn} ${type === "fixed" ? kit.segBtnActive : ""}`} onClick={() => setType("fixed")}>Fixed Amount</button>
+            </div>
+          </div>
+          <div className={kit.field}>
+            <label>{type === "percent" ? "Percent (1-100)" : "Amount (GHS)"}</label>
+            <input className={kit.input} type="number" min={1} max={type === "percent" ? 100 : undefined} value={value} onChange={(e) => setValue(e.target.value)} />
+          </div>
+          <div className={kit.field}>
+            <label>Academic Year Scope</label>
+            <select className={kit.select} value={yearId} onChange={(e) => setYearId(e.target.value)}>
+              <option value="">All years (no expiry)</option>
+              {years.map((y) => <option key={y.id} value={y.id}>{y.name}{y.isCurrent ? " (current)" : ""}</option>)}
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Reason</label>
+            <input className={kit.input} placeholder="e.g. Merit scholarship, staff ward, sibling discount" value={reason} onChange={(e) => setReason(e.target.value)} />
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

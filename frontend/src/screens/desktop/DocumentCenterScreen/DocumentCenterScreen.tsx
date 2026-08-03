@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FolderOpen, Plus, Search, Trash2,
   FileText, AlertTriangle, X, Lock, Globe,
@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./DocumentCenterScreen.module.css";
 
 type DocStatus     = "active" | "pending_review" | "archived" | "restricted";
@@ -102,6 +104,7 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
   const [newTemplate, setNewTemplate] = useState(false);
   const [newNeedsSign, setNewNeedsSign] = useState(false);
   const [newFile, setNewFile] = useState<File | null>(null);
+  const mobileFileRef = useRef<HTMLInputElement>(null);
 
   const selected = docs.find(d => d.id === selectedId);
 
@@ -460,7 +463,7 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
 
       {/* New document modal */}
       {showNew && (
-        <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowNew(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}><Plus size={16} />Register Document</h3>
@@ -528,6 +531,71 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
           </div>
         </div>
       )}
+
+      {/* Register Document sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showNew}
+          onClose={() => setShowNew(false)}
+          title="Register Document"
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowNew(false)}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={handleCreate} disabled={loading}>
+              {loading ? "Uploading…" : "Upload Document"}
+            </button>
+          </>}
+        >
+          <input
+            ref={mobileFileRef}
+            type="file"
+            accept=".pdf,.doc,.docx,.xlsx,.jpg,.jpeg,.png"
+            style={{ display: "none" }}
+            onChange={e => {
+              const f = e.target.files?.[0] ?? null;
+              setNewFile(f);
+              if (f && !newName.trim()) setNewName(f.name.replace(/\.[^.]+$/, ""));
+            }}
+          />
+          <div className={kit.dropzone} onClick={() => mobileFileRef.current?.click()}>
+            <p className={kit.dropzoneText}>
+              {newFile ? newFile.name : <>Click to upload — <span className={kit.dropzoneLink}>PDF, DOC, XLSX, JPG, PNG</span></>}
+            </p>
+          </div>
+          <div className={kit.field}>
+            <label>Document Name *</label>
+            <input className={kit.input} value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. School Fee Schedule 2026" />
+          </div>
+          <div className={kit.fieldRow}>
+            <div className={kit.field}>
+              <label>Category</label>
+              <select className={kit.select} value={newCat} onChange={e => setNewCat(e.target.value as Category)}>
+                {categories.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+              </select>
+            </div>
+            <div className={kit.field}>
+              <label>Visibility</label>
+              <select className={kit.select} value={newVis} onChange={e => setNewVis(e.target.value as Visibility)}>
+                <option value="internal">Internal</option>
+                <option value="public">Public</option>
+                <option value="restricted">Restricted</option>
+                <option value="class_only">Class Only</option>
+              </select>
+            </div>
+          </div>
+          <div className={kit.field}>
+            <label>Class / Department (optional)</label>
+            <input className={kit.input} value={newDept} onChange={e => setNewDept(e.target.value)} placeholder="e.g. Form 3A, Finance Dept" />
+          </div>
+          <div className={kit.checkboxRow}>
+            <input type="checkbox" checked={newTemplate} onChange={e => setNewTemplate(e.target.checked)} />
+            <label className={kit.checkboxLabel}>Mark as template</label>
+          </div>
+          <div className={kit.checkboxRow}>
+            <input type="checkbox" checked={newNeedsSign} onChange={e => setNewNeedsSign(e.target.checked)} />
+            <label className={kit.checkboxLabel}>Requires signature</label>
+          </div>
+        </MobileSheet>
+      </div>
 
       {/* Delete confirm */}
       {delConfirm && (

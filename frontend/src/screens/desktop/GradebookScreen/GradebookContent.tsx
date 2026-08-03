@@ -20,6 +20,8 @@ import { DesktopPageFrame } from "@/components/desktop/layout/DesktopPageFrame/D
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { gradeFromScore, type GradeBand } from "@backend/utils";
 import styles from "./GradebookScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 export interface GradeRow {
   studentId: string;
@@ -554,7 +556,7 @@ export function GradebookContent({
         </div>
 
         {showPublishModal && (
-          <div className={styles.modalOverlay} role="presentation">
+          <div className={`${styles.modalOverlay} desktopOnly`} role="presentation">
             <div className={styles.modalCard} role="dialog" aria-modal="true" aria-labelledby="gradebook-publish-title">
               <div className={styles.modalHeader}>
                 <div>
@@ -585,6 +587,34 @@ export function GradebookContent({
             </div>
           </div>
         )}
+
+        {/* Publish confirmation sheet — mobile */}
+        <div className="mobileOnly">
+          <MobileSheet
+            open={showPublishModal}
+            onClose={() => setShowPublishModal(false)}
+            title="Publish gradebook updates?"
+            eyebrow="Publish Report"
+            footer={<>
+              <button type="button" className={kit.btnOutline} onClick={() => setShowPublishModal(false)}>Cancel</button>
+              <button
+                type="button"
+                className={kit.btnPrimary}
+                onClick={async () => {
+                  await saveDraft();
+                  setShowPublishModal(false);
+                  toast("Grades published successfully.");
+                }}
+              >
+                Publish Now
+              </button>
+            </>}
+          >
+            <p className={kit.helperText}>
+              This will publish the current scores for {selectedClassName} in {selectedSubjectName}.
+            </p>
+          </MobileSheet>
+        </div>
       </div>
     </DesktopPageFrame>
   );

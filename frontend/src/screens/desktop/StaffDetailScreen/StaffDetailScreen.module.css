@@ -93,7 +93,10 @@
 .tabNav {
   display: flex; gap: 0; overflow-x: auto;
   border-bottom: 2px solid var(--clr-app-border);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.tabNav::-webkit-scrollbar { display: none; }
 .tab {
   padding: 0 4px 12px;
   margin-right: 20px;
@@ -278,6 +281,11 @@
   .kpiGrid { grid-template-columns: 1fr 1fr; }
   .assignmentGrid { grid-template-columns: 1fr; }
   .overviewRight { flex-direction: column; }
+  .profileActions { width: 100%; }
+  .profileActions > .btnPrimary { flex: 1; justify-content: center; }
+  /* "View Timetable" and the "More options" kebab have no handler yet
+     (dead on desktop too) — hide rather than clutter the mobile sheet. */
+  .headerActionUnwired { display: none; }
 }
 
 /* ── Edit modal fields (chrome/overlay comes from DesktopFormModal) ──── */

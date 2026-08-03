@@ -6,6 +6,8 @@ import {
   User, Clock, Archive, FileEdit, Search,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./AuditLogsClient.module.css";
 
 type LogRow = {
@@ -406,7 +408,7 @@ export function AuditLogsClient({ logs }: { logs: LogRow[] }) {
 
       {/* Review Note modal */}
       {showReviewModal && (
-        <div className={styles.modalOverlay} onClick={() => setShowReviewModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowReviewModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Create Review Note</h2>
@@ -439,6 +441,46 @@ export function AuditLogsClient({ logs }: { logs: LogRow[] }) {
           </div>
         </div>
       )}
+
+      {/* Review Note sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          title="Create Review Note"
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => { setShowReviewModal(false); setReviewNote(""); }}>Cancel</button>
+            <button
+              type="button"
+              className={kit.btnPrimary}
+              onClick={() => {
+                if (!reviewNote.trim()) return;
+                setShowReviewModal(false);
+                setReviewNote("");
+                showToast("Review note saved");
+              }}
+            >
+              Save Note
+            </button>
+          </>}
+        >
+          {selectedLog && (
+            <p className={kit.helperText}>
+              Linked to: {selectedLog.action.replace(/_/g, " ")} by {selectedLog.user?.name ?? "System"}
+            </p>
+          )}
+          <div className={kit.field}>
+            <label>Review Note *</label>
+            <textarea
+              className={kit.textarea}
+              rows={5}
+              value={reviewNote}
+              onChange={(e) => setReviewNote(e.target.value)}
+              placeholder="Describe your findings, actions taken, or escalation notes…"
+            />
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

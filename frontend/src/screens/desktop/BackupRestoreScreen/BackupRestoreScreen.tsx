@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./BackupRestoreScreen.module.css";
 
 type BackupStatus = "running" | "healthy" | "failed" | "pending" | "expired";
@@ -472,7 +474,7 @@ export function BackupRestoreScreen({ initialBackups, initialStats }: Props) {
 
       {/* New backup modal */}
       {showNew && (
-        <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowNew(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}><HardDrive size={16} />New Backup</h3>
@@ -505,6 +507,36 @@ export function BackupRestoreScreen({ initialBackups, initialStats }: Props) {
           </div>
         </div>
       )}
+
+      {/* New Backup sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showNew}
+          onClose={() => setShowNew(false)}
+          title="New Backup"
+          compact
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowNew(false)}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={handleCreate} disabled={loading}>
+              {loading ? "Backing up…" : "Run Backup"}
+            </button>
+          </>}
+        >
+          <div className={kit.field}>
+            <label>Backup Name *</label>
+            <input className={kit.input} value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. Pre-migration Full Backup" />
+          </div>
+          <div className={kit.field}>
+            <label>Type</label>
+            <select className={kit.select} value={newType} onChange={e => setNewType(e.target.value as BackupType)}>
+              <option value="full">Full Backup</option>
+              <option value="incremental">Incremental</option>
+              <option value="differential">Differential</option>
+              <option value="schema_only">Schema Only</option>
+            </select>
+          </div>
+        </MobileSheet>
+      </div>
 
       {/* Delete confirm */}
       {delConfirm && (

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere - Edit Staff Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#341100",
+                    "surface-container-lowest": "#ffffff",
+                    "text-secondary": "#858791",
+                    "on-primary-fixed-variant": "#341dd1",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-secondary-fixed-variant": "#00487f",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#464555",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#b34b00",
+                    "on-tertiary-fixed-variant": "#793000",
+                    "on-surface": "#1b1b24",
+                    "error": "#C24747",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "success": "#1B5E20",
+                    "on-background": "#1b1b24",
+                    "inverse-on-surface": "#f3effd",
+                    "tertiary-fixed": "#ffdbcb",
+                    "surface-bright": "#fcf8ff",
+                    "on-error-container": "#93000a",
+                    "warning": "#FF8F00",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#ffe8de",
+                    "surface-variant": "#e4e1ee",
+                    "secondary-fixed": "#d2e4ff",
+                    "surface-container-high": "#eae6f4",
+                    "secondary-fixed-dim": "#a1c9ff",
+                    "secondary": "#0061a7",
+                    "surface-container-low": "#FAFAFF",
+                    "on-primary-fixed": "#100069",
+                    "primary-container": "#5b50f5",
+                    "surface-container": "#F7F7FC",
+                    "text-primary": "#16161D",
+                    "surface": "#FFFFFF",
+                    "outline-variant": "#c7c4d8",
+                    "inverse-primary": "#c3c0ff",
+                    "outline": "#E4E4EC",
+                    "on-secondary-container": "#003b69",
+                    "tertiary": "#8c3900",
+                    "on-secondary-fixed": "#001c37",
+                    "primary": "#4131dc",
+                    "on-primary-container": "#edeaff",
+                    "primary-fixed": "#e3dfff",
+                    "on-error": "#ffffff",
+                    "background": "#fcf8ff",
+                    "surface-dim": "#dcd8e6",
+                    "surface-container-highest": "#e4e1ee",
+                    "surface-tint": "#4e41e8",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#55a7fe",
+                    "inverse-surface": "#302f39"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-desktop": "24px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "header-height": "56px",
+                    "sm": "8px",
+                    "sidebar-width": "260px",
+                    "xs": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .bottom-sheet {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drag-handle {
+            width: 32px;
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dim flex items-end justify-center min-h-screen">
+<!-- Backdrop Dimmer Overlay -->
+<div class="fixed inset-0 bg-on-surface/40 z-40 backdrop-blur-sm"></div>
+<!-- Bottom Sheet Modal -->
+<div class="bottom-sheet relative z-50 w-full max-w-md bg-surface rounded-t-lg shadow-2xl flex flex-col max-h-[839px] overflow-hidden">
+<!-- Drag Handle Indicator -->
+<div class="flex justify-center py-sm shrink-0">
+<div class="drag-handle"></div>
+</div>
+<!-- Top App Bar (From Shared Components JSON) -->
+<header class="flex items-center h-header-height px-md bg-surface border-b border-outline shrink-0 fixed top-0 w-full z-50 relative">
+<div class="flex-1 flex items-center">
+<h1 class="font-headline-md text-headline-md text-primary truncate">Edit Staff Profile</h1>
+</div>
+<button aria-label="Close" class="touch-target flex items-center justify-center hover:bg-surface-container-high transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</button>
+</header>
+<!-- Body Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-lg pb-xl pt-md space-y-xl">
+<!-- Header Section: Avatar -->
+<div class="flex flex-col items-center">
+<div class="relative w-24 h-24 mb-md">
+<div class="w-full h-full rounded-full border-2 border-outline overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly male teacher in his early 40s wearing a crisp button-down shirt. The background is a soft, out-of-focus academic library with clean indigo and white color tones. The lighting is soft and even, highlighting a trustworthy and professional demeanor suitable for an institutional staff profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFOn3TSZdcJEhbc4xID4bZVkqzPVZd7zR0KmW42YKa1v0gE07y8LlKe85UvWVahOsT8xiPB_3dZ4HMgk9vfcD_QzRp-MFuFqVr_OS2Ky8VfEkYICfyf2GHXrhUkZ4BniEqBU3NTVdpIER9wWUQjkaEZJcqyeIkMXqLQIll0dWXfn-Z7Mh5QGBbcGnGyOD0URGeAa1VIkirdtpE35F3hzUfREC91XHMZoSPYOjt9rvUuUBRFe8AZLyQAOdDE194BpRqdMrFFbOgtw"/>
+</div>
+<button class="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center border-2 border-surface shadow-md">
+<span class="material-symbols-outlined text-on-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+</button>
+</div>
+<div class="bg-surface-container px-md py-xs rounded-full">
+<span class="font-label-md text-on-surface-variant">STF-0142</span>
+</div>
+</div>
+<!-- Update Documents Section -->
+<section class="space-y-md">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">UPDATE DOCUMENTS</h2>
+<!-- Drop Zone -->
+<div class="border-2 border-dashed border-outline rounded-lg p-lg bg-surface-container-low flex flex-col items-center text-center space-y-sm hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">cloud_upload</span>
+<p class="font-body-md text-on-surface-variant text-sm">
+                        Click to upload or <span class="text-primary font-semibold">drag and drop</span><br/>
+<span class="text-[11px] opacity-70">PDF, JPG or PNG, max 5MB</span>
+</p>
+</div>
+<!-- File List -->
+<div class="space-y-sm">
+<!-- Row 1 -->
+<div class="flex items-center p-sm bg-surface border border-outline rounded-lg group">
+<div class="w-10 h-10 bg-error-container/30 rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+</div>
+<div class="ml-md flex-1">
+<p class="font-label-md text-on-surface">Certificate.pdf</p>
+<p class="text-[10px] text-on-surface-variant uppercase">1.2 MB</p>
+</div>
+<button class="touch-target flex items-center justify-center hover:bg-error-container/20 rounded-full transition-colors text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center p-sm bg-surface border border-outline rounded-lg group">
+<div class="w-10 h-10 bg-secondary-container/20 rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">image</span>
+</div>
+<div class="ml-md flex-1">
+<p class="font-label-md text-on-surface">ID_Card.jpg</p>
+<p class="text-[10px] text-on-surface-variant uppercase">850 KB</p>
+</div>
+<button class="touch-target flex items-center justify-center hover:bg-error-container/20 rounded-full transition-colors text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Personal Details Section -->
+<section class="space-y-md">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">PERSONAL DETAILS</h2>
+<div class="space-y-md">
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">First Name</label>
+<input class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md" type="text" value="Alexander"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">Last Name</label>
+<input class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md" type="text" value="Sterling"/>
+</div>
+</div>
+</section>
+<!-- Employment Section -->
+<section class="space-y-md">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">EMPLOYMENT</h2>
+<div class="space-y-md">
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">Role Category</label>
+<div class="relative">
+<select class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md appearance-none">
+<option selected="">Teaching</option>
+<option>Administration</option>
+<option>Management</option>
+<option>Support Staff</option>
+</select>
+<div class="absolute right-md top-1/2 -translate-y-1/2 pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">keyboard_arrow_down</span>
+</div>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">Role Title</label>
+<input class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md" type="text" value="Mathematics Teacher"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">Phone Number</label>
+<input class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md" type="tel" value="+1 (555) 012-3456"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant">Email Address</label>
+<input class="w-full h-11 px-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md" type="email" value="a.sterling@scholarsphere.edu"/>
+</div>
+</div>
+</section>
+<!-- Institutional Notes Section -->
+<section class="space-y-md">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">INSTITUTIONAL NOTES</h2>
+<div class="space-y-xs">
+<textarea class="w-full p-md border border-outline rounded focus:ring-1 focus:ring-primary focus:border-primary bg-surface font-body-md resize-none" placeholder="Enter administrative notes here..." rows="4">Senior educator with focus on Advanced Calculus. Leading the curriculum redesign for Academic Year 24/25.</textarea>
+<p class="text-[11px] text-on-surface-variant italic">Notes visible to administrators only.</p>
+</div>
+</section>
+</div>
+<!-- Sticky Footer -->
+<footer class="p-lg bg-surface border-t border-outline flex flex-col gap-md shrink-0">
+<button class="w-full h-[44px] border border-primary text-primary font-label-md rounded hover:bg-primary-container/10 transition-colors">
+                Cancel
+            </button>
+<button class="w-full h-[44px] bg-[#5B50F5] text-white font-label-md rounded shadow-sm active:scale-[0.98] transition-transform">
+                Save Changes
+            </button>
+</footer>
+</div>
+<!-- Bottom Navigation (Hidden on Mobile Sheets usually, but logic kept for reference) -->
+<!-- The prompt focuses on the Bottom Sheet as the primary UI, suppressing global nav for focus. -->
+<script>
+        // Micro-interaction for the file delete buttons
+        document.querySelectorAll('button.text-error').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('.group');
+                row.style.opacity = '0.5';
+                row.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    row.remove();
+                }, 300);
+            });
+        });
+
+        // Basic form validation feedback placeholder
+        const saveBtn = document.querySelector('button.bg-\\[\\#5B50F5\\]');
+        saveBtn.addEventListener('click', () => {
+            saveBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...</span>';
+            setTimeout(() => {
+                saveBtn.innerHTML = 'Save Changes';
+                alert('Profile updated successfully!');
+            }, 1500);
+        });
+    </script>
+</body></html>

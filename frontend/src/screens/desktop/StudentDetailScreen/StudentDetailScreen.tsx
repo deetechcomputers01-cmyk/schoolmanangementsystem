@@ -5,6 +5,7 @@ import { getSettings } from "@backend/services/settings.service";
 import { prisma } from "@backend/prisma";
 import type { GradeBand } from "@backend/utils";
 import { StudentDetailContent, type StudentProps } from "./StudentDetailContent";
+import { MobileStudentDetailContent } from "@/screens/mobile/MobileStudentDetailContent/MobileStudentDetailContent";
 
 export const dynamic = "force-dynamic";
 
@@ -155,5 +156,10 @@ export async function StudentDetailScreen({ id, edit, isModal }: { id: string; e
     isModal: !!isModal,
   };
 
-  return <StudentDetailContent {...props} />;
+  return (
+    <>
+      <div className="mobileOnly"><MobileStudentDetailContent {...props} /></div>
+      <div className="desktopOnly"><StudentDetailContent {...props} /></div>
+    </>
+  );
 }

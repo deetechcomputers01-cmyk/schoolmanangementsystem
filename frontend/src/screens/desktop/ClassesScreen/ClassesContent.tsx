@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./ClassesScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 type ClassStatus = "active" | "full" | "pending" | "inactive";
@@ -422,7 +424,7 @@ export function ClassesContent({ classes, subjects, staff, stats }: Props) {
 
       {/* Class detail modal (subjects + readiness) */}
       {modalMode === "detail" && detailClass && (
-        <div className={styles.modalBackdrop} onClick={closeModal}>
+        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalBody}>
               <div className={styles.detailHeader}>
@@ -489,7 +491,7 @@ export function ClassesContent({ classes, subjects, staff, stats }: Props) {
 
       {/* Create Class modal */}
       {modalMode === "create" && (
-        <div className={styles.modalBackdrop} onClick={closeModal}>
+        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Create New Class</h2>
@@ -534,7 +536,7 @@ export function ClassesContent({ classes, subjects, staff, stats }: Props) {
 
       {/* Edit Class modal */}
       {modalMode === "edit" && detailClass && (
-        <div className={styles.modalBackdrop} onClick={closeModal}>
+        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Edit {detailClass.name}</h2>
@@ -584,6 +586,151 @@ export function ClassesContent({ classes, subjects, staff, stats }: Props) {
           </div>
         </div>
       )}
+
+      {/* Class detail sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={modalMode === "detail" && !!detailClass}
+          onClose={closeModal}
+          title={detailClass ? `${detailClass.name} Overview` : ""}
+          headerExtra={detailClass && (
+            <button type="button" className={styles.editBtn} onClick={() => openEditModal(detailClass)}><Edit2 size={15} /></button>
+          )}
+        >
+          {detailClass && (
+            <>
+              {!detailClass.isActive && (
+                <div className={`${kit.banner} ${kit.bannerWarn}`}>Inactive — hidden from class pickers app-wide</div>
+              )}
+              <div className={styles.detailTeacher}>
+                <div className={styles.teacherAvatar}>
+                  {detailClass.teacher ? detailClass.teacher.split(" ").map((n) => n[0]).join("").slice(0, 2) : "?"}
+                </div>
+                <div>
+                  <div className={styles.teacherName}>{detailClass.teacher ?? "No teacher assigned"}</div>
+                  <div className={styles.teacherRole}>Class Teacher</div>
+                </div>
+              </div>
+
+              <h3 className={styles.detailSectionTitle}>Assigned Subjects</h3>
+              <div className={styles.subjectList}>
+                {detailClass.subjects.length === 0 ? (
+                  <p className={kit.emptyText}>No subjects assigned to this class yet.</p>
+                ) : detailClass.subjects.map((s) => (
+                  <div key={s.id} className={styles.subjectItem}>
+                    <span className={!s.assigned ? styles.subjectUnassigned : ""}>{s.name}</span>
+                    {s.assigned
+                      ? <Check size={14} className={styles.subjectCheckGreen} />
+                      : <AlertTriangle size={14} className={styles.subjectWarn} />}
+                  </div>
+                ))}
+              </div>
+
+              <h3 className={`${styles.detailSectionTitle} ${styles.mt4}`}>Readiness Checklist</h3>
+              <ul className={styles.checklist}>
+                <li className={styles.checkItem}>
+                  {detailClass.teacher
+                    ? <CheckCircle2 size={16} className={styles.checkGreen} />
+                    : <div className={styles.checkEmpty} />}
+                  <span className={detailClass.teacher ? "" : styles.tdMuted}>Class teacher assigned</span>
+                </li>
+                <li className={styles.checkItem}>
+                  {detailClass.room
+                    ? <CheckCircle2 size={16} className={styles.checkGreen} />
+                    : <div className={styles.checkEmpty} />}
+                  <span className={detailClass.room ? "" : styles.tdMuted}>Room allocated</span>
+                </li>
+                <li className={styles.checkItem}>
+                  {detailClass.ready
+                    ? <CheckCircle2 size={16} className={styles.checkGreen} />
+                    : <div className={styles.checkEmpty} />}
+                  <span className={detailClass.ready ? "" : styles.tdMuted}>Core subjects staffed</span>
+                </li>
+              </ul>
+            </>
+          )}
+        </MobileSheet>
+      </div>
+
+      {/* Create/Edit Class sheet — mobile (shares the same form state + submit handlers as desktop) */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={modalMode === "create" || modalMode === "edit"}
+          onClose={closeModal}
+          title={modalMode === "edit" && detailClass ? `Edit ${detailClass.name}` : "Create New Class"}
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={closeModal}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={modalMode === "edit" ? saveEdit : saveClass}>
+              {modalMode === "edit" ? "Save Changes" : "Create Class"}
+            </button>
+          </>}
+        >
+          <div className={kit.field}>
+            <label>Level *</label>
+            <select
+              className={kit.select}
+              value={modalMode === "edit" ? eLevel : mLevel}
+              onChange={(e) => modalMode === "edit" ? setELevel(e.target.value) : setMLevel(e.target.value)}
+            >
+              {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Class Name *</label>
+            <input
+              className={kit.input}
+              type="text"
+              placeholder="e.g. Form 1C"
+              value={modalMode === "edit" ? eName : mName}
+              onChange={(e) => modalMode === "edit" ? setEName(e.target.value) : setMName(e.target.value)}
+            />
+          </div>
+          <div className={kit.fieldRow}>
+            <div className={kit.field}>
+              <label>Room</label>
+              <input
+                className={kit.input}
+                type="text"
+                value={modalMode === "edit" ? eRoom : mRoom}
+                onChange={(e) => modalMode === "edit" ? setERoom(e.target.value) : setMRoom(e.target.value)}
+              />
+            </div>
+            <div className={kit.field}>
+              <label>Capacity</label>
+              <input
+                className={kit.input}
+                type="number"
+                value={modalMode === "edit" ? eCapacity : mCapacity}
+                onChange={(e) => modalMode === "edit" ? setECapacity(e.target.value) : setMCapacity(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className={kit.field}>
+            <label>Class Teacher</label>
+            <select
+              className={kit.select}
+              value={modalMode === "edit" ? eTeacherId : mTeacherId}
+              onChange={(e) => modalMode === "edit" ? setETeacherId(e.target.value) : setMTeacherId(e.target.value)}
+            >
+              <option value="">No teacher assigned</option>
+              {staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          </div>
+          {modalMode === "edit" && (
+            <>
+              <div className={kit.field}>
+                <label>Promotion Order</label>
+                <input className={kit.input} type="number" value={eOrder} onChange={(e) => setEOrder(e.target.value)} placeholder="e.g. 6" />
+                <p className={kit.helperText}>Used to resolve next class on promotion.</p>
+              </div>
+              <label className={kit.checkboxRow}>
+                <input type="checkbox" checked={eActive} onChange={(e) => setEActive(e.target.checked)} />
+                <span className={kit.checkboxLabel}>Active (visible and selectable across the app)</span>
+              </label>
+            </>
+          )}
+        </MobileSheet>
+      </div>
     </div>
   );
 }

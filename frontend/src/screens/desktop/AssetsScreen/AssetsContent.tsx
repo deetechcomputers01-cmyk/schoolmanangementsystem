@@ -4,6 +4,8 @@ import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Package, Plus, X, Search, ArrowLeftRight, Camera, ChevronDown, Pencil, Download } from "lucide-react";
 import styles from "./AssetsScreen.module.css";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
 type AssetStatus = "active" | "maintenance" | "disposed" | "low_stock";
 
@@ -358,9 +360,9 @@ export function AssetsContent({ assets, movements, staff }: Props) {
         </div>
       )}
 
-      {/* Add/Edit Asset modal */}
+      {/* Add/Edit Asset modal — desktop (untouched) */}
       {showAssetModal && (
-        <div className={styles.modalOverlay} onClick={() => !saving && setShowAssetModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowAssetModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>{editingAsset ? `Edit ${editingAsset.tag}` : "Register Asset"}</h2>
@@ -420,9 +422,65 @@ export function AssetsContent({ assets, movements, staff }: Props) {
         </div>
       )}
 
-      {/* Record Movement modal */}
+      {/* Add/Edit Asset sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showAssetModal}
+          onClose={() => !saving && setShowAssetModal(false)}
+          title={editingAsset ? `Edit ${editingAsset.tag}` : "Register Asset"}
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowAssetModal(false)} disabled={saving}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={submitAsset} disabled={saving}>{saving ? "Saving…" : "Save Asset"}</button>
+          </>}
+        >
+          {error && <p className={kit.errorText}>{error}</p>}
+          <div className={kit.dropzone} onClick={() => fileRef.current?.click()}>
+            {aImageFile
+              ? <img src={URL.createObjectURL(aImageFile)} alt="" style={{ width: 64, height: 64, borderRadius: "var(--radius-sm)", objectFit: "cover" }} />
+              : editingAsset?.imageUrl
+                ? <img src={editingAsset.imageUrl} alt="" style={{ width: 64, height: 64, borderRadius: "var(--radius-sm)", objectFit: "cover" }} />
+                : <Camera size={20} color="var(--clr-app-muted)" />}
+            <p className={kit.dropzoneText}>{aImageFile ? aImageFile.name : "Tap to upload a photo (JPEG, PNG or WebP)"}</p>
+          </div>
+          <div className={kit.field}>
+            <label>Name *</label>
+            <input className={kit.input} value={aName} onChange={(e) => setAName(e.target.value)} placeholder="e.g. Dell Latitude Laptop" />
+          </div>
+          <div className={kit.fieldRow}>
+            <div className={kit.field}>
+              <label>Category *</label>
+              <select className={kit.select} value={aCategory} onChange={(e) => setACategory(e.target.value)}>
+                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div className={kit.field}>
+              <label>Quantity</label>
+              <input className={kit.input} type="number" min={0} value={aQuantity} onChange={(e) => setAQuantity(e.target.value)} />
+            </div>
+          </div>
+          <div className={kit.fieldRow}>
+            <div className={kit.field}>
+              <label>Location</label>
+              <input className={kit.input} value={aLocation} onChange={(e) => setALocation(e.target.value)} placeholder="e.g. ICT Lab" />
+            </div>
+            <div className={kit.field}>
+              <label>Value (GHS)</label>
+              <input className={kit.input} type="number" min={0} value={aValue} onChange={(e) => setAValue(e.target.value)} />
+            </div>
+          </div>
+          <div className={kit.field}>
+            <label>Custodian</label>
+            <select className={kit.select} value={aCustodianId} onChange={(e) => setACustodianId(e.target.value)}>
+              <option value="">Unassigned</option>
+              {staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          </div>
+        </MobileSheet>
+      </div>
+
+      {/* Record Movement modal — desktop (untouched) */}
       {movementAsset && (
-        <div className={styles.modalOverlay} onClick={() => !recording && setMovementAsset(null)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !recording && setMovementAsset(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Stock Movement — {movementAsset.name}</h2>
@@ -453,6 +511,36 @@ export function AssetsContent({ assets, movements, staff }: Props) {
           </div>
         </div>
       )}
+
+      {/* Stock Movement sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={!!movementAsset}
+          onClose={() => !recording && setMovementAsset(null)}
+          title={`Stock Movement — ${movementAsset?.name ?? ""}`}
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setMovementAsset(null)} disabled={recording}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={submitMovement} disabled={recording}>{recording ? "Saving…" : "Record"}</button>
+          </>}
+        >
+          <p className={kit.helperText}>Current quantity: {movementAsset?.quantity}</p>
+          <div className={kit.field}>
+            <label>Type</label>
+            <select className={kit.select} value={mType} onChange={(e) => setMType(e.target.value as "issue" | "receive")}>
+              <option value="issue">Issue (remove stock)</option>
+              <option value="receive">Receive (add stock)</option>
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Quantity</label>
+            <input className={kit.input} type="number" min={1} value={mQuantity} onChange={(e) => setMQuantity(e.target.value)} />
+          </div>
+          <div className={kit.field}>
+            <label>Note</label>
+            <input className={kit.input} value={mNote} onChange={(e) => setMNote(e.target.value)} placeholder="Optional" />
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

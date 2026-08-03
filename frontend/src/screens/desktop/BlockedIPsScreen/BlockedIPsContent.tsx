@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { ShieldOff, ShieldAlert, Search, ChevronLeft, ChevronRight, Download, X, Trash2 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./BlockedIPsScreen.module.css";
 
 interface BlockedIPRow {
@@ -255,7 +257,7 @@ export function BlockedIPsContent({ blocked }: Props) {
       </div>
 
       {showModal && (
-        <div className={styles.modalOverlay} onClick={() => !saving && setShowModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}><ShieldOff size={17} />Block IP Address</h2>
@@ -285,6 +287,36 @@ export function BlockedIPsContent({ blocked }: Props) {
           </div>
         </div>
       )}
+
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showModal}
+          onClose={() => !saving && setShowModal(false)}
+          title="Block IP Address"
+          compact
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowModal(false)} disabled={saving}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={submitBlock} disabled={saving}>
+              {saving ? "Blocking…" : "Block IP"}
+            </button>
+          </>}
+        >
+          {error && <p className={kit.errorText}>{error}</p>}
+          <div className={kit.field}>
+            <label>IPv4 Address *</label>
+            <input className={kit.input} style={{ fontFamily: "monospace" }} placeholder="e.g. 192.168.1.100" value={ip} onChange={(e) => setIp(e.target.value)} />
+          </div>
+          <div className={kit.field}>
+            <label>Reason</label>
+            <input className={kit.input} placeholder="e.g. Repeated failed login attempts" value={reason} onChange={(e) => setReason(e.target.value)} />
+          </div>
+          <div className={kit.field}>
+            <label>Expires At</label>
+            <input className={kit.input} type="datetime-local" value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
+            <p className={kit.helperText}>Leave blank to block indefinitely.</p>
+          </div>
+        </MobileSheet>
+      </div>
     </div>
   );
 }

@@ -8,6 +8,8 @@ import {
   BookOpen, RefreshCw, Download, LayoutGrid, Coffee, DoorOpen,
 } from "lucide-react";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./TimetableManageScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -629,7 +631,7 @@ export function TimetableManageContent({
 
       {/* ── Add Slot Modal ────────────────────────────────────────────────── */}
       {showAddModal && (
-        <div className={styles.modalOverlay} onClick={() => !saving && setShowAddModal(false)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowAddModal(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}>
@@ -748,6 +750,74 @@ export function TimetableManageContent({
           </div>
         </div>
       )}
+
+      {/* Add Period sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={showAddModal}
+          onClose={() => !saving && setShowAddModal(false)}
+          title={`Add Period — ${DAY_LABELS[addDay]}, ${addStart}–${addEnd}`}
+          footer={<>
+            <button type="button" className={kit.btnOutline} onClick={() => setShowAddModal(false)} disabled={saving}>Cancel</button>
+            <button type="button" className={kit.btnPrimary} onClick={submitAdd} disabled={saving || !formClassId || !formSubjId}>{saving ? "Saving…" : "Save Period"}</button>
+          </>}
+        >
+          <div className={kit.field}>
+            <label>Recurrence</label>
+            <div className={kit.segmented}>
+              {(["weekly", "biweekly", "one_time"] as const).map(r => (
+                <button
+                  key={r}
+                  type="button"
+                  className={`${kit.segBtn} ${formRecurrence === r ? kit.segBtnActive : ""}`}
+                  onClick={() => setFormRecurrence(r)}
+                >
+                  {r === "weekly" ? "Every Week" : r === "biweekly" ? "Every 2 Weeks" : "One-Time"}
+                </button>
+              ))}
+            </div>
+            {formRecurrence === "weekly" && (
+              <p className={kit.helperText}>Repeats automatically every {DAY_LABELS[addDay]}. No maintenance needed.</p>
+            )}
+            {formRecurrence === "biweekly" && (
+              <p className={kit.helperText}>Appears every other {DAY_LABELS[addDay]}.</p>
+            )}
+            {formRecurrence === "one_time" && (
+              <>
+                <p className={kit.helperText}>Appears only on the selected date.</p>
+                <input type="date" className={kit.input} value={formDate} onChange={e => setFormDate(e.target.value)} />
+              </>
+            )}
+          </div>
+          <div className={kit.field}>
+            <label>Class</label>
+            <select className={kit.select} value={formClassId} onChange={e => { setFormClassId(e.target.value); setFormSubjId(""); }}>
+              <option value="">Select class…</option>
+              {displayClasses.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Subject</label>
+            <select className={kit.select} value={formSubjId} onChange={e => setFormSubjId(e.target.value)} disabled={!formClassId}>
+              <option value="">Select subject…</option>
+              {formSubjects.map(s => (
+                <option key={s.id} value={s.id}>{s.name}{s.teacherName ? ` — ${s.teacherName}` : ""}</option>
+              ))}
+            </select>
+          </div>
+          <div className={kit.field}>
+            <label>Room</label>
+            <input className={kit.input} value={formRoom} onChange={e => setFormRoom(e.target.value)} placeholder="e.g. Blk A-01, Science Lab, Field…" />
+          </div>
+          <div className={kit.field}>
+            <label>Notes (optional)</label>
+            <input className={kit.input} value={formNotes} onChange={e => setFormNotes(e.target.value)} placeholder="e.g. Bring textbooks, double period…" />
+          </div>
+          {addError && <p className={kit.errorText}>{addError}</p>}
+        </MobileSheet>
+      </div>
     </div>
   );
 }

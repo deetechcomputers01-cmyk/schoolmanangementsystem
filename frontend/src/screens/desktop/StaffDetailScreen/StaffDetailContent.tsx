@@ -451,11 +451,11 @@ export function StaffDetailContent(props: StaffDetailProps) {
           </div>
         </div>
         <div className={styles.profileActions}>
-          {isTeaching && <button className={styles.btnOutline}>View Timetable</button>}
+          {isTeaching && <button className={`${styles.btnOutline} ${styles.headerActionUnwired}`}>View Timetable</button>}
           <button className={styles.btnPrimary} onClick={openEdit} type="button">
             <Edit2 size={14} style={{ marginRight: 6 }} />Edit Profile
           </button>
-          <button className={styles.btnIcon}>
+          <button className={`${styles.btnIcon} ${styles.headerActionUnwired}`}>
             <MoreVertical size={18} />
           </button>
         </div>

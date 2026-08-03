@@ -234,7 +234,11 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
         <div className={styles.sheetBackdrop} onClick={() => !paySaving && setPayOpen(false)}>
           <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
             <div className={styles.sheetHeader}>
-              <h3 className={styles.sheetTitle}>Record Payment</h3>
+              <div>
+                <p className={styles.sheetEyebrow}>Fee Invoices</p>
+                <h3 className={styles.sheetTitle}>Record Payment</h3>
+                <p className={styles.sheetSubtitle}>Log a payment against an outstanding invoice.</p>
+              </div>
               <button type="button" className={styles.sheetClose} onClick={() => setPayOpen(false)} aria-label="Close"><X size={20} /></button>
             </div>
             <div className={styles.sheetBody}>

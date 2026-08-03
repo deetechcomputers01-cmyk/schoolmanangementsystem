@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
+import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./LibraryScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -166,8 +168,9 @@ function AddBookModal({ onClose, onSuccess, onError }: AddBookModalProps) {
   }
 
   return (
+    <>
     <div
-      className={styles.modalOverlay}
+      className={`${styles.modalOverlay} desktopOnly`}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
       <div className={styles.modal}>
@@ -270,10 +273,63 @@ function AddBookModal({ onClose, onSuccess, onError }: AddBookModalProps) {
         </form>
       </div>
     </div>
+
+    {/* Add Book sheet — mobile */}
+    <div className="mobileOnly">
+      <MobileSheet
+        open
+        onClose={onClose}
+        title="Add Book"
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={onClose} disabled={submitting}>Cancel</button>
+          <button
+            type="button"
+            className={kit.btnPrimary}
+            onClick={() => submit({ preventDefault: () => {} } as React.FormEvent)}
+            disabled={submitting || !form.title.trim() || !form.author.trim()}
+          >
+            {submitting ? "Saving…" : "Save Book"}
+          </button>
+        </>}
+      >
+        <div className={kit.field}>
+          <label>Title *</label>
+          <input type="text" className={kit.input} value={form.title} onChange={e => set("title", e.target.value)} placeholder="Book title…" />
+        </div>
+        <div className={kit.field}>
+          <label>Author *</label>
+          <input type="text" className={kit.input} value={form.author} onChange={e => set("author", e.target.value)} placeholder="Author name…" />
+        </div>
+        <div className={kit.field}>
+          <label>ISBN</label>
+          <input type="text" className={kit.input} value={form.isbn} onChange={e => set("isbn", e.target.value)} placeholder="Optional…" />
+        </div>
+        <div className={kit.fieldRow}>
+          <div className={kit.field}>
+            <label>Quantity *</label>
+            <input type="number" className={kit.input} value={form.quantity} onChange={e => set("quantity", parseInt(e.target.value, 10) || 1)} min={1} />
+          </div>
+          <div className={kit.field}>
+            <label>Category *</label>
+            <select className={kit.select} value={form.category} onChange={e => set("category", e.target.value)}>
+              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+        </div>
+        <div className={kit.field}>
+          <label>Shelf Location</label>
+          <input type="text" className={kit.input} value={form.shelfLocation} onChange={e => set("shelfLocation", e.target.value)} placeholder="e.g. Block A, Shelf 1" />
+        </div>
+      </MobileSheet>
+    </div>
+    </>
   );
 }
 
 // ── Edit Book Modal ────────────────────────────────────────────────────────────
+// Note: nearly identical to Add Book above — intentionally has no dedicated
+// mobile bottom-sheet. It keeps rendering as-is (no desktopOnly/mobileOnly
+// gating) so it still works as a fallback on small screens.
 
 interface EditBookModalProps {
   book: LibraryBook;
@@ -477,9 +533,12 @@ function CheckoutModal({
     }
   }
 
+  const selectedBook = books.find(b => b.id === form.bookId) ?? null;
+
   return (
+    <>
     <div
-      className={styles.modalOverlay}
+      className={`${styles.modalOverlay} desktopOnly`}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
       <div className={styles.modal}>
@@ -558,6 +617,59 @@ function CheckoutModal({
         </form>
       </div>
     </div>
+
+    {/* Issue Book sheet — mobile */}
+    <div className="mobileOnly">
+      <MobileSheet
+        open
+        onClose={onClose}
+        title="Issue Book"
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={onClose} disabled={submitting}>Cancel</button>
+          <button
+            type="button"
+            className={kit.btnPrimary}
+            onClick={() => submit({ preventDefault: () => {} } as React.FormEvent)}
+            disabled={submitting || !form.bookId || !form.studentId}
+          >
+            {submitting ? "Issuing…" : "Issue Book"}
+          </button>
+        </>}
+      >
+        <div className={kit.field}>
+          <label>Book *</label>
+          <select className={kit.select} value={form.bookId} onChange={e => set("bookId", e.target.value)}>
+            <option value="">Select an available book…</option>
+            {availableBooks.map(b => (
+              <option key={b.id} value={b.id}>{b.title} — {b.author} ({b.available} available)</option>
+            ))}
+          </select>
+        </div>
+        <div className={kit.field}>
+          <label>Student *</label>
+          <select className={kit.select} value={form.studentId} onChange={e => set("studentId", e.target.value)}>
+            <option value="">Select student…</option>
+            {students.map(s => (
+              <option key={s.id} value={s.id}>{s.name} ({s.admNo})</option>
+            ))}
+          </select>
+        </div>
+        <div className={kit.field}>
+          <label>Due Date *</label>
+          <input type="date" className={kit.input} value={form.dueDate} onChange={e => set("dueDate", e.target.value)} />
+        </div>
+        {selectedBook && (
+          <div className={kit.previewCard}>
+            <div className={kit.previewIcon}><BookMarked size={16} /></div>
+            <div className={kit.previewInfo}>
+              <p className={kit.previewTitle}>{selectedBook.title}</p>
+              <p className={kit.previewSub}>{selectedBook.author} · {selectedBook.available} available</p>
+            </div>
+          </div>
+        )}
+      </MobileSheet>
+    </div>
+    </>
   );
 }
 
@@ -1013,7 +1125,7 @@ export function LibraryContent({
 
       {/* Exactly one modal slot — never two at once */}
       {modal?.type === "view" && (
-        <div className={styles.modalOverlay} onClick={() => setModal(null)}>
+        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setModal(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div className={styles.modalHeaderLeft}>
@@ -1046,6 +1158,24 @@ export function LibraryContent({
           </div>
         </div>
       )}
+
+      {/* Book Details sheet — mobile */}
+      <div className="mobileOnly">
+        <MobileSheet
+          open={modal?.type === "view"}
+          onClose={() => setModal(null)}
+          title="Book Details"
+          footer={<button type="button" className={kit.btnOutline} onClick={() => setModal(null)}>Close</button>}
+        >
+          {modal?.type === "view" && (
+            <BookDetail
+              book={modal.book}
+              libNum={libNumber(bookIndexMap.get(modal.book.id) ?? 0)}
+              activeCheckouts={checkouts.filter((c) => c.bookId === modal.book.id)}
+            />
+          )}
+        </MobileSheet>
+      </div>
 
       {modal?.type === "edit" && (
         <EditBookModal

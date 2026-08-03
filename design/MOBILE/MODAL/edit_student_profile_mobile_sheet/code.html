@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Student Profile - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "text-secondary": "#858791",
+                        "warning": "#FF8F00",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f2ff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "secondary": "#0061a7",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "secondary-fixed": "#d2e4ff",
+                        "on-tertiary-container": "#ffe8de",
+                        "on-surface": "#1b1b24",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#a1c9ff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e4e1ee",
+                        "surface": "#FFFFFF",
+                        "inverse-primary": "#c3c0ff",
+                        "background": "#fcf8ff",
+                        "tertiary-container": "#b34b00",
+                        "on-secondary-container": "#003b69",
+                        "surface-container": "#f0ecfa",
+                        "on-primary-container": "#edeaff",
+                        "surface-bright": "#fcf8ff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c7c4d8",
+                        "tertiary": "#8c3900",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "on-tertiary-fixed": "#341100",
+                        "primary": "#4131dc",
+                        "tertiary-fixed": "#ffdbcb",
+                        "inverse-on-surface": "#f3effd",
+                        "on-surface-variant": "#464555",
+                        "inverse-surface": "#302f39",
+                        "surface-variant": "#e4e1ee",
+                        "on-primary-fixed-variant": "#341dd1",
+                        "success": "#1B5E20",
+                        "on-background": "#1b1b24",
+                        "surface-container-high": "#eae6f4",
+                        "outline": "#E4E4EC",
+                        "on-secondary-fixed": "#001c37",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#100069",
+                        "on-secondary-fixed-variant": "#00487f",
+                        "text-primary": "#16161D",
+                        "error": "#C24747",
+                        "primary-container": "#5b50f5",
+                        "secondary-container": "#55a7fe",
+                        "surface-dim": "#dcd8e6",
+                        "primary-fixed": "#e3dfff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#4e41e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "header-height": "56px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "margin-desktop": "24px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "sidebar-width": "260px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f7;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .bottom-sheet {
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex items-center justify-center min-h-screen p-4">
+<!-- Mobile Screen Wrapper (390px) -->
+<div class="relative w-[390px] h-[844px] bg-gray-200 rounded-[3rem] overflow-hidden shadow-2xl border-[8px] border-gray-900">
+<!-- Background Mockup -->
+<div class="absolute inset-0 bg-white p-6 opacity-40">
+<div class="h-8 w-32 bg-gray-300 rounded mb-4"></div>
+<div class="space-y-4">
+<div class="h-24 bg-gray-200 rounded-xl"></div>
+<div class="h-24 bg-gray-200 rounded-xl"></div>
+<div class="h-24 bg-gray-200 rounded-xl"></div>
+</div>
+</div>
+<!-- Dim Overlay -->
+<div class="absolute inset-0 bg-black/40 z-10"></div>
+<!-- Bottom Sheet Modal -->
+<div class="absolute bottom-0 left-0 w-full h-[92%] bg-surface rounded-t-[16px] z-20 flex flex-col shadow-[0_-8px_30px_rgb(0,0,0,0.12)] bottom-sheet" id="student-profile-sheet">
+<!-- Drag Handle & Header -->
+<div class="flex flex-col items-center pt-3 pb-2 sticky top-0 bg-surface z-30 rounded-t-[16px]">
+<div class="w-10 h-1 bg-outline-variant rounded-full mb-4"></div>
+<div class="w-full px-6 flex justify-between items-center h-10">
+<h1 class="font-headline-md text-headline-md text-text-primary text-lg">Edit Student Profile</h1>
+<button class="p-2 -mr-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">close</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Body -->
+<div class="flex-1 overflow-y-auto no-scrollbar px-6 pb-4">
+<!-- Profile Photo Upload -->
+<div class="flex flex-col items-center mt-4 mb-8">
+<div class="relative group">
+<div class="w-24 h-24 rounded-full bg-surface-container-high border-2 border-outline flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a young male student wearing a crisp white school uniform, set against a solid neutral studio background. The lighting is soft and even, highlighting a friendly and studious expression. The overall style is high-end corporate photography, maintaining a minimalist and academic aesthetic with a focused, sharp resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ-UCy1_zb8zpGS-XHe9jICeSf5JPv5ZF0WFdN76MewbpBkAFyPg9OpuYn1gLdq5wuTVZrq9akSJVM39xvYu5GWPYChxM24f0nKWt6pbKdWlVJN1b0styCP6Tm-zo7St0D7gwQlywb1-YoZ0Fyk_xMukPtPGS5LDgpGG4h06_QkPQ46QG_Aopkd9tkv9W2P-TgNFB4sQXx2u6LJZP3pUnX-Y8ayZTvDefOcKMcmS4ziwuSIt5j-GwTZl5kw3K6gz4EZ1LMGB2nZQ"/>
+</div>
+<button class="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full border-2 border-surface flex items-center justify-center text-white shadow-sm hover:bg-primary-container transition-colors active:scale-90">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</button>
+</div>
+<p class="mt-3 font-body-md text-body-md text-text-secondary">Upload JPG or PNG, max 2MB</p>
+<div class="mt-2 px-3 py-1 bg-surface-container rounded-full">
+<span class="font-label-sm text-label-sm text-primary tracking-wider">ADM-2026-001</span>
+</div>
+</div>
+<!-- Section: Personal Information -->
+<div class="mb-8">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-4">Personal Information</h2>
+<div class="space-y-4">
+<!-- First Name -->
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">First Name</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline bg-surface text-text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none" type="text" value="Kwame"/>
+</div>
+<!-- Last Name -->
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">Last Name</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline bg-surface text-text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none" type="text" value="Mensah"/>
+</div>
+<!-- Gender -->
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">Gender</label>
+<div class="relative">
+<select class="w-full h-11 px-4 rounded-lg border border-outline bg-surface text-text-primary focus:border-primary focus:ring-1 focus:ring-primary appearance-none outline-none">
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Date of Birth -->
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">Date of Birth</label>
+<div class="relative">
+<input class="w-full h-11 px-4 rounded-lg border border-outline bg-surface text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="date" value="2008-05-14"/>
+</div>
+</div>
+<!-- Residential Address -->
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">Residential Address</label>
+<textarea class="w-full p-4 rounded-lg border border-outline bg-surface text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none" rows="3">No. 45 Oak Street, East Legon, Accra, Ghana</textarea>
+</div>
+</div>
+</div>
+<!-- Section: Academic Details -->
+<div class="mb-8">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-4">Academic Details</h2>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-3 border-b border-outline">
+<span class="font-body-md text-body-md text-on-surface-variant">Current Class</span>
+<span class="font-body-md text-body-md text-text-primary font-semibold">Grade 10 - Business</span>
+</div>
+<div class="flex justify-between items-center py-3 border-b border-outline">
+<span class="font-body-md text-body-md text-on-surface-variant">Admission Date</span>
+<span class="font-body-md text-body-md text-text-primary font-semibold">Sept 01, 2023</span>
+</div>
+</div>
+</div>
+<!-- Section: Guardian Information -->
+<div class="mb-8">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-4">Guardian Information</h2>
+<div class="p-4 rounded-lg border border-outline bg-surface-bright flex items-center justify-between group hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-body-md text-body-md text-text-primary font-bold">Daniel Mensah</span>
+<span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-[10px] rounded uppercase">Father</span>
+</div>
+<span class="font-label-md text-label-md text-text-secondary">+233 24 123 4567</span>
+</div>
+</div>
+<button class="text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<button class="mt-4 flex items-center gap-2 text-primary hover:text-primary-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span class="font-label-md text-label-md font-bold">Add Guardian</span>
+</button>
+</div>
+</div>
+<!-- Sticky Footer -->
+<div class="p-6 bg-surface border-t border-outline flex flex-col gap-3 sticky bottom-0 z-30">
+<button class="w-full h-[48px] bg-primary-container text-white rounded-lg font-bold hover:bg-primary transition-all active:scale-[0.98] duration-100 flex items-center justify-center">
+                    Save Changes
+                </button>
+<button class="w-full h-[48px] border border-outline text-text-primary rounded-lg font-bold hover:bg-surface-container transition-all active:scale-[0.98] duration-100 flex items-center justify-center">
+                    Cancel
+                </button>
+</div>
+</div>
+</div>
+<script>
+        // Simple logic for the sheet micro-interactions
+        const sheet = document.getElementById('student-profile-sheet');
+        let isClosing = false;
+
+        document.querySelector('button:has(.material-symbols-outlined:contains("close"))')?.addEventListener('click', () => {
+            sheet.style.transform = 'translateY(100%)';
+        });
+
+        // Search for the Cancel button by text and add click listener
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.innerText === 'Cancel') {
+                btn.addEventListener('click', () => {
+                    sheet.style.transform = 'translateY(100%)';
+                });
+            }
+        });
+
+        // Drag handle feedback (Visual only for this demo)
+        const handle = sheet.querySelector('.rounded-full.mb-4');
+        handle.addEventListener('mousedown', () => {
+            sheet.classList.add('cursor-grabbing');
+        });
+        window.addEventListener('mouseup', () => {
+            sheet.classList.remove('cursor-grabbing');
+        });
+    </script>
+</body></html>

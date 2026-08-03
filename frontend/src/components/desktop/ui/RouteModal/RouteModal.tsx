@@ -59,6 +59,7 @@ export function RouteModal({ children }: { children: React.ReactNode }) {
         style={contentWidth ? { width: `min(${contentWidth}px, min(1080px, 100%))` } : undefined}
         onClick={(event) => event.stopPropagation()}
       >
+        <div className={styles.dragHandle} aria-hidden />
         <button className={styles.closeBtn} onClick={close} type="button" aria-label="Close">
           <X size={20} />
         </button>
