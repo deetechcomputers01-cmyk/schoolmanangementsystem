@@ -113,9 +113,15 @@ export function GradebookContent({
     const next: Record<string, ScoreEntry> = {};
 
     students.forEach((student) => {
+      // `createGrade` always inserts a new row rather than updating in place,
+      // so a student can have several historical grades for the same
+      // subject/term. `existingGrades` (listGrades()) already arrives sorted
+      // createdAt-desc, so the FIRST match is the most recent save — the one
+      // that should display. Do not re-sort by score: picking the
+      // highest-ever score instead of the latest one means a corrected
+      // (lowered) grade would never actually take effect on screen.
       const match = existingGrades
-        .filter((grade) => grade.studentId === student.studentId && grade.subjectId === selectedSubject && grade.term === term)
-        .sort((left, right) => right.score - left.score)[0];
+        .find((grade) => grade.studentId === student.studentId && grade.subjectId === selectedSubject && grade.term === term);
 
       if (match) {
         const classScore = Math.round(match.score * 0.3);

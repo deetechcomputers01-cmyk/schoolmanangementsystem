@@ -71,12 +71,59 @@ function exportGradebookCSV(classPerf: ClassPerf[], subjectPerf: SubjectPerf[], 
   URL.revokeObjectURL(url);
 }
 
+const REPORT_TYPES = ["Full Term Report", "Subject Summary", "Class Comparison"] as const;
+type ReportType = typeof REPORT_TYPES[number];
+
+// The "Generate Report" modal used to be pure decoration — uncontrolled
+// selects whose values were never read, and a Generate button that just
+// closed the modal with no output at all, on both desktop and mobile.
+// This builds a real CSV from the exact filters the user picked, reusing
+// the same section-writer logic as the (already-working) header Export
+// button, just scoped to the chosen Academic Level / Report Type.
+function generateFilteredReport(
+  level: string, type: ReportType,
+  classPerf: ClassPerf[], subjectPerf: SubjectPerf[], gradeDist: GradeDist[], gradingScale: GradeBand[],
+) {
+  const scopedClassPerf = level && level !== "All Levels" ? classPerf.filter((c) => c.className === level) : classPerf;
+  const sections: string[] = [];
+  if (type === "Full Term Report" || type === "Class Comparison") {
+    sections.push("Class Performance");
+    sections.push(["Class", "Students", "Average", "Grade", "Status"].join(","));
+    scopedClassPerf.forEach((c) => sections.push([`"${c.className}"`, c.studentCount, c.avg.toFixed(1), c.gradeLabel, c.status].join(",")));
+    sections.push("");
+  }
+  if (type === "Full Term Report" || type === "Subject Summary") {
+    sections.push("Subject Performance");
+    sections.push(["Subject", "Average", "Grade"].join(","));
+    subjectPerf.forEach((s) => sections.push([`"${s.name}"`, s.avg.toFixed(1), gradeFromScore(s.avg, 100, gradingScale)].join(",")));
+    sections.push("");
+  }
+  if (type === "Full Term Report") {
+    sections.push("Grade Distribution");
+    sections.push(["Grade", "Count", "Percentage"].join(","));
+    gradeDist.forEach((d) => sections.push([d.grade, d.count, `${d.pct}%`].join(",")));
+  }
+  const blob = new Blob([sections.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const fileLevel = level && level !== "All Levels" ? `-${level.replace(/\s+/g, "_")}` : "";
+  a.href = url; a.download = `gradebook-report-${type.toLowerCase().replace(/\s+/g, "-")}${fileLevel}.csv`; a.click();
+  URL.revokeObjectURL(url);
+}
+
 export function GradebookReportsContent(props: GradebookReportsProps) {
   const { overallAvg, overallLabel, readinessPct, readinessSubmitted, readinessTotal, topPerformers, gradeDist, subjectPerf, classPerf, gradingScale } = props;
 
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [classFilter, setClassFilter] = useState("");
   const [subjectSort, setSubjectSort] = useState<"grade" | "name">("grade");
+  const [genLevel, setGenLevel] = useState("All Levels");
+  const [genType, setGenType] = useState<ReportType>("Full Term Report");
+
+  function handleGenerate() {
+    generateFilteredReport(genLevel, genType, classPerf, subjectPerf, gradeDist, gradingScale);
+    setShowGenerateModal(false);
+  }
 
   const filteredClasses = useMemo(() => {
     const q = classFilter.toLowerCase();
@@ -300,17 +347,10 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
               </button>
             </div>
             <div className={styles.modalBody}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Select Target Year/Term</label>
-                <select className={styles.formSelect}>
-                  <option>2026/2027 Academic Year - Term 1</option>
-                  <option>2026/2027 Academic Year - Term 2 (Preview)</option>
-                </select>
-              </div>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>Academic Level</label>
-                  <select className={styles.formSelect}>
+                  <select className={styles.formSelect} value={genLevel} onChange={(e) => setGenLevel(e.target.value)}>
                     <option>All Levels</option>
                     {classPerf.map(c => (
                       <option key={c.classId}>{c.className}</option>
@@ -319,17 +359,15 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>Report Type</label>
-                  <select className={styles.formSelect}>
-                    <option>Full Term Report</option>
-                    <option>Subject Summary</option>
-                    <option>Class Comparison</option>
+                  <select className={styles.formSelect} value={genType} onChange={(e) => setGenType(e.target.value as ReportType)}>
+                    {REPORT_TYPES.map((t) => <option key={t}>{t}</option>)}
                   </select>
                 </div>
               </div>
             </div>
             <div className={styles.modalFooter}>
               <button className={styles.btnCancel} onClick={() => setShowGenerateModal(false)}>Cancel</button>
-              <button className={styles.btnPrimary} onClick={() => setShowGenerateModal(false)}>
+              <button className={styles.btnPrimary} onClick={handleGenerate}>
                 <BarChart2 size={15} />
                 Generate
               </button>
@@ -338,8 +376,10 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
         </div>
       )}
 
-      {/* Report Configuration sheet — mobile (desktop's Generate button has no real backend wiring — it
-          just closes the modal; this mirrors that exact non-functional parity, no fetch invented) */}
+      {/* Report Configuration sheet — mobile. Generate now downloads a real
+          CSV scoped to the picked Academic Level / Report Type (see
+          generateFilteredReport above) — this used to be a no-op on both
+          platforms, not something mobile-specific. */}
       <div className="mobileOnly">
         <MobileSheet
           open={showGenerateModal}
@@ -347,21 +387,14 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
           title="Report Configuration"
           footer={<>
             <button type="button" className={kit.btnOutline} onClick={() => setShowGenerateModal(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={() => setShowGenerateModal(false)}>
+            <button type="button" className={kit.btnPrimary} onClick={handleGenerate}>
               Generate Report
             </button>
           </>}
         >
           <div className={kit.field}>
-            <label>Select Target Year/Term</label>
-            <select className={kit.select}>
-              <option>2026/2027 Academic Year - Term 1</option>
-              <option>2026/2027 Academic Year - Term 2 (Preview)</option>
-            </select>
-          </div>
-          <div className={kit.field}>
             <label>Academic Level</label>
-            <select className={kit.select}>
+            <select className={kit.select} value={genLevel} onChange={(e) => setGenLevel(e.target.value)}>
               <option>All Levels</option>
               {classPerf.map(c => (
                 <option key={c.classId}>{c.className}</option>
@@ -370,10 +403,8 @@ export function GradebookReportsContent(props: GradebookReportsProps) {
           </div>
           <div className={kit.field}>
             <label>Report Type</label>
-            <select className={kit.select}>
-              <option>Full Term Report</option>
-              <option>Subject Summary</option>
-              <option>Class Comparison</option>
+            <select className={kit.select} value={genType} onChange={(e) => setGenType(e.target.value as ReportType)}>
+              {REPORT_TYPES.map((t) => <option key={t}>{t}</option>)}
             </select>
           </div>
         </MobileSheet>

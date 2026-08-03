@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { currency } from "@backend/utils";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { SwipeRow } from "@/components/mobile/ui/SwipeRow/SwipeRow";
 import type { FeesInvoiceRow } from "@/screens/desktop/FeesScreen/FeesPaymentsContent";
 import styles from "./MobileFeesContent.module.css";
 
@@ -36,6 +37,9 @@ const METHOD_LABEL: Record<string, string> = { cash: "Cash", mobile_money: "Mobi
 
 function fmtGHS(v: number) {
   return v.toLocaleString("en-GH", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function initials(name: string) {
+  return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
 export function MobileFeesContent({ rows, stats, classes, recentPayments }: Props) {
@@ -163,67 +167,81 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
           const isOpen = openId === r.id;
           const progressPct = r.amountDue > 0 ? Math.min(100, Math.round((r.amountPaid / r.amountDue) * 100)) : 0;
           return (
-            <div
+            <SwipeRow
               key={r.id}
-              className={`${styles.card} ${r.status === "overdue" ? styles.cardOverdue : ""} ${isOpen ? styles.cardOpen : ""}`}
-              role="button"
-              tabIndex={0}
-              onClick={() => setOpenId(isOpen ? null : r.id)}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenId(isOpen ? null : r.id); } }}
+              rightActions={[
+                ...(r.status !== "paid" ? [{ key: "pay", icon: Wallet, label: "Record Payment", tone: "primary" as const, onClick: () => openPaySheet(r) }] : []),
+                { key: "view", icon: Eye, label: "View Invoice", tone: "soft" as const, onClick: () => router.push(`/fees?studentId=${r.studentId}`) },
+              ]}
+              leftActions={[
+                { key: "print", icon: Printer, label: "Print Receipt", onClick: () => showToast("Print Receipt is not available yet.") },
+                ...(r.status !== "paid" ? [{ key: "remind", icon: Bell, label: "Send Reminder", onClick: () => showToast("Send Reminder is not available yet.") }] : []),
+              ]}
             >
-              <div className={styles.cardHead}>
-                <div className={styles.cardHeadLeft}>
-                  <h4 className={styles.cardName}>{r.studentName}</h4>
-                  <p className={styles.cardSub}>{r.className} • {r.invoiceNo}</p>
+              <div
+                className={`${styles.card} ${r.status === "overdue" ? styles.cardOverdue : ""} ${isOpen ? styles.cardOpen : ""}`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setOpenId(isOpen ? null : r.id)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenId(isOpen ? null : r.id); } }}
+              >
+                <div className={styles.cardTop}>
+                  <div className={styles.cardLeft}>
+                    <span className={styles.avatar}>{initials(r.studentName)}</span>
+                    <div className={styles.cardInfo}>
+                      <h4 className={styles.cardName}>{r.studentName}</h4>
+                      <p className={styles.cardSub}>{r.className} • {r.invoiceNo}</p>
+                    </div>
+                  </div>
+                  <div className={styles.cardTopRight}>
+                    <span className={`${styles.statusPill} ${styles[`status_${r.status}`]}`}>
+                      {r.status === "paid" ? "Paid" : r.status === "overdue" ? "Overdue" : "Pending"}
+                    </span>
+                    <button
+                      type="button"
+                      className={styles.moreBtn}
+                      onClick={(e) => { e.stopPropagation(); setOpenId(isOpen ? null : r.id); }}
+                      aria-label="More actions"
+                    >
+                      <MoreVertical size={18} />
+                    </button>
+                  </div>
                 </div>
-                <span className={`${styles.statusPill} ${styles[`status_${r.status}`]}`}>
-                  {r.status === "paid" ? "Paid" : r.status === "overdue" ? "Overdue" : "Pending"}
-                </span>
-                <button
-                  type="button"
-                  className={styles.moreBtn}
-                  onClick={(e) => { e.stopPropagation(); setOpenId(isOpen ? null : r.id); }}
-                  aria-label="More actions"
-                >
-                  <MoreVertical size={18} />
-                </button>
-              </div>
 
-              {r.status === "paid" ? (
-                <div className={styles.cardRow}>
-                  <div><p className={styles.cardLabel}>Total Amount</p><p className={styles.cardAmount}>{currency(r.amountDue)}</p></div>
-                </div>
-              ) : (
-                <>
+                {r.status === "paid" ? (
                   <div className={styles.cardRow}>
-                    <div><p className={styles.cardLabel}>Invoice Total</p><p className={styles.cardAmountSm}>{currency(r.amountDue)}</p></div>
-                    <div className={styles.cardRowRight}><p className={styles.cardLabel}>Balance Due</p><p className={`${styles.cardAmount} ${r.status === "overdue" ? styles.textBad : styles.textWarn}`}>{currency(r.balance)}</p></div>
+                    <div><p className={styles.cardLabel}>Total Amount</p><p className={styles.cardAmount}>{currency(r.amountDue)}</p></div>
                   </div>
-                  {r.amountPaid > 0 && (
-                    <div className={styles.progressTrack}><div className={styles.progressFill} style={{ width: `${progressPct}%` }} /></div>
-                  )}
-                </>
-              )}
+                ) : (
+                  <>
+                    <div className={styles.cardRow}>
+                      <div><p className={styles.cardLabel}>Invoice Total</p><p className={styles.cardAmountSm}>{currency(r.amountDue)}</p></div>
+                      <div className={styles.cardRowRight}><p className={styles.cardLabel}>Balance Due</p><p className={`${styles.cardAmount} ${r.status === "overdue" ? styles.textBad : styles.textWarn}`}>{currency(r.balance)}</p></div>
+                    </div>
+                    {r.amountPaid > 0 && (
+                      <div className={styles.progressTrack}><div className={styles.progressFill} style={{ width: `${progressPct}%` }} /></div>
+                    )}
+                  </>
+                )}
 
-              {isOpen && (
-                <div className={styles.expandActions} onClick={(e) => e.stopPropagation()}>
-                  {r.status !== "paid" && (
-                    <button type="button" className={styles.expandBtnPrimary} onClick={() => openPaySheet(r)}>
-                      <Wallet size={15} /> Record Payment
-                    </button>
-                  )}
-                  <div className={styles.expandGrid}>
-                    <Link href={`/fees?studentId=${r.studentId}`} className={styles.expandBtn}><Eye size={15} /> View Invoice</Link>
-                    <button type="button" className={styles.expandBtn} onClick={() => showToast("Print Receipt is not available yet.")}><Printer size={15} /> Print Receipt</button>
+                {isOpen && (
+                  <div className={styles.cardActionRow} onClick={(e) => e.stopPropagation()}>
+                    {r.status !== "paid" && (
+                      <button type="button" className={styles.cardActionBtn} onClick={() => openPaySheet(r)}>
+                        <Wallet size={15} /> Record Payment
+                      </button>
+                    )}
+                    <Link href={`/fees?studentId=${r.studentId}`} className={styles.cardActionBtn}><Eye size={15} /> View Invoice</Link>
+                    <button type="button" className={styles.cardActionBtn} onClick={() => showToast("Print Receipt is not available yet.")}><Printer size={15} /> Print Receipt</button>
+                    {r.status !== "paid" && (
+                      <button type="button" className={styles.cardActionBtn} onClick={() => showToast("Send Reminder is not available yet.")}>
+                        <Bell size={15} /> Send Reminder
+                      </button>
+                    )}
                   </div>
-                  {r.status !== "paid" && (
-                    <button type="button" className={styles.expandBtn} onClick={() => showToast("Send Reminder is not available yet.")}>
-                      <Bell size={15} /> Send Reminder
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </SwipeRow>
           );
         })}
       </div>
