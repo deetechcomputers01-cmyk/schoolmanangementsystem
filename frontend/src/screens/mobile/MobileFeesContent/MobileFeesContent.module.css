@@ -77,12 +77,11 @@
   gap: 10px;
   padding: 14px;
   border: 1px solid var(--clr-app-border);
-  border-left: 4px solid transparent;
   border-radius: var(--radius-sm);
   background: var(--clr-app-surface);
   cursor: pointer;
 }
-.cardOverdue { border-left-color: var(--clr-error); }
+.cardOverdue { border-color: var(--clr-error); }
 .cardOpen { border-color: var(--clr-app-accent); }
 
 .cardTop { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
