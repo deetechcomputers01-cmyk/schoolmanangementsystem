@@ -3,9 +3,9 @@ import type { SessionUser } from "@/types/auth";
 import { assertCan } from "../auth/rbac";
 import * as repo from "../repositories/student.repository";
 import { audit } from "./audit.service";
+import { prisma } from "../prisma";
 
 type StudentInput = {
-  admissionNo: string;
   firstName: string;
   lastName: string;
   gender: string;
@@ -16,13 +16,19 @@ type StudentInput = {
   guardian?: { name: string; phone: string; email?: string; relation: string };
 };
 
-export const listStudents = repo.listStudents;
+export function listStudents(classIds?: string[]) { return repo.listStudents(classIds); }
 export const getStudent = repo.getStudent;
+
+async function nextAdmissionNo() {
+  const year = new Date().getFullYear();
+  const count = await prisma.student.count({ where: { admissionNo: { startsWith: `ADM-${year}-` } } });
+  return `ADM-${year}-${String(count + 1).padStart(3, "0")}`;
+}
 
 export async function createStudent(user: SessionUser | null, input: StudentInput) {
   assertCan(user, "students:write");
   const data: Prisma.StudentCreateInput = {
-    admissionNo: input.admissionNo,
+    admissionNo: await nextAdmissionNo(),
     firstName: input.firstName,
     lastName: input.lastName,
     gender: input.gender,
@@ -42,7 +48,6 @@ export async function createStudent(user: SessionUser | null, input: StudentInpu
 export async function updateStudent(user: SessionUser | null, id: string, input: Partial<StudentInput>) {
   assertCan(user, "students:write");
   const data: Prisma.StudentUpdateInput = {
-    admissionNo: input.admissionNo,
     firstName: input.firstName,
     lastName: input.lastName,
     gender: input.gender,

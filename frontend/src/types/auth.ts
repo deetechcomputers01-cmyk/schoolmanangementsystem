@@ -5,6 +5,7 @@ export type SessionUser = {
   name: string;
   email: string;
   role: Role;
+  rememberDevice?: boolean;
 };
 
 export type JwtPayload = SessionUser & {

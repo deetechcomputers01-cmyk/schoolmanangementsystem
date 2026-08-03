@@ -1,7 +1,27 @@
+import type { Role } from "@prisma/client";
 import { prisma } from "../prisma";
 import type { SessionUser } from "@/types/auth";
 import { assertCan } from "../auth/rbac";
 import { audit } from "./audit.service";
+import { notifyUsers } from "./notification.service";
+import { getSettings } from "./settings.service";
+
+async function notifyAnnouncementRecipients(ann: { id: string; title: string; body: string; audience: string[] }) {
+  const settings = await getSettings();
+  const ex = (settings.extra ?? {}) as Record<string, unknown>;
+  if (ex.staffAnnouncements === false) return;
+
+  const users = await prisma.user.findMany({
+    where: ann.audience.length > 0 ? { role: { in: ann.audience as Role[] } } : {},
+    select: { id: true },
+  });
+  await notifyUsers(users.map((u) => u.id), {
+    type: "staff_announcement",
+    title: ann.title,
+    body: ann.body.length > 140 ? `${ann.body.slice(0, 140)}…` : ann.body,
+    link: "/announcements",
+  });
+}
 
 const authorSelect = { author: { select: { id: true, name: true, role: true } } } as const;
 
@@ -47,6 +67,7 @@ export async function createAnnouncement(
     include: authorSelect
   });
   await audit(actor, "create_announcement", "Announcement", ann.id, { title: ann.title });
+  await notifyAnnouncementRecipients(ann);
   return ann;
 }
 

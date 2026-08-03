@@ -14,10 +14,6 @@ export async function AnnouncementsScreen() {
   const list = canManage ? await listAllAnnouncements() : await listAnnouncements(user?.role);
   return (
     <div className={styles.root}>
-      <section className="mb-6">
-        <p className="label-sm text-emerald">Communications</p>
-        <h1 className="font-heading text-[32px] font-semibold leading-10 text-navy">Announcements</h1>
-      </section>
       <AnnouncementsClient initialList={list} canManage={canManage} currentRole={user?.role ?? ""} />
     </div>
   );

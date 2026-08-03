@@ -1,11 +1,22 @@
-﻿/**
- * LoadingState.module.css — scoped to LoadingState component only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- * Use CSS custom properties from tokens.css; never hard-code raw values here.
- */
-
 .root {
-  /* Centered spinner + label for async data loads on mobile views. */
-  /* Design fills all visual properties below */
-  min-height: 44px; /* Minimum tap target */
+  display: flex;
+  min-height: 160px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--on-surface-variant, #42484b);
+}
+
+.root::before {
+  width: 20px;
+  height: 20px;
+  content: "";
+  border: 2px solid var(--outline-variant, #c2c7cb);
+  border-top-color: var(--primary-container, #001f29);
+  border-radius: 999px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -1,13 +1,5 @@
-﻿/**
- * reset-password/page.tsx — entry point for /reset-password.
- */
-import { headers } from "next/headers";
-import { getDeviceType } from "@/lib/device";
-import { ResetPasswordScreen }       from "@/screens/desktop/ResetPasswordScreen/ResetPasswordScreen";
-import { MobileResetPasswordScreen } from "@/screens/mobile/MobileResetPasswordScreen/MobileResetPasswordScreen";
+import { redirect } from "next/navigation";
 
 export default function ResetPasswordPage() {
-  const ua = headers().get("user-agent") ?? "";
-  const device = getDeviceType(ua);
-  return device === "mobile" ? <MobileResetPasswordScreen /> : <ResetPasswordScreen />;
+  redirect("/forgot-password");
 }

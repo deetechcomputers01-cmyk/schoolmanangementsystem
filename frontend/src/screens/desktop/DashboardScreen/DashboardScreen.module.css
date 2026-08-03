@@ -1,25 +1,850 @@
-﻿/**
- * DashboardScreen.module.css — scoped to DashboardScreen only.
- * DESIGN PENDING — Stitch "Institutional Excellence" desktop spec.
- * All visual values come from tokens.css custom properties.
- */
-
-.root {
-  width: 100%;
-  min-height: 100%;
-  /* Design fills: background, padding */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
 }
 
-/* ── Placeholder (remove when Stitch design is applied) ── */
-.placeholder {
+.dashboardToolbar,
+.toolbarActions,
+.surfaceHeader,
+.studentTableToolbar,
+.studentTableFooter,
+.tableActions,
+.syncCard {
   display: flex;
+  align-items: center;
+}
+
+.dashboardToolbar {
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 16px 18px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+
+.toolbarLead {
+  display: grid;
+  gap: 8px;
+}
+
+.toolbarHint {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.toolbarActions {
+  gap: 8px;
+}
+
+.selectWrap,
+.cardSelectWrap {
+  position: relative;
+}
+
+.periodSelect,
+.cardSelect {
+  height: 34px;
+  padding: 0 28px 0 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  outline: 0;
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  cursor: pointer;
+  font-size: var(--text-xs);
+}
+
+.periodSelect:focus,
+.cardSelect:focus {
+  border-color: var(--clr-app-accent);
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--clr-app-text);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-text);
+  color: #ffffff;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.downloadButton:hover {
+  background: #2b2b35;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  display: flex;
+  min-width: 0;
+  min-height: 126px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: 0 1px 2px rgba(32, 32, 55, 0.03);
+  color: var(--clr-app-text);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.statCard:hover {
+  border-color: #cfcaff;
+  box-shadow: 0 4px 10px rgba(91, 80, 245, 0.08);
+  transform: translateY(-1px);
+}
+
+.statTop {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statIcon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+}
+
+.statLabel {
+  overflow: hidden;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statValue {
+  display: block;
+  margin-top: 12px;
+  overflow: hidden;
+  color: var(--clr-app-text);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statSub {
+  display: block;
+  margin-top: 6px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.statProgress {
+  display: block;
+  height: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #e5e7eb;
+}
+
+.statProgress span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+}
+
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 24px;
+}
+
+.commsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 24px;
+}
+
+.surfaceCard {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow: visible;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: 0 1px 2px rgba(32, 32, 55, 0.025);
+}
+
+.surfaceHeader {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.surfaceTitle {
+  color: var(--clr-app-text);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.toolbarMini {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid #d8d4ff;
+  border-radius: var(--radius-sm);
+  background: #f3f1ff;
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cardSelect {
+  height: 30px;
+  font-size: var(--text-xs);
+}
+
+.iconAction {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+
+.iconAction:hover {
+  border-color: var(--clr-app-accent);
+  color: var(--clr-app-accent);
+}
+
+.attendanceChart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 192px;
+  min-height: 192px;
+}
+
+.chartScale {
+  display: none;
+}
+
+.attendancePlot {
+  position: relative;
+  grid-row: 1;
+  min-width: 0;
+  padding-bottom: 0;
+}
+
+.chartGridLines {
+  display: none;
+}
+
+.chartEmpty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.barColumns {
+  position: absolute;
+  inset: 0 2px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.barColumn {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.barPair {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+}
+
+.attendanceBar {
+  display: block;
+  width: min(24px, 35%);
+  min-height: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.presentBar { background: var(--clr-app-accent); }
+.absentBar { background: var(--clr-app-info); }
+
+.barLabel {
+  display: none;
+}
+
+.chartLegend {
+  display: none;
+}
+
+.chartLegend span,
+.genderLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chartLegend i,
+.genderLegend i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legendPresent,
+.legendBoys { background: var(--clr-app-accent); }
+.legendAbsent,
+.legendGirls { background: var(--clr-app-info); }
+
+.genderChart {
+  display: flex;
+  min-height: 192px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-2);
-  padding: var(--sp-10);
-  min-height: 60vh;
-  opacity: 0.5;
+  gap: 16px;
 }
-.label  { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
-.hint   { font-size: var(--text-sm); }
+
+.donut {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+}
+
+.donutHole {
+  display: flex;
+  width: 96px;
+  height: 96px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--clr-app-surface);
+}
+
+.donutHole strong {
+  color: var(--clr-app-text);
+  font-size: var(--text-xl);
+  line-height: 24px;
+}
+
+.donutHole span {
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.genderLegend {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.genderLegend strong {
+  margin-left: 4px;
+  color: var(--clr-app-text);
+  font-weight: 600;
+}
+
+.cardLink,
+.inlineLink {
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.cardLink:hover,
+.inlineLink:hover { text-decoration: underline; }
+
+.tableSurface {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tableSurface .surfaceHeader {
+  padding: 16px 16px 0;
+}
+
+.studentTableBody {
+  min-width: 0;
+}
+
+.studentTableToolbar {
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 14px 12px;
+}
+
+.tableSearch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 180px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  color: var(--clr-app-muted);
+}
+
+.tableSearch:focus-within {
+  border-color: var(--clr-app-accent);
+  box-shadow: 0 0 0 2px var(--clr-app-accent-soft);
+}
+
+.tableSearch input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+}
+
+.tableSearch input::placeholder { color: var(--clr-app-muted); }
+
+.tableSearch button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+
+.tableFilterWrap { position: relative; }
+
+.tableFilterButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.tableFilterButton:hover,
+.tableFilterActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent-soft); color: var(--clr-app-accent); }
+
+.filterMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: var(--z-dropdown);
+  display: grid;
+  width: 146px;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.filterMenu span {
+  padding: 4px 6px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.filterMenu button {
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-app-text);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  padding: 6px;
+  text-align: left;
+}
+
+.filterMenu button:hover { background: var(--clr-app-accent-soft); }
+
+.studentTableScroll,
+.paymentTableWrap { overflow-x: auto; }
+
+.studentTable,
+.paymentTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.studentTable { min-width: 700px; }
+
+.studentTable th,
+.paymentTable th {
+  padding: 9px 12px;
+  border-top: 1px solid var(--clr-app-border);
+  border-bottom: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.studentTable td,
+.paymentTable td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--clr-app-border);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.studentTable tbody tr:last-child td,
+.paymentTable tbody tr:last-child td { border-bottom: 0; }
+
+.studentTable tbody tr:hover,
+.paymentTable tbody tr:hover { background: #fcfcff; }
+
+.studentNameCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--clr-app-text);
+  font-weight: 600;
+}
+
+.studentPhoto,
+.studentInitials {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.studentPhoto {
+  object-fit: cover;
+}
+
+.studentInitials {
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.mutedCell { color: var(--clr-app-muted) !important; }
+
+.tableStatus,
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.tableStatusPaid,
+.statusPaid { border: 1px solid #a9e8c5; background: #f0fff6; color: #1ba45a; }
+.tableStatusPartial,
+.statusPartial { border: 1px solid #f2d69e; background: #fff9ed; color: #b67814; }
+.tableStatusUnpaid,
+.statusUnpaid { border: 1px solid #f4b9c0; background: #fff3f4; color: #cb4d5b; }
+.tableStatusNone { border: 1px solid var(--clr-app-border); background: var(--clr-app-surface-alt); color: var(--clr-app-muted); }
+
+.tableActions { gap: 4px; }
+
+.tableAction {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  color: var(--clr-app-muted);
+}
+
+.tableAction:hover { border-color: var(--clr-app-accent); color: var(--clr-app-accent); }
+
+.studentTableFooter {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--clr-app-border);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.pagination { gap: 4px; }
+
+.pagination button,
+.pagination span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+}
+
+.pagination button { cursor: pointer; }
+.pagination button:disabled { cursor: not-allowed; opacity: 0.4; }
+.pagination span { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+
+.lowerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(240px, 1fr);
+  gap: 24px;
+}
+
+.communicationStack {
+  display: grid;
+  gap: 10px;
+}
+
+.communicationItem {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+
+.communicationLabel {
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.communicationValue {
+  color: var(--clr-app-text);
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.communicationMeta {
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  line-height: 16px;
+}
+
+.paymentTable th,
+.paymentTable td { padding-left: 10px; padding-right: 10px; }
+
+.paymentStudent { font-weight: 600; }
+.paymentAmount { font-variant-numeric: tabular-nums; }
+.paymentAction { text-align: right; }
+
+.quickActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.quickAction {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.quickAction:hover { border-color: var(--clr-app-accent); background: var(--clr-app-accent-soft); }
+.quickActionIcon { color: var(--clr-app-accent); }
+
+.systemGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.systemMetric,
+.auditMetric {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+
+.systemLabel { color: var(--clr-app-muted); font-size: var(--text-xs); }
+.systemMetric strong,
+.auditMetric strong { color: var(--clr-app-text); font-size: var(--text-lg); }
+.systemValueDanger { color: var(--clr-error) !important; }
+.auditMetric small { color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.syncCard {
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+}
+
+.syncCard > span:nth-child(2) {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.syncCard strong { font-size: var(--text-xs); }
+.syncCard small { color: var(--clr-app-muted); font-size: var(--text-xs); }
+.syncCard:hover { border-color: var(--clr-app-accent); }
+.syncDot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: var(--clr-success); }
+.syncArrow { color: var(--clr-app-muted); font-size: var(--text-xl); line-height: 1; }
+
+.footer {
+  padding: 2px 0 8px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.accountUnlinked {
+  display: grid;
+  min-height: 60vh;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  color: var(--clr-app-text);
+  text-align: center;
+}
+
+.accountUnlinkedIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff9ed;
+  color: var(--clr-warning);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.accountUnlinked p { max-width: 380px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.emptyState { padding: 24px !important; color: var(--clr-app-muted) !important; text-align: center; }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Role-specific dashboards continue to use this shared spacing vocabulary. */
+.teacherStats,
+.staffStats { display: grid; gap: 12px; margin-bottom: 16px; }
+.teacherStats { grid-template-columns: repeat(4, 1fr); }
+.staffStats { grid-template-columns: repeat(3, 1fr); }
+.teacherCols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.teacherActions,
+.staffActions { display: grid; gap: 8px; }
+.teacherActions { grid-template-columns: repeat(4, 1fr); }
+.staffActions { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 1100px) {
+  .statsGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analyticsGrid,
+  .commsGrid,
+  .lowerGrid { grid-template-columns: 1fr; }
+  .systemGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 700px) {
+  .dashboardToolbar { align-items: flex-start; flex-direction: column; }
+  .toolbarActions { width: 100%; }
+  .periodSelect { flex: 1; }
+  .downloadButton { flex: 1; justify-content: center; }
+  .teacherStats,
+  .staffStats,
+  .teacherCols,
+  .teacherActions,
+  .staffActions,
+  .systemGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .statsGrid { grid-template-columns: 1fr; }
+  .studentTableToolbar { justify-content: stretch; }
+  .tableSearch { flex: 1; width: auto; }
+}

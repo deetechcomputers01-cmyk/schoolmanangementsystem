@@ -37,11 +37,10 @@ enum FeeStatus {
   paid
 }
 
-enum ApplicationStatus {
-  pending
-  approved
-  rejected
-  enrolled
+enum StudentStatus {
+  active
+  graduated
+  withdrawn
 }
 
 enum PayslipStatus {
@@ -55,17 +54,43 @@ model User {
   name         String
   email        String      @unique
   passwordHash String
+  passwordChangedAt DateTime?
   role         Role
   isActive     Boolean     @default(true)
   staff        Staff?
-  guardian     Guardian?
+  guardians    Guardian[]
   student      Student?
   auditLogs    AuditLog[]
   blockedIPs   BlockedIP[]
   createdExams          Exam[]
   announcements         Announcement[]         @relation("AnnouncementAuthor")
-  reviewedApplications  AdmissionApplication[] @relation("ApplicationReviewer")
-  disciplinaryReports   DisciplinaryRecord[]   @relation("DisciplinaryReporter")
+  notifications         Notification[]         @relation("UserNotifications")
+  sentMessages          Message[]              @relation("SentMessages")
+  receivedMessages      Message[]              @relation("ReceivedMessages")
+  calendarEvents        CalendarEvent[]        @relation("CalendarEventCreator")
+  // Helpdesk
+  submittedTickets      SupportTicket[]        @relation("TicketRequester")
+  assignedTickets       SupportTicket[]        @relation("TicketAssignee")
+  ticketMessages        TicketMessage[]        @relation("TicketMsgFrom")
+  // Document Center
+  ownedDocuments        SchoolDocument[]       @relation("DocOwner")
+  // Backup
+  initiatedBackups      BackupRecord[]         @relation("BackupInitiator")
+  // Broadcasts
+  sentBroadcasts        ParentBroadcast[]      @relation("BroadcastSender")
+  // Approvals
+  submittedApprovals    ApprovalRequest[]      @relation("ApprovalRequester")
+  approvalDecisions     ApprovalStep[]         @relation("ApprovalStepApprover")
+  // Scholarships
+  approvedScholarships  Scholarship[]          @relation("ScholarshipApprover")
+  // Expenses
+  recordedExpenses      Expense[]              @relation("ExpenseRecorder")
+  // Hostel
+  reportedHostelIncidents HostelIncident[]     @relation("HostelIncidentReporter")
+  // Canteen
+  servedMeals             MealServing[]        @relation("MealServer")
+  // Assets
+  assetMovements          AssetMovement[]      @relation("AssetMovementActor")
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
@@ -81,16 +106,27 @@ model Student {
   photoUrl    String?
   classId     String
   class       Class        @relation(fields: [classId], references: [id])
+  status      StudentStatus @default(active)
   userId      String?      @unique
   user        User?        @relation(fields: [userId], references: [id])
+  // Boarding
+  boardingType  String?   // "day" | "boarder"
+  boardingHouse String?   // e.g. "Eban House"
+  boardingRoom  String?   // e.g. "Room 12A"
   guardians           Guardian[]
   attendance          Attendance[]
   grades              Grade[]
   feeRecords          FeeRecord[]
   examScores          ExamScore[]
-  disciplinaryRecords DisciplinaryRecord[]
+  scholarships        Scholarship[]
+  allocations         Allocation[]
+  hostelIncidents     HostelIncident[]
+  mealServings        MealServing[]
   healthRecord        HealthRecord?
   bookCheckouts       BookCheckout[]
+  transport           StudentTransport[]
+  messages            Message[]
+  examAttempts        ExamAttempt[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -101,7 +137,7 @@ model Guardian {
   phone     String
   email     String?
   relation  String
-  userId    String?  @unique
+  userId    String?
   user      User?    @relation(fields: [userId], references: [id])
   studentId String
   student   Student  @relation(fields: [studentId], references: [id])
@@ -116,26 +152,41 @@ model Staff {
   lastName         String
   phone            String
   roleTitle        String
+  email            String?
+  photoUrl         String?
+  documents        Json?
   isTeaching       Boolean      @default(true)
+  staffCategory    String       @default("teaching") // "teaching"|"accounts"|"driver"|"caterer"|"nurse"|"security"|"admin"
+  notes            String?
   userId           String?      @unique
   user             User?        @relation(fields: [userId], references: [id])
   subjects         Subject[]
+  homeroomClasses  Class[]      @relation("ClassTeacher")
   salary           StaffSalary?
   payslips         Payslip[]
+  vehicles         Vehicle[]
+  visitorLogs      VisitorLog[]
+  custodianAssets  Asset[]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
 
 model Class {
-  id        String          @id @default(cuid())
-  name      String          @unique
-  level     String
-  students  Student[]
-  subjects  Subject[]
-  timetable TimetableSlot[]
-  exams     Exam[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id              String          @id @default(cuid())
+  name            String          @unique
+  level           String
+  isActive        Boolean         @default(true)
+  capacity        Int?
+  room            String?
+  order           Int?
+  classTeacherId  String?
+  classTeacher    Staff?          @relation("ClassTeacher", fields: [classTeacherId], references: [id])
+  students        Student[]
+  subjects        Subject[]
+  timetable       TimetableSlot[]
+  exams           Exam[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 model Subject {
@@ -181,16 +232,19 @@ model Grade {
 }
 
 model FeeRecord {
-  id          String    @id @default(cuid())
-  studentId   String
-  student     Student   @relation(fields: [studentId], references: [id])
-  term        String
-  description String
-  amountDue   Decimal   @db.Decimal(10, 2)
-  status      FeeStatus @default(unpaid)
-  payments    Payment[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id              String       @id @default(cuid())
+  studentId       String
+  student         Student      @relation(fields: [studentId], references: [id])
+  term            String
+  description     String
+  amountDue       Decimal      @db.Decimal(10, 2)
+  discountApplied Decimal?     @db.Decimal(10, 2)
+  scholarshipId   String?
+  scholarship     Scholarship? @relation(fields: [scholarshipId], references: [id], onDelete: SetNull)
+  status          FeeStatus    @default(unpaid)
+  payments        Payment[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Payment {
@@ -205,17 +259,20 @@ model Payment {
 }
 
 model TimetableSlot {
-  id        String   @id @default(cuid())
-  classId   String
-  class     Class    @relation(fields: [classId], references: [id])
-  subjectId String
-  subject   Subject  @relation(fields: [subjectId], references: [id])
-  day       String
-  startsAt  String
-  endsAt    String
-  room      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  classId       String
+  class         Class    @relation(fields: [classId], references: [id])
+  subjectId     String
+  subject       Subject  @relation(fields: [subjectId], references: [id])
+  day           String   // "Monday" | "Tuesday" | ... | "Friday"
+  startsAt      String   // "08:00"
+  endsAt        String   // "09:00"
+  room          String
+  recurrence    String   @default("weekly") // "weekly" | "biweekly" | "one_time"
+  effectiveDate String?  // YYYY-MM-DD; required when recurrence = "one_time"
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model BlockedIP {
@@ -242,6 +299,20 @@ model Announcement {
   updatedAt   DateTime  @updatedAt
 }
 
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // "fee_reminder" | "attendance_alert" | "exam_result" | "staff_announcement" | "system"
+  title     String
+  body      String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+}
+
 model SchoolSettings {
   id           String   @id @default("singleton")
   name         String   @default("ScholarSphere Academy")
@@ -250,28 +321,51 @@ model SchoolSettings {
   phone        String   @default("")
   email        String   @default("")
   logoUrl      String?
+  letterheadUrl String?
   reportFooter String   @default("")
   timezone     String   @default("Africa/Accra")
   gradingScale Json?
+  extra        Json?
   updatedAt    DateTime @updatedAt
 }
 
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  category    String   @default("academic")
+  date        DateTime
+  time        String?
+  endTime     String?
+  location    String?
+  audience    String?
+  approved    Boolean  @default(false)
+  createdById String
+  createdBy   User     @relation("CalendarEventCreator", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Exam {
-  id          String      @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
   termId      String?
-  term        Term?       @relation(fields: [termId], references: [id])
+  term        Term?           @relation(fields: [termId], references: [id])
   subjectId   String
-  subject     Subject     @relation(fields: [subjectId], references: [id])
+  subject     Subject         @relation(fields: [subjectId], references: [id])
   classId     String
-  class       Class       @relation(fields: [classId], references: [id])
+  class       Class           @relation(fields: [classId], references: [id])
   scheduledAt DateTime
-  maxScore    Float       @default(100)
+  maxScore    Float           @default(100)
+  isOnline    Boolean         @default(false)
+  duration    Int?            // minutes; null = untimed
   scores      ExamScore[]
+  questions   ExamQuestion[]
+  attempts    ExamAttempt[]
   createdById String
-  createdBy   User        @relation(fields: [createdById], references: [id])
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdBy   User            @relation(fields: [createdById], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 }
 
 model ExamScore {
@@ -288,15 +382,58 @@ model ExamScore {
   @@unique([examId, studentId])
 }
 
+model ExamQuestion {
+  id           String          @id @default(cuid())
+  examId       String
+  exam         Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  order        Int
+  text         String
+  type         String          @default("mcq") // mcq | short_answer
+  options      Json?           // ["A", "B", "C", "D"] for MCQ
+  correctAnswer String?        // "A" for MCQ, or model answer text
+  marks        Float           @default(1)
+  answers      StudentAnswer[]
+  createdAt    DateTime        @default(now())
+}
+
+model ExamAttempt {
+  id          String          @id @default(cuid())
+  examId      String
+  exam        Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId   String
+  student     Student         @relation(fields: [studentId], references: [id])
+  startedAt   DateTime        @default(now())
+  submittedAt DateTime?
+  score       Float?          // auto-calculated on submit for MCQ
+  answers     StudentAnswer[]
+
+  @@unique([examId, studentId])
+}
+
+model StudentAnswer {
+  id          String       @id @default(cuid())
+  attemptId   String
+  attempt     ExamAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId  String
+  question    ExamQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer      String?
+  isCorrect   Boolean?
+  marksAwarded Float?
+  createdAt   DateTime     @default(now())
+
+  @@unique([attemptId, questionId])
+}
+
 model AcademicYear {
-  id        String   @id @default(cuid())
-  name      String   @unique  // e.g. "2025/2026"
-  startDate DateTime
-  endDate   DateTime
-  isCurrent Boolean  @default(false)
-  terms     Term[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String        @id @default(cuid())
+  name         String        @unique  // e.g. "2025/2026"
+  startDate    DateTime
+  endDate      DateTime
+  isCurrent    Boolean       @default(false)
+  terms        Term[]
+  scholarships Scholarship[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Term {
@@ -312,30 +449,6 @@ model Term {
   updatedAt      DateTime     @updatedAt
 
   @@unique([academicYearId, name])
-}
-
-// ── Admissions ────────────────────────────────────────────────────────────────
-
-model AdmissionApplication {
-  id               String            @id @default(cuid())
-  firstName        String
-  lastName         String
-  gender           String
-  dateOfBirth      DateTime
-  address          String
-  applyingForClass String
-  guardianName     String
-  guardianPhone    String
-  guardianEmail    String?
-  guardianRelation String
-  status           ApplicationStatus @default(pending)
-  admissionNo      String?
-  notes            String?
-  reviewedById     String?
-  reviewedBy       User?             @relation("ApplicationReviewer", fields: [reviewedById], references: [id])
-  reviewedAt       DateTime?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
 }
 
 // ── Payroll ───────────────────────────────────────────────────────────────────
@@ -372,22 +485,6 @@ model Payslip {
   @@unique([staffId, month])
 }
 
-// ── Disciplinary ──────────────────────────────────────────────────────────────
-
-model DisciplinaryRecord {
-  id           String   @id @default(cuid())
-  studentId    String
-  student      Student  @relation(fields: [studentId], references: [id])
-  category     String
-  description  String
-  action       String
-  date         DateTime
-  reportedById String
-  reportedBy   User     @relation("DisciplinaryReporter", fields: [reportedById], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
 // ── Health Records ────────────────────────────────────────────────────────────
 
 model HealthRecord {
@@ -413,6 +510,10 @@ model SickVisit {
   complaint      String
   treatment      String?
   notes          String?
+  status         String       @default("waiting")   // waiting | in_consultation | medication_due | completed
+  triage         String       @default("routine")   // routine | urgent | emergency | scheduled
+  vitalsTemp     String?
+  vitalsBp       String?
   createdAt      DateTime     @default(now())
 }
 
@@ -430,16 +531,17 @@ model Vaccination {
 // ── Library ───────────────────────────────────────────────────────────────────
 
 model Book {
-  id        String         @id @default(cuid())
-  title     String
-  author    String
-  isbn      String?        @unique
-  category  String
-  quantity  Int            @default(1)
-  available Int            @default(1)
-  checkouts BookCheckout[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  id            String         @id @default(cuid())
+  title         String
+  author        String
+  isbn          String?        @unique
+  category      String
+  quantity      Int            @default(1)
+  available     Int            @default(1)
+  shelfLocation String?
+  checkouts     BookCheckout[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model BookCheckout {
@@ -463,5 +565,387 @@ model AuditLog {
   entity    String
   entityId  String
   metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+// ── Transport ─────────────────────────────────────────────────────────────────
+
+model Vehicle {
+  id                String          @id @default(cuid())
+  regNo             String          @unique
+  make              String
+  capacity          Int
+  type              String          // "bus" | "van" | "minibus"
+  driverId          String?
+  driver            Staff?          @relation(fields: [driverId], references: [id])
+  routes            TransportRoute[]
+  latitude          Float?
+  longitude         Float?
+  heading           Float?
+  speed             Float?
+  locationUpdatedAt DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model TransportRoute {
+  id              String             @id @default(cuid())
+  name            String
+  vehicleId       String?
+  vehicle         Vehicle?           @relation(fields: [vehicleId], references: [id])
+  stops           String[]
+  morningPickup   String             // "06:30"
+  afternoonDrop   String             // "15:30"
+  students        StudentTransport[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model StudentTransport {
+  id        String         @id @default(cuid())
+  studentId String
+  student   Student        @relation(fields: [studentId], references: [id])
+  routeId   String
+  route     TransportRoute @relation(fields: [routeId], references: [id])
+  createdAt DateTime       @default(now())
+
+  @@unique([studentId, routeId])
+}
+
+// ── Security / Visitor Log ─────────────────────────────────────────────────────
+
+model VisitorLog {
+  id          String    @id @default(cuid())
+  visitorName String
+  phone       String?
+  purpose     String
+  hostName    String
+  entryTime   DateTime  @default(now())
+  exitTime    DateTime?
+  badgeNo     String?
+  gateStaffId String?
+  gateStaff   Staff?    @relation(fields: [gateStaffId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ── Meal Menu ─────────────────────────────────────────────────────────────────
+
+model MealMenu {
+  id       String   @id @default(cuid())
+  weekOf   String   // ISO date of the Monday for that week, e.g. "2026-06-30"
+  day      String   // "Monday" | "Tuesday" | ... | "Friday"
+  mealType String   // "Breakfast" | "Lunch" | "Dinner"
+  items    String[] // list of dishes
+  servings MealServing[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([weekOf, day, mealType])
+}
+
+model MealServing {
+  id           String   @id @default(cuid())
+  menuId       String
+  menu         MealMenu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id])
+  servedAt     DateTime @default(now())
+  servedById   String
+  servedBy     User     @relation("MealServer", fields: [servedById], references: [id])
+
+  @@unique([menuId, studentId])
+}
+
+// ── Helpdesk / Support Tickets ────────────────────────────────────────────────
+
+model SupportTicket {
+  id          String          @id @default(cuid())
+  ticketNo    String          @unique  // e.g. "#1001"
+  subject     String
+  description String
+  status      String          @default("open")    // open | in_progress | resolved | closed | escalated
+  priority    String          @default("medium")  // urgent | high | medium | low
+  queue       String          @default("general") // parent | teacher | it | finance | maintenance | general
+  requesterId String
+  requester   User            @relation("TicketRequester",  fields: [requesterId], references: [id])
+  assigneeId  String?
+  assignee    User?           @relation("TicketAssignee",   fields: [assigneeId],  references: [id])
+  messages    TicketMessage[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model TicketMessage {
+  id         String        @id @default(cuid())
+  ticketId   String
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  fromId     String
+  from       User          @relation("TicketMsgFrom", fields: [fromId], references: [id])
+  body       String
+  isInternal Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+}
+
+// ── Document Center ───────────────────────────────────────────────────────────
+
+model SchoolDocument {
+  id          String    @id @default(cuid())
+  name        String
+  category    String    // student-records | staff-files | policies | admissions | finance | exams | circulars | forms | archived
+  fileUrl     String    @default("")
+  fileSize    String    @default("")
+  fileType    String    @default("pdf")
+  visibility  String    @default("internal") // private | internal | public
+  status      String    @default("active")   // active | pending_review | archived | restricted
+  ownerId     String
+  owner       User      @relation("DocOwner", fields: [ownerId], references: [id])
+  classDept   String?
+  needsSign   Boolean   @default(false)
+  isTemplate  Boolean   @default(false)
+  sharedWith  String[]
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ── Backup Records ────────────────────────────────────────────────────────────
+
+model BackupRecord {
+  id          String    @id @default(cuid())
+  name        String
+  backupType  String    @default("full")     // full | incremental | db | files | config
+  sizeBytes   BigInt    @default(0)
+  target      String    @default("s3")       // s3 | drive | nas | local
+  status      String    @default("pending")  // pending | running | healthy | failed
+  duration    Int?      // seconds
+  encryption  String    @default("AES-256")
+  checksum    String?
+  expiresAt   DateTime?
+  initiatedBy String?
+  initiator   User?     @relation("BackupInitiator", fields: [initiatedBy], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ── Parent Broadcast Messages ─────────────────────────────────────────────────
+
+model ParentBroadcast {
+  id          String    @id @default(cuid())
+  subject     String
+  body        String
+  audience    String    @default("all")    // all | defaulters | boarding | pta | class:<classId>
+  channels    String[]                     // sms | whatsapp | email
+  status      String    @default("draft")  // draft | pending | delivered | failed | scheduled
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  delivered   Int       @default(0)
+  failed      Int       @default(0)
+  pending     Int       @default(0)
+  isConsent   Boolean   @default(false)
+  sentById    String
+  sentBy      User      @relation("BroadcastSender", fields: [sentById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ── Messages ──────────────────────────────────────────────────────────────────
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  senderId   String
+  sender     User     @relation("SentMessages",     fields: [senderId],   references: [id])
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  studentId  String?
+  student    Student? @relation(fields: [studentId], references: [id])
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+// ── Approvals ──────────────────────────────────────────────────────────────────
+
+enum ApprovalStatus {
+  pending
+  approved
+  rejected
+}
+
+enum ApprovalDecision {
+  pending
+  approved
+  rejected
+}
+
+model ApprovalRequest {
+  id               String           @id @default(cuid())
+  type             String           // "expense" | "scholarship" | "procurement" etc.
+  title            String
+  requesterId      String
+  requester        User             @relation("ApprovalRequester", fields: [requesterId], references: [id])
+  payload          Json
+  status           ApprovalStatus   @default(pending)
+  currentStepIndex Int              @default(0)
+  steps            ApprovalStep[]
+  expense          Expense?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model ApprovalStep {
+  id           String           @id @default(cuid())
+  requestId    String
+  request      ApprovalRequest  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  order        Int
+  approverRole String?          // role-based approval, e.g. "principal"
+  approverId   String?          // or a specific user
+  approver     User?            @relation("ApprovalStepApprover", fields: [approverId], references: [id])
+  decision     ApprovalDecision @default(pending)
+  reason       String?
+  decidedAt    DateTime?
+  createdAt    DateTime         @default(now())
+
+  @@unique([requestId, order])
+}
+
+// ── Scholarships ────────────────────────────────────────────────────────────────
+
+enum ScholarshipType {
+  percent
+  fixed
+}
+
+enum ScholarshipStatus {
+  active
+  expired
+  revoked
+}
+
+model Scholarship {
+  id             String            @id @default(cuid())
+  studentId      String
+  student        Student           @relation(fields: [studentId], references: [id])
+  type           ScholarshipType
+  value          Float             // percent (0-100) if type=percent, else a fixed GHS amount
+  reason         String?
+  academicYearId String?
+  academicYear   AcademicYear?     @relation(fields: [academicYearId], references: [id])
+  status         ScholarshipStatus @default(active)
+  approvedById   String?
+  approvedBy     User?             @relation("ScholarshipApprover", fields: [approvedById], references: [id])
+  feeRecords     FeeRecord[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+// ── Expenses ────────────────────────────────────────────────────────────────────
+
+enum ExpenseStatus {
+  pending
+  approved
+  rejected
+}
+
+model Expense {
+  id                 String           @id @default(cuid())
+  category           String
+  description        String
+  amount             Decimal          @db.Decimal(10, 2)
+  vendor             String?
+  date               DateTime
+  status             ExpenseStatus    @default(pending)
+  recordedById       String
+  recordedBy         User             @relation("ExpenseRecorder", fields: [recordedById], references: [id])
+  approvalRequestId  String?          @unique
+  approvalRequest    ApprovalRequest? @relation(fields: [approvalRequestId], references: [id])
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+}
+
+// ── Hostel ──────────────────────────────────────────────────────────────────────
+
+model Hostel {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  rooms     Room[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  id          String           @id @default(cuid())
+  hostelId    String
+  hostel      Hostel           @relation(fields: [hostelId], references: [id])
+  name        String
+  capacity    Int
+  allocations Allocation[]
+  incidents   HostelIncident[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([hostelId, name])
+}
+
+model Allocation {
+  id        String    @id @default(cuid())
+  studentId String
+  student   Student   @relation(fields: [studentId], references: [id])
+  roomId    String
+  room      Room      @relation(fields: [roomId], references: [id])
+  bedNumber Int
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model HostelIncident {
+  id           String   @id @default(cuid())
+  studentId    String?
+  student      Student? @relation(fields: [studentId], references: [id])
+  roomId       String?
+  room         Room?    @relation(fields: [roomId], references: [id])
+  description  String
+  reportedById String
+  reportedBy   User     @relation("HostelIncidentReporter", fields: [reportedById], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+// ── Assets ──────────────────────────────────────────────────────────────────────
+
+enum AssetStatus {
+  active
+  maintenance
+  disposed
+  low_stock
+}
+
+model Asset {
+  id          String          @id @default(cuid())
+  tag         String          @unique
+  name        String
+  category    String          // "ICT Equipment" | "Furniture" | "Lab Equipment" | "Library" | "Sports" | "Kitchen"
+  status      AssetStatus     @default(active)
+  location    String?
+  custodianId String?
+  custodian   Staff?          @relation(fields: [custodianId], references: [id])
+  quantity    Int             @default(1)
+  value       Decimal?        @db.Decimal(10, 2)
+  imageUrl    String?
+  movements   AssetMovement[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model AssetMovement {
+  id        String   @id @default(cuid())
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  type      String   // "issue" | "receive" | "transfer" | "adjustment"
+  quantity  Int
+  note      String?
+  actedById String
+  actedBy   User     @relation("AssetMovementActor", fields: [actedById], references: [id])
   createdAt DateTime @default(now())
 }

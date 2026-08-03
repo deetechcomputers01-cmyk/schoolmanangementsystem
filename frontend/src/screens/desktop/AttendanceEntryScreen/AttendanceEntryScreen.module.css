@@ -1,0 +1,424 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8a8fa3;
+  font-size: var(--text-xs);
+}
+
+.breadcrumbLink {
+  color: #8a8fa3;
+  text-decoration: none;
+}
+
+.breadcrumbSep {
+  color: #c8cad7;
+}
+
+.breadcrumbCurrent {
+  color: #16161d;
+  font-weight: 600;
+}
+
+.pageIntro {
+  display: grid;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  color: #16161d;
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  color: #858791;
+  font-size: var(--text-xs);
+  line-height: 20px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.topGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 12px;
+}
+
+.setupCard,
+.summaryCard,
+.rosterCard {
+  border: 1px solid #e4e4ec;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.setupCard {
+  padding: 12px;
+}
+
+.setupRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  color: #858791;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.input,
+.select,
+.noteInput {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid #e0e3ef;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #16161d;
+  font-size: var(--text-xs);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.noteInput:focus {
+  border-color: #5b50f5;
+  box-shadow: 0 0 0 3px rgba(91, 80, 245, 0.11);
+}
+
+.loadCell {
+  display: flex;
+}
+
+.loadButton,
+.cancelButton,
+.saveButton,
+.actionBlue,
+.actionAmber,
+.actionClear,
+.statusButton {
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.loadButton {
+  min-height: 34px;
+  width: 100%;
+  border: 1px solid #5b50f5;
+  background: #5b50f5;
+  color: #ffffff;
+}
+
+.summaryCard {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.summaryLabel {
+  color: #858791;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summaryValue {
+  margin-top: 8px;
+  color: #16161d;
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.summaryMeta {
+  margin: 12px 0 4px;
+  color: #858791;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summaryCount {
+  margin: 0;
+  color: #5b50f5;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.alert,
+.success {
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.alert {
+  border: 1px solid #f3d7d7;
+  background: #fff5f5;
+  color: #c64b4b;
+}
+
+.success {
+  border: 1px solid #d7efdf;
+  background: #f2fcf5;
+  color: #219857;
+}
+
+.rosterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ececf3;
+}
+
+.rosterTitle {
+  margin: 0;
+  color: #16161d;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.rosterActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actionBlue,
+.actionAmber,
+.actionClear {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #e0e3ef;
+  background: #ffffff;
+}
+
+.actionBlue {
+  color: #5b50f5;
+  border-color: #dddffc;
+  background: #f4f3ff;
+}
+
+.actionAmber {
+  color: #b07b22;
+  border-color: #f0deb8;
+  background: #fff8ea;
+}
+
+.actionClear {
+  color: #6d7285;
+}
+
+.emptyState {
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: #16161d;
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.emptyText {
+  margin: 8px 0 0;
+  color: #858791;
+  font-size: var(--text-xs);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.thead {
+  background: #fbfbfe;
+  border-bottom: 1px solid #e4e4ec;
+}
+
+.thIndex,
+.th {
+  padding: 11px 14px;
+  color: #858791;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+.thIndex {
+  width: 48px;
+}
+
+.tr {
+  border-bottom: 1px solid #ececf3;
+}
+
+.tr:last-child {
+  border-bottom: none;
+}
+
+.td,
+.tdMeta,
+.tdStatus,
+.tdNote,
+.tdIndex {
+  padding: 12px 14px;
+  color: #16161d;
+  font-size: var(--text-xs);
+  vertical-align: middle;
+}
+
+.tdIndex {
+  color: #73788c;
+  width: 48px;
+}
+
+.tdMeta {
+  color: #73788c;
+}
+
+.studentCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: #f0edff;
+  color: #5b50f5;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.studentName {
+  color: #16161d;
+  font-weight: 600;
+}
+
+.statusButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.statusButton {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #e0e3ef;
+  background: #ffffff;
+  color: #6d7285;
+}
+
+.status_present {
+  border-color: #dddffc;
+  background: #f4f3ff;
+  color: #5249d8;
+}
+
+.status_absent {
+  border-color: #f3d7d7;
+  background: #fff5f5;
+  color: #c64b4b;
+}
+
+.status_late {
+  border-color: #f0deb8;
+  background: #fff8ea;
+  color: #b07b22;
+}
+
+.status_excused {
+  border-color: #d9e9ff;
+  background: #f2f7ff;
+  color: #3b92e8;
+}
+
+.noteInput {
+  width: 100%;
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.cancelButton,
+.saveButton {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.cancelButton {
+  border: 1px solid #e0e3ef;
+  background: #ffffff;
+  color: #16161d;
+}
+
+.saveButton {
+  border: 1px solid #5b50f5;
+  background: #5b50f5;
+  color: #ffffff;
+}
+
+.saveButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+  .topGrid,
+  .setupRow {
+    grid-template-columns: 1fr;
+  }
+}

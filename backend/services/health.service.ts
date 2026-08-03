@@ -31,7 +31,16 @@ export async function upsertHealthRecord(
 export async function addSickVisit(
   actor: SessionUser,
   studentId: string,
-  data: { complaint: string; treatment?: string; notes?: string; date?: string }
+  data: {
+    complaint: string;
+    treatment?: string;
+    notes?: string;
+    date?: string;
+    status?: string;
+    triage?: string;
+    vitalsTemp?: string;
+    vitalsBp?: string;
+  }
 ) {
   const record = await prisma.healthRecord.upsert({
     where:  { studentId },
@@ -44,7 +53,11 @@ export async function addSickVisit(
       complaint:      data.complaint,
       treatment:      data.treatment,
       notes:          data.notes,
-      date:           data.date ? new Date(data.date) : new Date()
+      date:           data.date ? new Date(data.date) : new Date(),
+      status:         data.status    ?? "waiting",
+      triage:         data.triage    ?? "routine",
+      vitalsTemp:     data.vitalsTemp ?? undefined,
+      vitalsBp:       data.vitalsBp   ?? undefined,
     }
   });
   await audit(actor, "add_sick_visit", "SickVisit", visit.id, { studentId, complaint: data.complaint });

@@ -1,80 +1,96 @@
-/**
- * MobileHeader.module.css — scoped to MobileHeader only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- */
-
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  height: var(--mobile-header-h);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
+  left: 0;
+  right: 0;
   z-index: var(--z-sticky);
-  /* Design fills: background, border-bottom, padding, shadow */
+  display: flex;
+  min-height: var(--layout-topbar-h);
+  align-items: center;
+  gap: 12px;
+  padding: env(safe-area-inset-top) 16px 0;
+  border-bottom: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
 }
 
-.backBtn {
-  display: grid;
-  place-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
+.backBtn,
+.avatarBtn,
+.iconBtn {
+  display: inline-flex;
   flex-shrink: 0;
-  /* Design fills: size, color, border-radius */
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--clr-app-text);
+  cursor: pointer;
+}
+
+.avatarBtn {
+  border: 1px solid var(--clr-app-accent-soft);
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.backBtn:active,
+.iconBtn:active {
+  background: var(--clr-app-surface-alt);
 }
 
 .titleBlock {
-  flex: 1;
   min-width: 0;
+  flex: 1;
+  text-align: center;
 }
 
 .title {
-  font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-tight);
-  white-space: nowrap;
+  margin: 0;
   overflow: hidden;
+  color: var(--clr-app-accent);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 24px;
+  text-align: center;
   text-overflow: ellipsis;
-  /* Design fills: color */
+  white-space: nowrap;
 }
 
 .subtitle {
-  font-size: var(--text-xs);
-  margin-top: 2px;
-  white-space: nowrap;
+  margin: 2px 0 0;
   overflow: hidden;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  text-align: center;
   text-overflow: ellipsis;
-  /* Design fills: color */
+  white-space: nowrap;
 }
 
 .trailing {
   display: flex;
-  align-items: center;
-  gap: var(--sp-1);
   flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
 }
 
 .iconBtn {
   position: relative;
-  display: grid;
-  place-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  /* Minimum 44px tap target */
-  min-width: 44px;
-  min-height: 44px;
-  /* Design fills: color, background, border-radius */
+  color: var(--clr-app-muted);
 }
 
 .notifDot {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-full);
-  border: 1.5px solid;
-  /* Design fills: background (error), border-color (header bg) */
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--clr-app-surface);
+  border-radius: var(--radius-sm);
+  background: var(--clr-error);
 }

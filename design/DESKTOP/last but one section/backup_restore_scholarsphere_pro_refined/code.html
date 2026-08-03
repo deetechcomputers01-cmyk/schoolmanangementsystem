@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere Pro - Backup &amp; Restore</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5", // ScholarSphere Pro Indigo
+                        "on-primary": "#ffffff",
+                        "background": "#f9f9ff", // Requested background
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC", // Requested border color
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px", // Requested 4px radius
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "2xl": "48px",
+                        "gutter": "20px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .table-container {
+                @apply w-full overflow-x-auto bg-white rounded border border-outline;
+            }
+            .table-header {
+                @apply font-label-sm text-label-sm text-on-surface-variant bg-[#F8FAFC] text-left px-4 py-3 border-b border-outline whitespace-nowrap uppercase tracking-wider;
+            }
+            .table-cell {
+                @apply font-body-md text-body-md text-on-surface px-4 py-4 border-b border-outline whitespace-nowrap;
+            }
+            .table-row {
+                @apply hover:bg-[#F1F5F9] transition-colors cursor-default;
+            }
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .pill {
+                @apply inline-flex items-center justify-center px-2 py-0.5 rounded-full font-label-sm text-[10px] font-bold uppercase;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans antialiased min-h-screen flex">
+<!-- SideNavBar (from SCREEN_39) -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">school</span>
+<span class="text-body-md">Institutions</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-md">System Settings</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">security</span>
+<span class="text-body-md">Security</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-body-md">User Management</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">history</span>
+<span class="text-body-md">Audit Logs</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md">Sync Status</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="text-body-md">Support</span>
+</a>
+</div>
+</nav>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar (from SCREEN_39) -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary w-80" placeholder="Search backups..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">settings_suggest</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    A
+                </div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="p-8 max-w-[1400px] mx-auto w-full">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Backup &amp; Restore</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage system recovery points and storage retention.</p>
+</div>
+<button class="bg-[#5B50F5] hover:opacity-90 text-white font-semibold text-body-md py-2.5 px-6 rounded transition-all shadow-sm flex items-center gap-2 whitespace-nowrap w-fit">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cloud_upload</span>
+                Run Backup Now
+            </button>
+</div>
+<!-- Stat Card Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-xl">
+<!-- Card 1 -->
+<div class="bg-white border border-outline rounded p-6 shadow-sm flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Last Backup Status</span>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[#15803D]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-title-md text-title-md text-[#15803D] font-bold">Healthy</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">2h ago</span>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-outline rounded p-6 shadow-sm flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Total Storage Used</span>
+<div class="flex items-center mb-1">
+<span class="text-3xl font-bold text-on-surface">1.24 TB</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">Across 3 targets</span>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-outline rounded p-6 shadow-sm flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Next Scheduled Backup</span>
+<div class="flex items-center mb-1">
+<span class="font-title-md text-title-md text-on-surface font-bold">Today, 11:30 PM</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">Daily Full</span>
+</div>
+<!-- Card 4 -->
+<div class="bg-white border border-outline rounded p-6 shadow-sm flex flex-col border-l-4 border-l-error">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Expiring Soon</span>
+<div class="flex items-center mb-1">
+<span class="text-3xl font-bold text-error">12</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">Exceeding 30-day retention</span>
+</div>
+</div>
+<!-- Main Content Area: Backup Table -->
+<div class="flex flex-col lg:flex-row lg:items-center gap-4 mb-6">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-white border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Search backups..." type="text"/>
+</div>
+<div class="flex flex-wrap gap-3">
+<select class="bg-white border border-outline rounded text-body-md py-2.5 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option value="">All Types</option>
+<option value="full">Full</option>
+<option value="inc">Incremental</option>
+<option value="db">DB</option>
+</select>
+<select class="bg-white border border-outline rounded text-body-md py-2.5 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option value="">All Statuses</option>
+<option value="healthy">Healthy</option>
+<option value="running">Running</option>
+<option value="failed">Failed</option>
+</select>
+<button class="bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm" title="Export CSV">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span class="hidden sm:inline">Export CSV</span>
+</button>
+</div>
+</div>
+<!-- Table Styling from SCREEN_39 -->
+<div class="table-container shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="table-header">Name/Timestamp</th>
+<th class="table-header">Type</th>
+<th class="table-header">Target</th>
+<th class="table-header text-right">Size</th>
+<th class="table-header">Duration</th>
+<th class="table-header">Encryption</th>
+<th class="table-header">Status</th>
+<th class="table-header">Initiated By</th>
+<th class="table-header w-12 text-center"></th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 (Healthy, Full) -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="font-semibold text-on-surface">Nightly Full Backup</div>
+<div class="text-on-surface-variant text-[12px]">2026-07-30 02:00:00</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Full</span>
+</td>
+<td class="table-cell">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">cloud</span> S3
+                            </div>
+</td>
+<td class="table-cell text-right font-mono-data text-[13px]">142.5 GB</td>
+<td class="table-cell text-on-surface-variant font-mono-data text-[13px]">18m 42s</td>
+<td class="table-cell">
+<span class="inline-flex items-center px-1.5 py-0.5 border border-outline rounded text-on-surface-variant font-mono-data text-[10px]">AES-256</span>
+</td>
+<td class="table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] font-bold text-[11px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span> Healthy
+                            </span>
+</td>
+<td class="table-cell text-on-surface-variant">Scheduled</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 2 (Running, DB) -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="font-semibold text-on-surface">Mid-day DB Sync</div>
+<div class="text-on-surface-variant text-[12px]">2026-07-30 12:00:00</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">DB</span>
+</td>
+<td class="table-cell">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">hard_drive</span> Drive
+                            </div>
+</td>
+<td class="table-cell text-right font-mono-data text-[13px] text-on-surface-variant">--</td>
+<td class="table-cell text-on-surface-variant font-mono-data text-[13px]">02m 15s</td>
+<td class="table-cell">
+<span class="inline-flex items-center px-1.5 py-0.5 border border-outline rounded text-on-surface-variant font-mono-data text-[10px]">AES-256</span>
+</td>
+<td class="table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FEF9C3] text-[#A16207] font-bold text-[11px] uppercase">
+<span class="material-symbols-outlined text-[14px] animate-spin">sync</span> Running
+                            </span>
+</td>
+<td class="table-cell text-on-surface-variant">Scheduled</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 3 (Failed, Incremental) -->
+<tr class="table-row bg-[#FEE2E2]/10">
+<td class="table-cell">
+<div class="font-semibold text-on-surface">Urgent Patch Backup</div>
+<div class="text-on-surface-variant text-[12px]">2026-07-29 15:45:22</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Incremental</span>
+</td>
+<td class="table-cell">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">cloud</span> S3
+                            </div>
+</td>
+<td class="table-cell text-right font-mono-data text-[13px]">4.2 GB</td>
+<td class="table-cell text-on-surface-variant font-mono-data text-[13px]">01m 02s</td>
+<td class="table-cell">
+<span class="inline-flex items-center px-1.5 py-0.5 border border-outline rounded text-on-surface-variant font-mono-data text-[10px]">AES-256</span>
+</td>
+<td class="table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FEE2E2] text-[#B91C1C] font-bold text-[11px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Failed
+                            </span>
+</td>
+<td class="table-cell text-on-surface-variant">Kwame Owusu</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 4 (Healthy, Config) -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="font-semibold text-on-surface">Weekly Config Snapshot</div>
+<div class="text-on-surface-variant text-[12px]">2026-07-26 00:00:00</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Config</span>
+</td>
+<td class="table-cell">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">folder</span> NAS
+                            </div>
+</td>
+<td class="table-cell text-right font-mono-data text-[13px]">12.8 MB</td>
+<td class="table-cell text-on-surface-variant font-mono-data text-[13px]">00m 04s</td>
+<td class="table-cell">
+<span class="inline-flex items-center px-1.5 py-0.5 border border-outline rounded text-on-surface-variant font-mono-data text-[10px]">Unencrypted</span>
+</td>
+<td class="table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] font-bold text-[11px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span> Healthy
+                            </span>
+</td>
+<td class="table-cell text-on-surface-variant">Scheduled</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination (from SCREEN_39) -->
+<div class="px-6 py-4 border-t border-outline flex items-center justify-between bg-white">
+<span class="text-body-md text-on-surface-variant">Showing <span class="font-semibold text-on-surface">1 to 4</span> of 248 entries</span>
+<div class="flex gap-3">
+<button class="bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-1.5 rounded opacity-50 cursor-not-allowed shadow-none" disabled="">Previous</button>
+<div class="flex gap-1">
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded font-bold text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-low rounded text-on-surface-variant text-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-low rounded text-on-surface-variant text-sm">3</button>
+</div>
+<button class="bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-1.5 rounded hover:bg-surface-container-low transition-all shadow-sm">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

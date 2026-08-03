@@ -1,68 +1,81 @@
-/**
- * ScholarSphere Design Tokens
+﻿/**
+ * ScholarSphere Design Tokens — Stitch "School MS Calm Complete" palette.
  * Single source of truth for all visual values.
- * Import this in globals.css — do NOT copy values inline elsewhere.
- * Colours chosen for institutional calm: readable by all ages, low fatigue.
+ * Import only in globals.css. Never copy raw hex values inline elsewhere.
  */
 
 :root {
-  /* ─── Brand / Primary ─────────────────────────────────────────────── */
-  --clr-primary:         #1e3a5f;   /* Institutional navy — deep, calm       */
-  --clr-primary-hover:   #163152;
-  --clr-primary-light:   #2d5282;
-  --clr-primary-subtle:  #ebf0f8;   /* Tinted bg for selected rows, chips    */
+  /* ─── Brand / Primary (Stitch teal) ──────────────────────────────── */
+  --clr-primary:         #073543;   /* Deep teal — sidebar bg, headings         */
+  --clr-primary-hover:   #052d39;
+  --clr-primary-light:   #244c5a;   /* Medium teal — active nav, buttons        */
+  --clr-primary-subtle:  #f4f4f4;   /* Tinted bg — selected rows, chips         */
 
-  --clr-accent:          #2d6a4f;   /* Sage green — softer than lime/emerald */
-  --clr-accent-hover:    #245c43;
-  --clr-accent-light:    #40916c;
-  --clr-accent-subtle:   #edf7f2;
+  --clr-accent:          #5D7C5C;   /* Forest green — success, positive states  */
+  --clr-accent-hover:    #4f6b4e;
+  --clr-accent-light:    #7a9e78;
+  --clr-accent-subtle:   #e6f2e6;   /* Success bg tint                          */
 
   /* ─── Semantic ────────────────────────────────────────────────────── */
-  --clr-success:         #276749;
-  --clr-success-bg:      #edf7f2;
-  --clr-success-border:  #b7e4cc;
+  --clr-success:         #5D7C5C;
+  --clr-success-bg:      #e6f2e6;
+  --clr-success-border:  #b8d4b7;
 
-  --clr-warning:         #92400e;
-  --clr-warning-bg:      #fffbeb;
-  --clr-warning-border:  #fde68a;
+  --clr-warning:         #C68B3C;
+  --clr-warning-bg:      #fdf3e7;
+  --clr-warning-border:  #f0c97a;
 
-  --clr-error:           #9b2335;
-  --clr-error-bg:        #fef2f2;
-  --clr-error-border:    #fecaca;
+  --clr-error:           #B64B4B;
+  --clr-error-bg:        #fbeae9;
+  --clr-error-border:    #e8a8a8;
 
-  --clr-info:            #1d4ed8;
+  --clr-info:            #2563eb;
   --clr-info-bg:         #eff6ff;
   --clr-info-border:     #bfdbfe;
 
   /* ─── Neutral Surface ─────────────────────────────────────────────── */
-  --clr-ink:             #1a2332;   /* Primary text                          */
-  --clr-text-secondary:  #344155;
-  --clr-text-muted:      #5a6a7e;
-  --clr-text-disabled:   #9aa5b4;
-  --clr-text-on-dark:    #f8fafc;
+  --clr-ink:             #141d23;   /* Primary text — near-black                */
+  --clr-text-secondary:  #2c3a42;
+  --clr-text-muted:      #71787b;   /* Outline / subtext                        */
+  --clr-text-disabled:   #a0aab0;
+  --clr-text-on-dark:    #ffffff;   /* Text on dark teal backgrounds            */
 
-  --clr-surface:         #ffffff;
-  --clr-surface-raised:  #f7f9fc;   /* Cards on light bg                     */
-  --clr-bg:              #f0f4f8;   /* Page background                       */
-  --clr-bg-alt:          #e8edf4;   /* Slight contrast section bg            */
+  --clr-surface:         #ffffff;   /* White cards                              */
+  --clr-surface-raised:  #ffffff;
+  --clr-bg:              #e5e7eb;   /* Page background — neutral gray shell     */
+  --clr-bg-alt:          #d1d5db;   /* Slightly darker — alternating rows       */
 
-  --clr-border:          #dde3ec;
-  --clr-border-strong:   #c0ccdb;
-  --clr-border-focus:    #2d6a4f;
+  --clr-border:          #D8DDD8;   /* Default card / table border              */
+  --clr-border-strong:   #b8c0b8;
+  --clr-border-focus:    #073543;
+
+  /* ─── Desktop application surfaces ──────────────────────────────── */
+  --clr-app-bg:           #ffffff;
+  --clr-app-surface:      #ffffff;
+  --clr-app-surface-alt:  #fafaff;
+  --clr-app-border:       #e4e4ec;
+  --clr-app-accent:       #5b50f5;
+  --clr-app-accent-hover: #4d42e8;
+  --clr-app-accent-soft:  #eeecff;
+  --clr-app-info:         #3b92e8;
+  --clr-app-text:         #16161d;
+  --clr-app-muted:        #858791;
 
   /* ─── Overlay ─────────────────────────────────────────────────────── */
-  --clr-overlay:         rgba(26, 35, 50, 0.48);
-  --clr-overlay-light:   rgba(26, 35, 50, 0.12);
+  --clr-overlay:         rgba(7, 53, 67, 0.45);
+  --clr-overlay-light:   rgba(7, 53, 67, 0.12);
 
   /* ─── Typography ──────────────────────────────────────────────────── */
   --font-sans:      Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono:      ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
 
-  /* Scale — 16px base, 1.25 ratio, even steps */
-  --text-xs:        0.75rem;     /*  12px */
+  /* Scale — 16px base. Floor raised to 13px (was 12px) so the smallest UI
+     text (badges, meta, timestamps) stays legible for users with low vision
+     or eye strain — nothing in the app should render below this. */
+  --text-xs:        0.8125rem;   /*  13px */
   --text-sm:        0.875rem;    /*  14px */
   --text-base:      1rem;        /*  16px */
-  --text-md:        1.0625rem;   /*  17px — slightly larger for form labels  */
+  --text-md:        1.0625rem;   /*  17px */
   --text-lg:        1.125rem;    /*  18px */
   --text-xl:        1.25rem;     /*  20px */
   --text-2xl:       1.5rem;      /*  24px */
@@ -82,7 +95,7 @@
   --tracking-tight:  -0.01em;
   --tracking-normal:  0;
   --tracking-wide:    0.03em;
-  --tracking-widest:  0.08em;     /* ALL-CAPS labels                        */
+  --tracking-widest:  0.08em;
 
   /* ─── Spacing ─────────────────────────────────────────────────────── */
   --sp-1:    0.25rem;   /*  4px  */
@@ -98,21 +111,21 @@
   --sp-20:   5rem;      /* 80px  */
 
   /* ─── Border Radius ───────────────────────────────────────────────── */
-  --radius-xs:   0.1875rem;  /*  3px */
-  --radius-sm:   0.3125rem;  /*  5px */
-  --radius-md:   0.5rem;     /*  8px */
-  --radius-lg:   0.75rem;    /* 12px */
-  --radius-xl:   1rem;       /* 16px */
-  --radius-2xl:  1.5rem;     /* 24px */
-  --radius-full: 9999px;
+  --radius-xs:   0.125rem;   /*  2px */
+  --radius-sm:   0.25rem;    /*  4px  — global max for rectangular elements */
+  --radius-md:   0.25rem;    /*  4px  (capped) */
+  --radius-lg:   0.25rem;    /*  4px  (capped) */
+  --radius-xl:   0.25rem;    /*  4px  (capped) */
+  --radius-2xl:  0.25rem;    /*  4px  (capped) */
+  --radius-full: 9999px;     /* circles only — use border-radius: 50% instead */
 
   /* ─── Shadow ──────────────────────────────────────────────────────── */
-  --shadow-xs:   0 1px 2px 0 rgba(26,35,50,0.05);
-  --shadow-sm:   0 1px 3px 0 rgba(26,35,50,0.08), 0 1px 2px -1px rgba(26,35,50,0.05);
-  --shadow-md:   0 4px 6px -1px rgba(26,35,50,0.07), 0 2px 4px -2px rgba(26,35,50,0.05);
-  --shadow-lg:   0 10px 15px -3px rgba(26,35,50,0.08), 0 4px 6px -4px rgba(26,35,50,0.05);
-  --shadow-xl:   0 20px 25px -5px rgba(26,35,50,0.09), 0 8px 10px -6px rgba(26,35,50,0.05);
-  --shadow-inset: inset 0 1px 2px rgba(26,35,50,0.06);
+  --shadow-xs:   0 1px 2px 0 rgba(7,53,67,0.06);
+  --shadow-sm:   0 1px 3px 0 rgba(7,53,67,0.08), 0 1px 2px -1px rgba(7,53,67,0.05);
+  --shadow-md:   0 4px 6px -1px rgba(7,53,67,0.07), 0 2px 4px -2px rgba(7,53,67,0.05);
+  --shadow-lg:   0 10px 15px -3px rgba(7,53,67,0.08), 0 4px 6px -4px rgba(7,53,67,0.05);
+  --shadow-xl:   0 20px 25px -5px rgba(7,53,67,0.10), 0 8px 10px -6px rgba(7,53,67,0.06);
+  --shadow-inset: inset 0 1px 2px rgba(7,53,67,0.06);
 
   /* ─── Z-index layers ──────────────────────────────────────────────── */
   --z-base:       0;
@@ -135,7 +148,7 @@
 
   /* ─── Desktop layout dims ─────────────────────────────────────────── */
   --layout-sidebar-w:   260px;
-  --layout-topbar-h:     64px;
+  --layout-topbar-h:     56px;
   --layout-content-max: 1440px;
   --layout-content-pad:  var(--sp-8);
 
@@ -144,6 +157,6 @@
   --mobile-bottom-h:  64px;
   --mobile-pad:       var(--sp-4);
 
-  /* ─── Focus ring (shared across all interactive elements) ─────────── */
-  --focus-ring: 0 0 0 3px rgba(45,106,79,0.35);
+  /* ─── Focus ring ──────────────────────────────────────────────────── */
+  --focus-ring: 0 0 0 3px rgba(7, 53, 67, 0.30);
 }

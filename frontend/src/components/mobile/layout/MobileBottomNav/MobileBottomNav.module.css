@@ -1,52 +1,165 @@
-/**
- * MobileBottomNav.module.css — scoped to MobileBottomNav only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- */
-
 .nav {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
-  height: var(--mobile-bottom-h);
-  display: flex;
-  align-items: stretch;
+  bottom: 0;
   z-index: var(--z-sticky);
-  /* Safe area for notched phones */
-  padding-bottom: env(safe-area-inset-bottom, 0);
-  /* Design fills: background, border-top, shadow */
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2px;
+  min-height: 64px;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
+  box-shadow: 0 -4px 12px rgba(20, 29, 35, 0.05);
 }
 
 .tab {
-  flex: 1;
   display: flex;
+  min-width: 0;
+  min-height: 48px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-1);
-  min-height: 44px;
-  /* Design fills: color */
-}
-
-.tab:active {
-  /* Design fills: active/pressed state */
+  gap: 2px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-app-muted);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .tabActive {
-  /* Design fills: active color, indicator */
+  color: var(--clr-app-accent);
 }
 
-.tabIcon {
-  /* Design fills: color (inherited from tab) */
-}
+.tabIcon { flex: none; }
 
 .tabLabel {
-  font-size: 10px;
-  font-weight: var(--weight-medium);
-  line-height: 1;
-  /* Design fills: color (inherited from tab) */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
 }
 
-.tabActive .tabLabel {
-  font-weight: var(--weight-semibold);
+/* ── More sheet ─────────────────────────────────────────────────────── */
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: var(--clr-overlay);
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-modal);
+  max-height: 82dvh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px 4px 0 0;
+  background: var(--clr-app-surface);
+  box-shadow: 0 -8px 24px rgba(20, 29, 35, 0.15);
+  animation: sheet-up 0.22s var(--ease-out, ease-out);
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.sheetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 16px;
+  border-bottom: 1px solid var(--clr-app-border);
+}
+
+.sheetUserName {
+  margin: 0;
+  color: var(--clr-app-text);
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.sheetUserRole {
+  margin: 2px 0 0;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  text-transform: capitalize;
+}
+
+.sheetClose {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+
+.sheetBody {
+  overflow-y: auto;
+  padding: 8px 8px calc(24px + env(safe-area-inset-bottom));
+}
+
+.sheetGroup {
+  padding: 8px 8px 4px;
+}
+
+.sheetGroupLabel {
+  margin: 0 0 4px;
+  padding: 0 8px;
+  color: var(--clr-app-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sheetItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  color: var(--clr-app-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.sheetItem:active {
+  background: var(--clr-app-surface-alt);
+}
+
+.sheetLogout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 8px;
+  padding: 0 16px;
+  border: 0;
+  border-top: 1px solid var(--clr-app-border);
+  background: transparent;
+  color: var(--clr-error);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
 }

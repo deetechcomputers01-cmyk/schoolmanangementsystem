@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Gradebook | Ghana Academy CMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .table-container {
+                @apply w-full overflow-x-auto bg-white rounded border border-outline;
+            }
+            .table-header {
+                @apply font-label-sm text-label-sm text-on-surface-variant bg-[#F8FAFC] text-left px-4 py-3 border-b border-outline whitespace-nowrap uppercase tracking-wider;
+            }
+            .table-cell {
+                @apply font-body-md text-body-md text-on-surface px-4 py-4 border-b border-outline whitespace-nowrap;
+            }
+            .table-row {
+                @apply hover:bg-[#F1F5F9] transition-colors cursor-default;
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface-container-low text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">GA</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">Ghana Academy</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">School Management</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="text-body-md">Dashboard</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">school</span><span class="text-body-md">Students</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">groups</span><span class="text-body-md">Staff</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="text-body-md">Attendance</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">grading</span><span class="text-body-md">Gradebook</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">payments</span><span class="text-body-md">Financials</span></a></li>
+<li><a class="nav-link-active" href="#"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span><span class="text-body-md">Settings</span></a></li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-[20px]">sync</span><span class="text-body-md">Sync Status</span></a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-[20px]">account_circle</span><span class="text-body-md">Profile</span></a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md">Administration</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">chevron_right</span>
+<span class="text-on-surface font-semibold text-body-md">Settings &amp; School Profile</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="btn-secondary px-4 py-1.5 h-9 text-xs">Reset Defaults</button>
+<button class="btn-secondary px-4 py-1.5 h-9 text-xs">Preview Letterhead</button>
+<button class="btn-primary px-4 py-1.5 h-9 text-xs">Save Changes</button>
+<div class="h-8 w-[1px] bg-outline mx-2"></div>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[24px]">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[24px]">help_outline</span></button>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-grow flex h-[calc(100vh-56px)] overflow-hidden">
+<!-- Left Sub-nav -->
+<aside class="w-64 bg-white border-r border-outline flex flex-col overflow-y-auto">
+<nav class="p-4 space-y-1">
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">School Profile</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Academic Calendar</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Branding</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Fees</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Attendance</a>
+<a class="flex items-center px-4 py-2 text-body-md font-bold text-primary bg-[#EEEDFF] border-l-4 border-primary rounded-r" href="#">Gradebook</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Users &amp; Security</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Notifications</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Offline &amp; Sync</a>
+<a class="flex items-center px-4 py-2 text-body-md text-on-surface-variant hover:bg-surface-container-low rounded" href="#">Integrations</a>
+</nav>
+</aside>
+<!-- Main Content Split -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Center Form Area -->
+<div class="flex-[7] p-8 overflow-y-auto">
+<div class="max-w-4xl mx-auto space-y-6">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary text-[28px]">menu_book</span>
+<h2 class="font-headline-lg text-[24px] text-on-surface">Gradebook Settings</h2>
+</div>
+<div class="bg-amber-50 border border-amber-200 p-4 rounded flex items-start gap-4">
+<span class="material-symbols-outlined text-amber-600 mt-0.5">warning</span>
+<p class="text-body-md text-amber-900 leading-relaxed">
+                                This grading scale drives every report card and gradebook grade letter live — editing a minimum score here immediately changes how scores are graded across the app.
+                            </p>
+</div>
+<div class="table-container shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="table-header w-24">Grade</th>
+<th class="table-header">Minimum Score (%)</th>
+<th class="table-header">Score Range</th>
+<th class="table-header">Remark</th>
+<th class="table-header w-12"></th>
+</tr>
+</thead>
+<tbody>
+<!-- A1 -->
+<tr class="table-row">
+<td class="table-cell font-bold text-on-surface">A1</td>
+<td class="table-cell">
+<input class="w-24 px-3 py-1.5 border border-outline rounded font-mono-data text-right focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="80"/>
+</td>
+<td class="table-cell text-on-surface-variant font-mono-data">80% - 100%</td>
+<td class="table-cell font-medium">Excellent</td>
+<td class="table-cell"><button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td>
+</tr>
+<!-- B2 -->
+<tr class="table-row">
+<td class="table-cell font-bold text-on-surface">B2</td>
+<td class="table-cell">
+<input class="w-24 px-3 py-1.5 border border-outline rounded font-mono-data text-right focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="70"/>
+</td>
+<td class="table-cell text-on-surface-variant font-mono-data">70% - 79%</td>
+<td class="table-cell font-medium">Very Good</td>
+<td class="table-cell"><button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td>
+</tr>
+<!-- B3 -->
+<tr class="table-row">
+<td class="table-cell font-bold text-on-surface">B3</td>
+<td class="table-cell">
+<input class="w-24 px-3 py-1.5 border border-outline rounded font-mono-data text-right focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="65"/>
+</td>
+<td class="table-cell text-on-surface-variant font-mono-data">65% - 69%</td>
+<td class="table-cell font-medium">Good</td>
+<td class="table-cell"><button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td>
+</tr>
+<!-- C4 -->
+<tr class="table-row">
+<td class="table-cell font-bold text-on-surface">C4</td>
+<td class="table-cell">
+<input class="w-24 px-3 py-1.5 border border-outline rounded font-mono-data text-right focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="60"/>
+</td>
+<td class="table-cell text-on-surface-variant font-mono-data">60% - 64%</td>
+<td class="table-cell font-medium">Credit</td>
+<td class="table-cell"><button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td>
+</tr>
+<!-- F9 -->
+<tr class="table-row bg-red-50 hover:bg-red-100">
+<td class="table-cell font-bold text-error">F9</td>
+<td class="table-cell">
+<input class="w-24 px-3 py-1.5 border border-red-200 rounded font-mono-data text-right focus:ring-1 focus:ring-error focus:border-error" type="number" value="0"/>
+</td>
+<td class="table-cell text-error font-mono-data">0% - 39%</td>
+<td class="table-cell font-bold text-error">Fail</td>
+<td class="table-cell"><button class="text-on-surface-variant hover:text-error"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex justify-end">
+<button class="text-primary font-bold text-body-md flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                                Add Custom Grade
+                            </button>
+</div>
+</div>
+</div>
+<!-- Right Side Preview Panel -->
+<aside class="flex-[3] bg-white border-l border-outline p-8 overflow-y-auto">
+<div class="sticky top-0 bg-white pb-6 z-10 flex items-center justify-between mb-2">
+<h3 class="font-title-md text-on-surface">Grading Preview</h3>
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-8">
+                        Simulate how a student's score will be translated based on the current settings.
+                    </p>
+<!-- Preview Card -->
+<div class="bg-surface-container-low border border-outline rounded p-6 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">KA</div>
+<div>
+<div class="font-bold text-on-surface">Kwame Appiah</div>
+<div class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Form 3 - Mathematics</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-white rounded border border-outline">
+<span class="text-body-md text-on-surface-variant">Raw Score</span>
+<span class="font-mono-data font-bold text-lg text-on-surface">78%</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white rounded border border-outline">
+<span class="text-body-md text-on-surface-variant">Computed Grade</span>
+<span class="px-3 py-1 bg-primary text-white font-bold rounded text-body-md">B2</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white rounded border border-outline">
+<span class="text-body-md text-on-surface-variant">Remark</span>
+<span class="font-bold text-primary italic">"Very Good"</span>
+</div>
+</div>
+<button class="w-full mt-8 btn-secondary justify-center py-3">
+                            Test Another Score
+                        </button>
+</div>
+<div class="mt-10 p-5 bg-[#EEEDFF] rounded border border-[#DEDCFF]">
+<h4 class="text-xs font-bold text-primary uppercase tracking-widest mb-3">Live Sync Status</h4>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<p class="text-xs text-on-surface font-medium leading-relaxed">
+                                Settings currently in sync across 4 active school branches.
+                            </p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</body></html>

@@ -26,6 +26,9 @@ dist/
 prisma/*.db
 prisma/*.db-journal
 
+# full-database backup dumps (contain password hashes + all PII — never commit)
+backend-data/
+
 # logs
 *.log
 npm-debug.log*
@@ -48,3 +51,32 @@ Thumbs.db
 
 # Vercel
 .vercel
+
+# MCP config (may contain API keys/tokens)
+.mcp.json
+
+# local dev tooling state (Claude Code, Stitch MCP cache)
+.claude/
+.stitch/
+
+# local Postgres install + data dir + credentials — never commit
+.local/
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# runtime user uploads (PII — photos, documents, letterheads)
+frontend/public/uploads/
+
+# ad-hoc test/debug artifacts
+frontend/playwright-captures/
+frontend/test-results/
+frontend/repro3-*.png
+frontend/w2-*.png
+frontend/check-users.cjs
+frontend/screenshot-*.mjs
+test-results/
+screenshots/
+test-app.mjs
+test-screens.mjs
+sample_exam_questions.csv

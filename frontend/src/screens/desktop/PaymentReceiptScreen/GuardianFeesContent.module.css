@@ -1,0 +1,225 @@
+﻿/* GuardianFeesContent.module.css */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: transparent;
+}
+
+/* ── Header ───────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: #141d23;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: #41484b;
+  margin: 4px 0 0;
+}
+
+.studentBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 10px 16px;
+  background: #f4f4f4;
+  border: 1px solid #c1c7cb;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.studentName {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: #073543;
+}
+
+.studentClass {
+  font-size: var(--text-xs);
+  color: #41484b;
+}
+
+/* ── Stat cards ───────────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.statCard {
+  background: #ffffff;
+  border: 1px solid #c1c7cb;
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+
+.statLabel {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: #41484b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 6px;
+}
+
+.statValue {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: #141d23;
+  margin: 0;
+}
+
+/* ── Invoices card ────────────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 1px solid #c1c7cb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 14px 20px;
+  border-bottom: 1px solid #c1c7cb;
+  background: #f7f7f7;
+}
+
+.cardTitle {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: #141d23;
+  margin: 0;
+}
+
+/* ── Table ────────────────────────────────────────────────────────── */
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+  color: #141d23;
+}
+
+.table thead tr {
+  background: #ffffff;
+  border-bottom: 1px solid #c1c7cb;
+}
+
+.table th {
+  padding: 10px 14px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #41484b;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f4f4f4;
+  vertical-align: middle;
+}
+
+.dataRow:hover { background: #ffffff; }
+
+.expandedRow td {
+  padding: 0;
+  background: #ffffff;
+  border-bottom: 2px solid #c1c7cb;
+}
+
+.expandInner {
+  padding: 12px 16px 16px 48px;
+}
+
+.expandLabel {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #41484b;
+  margin: 0 0 8px;
+}
+
+.expandEmpty {
+  font-size: var(--text-xs);
+  color: #71787b;
+  margin: 0;
+}
+
+/* ── Sub-table (payment history) ──────────────────────────────────── */
+.subTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+}
+
+.subTable thead tr {
+  background: #f4f4f4;
+}
+
+.subTable th {
+  padding: 7px 12px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #41484b;
+  text-align: left;
+  border-bottom: 1px solid #c1c7cb;
+  white-space: nowrap;
+}
+
+.subTable td {
+  padding: 8px 12px;
+  color: #141d23;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.subTable tr:last-child td { border-bottom: none; }
+
+/* ── Misc ─────────────────────────────────────────────────────────── */
+.chevronCell {
+  width: 32px;
+  color: #41484b;
+  padding-left: 12px;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: var(--text-xs);
+  color: #073543;
+}
+
+.right {
+  text-align: right !important;
+}
+
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: #41484b;
+  font-size: var(--text-sm);
+}

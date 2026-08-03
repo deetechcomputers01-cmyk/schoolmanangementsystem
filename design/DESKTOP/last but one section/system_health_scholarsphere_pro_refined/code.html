@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Health - ScholarSphere Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#f9f9ff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "border-base": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444",
+                        "status-healthy": "#10B981",
+                        "status-critical": "#F43F5E",
+                        "status-degraded": "#F59E0B",
+                        "secondary-accent": "#3B92E8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .stat-card {
+                @apply bg-white p-6 rounded border border-outline shadow-sm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Super Admin Console</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">domain</span>
+<span class="text-body-md">Institutions</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-body-md">User Management</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-body-md">System Health</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-body-md">Financials</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">receipt_long</span>
+<span class="text-body-md">Audit Logs</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="text-body-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-body-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary w-80" placeholder="Search..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-body-md text-on-surface-variant hover:text-primary" href="#">Overview</a>
+<a class="text-body-md text-on-surface-variant hover:text-primary" href="#">Analytics</a>
+<a class="text-body-md text-primary font-bold border-b-2 border-primary pb-4 mt-4" href="#">Reports</a>
+</nav>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[24px]">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[24px]">help</span></button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">A</div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-8 max-w-[1400px] mx-auto w-full">
+<div class="mb-10">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">System Health</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Live infrastructure status</p>
+</div>
+<!-- Technical Status Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<div class="stat-card">
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Database</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">database</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2.5 h-2.5 rounded-full bg-status-healthy"></div>
+<span class="text-2xl font-bold text-on-surface">Healthy</span>
+</div>
+<p class="text-label-sm text-on-surface-variant">Latency: <span class="text-primary font-semibold">42ms</span></p>
+</div>
+<div class="stat-card">
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Storage/Uploads</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">cloud</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2.5 h-2.5 rounded-full bg-status-healthy"></div>
+<span class="text-2xl font-bold text-on-surface">Writable</span>
+</div>
+<p class="text-label-sm text-on-surface-variant">Latency: <span class="text-primary font-semibold">18ms</span></p>
+</div>
+<div class="stat-card">
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">API Gateway</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">api</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2.5 h-2.5 rounded-full bg-status-healthy"></div>
+<span class="text-2xl font-bold text-on-surface">Operational</span>
+</div>
+<p class="text-label-sm text-on-surface-variant">Latency: <span class="text-primary font-semibold">6ms</span></p>
+</div>
+<div class="stat-card border-l-4 border-l-status-critical">
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-sm text-status-critical uppercase tracking-wider">Security</span>
+<span class="material-symbols-outlined text-status-critical text-[20px]">security</span>
+</div>
+<div class="flex items-start gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-status-critical mt-1.5"></div>
+<span class="text-body-md font-semibold text-status-critical leading-snug">Warning: Fallback JWT Secret in Use</span>
+</div>
+</div>
+</div>
+<!-- User & Volume Stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<div class="stat-card">
+<span class="text-label-sm text-on-surface-variant mb-3 block uppercase tracking-wider">Active Users (Last hour)</span>
+<span class="text-5xl font-bold text-on-surface">156</span>
+</div>
+<div class="stat-card">
+<span class="text-label-sm text-on-surface-variant mb-3 block uppercase tracking-wider">Login Attempts (24h)</span>
+<span class="text-3xl font-bold text-on-surface">2,482</span>
+<div class="flex items-center gap-3 mt-2 text-[11px] font-bold uppercase">
+<span class="text-status-healthy">Success 98%</span>
+<span class="text-status-critical">Failed 2%</span>
+</div>
+</div>
+<div class="stat-card">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Failed Logins (24h)</span>
+<div class="w-2 h-2 rounded-full bg-status-degraded"></div>
+</div>
+<span class="text-3xl font-bold text-status-degraded">14</span>
+</div>
+<div class="stat-card lg:col-span-1">
+<span class="text-label-sm text-on-surface-variant mb-4 block uppercase tracking-wider">Data Volume</span>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[11px] font-bold uppercase">Users 1.4k</span>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[11px] font-bold uppercase">Students 1.2k</span>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[11px] font-bold uppercase">Staff 84</span>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[11px] font-bold uppercase">Exams 12</span>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[11px] font-bold uppercase">Attendance 32k</span>
+</div>
+</div>
+</div>
+<!-- Recent Activity Table -->
+<div class="bg-white border border-outline rounded shadow-sm overflow-hidden flex flex-col mb-10">
+<div class="px-6 py-4 border-b border-outline flex justify-between items-center bg-[#F8FAFC]">
+<h3 class="text-title-md font-bold text-on-surface">Recent Activity</h3>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] animate-spin" style="animation-duration: 3s;">refresh</span>
+<span class="text-label-sm">Auto-refreshing (30s)</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#F8FAFC] border-b border-outline text-on-surface-variant uppercase tracking-wider font-bold text-[11px]">
+<th class="px-6 py-4">Timestamp</th>
+<th class="px-6 py-4">User</th>
+<th class="px-6 py-4">Action</th>
+<th class="px-6 py-4">Entity</th>
+</tr>
+</thead>
+<tbody class="text-body-md text-on-surface">
+<tr class="border-b border-outline hover:bg-[#F1F5F9] transition-colors">
+<td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">10:42:15 AM</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full bg-surface-container-high object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlFAIl2JmMyRd24AZ8S1qX22GUBZzOmZqtV7_d5gZu6lQNn9Ewy1OLUhT6TF9ZV0hUigAjropEt2xR_3yx2kvYN0hBEOane9hGVrUABe9S0l9nxDnLWuN8RpPiR6uWiTyVc-GFYvBB-tg5M_aseb5-W0gFHQxS-IGcfAnM-1JWu2nUP9XJmB2Qo3cv2UXQ_DMDeYw5-HnU5NK0g_S8_qM1SG3uDjemw1MMcp4HXDf8_-8gegvY0GhLy_QWXZvXckR2SV_Zx1yNLA"/>
+<div>
+<div class="font-semibold">John Smith</div>
+<div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Admin</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2.5 py-0.5 bg-[#EEEDFF] text-primary rounded text-[11px] font-bold uppercase">login_success</span></td>
+<td class="px-6 py-4 text-secondary-accent font-medium">System</td>
+</tr>
+<tr class="border-b border-outline hover:bg-[#F1F5F9] transition-colors">
+<td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">10:41:02 AM</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">SJ</div>
+<div>
+<div class="font-semibold">Sarah Jenkins</div>
+<div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Teacher</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2.5 py-0.5 bg-[#EEEDFF] text-primary rounded text-[11px] font-bold uppercase">update_student</span></td>
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface-variant">Student #ADM-23-001</td>
+</tr>
+<tr class="border-b border-outline hover:bg-[#F1F5F9] transition-colors">
+<td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">10:38:45 AM</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full bg-surface-container-high object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5TQNWIcdl2X7DpdbMGzen0W-_TwYlxfrVpEUm05Ym3X2as6oRyNVM4oSc6oVskrq_-VRf-rGrDokHKybucsaU-WUM90bNOhzR_l-6ZHijwox9vc-6p6CBfNcXYT5IBQqohp2KPKfoHaGvMHac7uIAFY1_azSzRxtGfqLijhvHxCLjS22LfZJzev_VT2A8hR7btB8VKDzZtk3bDagXuOm2_pHQx8LWlL4GOzwEepY-78UcXhVyz6ASLMp0B0xZE94VMJpuTXH6Ig"/>
+<div>
+<div class="font-semibold">Maria Garcia</div>
+<div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Teacher</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2.5 py-0.5 bg-[#EEEDFF] text-primary rounded text-[11px] font-bold uppercase">submit_grades</span></td>
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface-variant">Exam #EX-882</td>
+</tr>
+<tr class="border-b border-outline hover:bg-[#F1F5F9] transition-colors">
+<td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">10:35:11 AM</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#64748B] text-white flex items-center justify-center font-bold text-xs">SY</div>
+<div>
+<div class="font-semibold">System API</div>
+<div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">System</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2.5 py-0.5 bg-[#EEEDFF] text-primary rounded text-[11px] font-bold uppercase">batch_sync</span></td>
+<td class="px-6 py-4 text-secondary-accent font-medium">Database</td>
+</tr>
+<tr class="border-b border-outline hover:bg-[#F1F5F9] transition-colors">
+<td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">10:29:55 AM</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">DW</div>
+<div>
+<div class="font-semibold">David Wu</div>
+<div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Admin</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2.5 py-0.5 bg-red-50 text-error rounded text-[11px] font-bold uppercase">delete_record</span></td>
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface-variant">Course #CS101</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-outline flex items-center justify-between bg-white">
+<span class="text-body-md text-on-surface-variant">Showing <span class="font-semibold text-on-surface">1 to 5</span> of 248 activities</span>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white text-on-surface border border-outline font-semibold text-body-md rounded hover:bg-surface-container-low transition-all shadow-sm">Previous</button>
+<button class="px-4 py-2 bg-white text-on-surface border border-outline font-semibold text-body-md rounded hover:bg-surface-container-low transition-all shadow-sm">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

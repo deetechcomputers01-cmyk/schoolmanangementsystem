@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Integrations - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#F8F8FA",
+                        "surface": "#ffffff",
+                        "outline-variant": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#6B6B78",
+                        "error": "#E11D48",
+                        "error-container": "#FFF1F2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Geist"],
+                        "title-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .sidebar-active {
+            background-color: #5B50F5;
+            color: white !important;
+        }
+        .sidebar-active span {
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md h-screen w-full flex overflow-hidden">
+<!-- Sidebar: 260px White Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface border-r border-outline-variant z-20 flex flex-col py-lg px-md">
+<div class="mb-xl flex items-center gap-md px-md">
+<img alt="School Logo" class="w-10 h-10 rounded object-cover bg-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDII1xNWlFiEsMMZOopeRELMa9zlgacUDYQFMQpvHIdW0GbcmVQnD9twGEXdEuxGuuENznPC03tohA_SOo26nkywaW8y1ntNzIg0xQmOIp0Bx8-A_h44L-RgWBdzAp1vTDsaYM9eNFSy1Yg9HRgdHPwAlgJ8mH-pSczE4Z4zomsDImb5dtZLf2LTyqDbu6iP6cZHpn0KczealZ3wIXpAaa-8WcK15GSoMVWPBAUr0eOzL6WGGVbLznUbrGanzN5lYqyHuzvV_KFIw"/>
+<div>
+<h1 class="font-headline-lg text-[18px] leading-tight font-bold text-on-surface">ScholarSphere</h1>
+<p class="font-body-md text-[12px] text-on-surface-variant">Administrator</p>
+</div>
+</div>
+<button class="mb-lg flex items-center justify-center gap-sm bg-primary text-on-primary text-body-md font-semibold py-2 px-4 rounded shadow-sm hover:opacity-90 transition-opacity w-full">
+<span class="material-symbols-outlined text-[18px]">add</span>
+        New Admission
+    </button>
+<nav class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-2.5 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-2.5 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="font-body-md font-medium">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-2.5 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-body-md font-medium">Academic</span>
+</a>
+<a class="flex items-center gap-md px-md py-2.5 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="font-body-md font-medium">Finance</span>
+</a>
+<a class="flex items-center gap-md px-md py-2.5 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-body-md font-medium">Staff</span>
+</a>
+<a class="flex items-center gap-md px-md py-2.5 sidebar-active rounded shadow-sm" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-body-md font-medium">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant flex flex-col gap-1">
+<a class="flex items-center gap-md px-md py-2 text-on-surface-variant hover:bg-background transition-colors rounded group" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="font-body-md font-medium">Help Center</span>
+</a>
+<div class="flex items-center justify-between px-md py-2 text-on-surface-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="font-body-md font-medium">Sync Status</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col ml-[260px] w-[calc(100%-260px)] h-full overflow-hidden">
+<!-- Top Bar: 56px White Top Bar -->
+<header class="fixed top-0 right-0 h-[56px] left-[260px] bg-surface border-b border-outline-variant z-10 flex justify-between items-center px-lg w-[calc(100%-260px)]">
+<div class="flex items-center gap-xl">
+<div class="flex items-center gap-sm text-on-surface-variant bg-background px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 p-0 text-[13px] placeholder-on-surface-variant w-48" placeholder="Search resources..." type="text"/>
+</div>
+<nav class="hidden lg:flex items-center gap-lg h-[56px]">
+<a class="text-primary font-bold border-b-2 border-primary h-full flex items-center px-1" href="#">Settings</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center px-1" href="#">Academic Year</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center px-1" href="#">Security</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-background rounded p-1.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-background rounded p-1.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">history</span>
+</button>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant mx-1"></div>
+<button class="bg-primary text-on-primary font-semibold py-1.5 px-4 rounded text-[13px] hover:opacity-90 transition-opacity">
+                Save Changes
+            </button>
+<img alt="User Avatar" class="w-8 h-8 rounded border border-outline-variant object-cover ml-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9KEBmcxYnJEw4VpnPDjRpEoOLvthiyes3ALGXowB-rQs7KIlwoFJlYT_1ygbxBjkYK1RvXNReqxab9lJ9VVpJNpT9lCdzJzvom7ey6lvWO260Ljb9R44rUL3_em8lMEFSm73wHcACrzmpbU0cPH0Dm1WMbhFy_uA4Rck31v5BOF1GYyNLFg3Eh59vsOOl_3qZctYKbmjWAFEq5G10CCJRvhhn2ySb4f_JnFoGYWtpssdrejIxM_4e4XM827UNNROH_ZyH2fOejg"/>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<main class="flex-1 overflow-y-auto mt-[56px] p-margin-desktop">
+<div class="max-w-[1140px] mx-auto w-full flex flex-col gap-lg">
+<!-- Breadcrumbs and Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div>
+<div class="flex items-center gap-2 text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider font-semibold">
+<span>Administration</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Settings</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Integrations &amp; API</h2>
+</div>
+<div class="flex items-center gap-sm">
+<button class="border border-outline-variant text-on-surface font-semibold py-1.5 px-4 rounded hover:bg-background transition-colors bg-surface text-[13px]">
+                        Reset Defaults
+                    </button>
+<button class="border border-outline-variant text-on-surface font-semibold py-1.5 px-4 rounded hover:bg-background transition-colors bg-surface flex items-center gap-sm text-[13px]">
+<span class="material-symbols-outlined text-[18px]">visibility</span> Preview Letterhead
+                    </button>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg items-start">
+<!-- Navigation Sub-Menu -->
+<div class="md:col-span-3">
+<div class="bg-surface rounded border border-outline-variant shadow-sm py-1">
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">School Profile</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Academic Calendar</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Branding</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Fees &amp; Payments</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Attendance</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Gradebook</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Users &amp; Roles</a>
+<a class="flex items-center px-md py-2 text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Notifications</a>
+<a class="flex items-center px-md py-2 text-[14px] text-primary font-bold border-l-[3px] border-primary bg-primary/5" href="#">Integrations</a>
+</div>
+</div>
+<!-- Integration Forms -->
+<div class="md:col-span-6 flex flex-col gap-lg">
+<div class="bg-surface rounded border border-outline-variant shadow-sm p-lg">
+<div class="flex items-center gap-sm mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">extension</span>
+<h3 class="font-title-md text-title-md text-on-surface">External Services</h3>
+</div>
+<p class="text-[14px] text-on-surface-variant mb-lg">Connect and manage third-party services for automated messaging and payment processing.</p>
+<!-- Warning Banner -->
+<div class="bg-error-container text-error p-md rounded border border-error/10 flex gap-md items-start mb-xl">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<div class="flex-1">
+<h4 class="text-[13px] font-bold mb-0.5">Integration Pending</h4>
+<p class="text-[12px] leading-relaxed opacity-90">No active SMS or payment gateway connection detected. System communications and online fee collections are currently disabled.</p>
+</div>
+</div>
+<div class="space-y-xl">
+<!-- SMS Section -->
+<section>
+<div class="flex items-center gap-2 mb-md border-b border-outline-variant pb-2">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">SMS Gateway Configuration</span>
+</div>
+<div class="space-y-md">
+<div class="flex flex-col gap-1.5">
+<label class="text-[13px] font-semibold text-on-surface">Gateway Provider</label>
+<select class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-[14px] text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none cursor-pointer">
+<option>Hubtel SMS</option>
+<option>Arkesel</option>
+<option>mNotify</option>
+<option selected="">None</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[13px] font-semibold text-on-surface">API Key / Token</label>
+<div class="relative">
+<input class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-[14px] text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-mono" placeholder="••••••••••••••••••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Section -->
+<section>
+<div class="flex items-center gap-2 mb-md border-b border-outline-variant pb-2">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Payment Processor</span>
+</div>
+<div class="space-y-md">
+<div class="flex flex-col gap-1.5">
+<label class="text-[13px] font-semibold text-on-surface">Payment Gateway</label>
+<select class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-[14px] text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none cursor-pointer">
+<option>Paystack</option>
+<option>Flutterwave</option>
+<option>MTN MoMo</option>
+<option selected="">None</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[13px] font-semibold text-on-surface">Secret API Key</label>
+<div class="relative">
+<input class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-[14px] text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-mono" placeholder="••••••••••••••••••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<!-- Status Sidebar Panel -->
+<div class="md:col-span-3 flex flex-col gap-lg">
+<div class="bg-surface rounded border border-outline-variant shadow-sm p-lg flex flex-col items-center text-center">
+<div class="w-full text-left border-b border-outline-variant pb-2 mb-xl">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">System Status</span>
+</div>
+<div class="w-20 h-20 rounded-full bg-background border-2 border-dashed border-outline-variant flex items-center justify-center mb-lg">
+<span class="material-symbols-outlined text-[36px] text-on-surface-variant/40">cloud_off</span>
+</div>
+<h4 class="font-title-md text-on-surface mb-2">Disconnected</h4>
+<p class="text-[12px] text-on-surface-variant leading-relaxed mb-lg">
+                            Core academic features are working normally. External communication and automated payment routing are currently paused until providers are configured.
+                        </p>
+<div class="w-full space-y-2">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-outline-variant rounded text-[13px] font-semibold text-on-surface hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+                                Read Docs
+                            </button>
+<button class="w-full py-2 px-4 text-primary text-[13px] font-bold hover:underline">
+                                Request Assistance
+                            </button>
+</div>
+</div>
+<!-- Additional Help Panel -->
+<div class="bg-primary/5 rounded border border-primary/10 p-md">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">info</span>
+<span class="text-[13px] font-bold text-primary">Need an account?</span>
+</div>
+<p class="text-[12px] text-on-surface-variant">Don't have API keys yet? Visit our partner portal to set up your merchant accounts.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

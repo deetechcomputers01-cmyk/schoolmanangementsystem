@@ -30,9 +30,10 @@ test.describe("Student Management", () => {
     await expect(page).toHaveURL(/\/students\//);
   });
 
-  test("student creation page loads for principal", async ({ page }) => {
+  test("add student modal opens for principal", async ({ page }) => {
     await login(page, "principal");
-    await page.goto("/students/new");
-    await expect(page.locator("body")).toContainText(/First Name|first name|student/i);
+    await page.goto("/students");
+    await page.getByRole("button", { name: /add student/i }).click();
+    await expect(page.locator("body")).toContainText(/Full Name/i);
   });
 });

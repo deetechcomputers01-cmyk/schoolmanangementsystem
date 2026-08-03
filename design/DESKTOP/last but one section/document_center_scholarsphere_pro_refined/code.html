@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Center - ScholarSphere Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5", // ScholarSphere Pro Indigo
+                        "on-primary": "#ffffff",
+                        "background": "#f9f9ff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .table-container {
+                @apply w-full overflow-x-auto bg-white rounded border border-outline;
+            }
+            .table-header {
+                @apply font-label-sm text-label-sm text-on-surface-variant bg-[#F8FAFC] text-left px-4 py-3 border-b border-outline whitespace-nowrap uppercase tracking-wider;
+            }
+            .table-cell {
+                @apply font-body-md text-body-md text-on-surface px-4 py-4 border-b border-outline whitespace-nowrap;
+            }
+            .table-row {
+                @apply hover:bg-[#F1F5F9] transition-colors cursor-default;
+            }
+            .pill {
+                @apply inline-flex items-center justify-center px-2.5 py-0.5 rounded-full font-label-sm text-[11px] font-bold uppercase;
+            }
+            .pill-active {
+                @apply bg-[#DCFCE7] text-[#15803D];
+            }
+            .pill-pending {
+                @apply bg-[#FEF9C3] text-[#A16207];
+            }
+            .pill-restricted {
+                @apply bg-[#FEE2E2] text-[#B91C1C];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">school</span>
+<span class="text-body-md">Students</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-body-md">Staff</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+<span class="text-body-md">Attendance</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">grading</span>
+<span class="text-body-md">Gradebook</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span class="text-body-md">Documents</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-body-md">Financials</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md">Sync Status</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary w-80" placeholder="Search ScholarSphere..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">apps</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline shadow-sm">
+<img alt="Admin Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHi7DJ--cuWCLIqh8L7rIX8LAXSYkVQ3w52p5hxz70UqDxFCKXKKpi7Jq9C3FqUzS09qIthpsykTNum44dsV9If59dkobALnd2ocqCONYcty1qITbjcAswGeJzGhl6bxLWONTUYdhOU_Xloc0gFIiNctBUjIBSiGoS2IBD5O-hMHjro0r6Mzn3WNrRnIzWDAxfu7dvcCZ94_-3TFTnR5qkJhTlSIoA2VbWJO41lA-P4Ho_eOrvTsgSzSEQ-aFKE7rnvGdoE-yu1A"/>
+</div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-8 overflow-y-auto max-w-[1400px] mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Document Center</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Centralized repository for institutional files and records.</p>
+</div>
+<button class="btn-primary">
+<span class="material-symbols-outlined">upload</span>
+                    Upload Document
+                </button>
+</div>
+<!-- Tab Bar -->
+<div class="flex border-b border-outline mb-6">
+<button class="px-6 py-4 font-bold text-body-md text-primary border-b-2 border-primary">ALL DOCUMENTS</button>
+<button class="px-6 py-4 font-semibold text-body-md text-on-surface-variant hover:text-primary transition-colors uppercase">SHARED WITH ME</button>
+<button class="px-6 py-4 font-semibold text-body-md text-on-surface-variant hover:text-primary transition-colors uppercase">TEMPLATES</button>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<div class="bg-white p-6 rounded border border-outline shadow-sm">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Total Documents</p>
+<span class="text-3xl font-bold text-on-surface">1,248</span>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm border-l-4 border-l-[#F59E0B]">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Pending Review</p>
+<span class="text-3xl font-bold text-[#D97706]">18</span>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Needs Signature</p>
+<span class="text-3xl font-bold text-on-surface">42</span>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm border-l-4 border-l-error">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Expiring Soon</p>
+<span class="text-3xl font-bold text-error">9</span>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-col lg:flex-row lg:items-center gap-4 mb-6">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-white border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Search files..." type="text"/>
+</div>
+<div class="flex flex-wrap gap-3">
+<select class="bg-white border border-outline rounded text-body-md py-2.5 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option>Category: All</option>
+<option>Policies</option>
+<option>Exams</option>
+<option>Staff Files</option>
+<option>Finance</option>
+</select>
+<select class="bg-white border border-outline rounded text-body-md py-2.5 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option>Visibility: All</option>
+<option>Public</option>
+<option>Internal</option>
+<option>Private</option>
+</select>
+<select class="bg-white border border-outline rounded text-body-md py-2.5 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option>Status: All</option>
+<option>Active</option>
+<option>Pending</option>
+<option>Restricted</option>
+</select>
+<div class="flex bg-white border border-outline rounded overflow-hidden">
+<button class="p-2.5 text-primary bg-[#EEEDFF] border-r border-outline"><span class="material-symbols-outlined text-[20px]">view_list</span></button>
+<button class="p-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[20px]">grid_view</span></button>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="table-container shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="table-header">Document Name</th>
+<th class="table-header">Category</th>
+<th class="table-header">Visibility</th>
+<th class="table-header">Status</th>
+<th class="table-header">Owner</th>
+<th class="table-header">Class/Dept</th>
+<th class="table-header">Updated</th>
+<th class="table-header w-12 text-center"></th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-rose-500">picture_as_pdf</span>
+<span class="font-semibold">2026 Admission Policy.pdf</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Policies</span>
+</td>
+<td class="table-cell">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">public</span> Public
+                                </span>
+</td>
+<td class="table-cell"><span class="pill pill-active">Active</span></td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#E0E7FF] text-primary flex items-center justify-center text-[10px] font-bold">KO</div>
+<span class="font-medium">Kwame Owusu</span>
+</div>
+</td>
+<td class="table-cell text-on-surface-variant">Admin</td>
+<td class="table-cell text-on-surface-variant">Oct 24, 2024</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600">table</span>
+<span class="font-semibold">JHS 3 Exam Timetable.xlsx</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Exams</span>
+</td>
+<td class="table-cell">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">domain</span> Internal
+                                </span>
+</td>
+<td class="table-cell"><span class="pill pill-pending">Pending Review</span></td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#F3E8FF] text-purple-700 flex items-center justify-center text-[10px] font-bold">AS</div>
+<span class="font-medium">Ama Serwaa</span>
+</div>
+</td>
+<td class="table-cell text-on-surface-variant">Academic</td>
+<td class="table-cell">
+<div class="flex items-center gap-2 text-on-surface-variant">
+                                    Oct 23, 2024
+                                    <span class="material-symbols-outlined text-amber-500 text-[18px]" title="Needs Signature">edit_document</span>
+</div>
+</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row">
+<td class="table-cell">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-600">description</span>
+<span class="font-semibold">Staff Handbook 2026.docx</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Staff Files</span>
+</td>
+<td class="table-cell">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">domain</span> Internal
+                                </span>
+</td>
+<td class="table-cell"><span class="pill pill-active">Active</span></td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#E0E7FF] text-primary flex items-center justify-center text-[10px] font-bold">KO</div>
+<span class="font-medium">Kwame Owusu</span>
+</div>
+</td>
+<td class="table-cell text-on-surface-variant">HR</td>
+<td class="table-cell text-on-surface-variant">Oct 21, 2024</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row border-b-0">
+<td class="table-cell">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-rose-500">picture_as_pdf</span>
+<span class="font-semibold">Financial Audit Q3.pdf</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Finance</span>
+</td>
+<td class="table-cell">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">lock</span> Private
+                                </span>
+</td>
+<td class="table-cell"><span class="pill pill-restricted">Restricted</span></td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#FFEDD5] text-orange-700 flex items-center justify-center text-[10px] font-bold">EA</div>
+<span class="font-medium">Emmanuel Appiah</span>
+</div>
+</td>
+<td class="table-cell text-on-surface-variant">Finance</td>
+<td class="table-cell text-on-surface-variant">Oct 15, 2024</td>
+<td class="table-cell text-center">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-4 border-t border-outline flex flex-col sm:flex-row items-center justify-between bg-white gap-4">
+<span class="text-body-md text-on-surface-variant">Showing <span class="font-semibold text-on-surface">1 to 4</span> of 1,248 entries</span>
+<div class="flex gap-2">
+<button class="btn-secondary px-4 py-1.5 opacity-50 cursor-not-allowed shadow-none" disabled="">Prev</button>
+<button class="bg-primary text-white px-4 py-1.5 rounded font-semibold text-body-md">1</button>
+<button class="btn-secondary px-4 py-1.5">2</button>
+<button class="btn-secondary px-4 py-1.5">3</button>
+<span class="px-2 py-1.5 text-on-surface-variant">...</span>
+<button class="btn-secondary px-4 py-1.5">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

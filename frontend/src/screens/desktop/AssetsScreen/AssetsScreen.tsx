@@ -1,19 +1,46 @@
-﻿/**
- * AssetsScreen — desktop view for the Assets module.
- * One file, one purpose: renders the Assets UI for 1440px+ screens.
- * Design: PENDING — Stitch "Institutional Excellence" desktop spec.
- * Logic: wire up props from the parent page.tsx once data layer is ready.
- */
+import { requireRole } from "@backend/auth/page-guard";
+import { listAssets, listMovements } from "@backend/services/asset.service";
+import { prisma } from "@backend/prisma";
+import { AssetsContent } from "./AssetsContent";
 
-import styles from "./AssetsScreen.module.css";
+export const dynamic = "force-dynamic";
 
-export function AssetsScreen() {
+export async function AssetsScreen() {
+  await requireRole("super_admin", "principal", "staff");
+
+  const [assets, movements, staff] = await Promise.all([
+    listAssets(),
+    listMovements(),
+    prisma.staff.findMany({ select: { id: true, firstName: true, lastName: true }, orderBy: [{ firstName: "asc" }] }),
+  ]);
+
   return (
-    <section className={styles.root} aria-label="Assets">
-      <div className={styles.placeholder}>
-        <span className={styles.label}>Assets — Desktop Screen</span>
-        <span className={styles.hint}>Design pending. Structure ready.</span>
-      </div>
-    </section>
+    <AssetsContent
+      assets={assets.map((a) => ({
+        id: a.id,
+        tag: a.tag,
+        name: a.name,
+        category: a.category,
+        status: a.status,
+        location: a.location,
+        custodianId: a.custodianId,
+        custodianName: a.custodian ? `${a.custodian.firstName} ${a.custodian.lastName}` : null,
+        quantity: a.quantity,
+        value: a.value !== null ? Number(a.value) : null,
+        imageUrl: a.imageUrl,
+        movementCount: a._count.movements,
+      }))}
+      movements={movements.map((m) => ({
+        id: m.id,
+        assetName: m.asset.name,
+        assetTag: m.asset.tag,
+        type: m.type,
+        quantity: m.quantity,
+        note: m.note,
+        actedByName: m.actedBy.name,
+        createdAt: m.createdAt.toISOString(),
+      }))}
+      staff={staff.map((s) => ({ id: s.id, name: `${s.firstName} ${s.lastName}` }))}
+    />
   );
 }

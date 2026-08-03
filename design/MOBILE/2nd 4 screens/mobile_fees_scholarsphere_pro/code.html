@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere Pro - Fees &amp; Payments</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#faf9ff",
+                        "secondary-container": "#55a7fe",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#b34b00",
+                        "on-tertiary-container": "#ffe8de",
+                        "inverse-surface": "#2e3036",
+                        "secondary": "#0061a7",
+                        "secondary-fixed-dim": "#a1c9ff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#003b69",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f8",
+                        "surface-container": "#ededf5",
+                        "surface-container-highest": "#e2e2ea",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-error-container": "#93000a",
+                        "primary": "#4131dc",
+                        "secondary-fixed": "#d2e4ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191b21",
+                        "inverse-primary": "#c3c0ff",
+                        "on-secondary-fixed": "#001c37",
+                        "primary-container": "#5b50f5",
+                        "surface-tint": "#4e41e8",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "on-primary-fixed": "#100069",
+                        "tertiary": "#8c3900",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "outline-variant": "#c7c4d8",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2ea",
+                        "on-primary-container": "#edeaff",
+                        "surface-container-high": "#e7e7ef",
+                        "surface": "#faf9ff",
+                        "outline": "#777587",
+                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d9d9e1",
+                        "surface-container-low": "#f3f3fb",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#e3dfff",
+                        "on-primary-fixed-variant": "#341dd1",
+                        "background": "#faf9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191b21",
+                        "on-secondary-fixed-variant": "#00487f",
+                        "forest-green": "#2E8540",
+                        "amber": "#D97706",
+                        "rose": "#E11D48"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem",
+                        "card": "0.5rem" 
+                    },
+                    spacing: {
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #faf9ff;
+        }
+        min-height: max(884px, 100dvh);
+    </style>
+</head>
+<body class="font-body-md text-on-surface bg-background pb-24 relative overflow-x-hidden">
+<!-- Offline Banner -->
+<div class="fixed top-16 left-0 w-full z-40 bg-surface-variant text-on-surface-variant px-margin-mobile py-2 text-label-md font-label-md flex items-center gap-2 border-b border-outline-variant shadow-sm hidden md:hidden" id="offline-banner">
+<span class="material-symbols-outlined text-[16px]">cloud_off</span>
+        Offline payments will sync later
+    </div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16 transition-colors">
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-title-lg text-title-lg font-bold text-primary-container">SchoolPro Ghana</h1>
+<!-- Sync Chip -->
+<div class="hidden md:flex items-center gap-1 bg-surface-container-low text-primary-container border border-outline-variant rounded-full px-2 py-0.5 ml-2">
+<span class="w-1.5 h-1.5 bg-forest-green rounded-full"></span>
+<span class="font-label-md text-label-md text-[10px]">Online • Synced</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-20 px-margin-mobile md:px-margin-desktop md:pt-24 max-w-7xl mx-auto space-y-6">
+<!-- Mobile Sync Chip (Visible only on mobile below header) -->
+<div class="flex md:hidden items-center justify-between mt-2 mb-4">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary-container">Fees</h2>
+<div class="flex items-center gap-1 bg-surface-container-low text-primary-container border border-outline-variant rounded-full px-2 py-1">
+<span class="w-2 h-2 bg-forest-green rounded-full"></span>
+<span class="font-label-md text-label-md">Online • Synced</span>
+</div>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary-container hidden md:block mt-4">Fees Management</h2>
+<!-- KPI Cards Grid -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Total Due -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2 text-on-surface-variant">
+<span class="font-body-md text-body-md">Total Due</span>
+<span class="material-symbols-outlined text-outline">account_balance_wallet</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-primary-container">GHS 9,200</div>
+</div>
+</div>
+<!-- Collected -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2 text-on-surface-variant">
+<span class="font-body-md text-body-md">Collected</span>
+<span class="material-symbols-outlined text-forest-green">check_circle</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-forest-green">GHS 4,850</div>
+</div>
+</div>
+<!-- Outstanding -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2 text-on-surface-variant">
+<span class="font-body-md text-body-md">Outstanding</span>
+<span class="material-symbols-outlined text-amber">pending</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-amber">GHS 4,350</div>
+</div>
+</div>
+<!-- Overdue -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2 text-on-surface-variant">
+<span class="font-body-md text-body-md">Overdue</span>
+<span class="material-symbols-outlined text-rose">error</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-rose">3</div>
+</div>
+</div>
+</section>
+<!-- Actions & Search -->
+<section class="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+<!-- Search -->
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-card bg-surface-container-lowest focus:ring-2 focus:ring-primary-container focus:border-primary-container font-body-md text-body-md text-on-surface" placeholder="Search student, invoice, or receipt" type="text"/>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar md:pb-0">
+<button class="whitespace-nowrap flex items-center gap-2 bg-primary-container text-on-primary-container px-4 py-2 rounded-card font-label-md text-label-md hover:bg-surface-tint hover:text-white transition-colors border border-transparent">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Record Payment
+                </button>
+<button class="whitespace-nowrap flex items-center gap-2 bg-transparent text-primary-container border border-primary-container px-4 py-2 rounded-card font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                    Generate Invoice
+                </button>
+<button class="whitespace-nowrap flex items-center gap-2 bg-transparent text-primary-container border border-primary-container px-4 py-2 rounded-card font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export
+                </button>
+</div>
+</section>
+<!-- Filters -->
+<section class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md border border-transparent shadow-sm">All</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">Paid</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">Pending</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">Overdue</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">Basic 6</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">JHS 1</button>
+</section>
+<!-- Main Content Layout -->
+<div class="flex flex-col lg:flex-row gap-6">
+<!-- Fee Records List (Left Side) -->
+<section class="flex-1 space-y-4">
+<!-- Card 1: Paid -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Akosua Asare</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Basic 6A • INV-2024-001</p>
+</div>
+<span class="bg-[#E6F4EA] text-forest-green px-2 py-1 rounded-sm font-label-md text-label-md flex items-center gap-1 border border-[#CEEAD6]">
+                            Paid
+                        </span>
+</div>
+<div class="flex justify-between items-end mt-4">
+<div>
+<p class="font-label-md text-label-md text-outline">Total Amount</p>
+<p class="font-title-lg text-title-lg text-primary-container">GHS 1,200</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-outline">Method</p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-1 justify-end">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">smartphone</span>
+                                Mobile Money
+                            </p>
+</div>
+</div>
+</div>
+<!-- Card 2: Pending (EXPANDED STATE) -->
+<div class="bg-surface-container-lowest border-2 border-primary-container rounded-card p-4 shadow-[0_8px_16px_rgba(25,27,33,0.1)] transition-all">
+<div class="flex justify-between items-start mb-4 border-b border-outline-variant pb-4">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Kofi Antwi</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">JHS 1 • INV-2024-002</p>
+</div>
+<span class="bg-[#FEF3C7] text-amber px-2 py-1 rounded-sm font-label-md text-label-md flex items-center gap-1 border border-[#FDE68A]">
+                            Pending
+                        </span>
+</div>
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="font-label-md text-label-md text-outline">Invoice Total</p>
+<p class="font-body-lg text-body-lg text-on-surface">GHS 800</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-outline">Balance Due</p>
+<p class="font-title-lg text-title-lg text-amber">GHS 300</p>
+</div>
+</div>
+<!-- Progress Bar for partial payment -->
+<div class="w-full bg-surface-variant rounded-full h-2 mb-6">
+<div class="bg-primary-container h-2 rounded-full" style="width: 62.5%"></div>
+</div>
+<!-- Expanded Actions -->
+<div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-outline-variant">
+<button class="flex items-center justify-center gap-2 bg-primary-container text-on-primary-container py-2 rounded-card font-label-md text-label-md hover:bg-surface-tint hover:text-white transition-colors col-span-2">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+                            Record Payment
+                        </button>
+<button class="flex items-center justify-center gap-2 bg-transparent border border-outline-variant text-on-surface-variant py-2 rounded-card font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                            View Invoice
+                        </button>
+<button class="flex items-center justify-center gap-2 bg-transparent border border-outline-variant text-on-surface-variant py-2 rounded-card font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                            Print Receipt
+                        </button>
+<button class="flex items-center justify-center gap-2 bg-transparent border border-outline-variant text-on-surface-variant py-2 rounded-card font-label-md text-label-md hover:bg-surface-container-low transition-colors col-span-2">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+                            Send Reminder
+                        </button>
+</div>
+</div>
+<!-- Card 3: Overdue -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] hover:bg-surface-container-low transition-colors cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-rose"></div>
+<div class="flex justify-between items-start mb-2 pl-2">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Abena Kyei</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Basic 6B • INV-2024-003</p>
+</div>
+<span class="bg-[#FFE4E6] text-rose px-2 py-1 rounded-sm font-label-md text-label-md flex items-center gap-1 border border-[#FECDD3]">
+                            Overdue
+                        </span>
+</div>
+<div class="flex justify-between items-end mt-4 pl-2">
+<div>
+<p class="font-label-md text-label-md text-outline">Invoice Total</p>
+<p class="font-body-lg text-body-lg text-on-surface">GHS 1,500</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-outline">Balance Due</p>
+<p class="font-title-lg text-title-lg text-rose">GHS 1,500</p>
+</div>
+</div>
+</div>
+<!-- Card 4: Paid -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-[0_2px_4px_rgba(25,27,33,0.05)] hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Michael Osei</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Basic 6A • INV-2024-004</p>
+</div>
+<span class="bg-[#E6F4EA] text-forest-green px-2 py-1 rounded-sm font-label-md text-label-md flex items-center gap-1 border border-[#CEEAD6]">
+                            Paid
+                        </span>
+</div>
+<div class="flex justify-between items-end mt-4">
+<div>
+<p class="font-label-md text-label-md text-outline">Total Amount</p>
+<p class="font-title-lg text-title-lg text-primary-container">GHS 1,000</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-outline">Method</p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-1 justify-end">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">payments</span>
+                                Cash
+                            </p>
+</div>
+</div>
+</div>
+<!-- Skeleton Loader -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-sm animate-pulse">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-2">
+<div class="h-5 bg-surface-variant rounded w-32"></div>
+<div class="h-4 bg-surface-variant rounded w-40"></div>
+</div>
+<div class="h-6 bg-surface-variant rounded w-16"></div>
+</div>
+<div class="flex justify-between items-end mt-4 pt-4 border-t border-outline-variant">
+<div class="space-y-2">
+<div class="h-3 bg-surface-variant rounded w-20"></div>
+<div class="h-5 bg-surface-variant rounded w-24"></div>
+</div>
+<div class="space-y-2 text-right flex flex-col items-end">
+<div class="h-3 bg-surface-variant rounded w-16"></div>
+<div class="h-5 bg-surface-variant rounded w-24"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar (Right Side on Desktop) -->
+<aside class="w-full lg:w-80 space-y-6">
+<!-- Recent Payments Compact List -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-card p-4 shadow-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface border-b border-outline-variant pb-2 mb-4">Recent Payments</h3>
+<ul class="space-y-3">
+<li class="flex items-center justify-between pb-3 border-b border-surface-variant last:border-0 last:pb-0">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">GHS 500</p>
+<p class="font-label-md text-label-md text-outline">RCP-882 • 2h ago</p>
+</div>
+</div>
+</li>
+<li class="flex items-center justify-between pb-3 border-b border-surface-variant last:border-0 last:pb-0">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">GHS 1,200</p>
+<p class="font-label-md text-label-md text-outline">RCP-881 • 5h ago</p>
+</div>
+</div>
+</li>
+<li class="flex items-center justify-between pb-3 border-b border-surface-variant last:border-0 last:pb-0">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">GHS 300</p>
+<p class="font-label-md text-label-md text-outline">RCP-880 • 1d ago</p>
+</div>
+</div>
+</li>
+</ul>
+<button class="w-full mt-4 text-center font-label-md text-label-md text-primary-container hover:underline">View All History</button>
+</div>
+</aside>
+</div>
+</main>
+<!-- Floating Action Button (Mobile Only) -->
+<button class="md:hidden fixed bottom-24 right-4 bg-primary-container text-on-primary-container p-4 rounded-full shadow-lg hover:bg-surface-tint active:scale-95 transition-all z-40 flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+<!-- Toast Notification -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-card shadow-lg flex items-center gap-3 z-50 transition-opacity duration-300 font-body-md text-body-md w-[90%] md:w-auto max-w-md" id="toast">
+<span class="material-symbols-outlined text-primary-fixed-dim">check_circle</span>
+<span>Payment recorded and receipt generated</span>
+<button class="ml-auto text-inverse-primary font-label-md hover:underline" onclick="document.getElementById('toast').style.display='none'">Dismiss</button>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-20 px-xs pb-safe flex justify-around items-center rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg h-full flex-1">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg h-full flex-1">
+<span class="material-symbols-outlined mb-1" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg h-full flex-1">
+<span class="material-symbols-outlined mb-1" data-icon="event_available">event_available</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</button>
+<!-- ACTIVE STATE - Indigo theme -->
+<button class="flex flex-col items-center justify-center h-full flex-1 group">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 mb-1 shadow-sm transition-colors">
+<span class="material-symbols-outlined fill" data-icon="payments">payments</span>
+</div>
+<span class="font-label-md text-label-md text-primary-container font-bold group-hover:text-primary transition-colors">Fees</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg h-full flex-1">
+<span class="material-symbols-outlined mb-1" data-icon="more_horiz">more_horiz</span>
+<span class="font-label-md text-label-md">More</span>
+</button>
+</nav>
+<script>
+        // Auto-hide toast after 5 seconds for demonstration
+        setTimeout(() => {
+            const toast = document.getElementById('toast');
+            if(toast) {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.style.display = 'none', 300);
+            }
+        }, 5000);
+
+        // Toggle offline banner visibility occasionally for demo purposes
+        setInterval(() => {
+            const banner = document.getElementById('offline-banner');
+            if(banner) {
+               banner.classList.toggle('hidden');
+               banner.classList.toggle('flex');
+            }
+        }, 10000);
+    </script>
+</body></html>

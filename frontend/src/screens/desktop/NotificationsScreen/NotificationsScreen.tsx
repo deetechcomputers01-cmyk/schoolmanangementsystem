@@ -1,19 +1,31 @@
-﻿/**
- * NotificationsScreen — desktop view for the Notifications module.
- * One file, one purpose: renders the Notifications UI for 1440px+ screens.
- * Design: PENDING — Stitch "Institutional Excellence" desktop spec.
- * Logic: wire up props from the parent page.tsx once data layer is ready.
- */
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { listNotifications, countUnreadNotifications } from "@backend/services/notification.service";
+import { NotificationsContent } from "./NotificationsContent";
 
-import styles from "./NotificationsScreen.module.css";
+export const dynamic = "force-dynamic";
 
-export function NotificationsScreen() {
+export async function NotificationsScreen() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+
+  const [notifications, unreadCount] = await Promise.all([
+    listNotifications(user.id, 100),
+    countUnreadNotifications(user.id),
+  ]);
+
   return (
-    <section className={styles.root} aria-label="Notifications">
-      <div className={styles.placeholder}>
-        <span className={styles.label}>Notifications — Desktop Screen</span>
-        <span className={styles.hint}>Design pending. Structure ready.</span>
-      </div>
-    </section>
+    <NotificationsContent
+      initialNotifications={notifications.map((n) => ({
+        id: n.id,
+        type: n.type,
+        title: n.title,
+        body: n.body,
+        link: n.link,
+        isRead: n.isRead,
+        createdAt: n.createdAt.toISOString(),
+      }))}
+      initialUnreadCount={unreadCount}
+    />
   );
 }

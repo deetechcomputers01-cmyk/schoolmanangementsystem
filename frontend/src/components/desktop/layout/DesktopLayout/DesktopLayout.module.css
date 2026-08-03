@@ -1,25 +1,57 @@
 /**
  * DesktopLayout.module.css
- * Structural grid only. No colours — colours live in tokens.css + child modules.
+ * Structural shell only. No colours — colours live in tokens.css + child modules.
+ *
+ * Use flex (not grid) so that the fixed sidebar does not interfere with
+ * auto-placement. Fixed elements are removed from grid flow, which would
+ * cause .body to be placed in column 1 (260px) instead of the 1fr column.
+ * Flex with margin-left on .body is simpler and predictable.
  */
 
 .shell {
-  display: grid;
-  grid-template-columns: var(--layout-sidebar-w) 1fr;
+  display: flex;
   min-height: 100dvh;
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  /* Offset so content starts after the fixed sidebar */
+  /* Push content past the fixed sidebar on desktop */
   margin-left: var(--layout-sidebar-w);
+  flex: 1;
+  min-width: 0;
 }
 
 .content {
   flex: 1;
   width: 100%;
-  max-width: var(--layout-content-max);
-  padding: var(--layout-content-pad);
+  padding: 24px;
+  overflow-x: hidden;
+  background: var(--clr-app-bg);
+}
+
+.mobileOnly {
+  display: none;
+}
+
+/* ── Mobile: sidebar + desktop topbar replaced by MobileHeader + MobileBottomNav ── */
+@media (max-width: 1024px) {
+  .body {
+    margin-left: 0;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  .mobileOnly {
+    display: block;
+  }
+
+  .content {
+    padding: 16px;
+    /* Clear the fixed MobileHeader above and MobileBottomNav below */
+    padding-top: calc(var(--layout-topbar-h) + var(--sp-4));
+    padding-bottom: calc(64px + env(safe-area-inset-bottom) + var(--sp-4));
+  }
 }

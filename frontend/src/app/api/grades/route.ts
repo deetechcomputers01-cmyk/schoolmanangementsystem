@@ -1,10 +1,15 @@
 ﻿import { getCurrentUser } from "@backend/auth/cookies";
-import { handleApiError, ok } from "@/lib/http";
+import { handleApiError, ok, unauthorized, forbidden } from "@/lib/http";
 import { createGrade, listGrades } from "@backend/services/grade.service";
 import { gradeSchema } from "@backend/validation/grades";
 
+const GRADES_READ_ROLES = ["super_admin", "principal", "teacher", "staff"];
+
 export async function GET() {
   try {
+    const user = await getCurrentUser();
+    if (!user) return unauthorized();
+    if (!GRADES_READ_ROLES.includes(user.role)) return forbidden();
     return ok({ grades: await listGrades() });
   } catch (error) {
     return handleApiError(error);

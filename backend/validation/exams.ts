@@ -4,9 +4,11 @@ export const createExamSchema = z.object({
   title:       z.string().min(1).max(120),
   subjectId:   z.string().cuid(),
   classId:     z.string().cuid(),
-  termId:      z.string().cuid().optional(),
+  termId:      z.string().cuid().nullish(),
   scheduledAt: z.string().datetime(),
-  maxScore:    z.number().positive().max(1000).default(100)
+  maxScore:    z.number().positive().max(1000).default(100),
+  isOnline:    z.boolean().optional(),
+  duration:    z.number().int().positive().max(480).optional(),
 });
 
 export const scoreEntrySchema = z.object({

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - School Profile | ScholarSphere Pro</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with custom config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5", // ScholarSphere Pro Indigo
+                        "on-primary": "#ffffff",
+                        "background": "#F8FAFC",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .input-field {
+                @apply w-full px-4 py-2 border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary transition-all bg-white;
+            }
+            .label-text {
+                @apply block font-label-sm text-on-surface-variant mb-1.5 uppercase tracking-wider text-[11px];
+            }
+            .settings-nav-item {
+                @apply flex items-center gap-3 px-4 py-2.5 rounded text-body-md font-medium text-on-surface-variant hover:text-primary hover:bg-[#F1F5F9] transition-all;
+            }
+            .settings-nav-item-active {
+                @apply flex items-center gap-3 px-4 py-2.5 rounded text-body-md font-bold text-primary bg-[#EEEDFF] border-l-4 border-primary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="text-body-md">Dashboard</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">school</span><span class="text-body-md">Students</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">groups</span><span class="text-body-md">Staff</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="text-body-md">Attendance</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">grading</span><span class="text-body-md">Gradebook</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">payments</span><span class="text-body-md">Financials</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">inventory_2</span><span class="text-body-md">Assets</span></a></li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md">Sync Status</span>
+</a>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary w-80" placeholder="Search across system..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">A</div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-8 overflow-y-auto max-w-[1400px] mx-auto w-full">
+<!-- Breadcrumbs & Header -->
+<div class="mb-8">
+<nav class="flex items-center gap-2 text-on-surface-variant font-medium text-[13px] mb-2">
+<a class="hover:text-primary" href="#">Administration</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span>Settings</span>
+</nav>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-tight">Settings &amp; School Profile</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Configure institutional identity and system-wide preferences.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="btn-secondary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                        Preview Letterhead
+                    </button>
+<button class="btn-primary" disabled="">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                        Save Changes
+                    </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Navigation (Settings Sub-menu) -->
+<aside class="lg:col-span-3">
+<nav class="flex flex-col space-y-1">
+<a class="settings-nav-item-active" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">domain</span>
+                        School Profile
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                        Academic Calendar
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+                        Branding
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                        Fees &amp; Billing
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">rule</span>
+                        Attendance
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+                        Gradebook
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                        Users &amp; Security
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+                        Notifications
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+                        Offline &amp; Sync
+                    </a>
+<a class="settings-nav-item" href="#">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+                        Integrations
+                    </a>
+</nav>
+</aside>
+<!-- Center Form Area -->
+<div class="lg:col-span-6 flex flex-col gap-6">
+<!-- Institutional Crest -->
+<section class="bg-white border border-outline rounded p-6 shadow-sm">
+<h3 class="font-label-sm text-on-surface mb-6 uppercase tracking-wider text-[11px] border-b border-outline pb-3">Institutional Crest</h3>
+<div class="flex items-center gap-6">
+<div class="w-24 h-24 rounded border border-outline bg-surface-container-low flex items-center justify-center overflow-hidden relative group">
+<span class="material-symbols-outlined text-[40px] text-on-surface-variant opacity-20">local_police</span>
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBSGO-C2x6Cg0JwrC8M9J_IlbZQ2vkzOxGyW5ZxRnFe8YBJBs6fq2E7PJZESRE4DtrzNB8CL85M1SCZ-VZYVSLE66W6sEOow44WjyZrbzwRaLG3qfeHNmvbUY-W3RHKdy35E5dpIPjcwXD6v5Fy_iTzKanydkQUgG5a87GU9WTW_KI3_hJPA6yh2MP55jiOXF82zkmWvfzdXj1ZkCumcWJkxbJpX1eJbFDUjRK2qAhtA3qYo_Rk_ilN6YsrYHSNugAjfyGYtOOfA')"></div>
+</div>
+<div class="flex-1">
+<p class="text-body-md text-on-surface-variant mb-4">Upload your school's official crest. Recommended size: 512x512px. SVG or high-res PNG preferred.</p>
+<div class="flex gap-3">
+<button class="btn-secondary py-1.5 px-3 text-[13px]">Replace Logo</button>
+<button class="text-error font-semibold text-[13px] px-3 py-1.5 hover:bg-red-50 rounded transition-all">Remove</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Basic Information -->
+<section class="bg-white border border-outline rounded p-6 shadow-sm">
+<h3 class="font-label-sm text-on-surface mb-6 uppercase tracking-wider text-[11px] border-b border-outline pb-3">Basic Information</h3>
+<div class="space-y-4">
+<div>
+<label class="label-text">School Name</label>
+<input class="input-field" type="text" value="Ridgeview Preparatory School"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="label-text">GES Code</label>
+<input class="input-field" type="text" value="GES/AR/00124"/>
+</div>
+<div>
+<label class="label-text">School Type</label>
+<select class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_12px_center]">
+<option>Public / Government</option>
+<option selected="">Private / Independent</option>
+<option>International School</option>
+</select>
+</div>
+</div>
+<div>
+<label class="label-text">Institutional Motto</label>
+<input class="input-field" type="text" value="Knowledge, Character, Excellence"/>
+</div>
+<div>
+<label class="label-text">Headteacher / Principal Name</label>
+<input class="input-field" type="text" value="Dr. Kwesi Mensah"/>
+</div>
+</div>
+</section>
+<!-- Contact & Location -->
+<section class="bg-white border border-outline rounded p-6 shadow-sm">
+<h3 class="font-label-sm text-on-surface mb-6 uppercase tracking-wider text-[11px] border-b border-outline pb-3">Contact &amp; Location</h3>
+<div class="space-y-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="label-text">Region</label>
+<select class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_12px_center]">
+<option selected="">Greater Accra</option>
+<option>Ashanti</option>
+<option>Central</option>
+</select>
+</div>
+<div>
+<label class="label-text">District</label>
+<input class="input-field" type="text" value="Accra Metropolitan"/>
+</div>
+</div>
+<div>
+<label class="label-text">Postal Address</label>
+<input class="input-field" type="text" value="P.O. Box 123, Ridge, Accra"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="label-text">Official Phone</label>
+<input class="input-field" type="tel" value="+233 24 123 4567"/>
+</div>
+<div>
+<label class="label-text">Official Email</label>
+<input class="input-field" type="email" value="admin@ridgeviewprep.edu.gh"/>
+</div>
+</div>
+<div>
+<label class="label-text">School Website (Optional)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">language</span>
+<input class="input-field pl-10" type="url" value="www.ridgeviewprep.edu.gh"/>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Panel (Live Preview) -->
+<aside class="lg:col-span-3 flex flex-col gap-6">
+<div class="sticky top-[80px] space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="font-label-sm uppercase tracking-widest text-[10px]">Letterhead Preview</span>
+</div>
+<!-- Mockup Letterhead Card -->
+<div class="bg-white border border-outline rounded p-8 shadow-sm text-center relative overflow-hidden flex flex-col items-center">
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#1A1A1E_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<div class="w-14 h-14 rounded-full border border-outline bg-surface-container-low flex items-center justify-center mb-4 z-10">
+<span class="material-symbols-outlined text-[24px] text-on-surface-variant opacity-30">local_police</span>
+</div>
+<h4 class="font-bold text-on-surface text-[15px] z-10 leading-tight">Ridgeview Preparatory School</h4>
+<p class="text-[10px] text-on-surface-variant italic mt-1 z-10 uppercase tracking-widest">"Knowledge, Character, Excellence"</p>
+<div class="w-full h-[1px] bg-outline my-4 opacity-60 z-10"></div>
+<div class="text-[9px] text-on-surface-variant space-y-1 z-10">
+<p class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+                                P.O. Box 123, Ridge, Accra
+                            </p>
+<p class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[12px]">call</span>
+                                +233 24 123 4567
+                            </p>
+<p class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[12px]">mail</span>
+                                admin@ridgeviewprep.edu.gh
+                            </p>
+</div>
+</div>
+<div class="bg-blue-50 border border-blue-100 rounded p-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-blue-600 text-[20px]">info</span>
+<p class="text-[12px] text-blue-800 leading-normal">
+                                This preview shows how the header will appear on generated reports, student transcripts, and official receipts.
+                            </p>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant flex items-center justify-center gap-1.5 opacity-60">
+<span class="material-symbols-outlined text-[14px]">history</span>
+                        Last updated Oct 24, 10:45 AM
+                    </p>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</body></html>

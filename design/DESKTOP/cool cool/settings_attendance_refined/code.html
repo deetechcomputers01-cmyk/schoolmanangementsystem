@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduManage Pro - Settings: Attendance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#ffffff",
+                    "surface-container": "#f8f9fa",
+                    "on-surface-variant": "#5e6e82",
+                    "background": "#fbfbfb",
+                    "on-secondary-container": "#003b69",
+                    "secondary": "#0061a7",
+                    "error": "#e63757",
+                    "on-tertiary-container": "#ffe8de",
+                    "outline-variant": "#E4E4EC",
+                    "secondary-container": "#55a7fe",
+                    "on-secondary-fixed": "#001c37",
+                    "inverse-on-surface": "#f0f0f8",
+                    "surface-dim": "#d9d9e1",
+                    "surface": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f9fafd",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "tertiary": "#8c3900",
+                    "inverse-surface": "#2e3036",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#c3c0ff",
+                    "surface-container-highest": "#e2e2ea",
+                    "outline": "#9da9bb",
+                    "secondary-fixed-dim": "#a1c9ff",
+                    "on-tertiary-fixed-variant": "#793000",
+                    "tertiary-fixed": "#ffdbcb",
+                    "surface-bright": "#ffffff",
+                    "tertiary-container": "#b34b00",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-container-high": "#f1f4f8",
+                    "primary-fixed": "#e3dfff",
+                    "on-primary-fixed": "#100069",
+                    "secondary-fixed": "#d2e4ff",
+                    "on-secondary-fixed-variant": "#00487f",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "primary": "#5B50F5",
+                    "on-surface": "#232b3b",
+                    "primary-container": "#5B50F5",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-primary-fixed-variant": "#341dd1",
+                    "surface-tint": "#5B50F5",
+                    "on-background": "#232b3b",
+                    "surface-variant": "#ffffff",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "8px",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Inter", "sans-serif"],
+                    "display": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            },
+            "fontSize": {}
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background font-body text-on-surface h-full flex overflow-hidden selection:bg-primary/20 selection:text-primary">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full border-r border-outline-variant w-[260px] h-screen sticky left-0 top-0 bg-surface flex-shrink-0 z-40">
+<!-- Header -->
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-on-primary flex-shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div class="overflow-hidden">
+<h1 class="text-lg font-bold text-on-surface truncate leading-tight">EduManage Pro</h1>
+<p class="text-xs text-on-surface-variant truncate">Admin Portal</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-2.5 px-4 rounded text-sm font-semibold hover:opacity-90 transition-all duration-200 cursor-pointer active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-sm font-bold">add</span>
+            New Admission
+        </button>
+</div>
+<!-- Main Navigation -->
+<div class="flex-1 overflow-y-auto px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">dashboard</span>
+            Dashboard
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">group</span>
+            Students
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">badge</span>
+            Staff
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">school</span>
+            Classes
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">calendar_today</span>
+            Attendance
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-primary/10 text-primary font-bold transition-colors duration-200 cursor-pointer font-body text-sm" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+            Settings
+        </a>
+</div>
+<!-- Footer Navigation -->
+<div class="p-4 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">help</span>
+            Support
+        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-error hover:bg-error/5 transition-colors duration-200 cursor-pointer group font-body text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[22px]">logout</span>
+            Logout
+        </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full min-w-0 bg-background overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-8 w-full h-[56px] sticky top-0 z-30 bg-surface border-b border-outline-variant flex-shrink-0">
+<!-- Left: Breadcrumb -->
+<div class="flex items-center gap-2 font-headline text-sm text-on-surface-variant">
+<span>Administration</span>
+<span class="material-symbols-outlined text-base text-outline leading-none">chevron_right</span>
+<span class="font-semibold text-on-surface">Settings &amp; School Profile</span>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 border border-outline-variant rounded text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer active:scale-95">
+                Reset Defaults
+            </button>
+<button class="px-4 py-1.5 border border-outline-variant rounded text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 cursor-pointer active:scale-95">
+                Preview Letterhead
+            </button>
+<button class="px-5 py-1.5 bg-primary text-on-primary rounded text-sm font-semibold hover:opacity-90 transition-all duration-200 cursor-pointer active:scale-95 shadow-sm">
+                Save Changes
+            </button>
+</div>
+</header>
+<!-- Settings Content Layout -->
+<div class="flex-1 overflow-hidden flex">
+<!-- Settings Sub-Navigation -->
+<aside class="w-[220px] h-full overflow-y-auto border-r border-outline-variant bg-surface flex-shrink-0">
+<div class="py-6">
+<nav class="space-y-0.5 font-body text-sm">
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">School Profile</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Academic Calendar</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Branding</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Fees</a>
+<a class="flex items-center px-6 py-2.5 bg-primary/5 text-primary font-bold relative transition-colors" href="#">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                        Attendance
+                    </a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Gradebook</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Users &amp; Security</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Notifications</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Offline &amp; Sync</a>
+<a class="flex items-center px-6 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Integrations</a>
+</nav>
+</div>
+</aside>
+<!-- Main Workspace -->
+<div class="flex-1 flex flex-row overflow-hidden">
+<!-- Center Form Column -->
+<div class="flex-1 overflow-y-auto p-8 lg:p-10">
+<div class="bg-surface rounded border border-outline-variant max-w-3xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant bg-surface-container-low/30">
+<h2 class="text-xs font-bold text-on-surface tracking-[0.1em] uppercase mb-1">ATTENDANCE RULES</h2>
+<p class="text-[13px] text-on-surface-variant">Configure attendance thresholds and auto-alert triggers.</p>
+</div>
+<div class="p-8 space-y-10">
+<!-- Rule Group 1 -->
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-semibold text-on-surface mb-2" for="min-attendance">Minimum Attendance Rate %</label>
+<div class="relative max-w-xs">
+<input class="block w-full border border-outline-variant rounded px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" id="min-attendance" placeholder="75" type="number" value="75"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+<span class="text-on-surface-variant text-sm font-medium">%</span>
+</div>
+</div>
+<p class="mt-2 text-xs text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">info</span>
+                                    Students falling below this threshold will be flagged for review.
+                                </p>
+</div>
+<div>
+<label class="block text-sm font-semibold text-on-surface mb-2" for="alert-threshold">Alert Threshold — Guardian Notification %</label>
+<div class="relative max-w-xs">
+<input class="block w-full border border-outline-variant rounded px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" id="alert-threshold" placeholder="60" type="number" value="60"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+<span class="text-on-surface-variant text-sm font-medium">%</span>
+</div>
+</div>
+<p class="mt-2 text-xs text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">info</span>
+                                    Automated SMS/Email sent to guardians when rate hits this critical level.
+                                </p>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Rule Group 2 -->
+<div class="space-y-8">
+<div>
+<label class="block text-sm font-semibold text-on-surface mb-2" for="late-cutoff">Late Arrival Cut-off</label>
+<div class="flex items-stretch max-w-[280px]">
+<input class="block w-20 border border-outline-variant rounded-l px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all border-r-0" id="late-cutoff" placeholder="15" type="number" value="15"/>
+<div class="bg-surface-container-low border border-outline-variant rounded-r px-4 py-2.5 text-sm text-on-surface-variant flex items-center font-medium whitespace-nowrap">
+                                        minutes after start
+                                    </div>
+</div>
+<p class="mt-2 text-xs text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">info</span>
+                                    Arrivals after this window will be marked as 'Late' automatically.
+                                </p>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-on-surface mb-4">Automated Actions</h3>
+<label class="flex items-start gap-4 p-4 border border-outline-variant rounded bg-surface hover:bg-surface-container-low/50 transition-colors cursor-pointer group max-w-lg">
+<div class="flex items-center h-5 mt-0.5">
+<input checked="" class="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Mark Absent if Late</span>
+<span class="text-xs text-on-surface-variant mt-1 leading-relaxed">Automatically mark as absent if student is more than 60 mins late without prior notification.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Preview Column -->
+<aside class="w-[340px] hidden xl:block border-l border-outline-variant bg-surface p-8 flex-shrink-0 overflow-y-auto">
+<div class="sticky top-0">
+<h3 class="text-[11px] font-bold text-on-surface tracking-[0.15em] uppercase mb-8">ATTENDANCE PREVIEW</h3>
+<div class="space-y-8">
+<!-- Preview Card -->
+<div class="border border-outline-variant rounded overflow-hidden">
+<div class="bg-surface-container-low p-4 border-b border-outline-variant">
+<span class="text-xs font-bold text-on-surface uppercase tracking-wider">Student Status Preview</span>
+</div>
+<div class="p-6 space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></div>
+<span class="text-sm font-medium text-on-surface">Present</span>
+</div>
+<span class="text-[11px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">&lt; 15 mins</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></div>
+<span class="text-sm font-medium text-on-surface">Late</span>
+</div>
+<span class="text-[11px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">&gt; 15 mins</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 rounded-full bg-error"></div>
+<span class="text-sm font-medium text-on-surface">Absent</span>
+</div>
+<span class="text-[11px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">No show / &gt; 60m</span>
+</div>
+</div>
+</div>
+<!-- Institutional Average Visual -->
+<div class="p-6 rounded border border-outline-variant bg-surface">
+<div class="flex justify-between items-end mb-3">
+<span class="text-xs font-bold text-on-surface uppercase tracking-wider">Institutional Target</span>
+<span class="text-xl font-black text-primary">75%</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[75%] relative">
+<div class="absolute right-0 top-0 bottom-0 w-[2px] bg-white/40"></div>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-4 leading-relaxed font-medium">
+                                This reflects the minimum acceptable attendance rate based on your current rule configuration.
+                            </p>
+</div>
+<!-- Tip Card -->
+<div class="p-5 bg-primary/5 rounded border border-primary/10">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-xl">lightbulb</span>
+<div>
+<h4 class="text-xs font-bold text-primary uppercase mb-1">Configuration Tip</h4>
+<p class="text-[11px] text-primary/80 leading-relaxed font-medium">
+                                        Tightening the 'Late' window can improve institutional punctuality metrics.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</body></html>

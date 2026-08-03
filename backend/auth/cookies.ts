@@ -1,24 +1,43 @@
 import { cookies } from "next/headers";
 import type { SessionUser } from "@/types/auth";
 import { signAccessToken, signRefreshToken, verifyAccessToken } from "./tokens";
+import { getSettings } from "../services/settings.service";
 
 const secure = process.env.NODE_ENV === "production";
 
-export async function setAuthCookies(user: SessionUser) {
+type AuthCookieOptions = {
+  rememberDevice?: boolean;
+};
+
+async function getSessionTimeoutMinutes(): Promise<number> {
+  try {
+    const settings = await getSettings();
+    const ex = (settings.extra ?? {}) as Record<string, unknown>;
+    const minutes = Number(ex.sessionTimeout);
+    return Number.isFinite(minutes) && minutes > 0 ? minutes : 60;
+  } catch {
+    return 60;
+  }
+}
+
+export async function setAuthCookies(user: SessionUser, options: AuthCookieOptions = {}) {
+  const rememberDevice = options.rememberDevice ?? user.rememberDevice ?? false;
+  const tokenUser: SessionUser = { ...user, rememberDevice };
+  const timeoutMinutes = await getSessionTimeoutMinutes();
   const jar = cookies();
-  jar.set("accessToken", await signAccessToken(user), {
+  jar.set("accessToken", await signAccessToken(tokenUser, timeoutMinutes), {
     httpOnly: true,
     sameSite: "lax",
     secure,
     path: "/",
-    maxAge: 60 * 15
+    maxAge: 60 * timeoutMinutes
   });
-  jar.set("refreshToken", await signRefreshToken(user), {
+  jar.set("refreshToken", await signRefreshToken(tokenUser), {
     httpOnly: true,
     sameSite: "lax",
     secure,
     path: "/",
-    maxAge: 60 * 60 * 24 * 7
+    ...(rememberDevice ? { maxAge: 60 * 60 * 24 * 7 } : {})
   });
 }
 

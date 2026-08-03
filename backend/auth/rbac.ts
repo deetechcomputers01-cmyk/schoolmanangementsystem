@@ -29,7 +29,10 @@ const permissions: Record<Role, string[]> = {
     "attendance:read",
     "fees:read", "fees:write",
     "payments:read", "payments:write",
-    "reports:read"
+    "payroll:read",
+    "health:read", "health:write",
+    "reports:read",
+    "announcements:read"
   ],
 
   student: [
@@ -56,8 +59,8 @@ export const roleRouteMap: Record<Role, string[]> = {
   super_admin: ["/"],           // super_admin bypasses route check
   principal:   ["/dashboard", "/students", "/staff", "/attendance", "/gradebook", "/fees", "/timetable", "/academic-calendar", "/exams", "/report-cards", "/announcements", "/admissions", "/payroll", "/disciplinary", "/health", "/library", "/reports"],
   teacher:     ["/dashboard", "/students", "/attendance", "/gradebook", "/timetable", "/academic-calendar", "/exams", "/report-cards", "/announcements", "/disciplinary", "/library"],
-  staff:       ["/dashboard", "/students", "/fees", "/reports", "/academic-calendar", "/report-cards", "/announcements", "/admissions", "/health", "/library"],
-  student:     ["/dashboard", "/portal", "/report-cards", "/timetable", "/announcements", "/library"],
+  staff:       ["/dashboard", "/students", "/fees", "/payroll", "/reports", "/academic-calendar", "/report-cards", "/announcements", "/admissions", "/health", "/library", "/accountant-portal"],
+  student:     ["/dashboard", "/portal", "/student", "/report-cards", "/timetable", "/announcements", "/notifications", "/library"],
   guardian:    ["/dashboard", "/portal", "/report-cards", "/timetable", "/announcements"]
 };
 

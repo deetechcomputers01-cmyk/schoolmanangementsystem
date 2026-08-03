@@ -1,0 +1,463 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Mobile Attendance - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;family=Geist:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#3f465c",
+                      "inverse-primary": "#bec6e0",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e0e3e5",
+                      "tertiary-container": "#2a1700",
+                      "surface-bright": "#f7f9fb",
+                      "outline": "#76777d",
+                      "tertiary": "#000000",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c6c6cd",
+                      "on-surface": "#191c1e",
+                      "primary-container": "#131b2e",
+                      "on-primary": "#ffffff",
+                      "primary": "#000000",
+                      "surface-container": "#eceef0",
+                      "on-primary-fixed": "#131b2e",
+                      "on-secondary-fixed-variant": "#005236",
+                      "primary-fixed": "#dae2fd",
+                      "on-tertiary-container": "#b87500",
+                      "background": "#f7f9fb",
+                      "surface-container-high": "#e6e8ea",
+                      "on-primary-container": "#7c839b",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#002113",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "secondary-fixed-dim": "#4edea3",
+                      "surface-variant": "#e0e3e5",
+                      "surface": "#f7f9fb",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "primary-fixed-dim": "#bec6e0",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#6ffbbe",
+                      "surface-dim": "#d8dadc",
+                      "surface-tint": "#565e74",
+                      "surface-container-low": "#f2f4f6",
+                      "on-background": "#191c1e",
+                      "on-secondary-container": "#00714d",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed": "#ffddb8",
+                      "on-surface-variant": "#45464d",
+                      "secondary": "#006c49",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#6cf8bb",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#2a1700",
+                      "inverse-surface": "#2d3133"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "sm": "8px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "base": "4px",
+                      "xl": "32px",
+                      "2xl": "48px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "margin-desktop": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "title-md": [
+                              "Geist"
+                      ],
+                      "mono-data": [
+                              "Geist"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "label-sm": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "mono-data": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+          .bg-surface-elevated { background-color: #ffffff; border: 1px solid #E2E8F0; box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05); }
+          .bg-surface-modal { background-color: #ffffff; border: 1px solid #E2E8F0; box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1); }
+          .bg-indigo-active { background-color: #5b50f5; color: white; }
+          .text-indigo-active { color: #5b50f5; }
+          .border-indigo-active { border-color: #5b50f5; }
+          .bg-navy { background-color: #0f172a; }
+          .text-navy { color: #0f172a; }
+          
+          /* Custom Scrollbar for compact lists */
+          ::-webkit-scrollbar { width: 4px; height: 4px; }
+          ::-webkit-scrollbar-track { background: transparent; }
+          ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#f8f9fa] text-navy font-body-md h-screen flex flex-col antialiased selection:bg-indigo-active selection:text-white">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#f8f9fa] border-b border-outline-variant flex flex-col px-margin-mobile pt-4 pb-2">
+<div class="flex items-center justify-between w-full h-12">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-navy text-white flex items-center justify-center font-title-md">
+                    A
+                </div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-navy font-bold tracking-tight">Attendance</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-full p-2">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mt-1 overflow-x-auto pb-1">
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap border border-outline-variant">
+                Oct 24, 2024
+            </span>
+<div class="bg-error-container text-on-error-container font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-[#f8aba6]">
+<span class="w-2 h-2 rounded-full bg-error inline-block animate-pulse"></span>
+                Working Offline
+            </div>
+<span class="bg-amber-100 text-amber-800 font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap flex items-center gap-1 border border-amber-300">
+<span class="material-symbols-outlined text-[14px]">sync_saved_locally</span>
+                3 Queued
+            </span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto mt-[104px] pb-40 px-margin-mobile flex flex-col gap-md">
+<!-- Class Selector Card -->
+<section class="bg-surface-elevated rounded-lg p-md mt-sm">
+<div class="grid grid-cols-2 gap-sm mb-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Class</label>
+<select class="w-full h-10 border border-outline-variant rounded-lg px-2 font-body-md text-navy bg-surface-bright focus:ring-2 focus:ring-secondary-container focus:border-secondary-container outline-none appearance-none">
+<option selected="">Basic 6</option>
+<option>Basic 7</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Date</label>
+<input class="w-full h-10 border border-outline-variant rounded-lg px-2 font-body-md text-navy bg-surface-bright focus:ring-2 focus:ring-secondary-container focus:border-secondary-container outline-none" type="date" value="2024-10-24">
+</div>
+</div>
+<div class="flex flex-col gap-xs mb-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Session</label>
+<div class="flex bg-surface-container-high rounded-lg p-1 border border-outline-variant">
+<button class="flex-1 py-1.5 rounded-md bg-white shadow-sm font-label-sm text-label-sm text-navy font-bold">Morning</button>
+<button class="flex-1 py-1.5 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-navy">Afternoon</button>
+<button class="flex-1 py-1.5 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-navy">Evening</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Subject</label>
+<select class="w-full h-10 border border-outline-variant rounded-lg px-2 font-body-md text-navy bg-surface-bright outline-none appearance-none">
+<option selected="">Mathematics</option>
+<option>Science</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Teacher</label>
+<select class="w-full h-10 border border-outline-variant rounded-lg px-2 font-body-md text-navy bg-surface-bright outline-none appearance-none">
+<option selected="">Kwame Owusu</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Summary Section -->
+<section class="flex flex-col gap-xs">
+<div class="flex gap-2 overflow-x-auto pb-2 snap-x hide-scrollbar">
+<div class="snap-start shrink-0 bg-surface-elevated rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border-l-4 border-l-navy">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total</span>
+<span class="font-title-md text-title-md text-navy">8</span>
+</div>
+<div class="snap-start shrink-0 bg-surface-elevated rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border-l-4 border-l-indigo-active border-l-[#5B50F5]">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Marked</span>
+<span class="font-title-md text-title-md text-indigo-active text-[#5B50F5]">6/8</span>
+</div>
+<div class="snap-start shrink-0 bg-emerald-50 rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border border-emerald-200">
+<span class="font-label-sm text-label-sm text-emerald-700 uppercase">Present</span>
+<span class="font-title-md text-title-md text-emerald-700">5</span>
+</div>
+<div class="snap-start shrink-0 bg-rose-50 rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border border-rose-200">
+<span class="font-label-sm text-label-sm text-rose-700 uppercase">Absent</span>
+<span class="font-title-md text-title-md text-rose-700">1</span>
+</div>
+<div class="snap-start shrink-0 bg-amber-50 rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border border-amber-200">
+<span class="font-label-sm text-label-sm text-amber-700 uppercase">Late</span>
+<span class="font-title-md text-title-md text-amber-700">1</span>
+</div>
+<div class="snap-start shrink-0 bg-surface-container-high rounded-lg p-3 w-[120px] flex flex-col justify-center items-center border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Excused</span>
+<span class="font-title-md text-title-md text-navy">0</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-1 overflow-hidden">
+<div class="bg-indigo-active h-1.5 rounded-full bg-[#5B50F5]" style="width: 75%;"></div>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Marking Progress</span>
+<span class="font-mono-data text-mono-data text-indigo-active text-xs text-[#5B50F5]">75%</span>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="flex gap-2 overflow-x-auto pb-1">
+<button class="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-outline-variant bg-white text-navy font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                Mark all present
+            </button>
+<button class="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-outline-variant bg-white text-navy font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-amber-600">schedule</span>
+                Mark all late
+            </button>
+<button class="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-outline-variant bg-white text-rose-600 font-label-sm text-label-sm hover:bg-rose-50 transition-colors whitespace-nowrap ml-auto">
+<span class="material-symbols-outlined text-[16px]">clear_all</span>
+                Clear
+            </button>
+</section>
+<!-- Student Roster -->
+<section class="flex flex-col gap-2">
+<!-- Student Row 1 (Present) -->
+<div class="bg-surface-elevated rounded-lg p-3 flex flex-col gap-2 border-l-4 border-l-emerald-500">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-mono-data text-mono-data text-on-surface-variant w-4 text-right">1</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-navy font-bold">
+                            AA
+                        </div>
+<div class="flex flex-col">
+<span class="font-title-md text-[15px] leading-tight text-navy">Akosua Asare</span>
+<span class="font-mono-data text-[11px] text-on-surface-variant">ADM-23-001</span>
+</div>
+</div>
+<button class="text-on-surface-variant p-1"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="flex bg-surface-container-high rounded-md p-1 border border-outline-variant h-9">
+<button class="flex-1 rounded text-white bg-emerald-600 font-label-sm text-[13px] font-bold shadow-sm flex items-center justify-center gap-1">
+                        P <span class="hidden md:inline text-[10px] font-normal">Present</span>
+</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">A</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">L</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">E</button>
+</div>
+</div>
+<!-- Student Row 2 (Absent) -->
+<div class="bg-surface-elevated rounded-lg p-3 flex flex-col gap-2 border-l-4 border-l-rose-500">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-mono-data text-mono-data text-on-surface-variant w-4 text-right">2</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-navy font-bold">
+                            KA
+                        </div>
+<div class="flex flex-col">
+<span class="font-title-md text-[15px] leading-tight text-navy">Kofi Antwi</span>
+<span class="font-mono-data text-[11px] text-on-surface-variant">ADM-23-002</span>
+</div>
+</div>
+<button class="text-on-surface-variant p-1"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="flex bg-surface-container-high rounded-md p-1 border border-outline-variant h-9">
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">P</button>
+<button class="flex-1 rounded text-white bg-rose-600 font-label-sm text-[13px] font-bold shadow-sm flex items-center justify-center gap-1">
+                        A
+                    </button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">L</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">E</button>
+</div>
+</div>
+<!-- Student Row 3 (Late - Expanded Focus State) -->
+<div class="bg-surface-elevated rounded-lg p-3 flex flex-col gap-2 border-l-4 border-l-amber-500 shadow-md ring-1 ring-amber-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-mono-data text-mono-data text-on-surface-variant w-4 text-right">3</span>
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small circular avatar placeholder showing a generic student silhouette against a light gray background, clean and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChxmylhlIH0P9U4ijLn8rjcF5iyitUvG297NJSA-FWWHHCoXNwodTEedH2kpyJMfIzZo5OXjkwRSwjfK3CDYrQXrhLWLEZe1d2RZiFH1ffxpxNKI4lDHwH0PRIwhHu2b2H7FdC_oorGkEyFXFvYghTYX0vzMTA4Q5XEcmazrj1VPClSKdGIyk1LH57dZ1bduGswd3HYGH3STfQ0u7olmZMUGCFk0keDPa0WJAAhYMn7LOFFkURCBI4XbBbjRTTA5ueYSMqsLOGkw">
+<div class="flex flex-col">
+<span class="font-title-md text-[15px] leading-tight text-navy">Ama E2ETest</span>
+<span class="font-mono-data text-[11px] text-on-surface-variant">ADM-23-005</span>
+</div>
+</div>
+<button class="text-navy bg-surface-container-highest rounded-full p-1"><span class="material-symbols-outlined text-[20px]">expand_less</span></button>
+</div>
+<div class="flex bg-surface-container-high rounded-md p-1 border border-outline-variant h-9">
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">P</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">A</button>
+<button class="flex-1 rounded text-amber-900 bg-amber-400 font-label-sm text-[13px] font-bold shadow-sm flex items-center justify-center gap-1">
+                        L
+                    </button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">E</button>
+</div>
+<div class="mt-2 flex flex-col gap-1">
+<label class="font-label-sm text-xs text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">edit_note</span> Notes (Optional)</label>
+<textarea class="w-full border border-amber-300 rounded-lg p-2 font-body-md text-sm text-navy bg-amber-50 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none resize-none" rows="2">Arriving late due to hospital appointment</textarea>
+</div>
+</div>
+<!-- Student Row 4 (Unmarked) -->
+<div class="bg-surface-elevated rounded-lg p-3 flex flex-col gap-2 border-l-4 border-l-transparent">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-mono-data text-mono-data text-on-surface-variant w-4 text-right">4</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-navy font-bold">
+                            AK
+                        </div>
+<div class="flex flex-col">
+<span class="font-title-md text-[15px] leading-tight text-navy">Abena Kyei</span>
+<span class="font-mono-data text-[11px] text-on-surface-variant">ADM-23-010</span>
+</div>
+</div>
+<button class="text-on-surface-variant p-1"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="flex bg-surface-container-high rounded-md p-1 border border-outline-variant h-9">
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">P</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">A</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">L</button>
+<button class="flex-1 rounded text-on-surface-variant font-label-sm text-[13px] hover:bg-white hover:shadow-sm">E</button>
+</div>
+</div>
+<!-- Empty State Logic Note (Hidden by default, shown for demonstration) -->
+<div class="hidden bg-surface-elevated rounded-lg p-lg flex flex-col items-center justify-center text-center mt-sm border-dashed border-2 border-outline-variant">
+<span class="material-symbols-outlined text-4xl text-outline mb-2">person_off</span>
+<h3 class="font-title-md text-navy mb-1">No students found</h3>
+<p class="font-body-md text-on-surface-variant text-sm">No students are currently enrolled in Basic 6 for this subject.</p>
+</div>
+</section>
+</main>
+<!-- Feedback & Bottom UI -->
+<div class="fixed bottom-20 w-full z-40 flex flex-col px-margin-mobile gap-2 pb-2">
+<!-- Offline Banner -->
+<div class="bg-error-container border border-[#f8aba6] rounded-lg p-2 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2 text-on-error-container">
+<span class="material-symbols-outlined text-lg">wifi_off</span>
+<span class="font-body-md text-sm font-medium">Offline - 3 attendance updates queued</span>
+</div>
+</div>
+<!-- Toast Message (Absolute positioned above button) -->
+<div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full shadow-lg font-body-md text-sm flex items-center gap-2 whitespace-nowrap opacity-90">
+<span class="material-symbols-outlined text-sm">cloud_sync</span>
+            Attendance queued - will sync when online
+        </div>
+<!-- Fixed Footer Action -->
+<button class="w-full bg-indigo-active text-white font-title-md text-[16px] py-3.5 rounded-lg shadow-md flex items-center justify-center gap-2 active:scale-[0.98] transition-transform bg-[#5B50F5]">
+<span class="material-symbols-outlined">save</span>
+            Save Attendance
+        </button>
+</div>
+<!-- Shared Component: BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface border-t border-outline-variant shadow-sm flex justify-around items-center h-20 pb-safe w-full">
+<!-- Dashboard (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-md text-[10px] mt-1">Dashboard</span>
+</a>
+<!-- Students (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">group</span>
+<span class="font-label-md text-[10px] mt-1">Students</span>
+</a>
+<!-- Attendance (Active - Mapping to 'More' or a custom primary intent tab based on context, here we adapt the styling strictly to the active intent) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container rounded-full px-4 py-1 active:scale-95 transition-transform duration-150 bg-[#5B50F5] text-white" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rule</span>
+<span class="font-label-md text-[10px] mt-1 font-bold">Attendance</span>
+</a>
+<!-- Finance (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+<span class="font-label-md text-[10px] mt-1">Finance</span>
+</a>
+</nav>
+
+
+</body></html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academic Calendar - ScholarSphere Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .form-card {
+                @apply bg-white border border-outline rounded p-6 shadow-sm;
+            }
+            .input-field {
+                @apply w-full pl-4 pr-10 py-2.5 bg-white border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary font-mono-data;
+            }
+            .label-text {
+                @apply block font-label-sm text-on-surface-variant mb-1.5 uppercase tracking-wider;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40 shrink-0">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">school</span>
+<span class="text-body-md">Students</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-body-md">Staff</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+<span class="text-body-md">Attendance</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">grading</span>
+<span class="text-body-md">Gradebook</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-body-md">Financials</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md">Sync Status</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<nav class="flex items-center text-label-sm font-semibold text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Administration</a>
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="text-on-surface">Settings</span>
+</nav>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    A
+                </div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-8 overflow-y-auto w-full">
+<div class="max-w-[1400px] mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Academic Calendar</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Configure term dates and key events for the school year.</p>
+</div>
+<div class="flex gap-3">
+<button class="btn-secondary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                        Preview
+                    </button>
+<button class="btn-primary">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                        Save Changes
+                    </button>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Left: Settings Sub-Nav -->
+<aside class="w-full lg:w-64 shrink-0">
+<nav class="flex flex-col border border-outline rounded overflow-hidden">
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">School Profile</a>
+<a class="px-5 py-3.5 text-body-md font-bold text-primary border-b border-outline bg-[#EEEDFF] border-r-4 border-r-primary" href="#">Academic Calendar</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Branding</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Fees &amp; Financials</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Attendance Policies</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Gradebook Setup</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Users &amp; Security</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant border-b border-outline hover:bg-surface-container-low transition-colors" href="#">Notifications</a>
+<a class="px-5 py-3.5 text-body-md font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Integrations</a>
+</nav>
+</aside>
+<!-- Center: Calendar Form -->
+<div class="flex-1 space-y-6">
+<div class="form-card">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-outline">
+<div>
+<label class="label-text">Active Academic Year</label>
+<div class="relative w-full sm:w-64">
+<select class="w-full pl-4 pr-10 py-2.5 bg-white border border-outline rounded text-body-md font-semibold focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
+<option>2024 / 2025</option>
+<option>2023 / 2024</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-surface-container-low rounded border border-outline">
+<span class="material-symbols-outlined text-primary">info</span>
+<span class="text-body-md font-medium text-on-surface-variant">Modifying current active session</span>
+</div>
+</div>
+<!-- Term Sections -->
+<div class="space-y-10">
+<!-- Term 1 -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">1</div>
+<h3 class="font-title-md text-on-surface">Term One (Autumn)</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="label-text">Term Start Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="02 Sep 2024"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+<div>
+<label class="label-text">Term End Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="13 Dec 2024"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Term 2 -->
+<section class="pt-10 border-t border-outline">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">2</div>
+<h3 class="font-title-md text-on-surface">Term Two (Winter)</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="label-text">Term Start Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="13 Jan 2025"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+<div>
+<label class="label-text">Term End Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="04 Apr 2025"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Term 3 -->
+<section class="pt-10 border-t border-outline">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">3</div>
+<h3 class="font-title-md text-on-surface">Term Three (Spring/Summer)</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="label-text">Term Start Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="28 Apr 2025"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+<div>
+<label class="label-text">Term End Date</label>
+<div class="relative">
+<input class="input-field" type="text" value="25 Jul 2025"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">calendar_month</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<div class="flex justify-end pt-4">
+<button class="btn-primary px-8">
+                            Save Changes
+                        </button>
+</div>
+</div>
+<!-- Right: Preview -->
+<aside class="w-full xl:w-[320px] shrink-0">
+<div class="sticky top-20">
+<h4 class="label-text mb-4">Calendar Preview</h4>
+<div class="bg-surface-container-low border border-outline border-dashed rounded h-[480px] flex flex-col items-center justify-center p-8 text-center">
+<div class="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[32px]">event_repeat</span>
+</div>
+<h5 class="font-title-md text-on-surface mb-2">Structure Preview</h5>
+<p class="text-body-md text-on-surface-variant mb-8 max-w-[200px]">Save your term dates to generate the visual year view here.</p>
+<!-- Placeholder visual -->
+<div class="w-full space-y-4 opacity-30 select-none">
+<div class="h-3 w-full bg-outline rounded-full"></div>
+<div class="h-3 w-4/5 bg-outline rounded-full mx-auto"></div>
+<div class="h-3 w-2/3 bg-outline rounded-full mx-auto"></div>
+<div class="pt-4 grid grid-cols-7 gap-2">
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+<div class="h-4 bg-outline rounded"></div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</div>
+</body></html>

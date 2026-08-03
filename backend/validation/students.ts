@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const studentSchema = z.object({
-  admissionNo: z.string().min(2),
   firstName: z.string().min(2),
   lastName: z.string().min(2),
   gender: z.string().min(1),

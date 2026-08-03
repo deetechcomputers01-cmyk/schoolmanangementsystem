@@ -1,0 +1,315 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Examinations Management - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5B50F5",
+                        "surface": "#FFFFFF",
+                        "background": "#FBF8FE",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1C1B1F",
+                        "on-surface-variant": "#49454F",
+                        "secondary": "#006c49",
+                        "error": "#BA1A1A",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased h-screen flex overflow-hidden">
+<!-- Sidebar: 260px white sidebar -->
+<aside class="bg-surface border-r border-outline fixed left-0 top-0 h-full w-[260px] flex flex-col z-20">
+<div class="p-6 flex items-center gap-3 border-b border-outline h-16 shrink-0">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-xl">school</span>
+</div>
+<div class="overflow-hidden">
+<h1 class="text-sm font-extrabold text-on-surface leading-tight truncate">ScholarSphere Pro</h1>
+<p class="text-[10px] font-medium text-on-surface-variant uppercase tracking-wider leading-none">School Management</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 flex flex-col gap-0.5 px-3">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span> Students
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span> Staff
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">how_to_reg</span> Attendance
+        </a>
+<!-- Highlight Gradebook/Examinations -->
+<a class="flex items-center gap-3 px-3 py-2 rounded text-primary bg-primary/10 transition-colors text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">menu_book</span> Gradebook
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_view_week</span> Timetable
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span> Academic Calendar
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span> Reports
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span> Report Cards
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-background transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span> Fees &amp; Payments
+        </a>
+</nav>
+<div class="p-4 border-t border-outline flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-xs font-medium text-on-surface-variant">Online</span>
+</div>
+<div class="px-2 py-0.5 bg-on-surface text-surface text-[10px] font-bold rounded">ADMIN</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col ml-[260px] h-screen relative">
+<!-- Header: 56px white header -->
+<header class="bg-surface border-b border-outline flex items-center justify-between px-6 h-14 w-full z-10 shrink-0">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-on-surface-variant">Gradebook</span>
+<span class="material-symbols-outlined text-base text-on-surface-variant">chevron_right</span>
+<span class="font-semibold text-on-surface">Examinations</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-background rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-background rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-background rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">apps</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline overflow-hidden ml-2 cursor-pointer">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVZEanVX7i85Fu8Sq4z1zPe5ipUvV6oyvNer5CZNen1YtsW8QdrGHGavTskBmLjmkqgkqr_UoZ61A4usgcIgjOhtjjJBoomcFVWIaao3yXu7Wc91h9RHANNC0xD96_Cn3UVsREObYcWvSYCEIG1lAm7AzIS9kX2q8uh_enXrRAnfkl7DevCPa3sufiQOIHIMtZjUAjPij-hR6VktfNllhPBRN1inePN9673GWJXtP0fgjaZQxT3-ecNKljMbi_pZiuETk86JgeA">
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-4 md:p-8 bg-background">
+<!-- Page Title Section -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="text-2xl font-extrabold text-on-surface tracking-tight">Examinations Management</h2>
+<p class="text-on-surface-variant mt-1 text-sm">Schedule, monitor, and manage school-wide assessments.</p>
+</div>
+<button class="bg-primary hover:bg-opacity-90 text-white px-5 py-2.5 rounded text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Schedule Exam
+            </button>
+</div>
+<!-- KPI Row: Responsive Flex/Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+<div class="bg-surface p-5 rounded border border-outline shadow-sm flex flex-col justify-between min-w-0">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider truncate mr-2">Exams Scheduled</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg shrink-0">event</span>
+</div>
+<div class="flex items-baseline gap-2 overflow-hidden">
+<span class="text-3xl font-extrabold text-on-surface">12</span>
+<span class="text-xs text-on-surface-variant truncate">This Term</span>
+</div>
+</div>
+<div class="bg-surface p-5 rounded border border-outline shadow-sm flex flex-col justify-between min-w-0">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider truncate mr-2">Ongoing / Online</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-secondary/10 border border-secondary/20 shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-[10px] font-bold text-secondary uppercase">Online</span>
+</div>
+</div>
+<div class="text-3xl font-extrabold text-on-surface">3</div>
+</div>
+<div class="bg-surface p-5 rounded border border-outline border-l-4 border-l-error shadow-sm flex flex-col justify-between min-w-0">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold text-error uppercase tracking-wider truncate mr-2">Awaiting Results</span>
+<span class="material-symbols-outlined text-error text-lg shrink-0">pending_actions</span>
+</div>
+<div class="flex items-baseline gap-2 overflow-hidden">
+<span class="text-3xl font-extrabold text-on-surface">5</span>
+<span class="text-xs text-error font-medium truncate">Action required</span>
+</div>
+</div>
+<div class="bg-surface p-5 rounded border border-outline shadow-sm flex flex-col justify-between min-w-0">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider truncate mr-2">Avg. Pass Rate</span>
+<span class="material-symbols-outlined text-secondary text-lg shrink-0">trending_up</span>
+</div>
+<div class="flex items-baseline gap-2 overflow-hidden">
+<span class="text-3xl font-extrabold text-on-surface">78.4%</span>
+<span class="text-xs text-secondary font-medium truncate">vs 76% last term</span>
+</div>
+</div>
+</div>
+<!-- Content Grid: Adapts to XL widths -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+<!-- Main Table Section -->
+<div class="xl:col-span-8 bg-surface rounded border border-outline shadow-sm flex flex-col min-w-0">
+<!-- Search and Filter Bar: Robust & Flexible -->
+<div class="p-4 border-b border-outline flex flex-col lg:flex-row gap-4 items-center bg-surface">
+<div class="relative w-full lg:flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background border border-outline rounded text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-variant/60" placeholder="Search exams by title or subject..." type="text">
+</div>
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="flex-1 lg:flex-none relative">
+<select class="w-full bg-surface border border-outline text-on-surface text-sm rounded pl-3 pr-8 py-2 focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer appearance-none">
+<option>All Classes</option>
+<option>JHS 1</option>
+<option>JHS 2</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-base">expand_more</span>
+</div>
+<div class="flex-1 lg:flex-none relative">
+<select class="w-full bg-surface border border-outline text-on-surface text-sm rounded pl-3 pr-8 py-2 focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer appearance-none">
+<option>All Subjects</option>
+<option>Mathematics</option>
+<option>Science</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-base">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Table with Horizontal Scroll Support -->
+<div class="overflow-x-auto no-scrollbar">
+<table class="w-full text-left min-w-[800px]">
+<thead class="bg-background/50 border-b border-outline">
+<tr>
+<th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Exam Title</th>
+<th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Subject</th>
+<th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Class</th>
+<th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest min-w-[140px]">Date &amp; Time</th>
+<th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 text-right"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline">
+<tr class="hover:bg-background/40 transition-colors">
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">Mid-Term Mathematics Assessment</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Mathematics</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">JHS 2A</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant font-medium whitespace-nowrap">Oct 24 • 09:00 AM</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">IN PROGRESS</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/5 px-3 py-1.5 rounded text-xs font-bold transition-colors border border-primary/20 whitespace-nowrap">Enter Scores</button>
+</td>
+</tr>
+<tr class="hover:bg-background/40 transition-colors">
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">JHS 2 Integrated Science Exam</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Integrated Science</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">JHS 2A</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant font-medium whitespace-nowrap">Oct 25 • 11:30 AM</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 whitespace-nowrap">NOT STARTED</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:bg-background px-3 py-1.5 rounded text-xs font-bold transition-colors border border-outline whitespace-nowrap">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-background/40 transition-colors">
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">Basic 6 English Proficiency</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">English Language</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Basic 6</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant font-medium whitespace-nowrap">Oct 20 • 08:00 AM</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">COMPLETED</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-secondary hover:bg-secondary/5 px-3 py-1.5 rounded text-xs font-bold transition-colors border border-secondary/20 whitespace-nowrap">View Results</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline flex items-center justify-between text-xs text-on-surface-variant">
+<span>Showing 1 to 3 of 12 exams</span>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-background disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-base">chevron_left</span></button>
+<button class="p-1 rounded hover:bg-background"><span class="material-symbols-outlined text-base">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Side Panel: Flex Column -->
+<div class="xl:col-span-4 flex flex-col gap-6 min-w-0">
+<!-- Recent Performance Card -->
+<div class="bg-surface p-6 rounded border border-outline shadow-sm flex flex-col h-auto">
+<h3 class="text-base font-bold text-on-surface border-b border-outline pb-4 mb-5">Recent Performance</h3>
+<div class="mb-6 flex flex-col">
+<h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3 truncate" title="Mid-Term Math (JHS 2A)">Mid-Term Math (JHS 2A)</h4>
+<div class="grid grid-cols-3 gap-2 sm:gap-3">
+<div class="bg-background p-3 rounded border border-outline text-center flex flex-col justify-center min-w-0">
+<span class="block text-[9px] text-on-surface-variant font-bold uppercase tracking-widest mb-1 truncate">Avg</span>
+<span class="block text-sm font-extrabold text-on-surface">82%</span>
+</div>
+<div class="bg-emerald-50 p-3 rounded border border-emerald-100 text-center flex flex-col justify-center min-w-0">
+<span class="block text-[9px] text-emerald-700 font-bold uppercase tracking-widest mb-1 truncate">High</span>
+<span class="block text-sm font-extrabold text-emerald-800">98</span>
+</div>
+<div class="bg-rose-50 p-3 rounded border border-rose-100 text-center flex flex-col justify-center min-w-0">
+<span class="block text-[9px] text-rose-700 font-bold uppercase tracking-widest mb-1 truncate">Low</span>
+<span class="block text-sm font-extrabold text-rose-800">45</span>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider truncate mr-2">Overall Pass Rate</span>
+<span class="text-xs font-extrabold text-secondary shrink-0">92%</span>
+</div>
+<div class="w-full bg-background rounded-full h-2 overflow-hidden border border-outline/50">
+<div class="bg-secondary h-full rounded-full transition-all duration-1000" style="width: 92%"></div>
+</div>
+</div>
+</div>
+<!-- Insight/Tip Card -->
+<div class="bg-primary/5 p-6 rounded border border-primary/10 flex flex-col gap-2">
+<h4 class="text-sm font-bold text-primary flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-lg">lightbulb</span>
+                        Did you know?
+                    </h4>
+<p class="text-xs text-primary/80 leading-relaxed font-medium">
+                        You can export examination results directly to Ministry of Education formats by clicking "Reports" in the sidebar. This ensures your data compliance is always up to date.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

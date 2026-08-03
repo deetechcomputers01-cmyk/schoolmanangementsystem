@@ -1,39 +1,70 @@
-﻿/**
- * GradebookScreen — desktop view for Gradebook.
- */
-import Link from "next/link";
-import { FileText } from "lucide-react";
-import { GradeEntryRow } from "@/components/modules/gradebook/GradeEntryRow";
-import { GradeReport } from "@/components/modules/gradebook/GradeReport";
-import { Button } from "@/components/ui/Button";
-import { getSubjects } from "@backend/services/dashboard.service";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { getClasses, getSubjects } from "@backend/services/dashboard.service";
 import { listGrades } from "@backend/services/grade.service";
 import { listStudents } from "@backend/services/student.service";
-import { requireRole } from "@backend/auth/page-guard";
-import styles from "./GradebookScreen.module.css";
+import { getSettings } from "@backend/services/settings.service";
+import type { GradeBand } from "@backend/utils";
+import {
+  GradebookContent,
+  type GradebookProps,
+  type GradeRow,
+} from "./GradebookContent";
+import { MobileGradebookContent } from "@/screens/mobile/MobileGradebookContent/MobileGradebookContent";
 
 export const dynamic = "force-dynamic";
 
 export async function GradebookScreen() {
-  await requireRole("super_admin", "principal", "teacher");
-  const [students, subjects, grades] = await Promise.all([listStudents(), getSubjects(), listGrades()]);
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  if (!["super_admin", "principal", "teacher"].includes(user.role)) redirect("/dashboard");
+
+  const [classes, subjects, students, grades, settings] = await Promise.all([
+    getClasses(),
+    getSubjects(),
+    listStudents(),
+    listGrades(),
+    getSettings(),
+  ]);
+  const gradingScale = settings.gradingScale as unknown as GradeBand[];
+
+  const studentsByClass: Record<string, GradeRow[]> = {};
+  students.forEach(s => {
+    if (!studentsByClass[s.classId]) studentsByClass[s.classId] = [];
+    const initials = `${s.firstName[0] ?? ""}${s.lastName[0] ?? ""}`.toUpperCase();
+    studentsByClass[s.classId].push({
+      studentId: s.id,
+      studentName: `${s.firstName} ${s.lastName}`,
+      admNo: s.admissionNo,
+      initials,
+    });
+  });
+  Object.values(studentsByClass).forEach(arr =>
+    arr.sort((a, b) => a.studentName.localeCompare(b.studentName))
+  );
+
+  const props: GradebookProps = {
+    classes: classes.map(c => ({ id: c.id, name: c.name })),
+    subjects: subjects.map(s => ({ id: s.id, name: s.name, code: s.code, classId: s.classId })),
+    studentsByClass,
+    existingGrades: grades.map(g => ({
+      studentId: g.studentId,
+      subjectId: g.subjectId,
+      term: g.term,
+      score: g.score,
+      remarks: g.remarks ?? undefined,
+    })),
+    gradingScale,
+  };
+
   return (
-    <div className={styles.root}>
-      <section className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <p className="label-sm text-emerald">Assessment</p>
-          <h1 className="font-heading text-[32px] font-semibold leading-10 text-navy">Gradebook</h1>
-          <p className="text-muted">Enter scores and review academic performance by subject.</p>
-        </div>
-        <Link href="/gradebook/reports"><Button variant="secondary"><FileText size={18} /> Reports</Button></Link>
-      </section>
-      <div className="grid gap-6">
-        <GradeEntryRow
-          students={students.map(({ id, firstName, lastName }) => ({ id, firstName, lastName }))}
-          subjects={subjects}
-        />
-        <GradeReport grades={grades} />
+    <>
+      <div className="mobileOnly">
+        <MobileGradebookContent {...props} />
       </div>
-    </div>
+      <div className="desktopOnly">
+        <GradebookContent {...props} />
+      </div>
+    </>
   );
 }

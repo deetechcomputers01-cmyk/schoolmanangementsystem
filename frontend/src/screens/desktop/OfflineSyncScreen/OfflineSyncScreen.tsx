@@ -1,19 +1,11 @@
-﻿/**
- * OfflineSyncScreen — desktop view for the OfflineSync module.
- * One file, one purpose: renders the OfflineSync UI for 1440px+ screens.
- * Design: PENDING — Stitch "Institutional Excellence" desktop spec.
- * Logic: wire up props from the parent page.tsx once data layer is ready.
- */
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { OfflineSyncContent } from "./OfflineSyncContent";
 
-import styles from "./OfflineSyncScreen.module.css";
+export const dynamic = "force-dynamic";
 
-export function OfflineSyncScreen() {
-  return (
-    <section className={styles.root} aria-label="OfflineSync">
-      <div className={styles.placeholder}>
-        <span className={styles.label}>OfflineSync — Desktop Screen</span>
-        <span className={styles.hint}>Design pending. Structure ready.</span>
-      </div>
-    </section>
-  );
+export async function OfflineSyncScreen() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  return <OfflineSyncContent />;
 }

@@ -2,6 +2,34 @@ import { prisma } from "../prisma";
 import type { SessionUser } from "@/types/auth";
 import { assertCan } from "../auth/rbac";
 import { audit } from "./audit.service";
+import { notifyUsers } from "./notification.service";
+import { getSettings } from "./settings.service";
+
+async function notifyExamResults(examId: string, examTitle: string, studentIds: string[]) {
+  if (studentIds.length === 0) return;
+  const settings = await getSettings();
+  const ex = (settings.extra ?? {}) as Record<string, unknown>;
+  if (ex.examResultNotifications === false) return;
+
+  const students = await prisma.student.findMany({
+    where: { id: { in: studentIds } },
+    select: {
+      firstName: true, userId: true,
+      guardians: { where: { userId: { not: null } }, select: { userId: true } },
+    },
+  });
+  await Promise.all(
+    students.map((s) => {
+      const recipients = [...(s.userId ? [s.userId] : []), ...s.guardians.map((g) => g.userId!)].filter(Boolean);
+      return notifyUsers(recipients, {
+        type: "exam_result",
+        title: `Result published: ${examTitle}`,
+        body: `${s.firstName}'s result for "${examTitle}" is now available.`,
+        link: "/report-cards",
+      });
+    })
+  );
+}
 
 const examInclude = {
   subject:   { select: { id: true, name: true, code: true } },
@@ -14,15 +42,41 @@ const examInclude = {
 // ── List / Get ────────────────────────────────────────────────────────────────
 
 export async function listExams(filters?: { classId?: string; subjectId?: string; termId?: string }) {
-  return prisma.exam.findMany({
+  const exams = await prisma.exam.findMany({
     where: {
-      ...(filters?.classId   && { classId:   filters.classId }),
-      ...(filters?.subjectId && { subjectId: filters.subjectId }),
-      ...(filters?.termId    && { termId:    filters.termId })
+      classId: filters?.classId,
+      subjectId: filters?.subjectId,
+      termId: filters?.termId,
     },
-    include: examInclude,
-    orderBy: { scheduledAt: "desc" }
+    include: {
+      subject: { select: { name: true, code: true } },
+      class: { select: { name: true, level: true } },
+      term: { select: { name: true } },
+      questions: { select: { marks: true } },
+      _count: { select: { scores: true } },
+    },
+    orderBy: { scheduledAt: "desc" },
   });
+
+  return exams.map((e) => ({
+    id: e.id,
+    title: e.title,
+    subjectId: e.subjectId,
+    subjectName: e.subject.name,
+    subjectCode: e.subject.code,
+    classId: e.classId,
+    className: e.class.name,
+    classLevel: e.class.level,
+    termId: e.termId,
+    termName: e.term?.name ?? null,
+    scheduledAt: e.scheduledAt,
+    maxScore: e.maxScore,
+    isOnline: e.isOnline,
+    duration: e.duration,
+    createdById: e.createdById,
+    scoresCount: e._count.scores,
+    questionTotalMarks: e.questions.reduce((sum, q) => sum + q.marks, 0),
+  }));
 }
 
 export async function getExam(id: string) {
@@ -49,10 +103,12 @@ export async function createExam(
   actor: SessionUser,
   data: {
     title: string; subjectId: string; classId: string;
-    termId?: string; scheduledAt: string; maxScore: number;
+    termId?: string | null; scheduledAt: string; maxScore: number;
+    isOnline?: boolean | null; duration?: number | null;
   }
 ) {
   assertCan(actor, "grades:write");
+
   const exam = await prisma.exam.create({
     data: {
       title:       data.title,
@@ -61,10 +117,13 @@ export async function createExam(
       termId:      data.termId ?? null,
       scheduledAt: new Date(data.scheduledAt),
       maxScore:    data.maxScore,
+      isOnline:    data.isOnline ?? false,
+      duration:    data.duration ?? null,
       createdById: actor.id
     },
     include: examInclude
   });
+
   await audit(actor, "create_exam", "Exam", exam.id, { title: exam.title });
   return exam;
 }
@@ -87,6 +146,12 @@ export async function submitScores(
     }
   }
 
+  const existing = await prisma.examScore.findMany({
+    where: { examId, studentId: { in: scores.map((s) => s.studentId) } },
+    select: { studentId: true },
+  });
+  const alreadyScored = new Set(existing.map((e) => e.studentId));
+
   await prisma.$transaction(
     scores.map((s) =>
       prisma.examScore.upsert({
@@ -98,6 +163,11 @@ export async function submitScores(
   );
 
   await audit(actor, "submit_scores", "Exam", examId, { count: scores.length });
+
+  // Only notify for newly-scored students — avoids re-notifying on every re-save.
+  const newlyScored = scores.filter((s) => !alreadyScored.has(s.studentId)).map((s) => s.studentId);
+  notifyExamResults(examId, exam.title, newlyScored).catch(() => {});
+
   return { saved: scores.length };
 }
 

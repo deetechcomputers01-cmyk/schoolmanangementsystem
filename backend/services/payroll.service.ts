@@ -6,8 +6,27 @@ function assertAdmin(actor: SessionUser) {
   if (actor.role !== "super_admin" && actor.role !== "principal") throw new Error("Forbidden");
 }
 
+function serializeSalary<T extends { basicSalary: unknown; allowances: unknown; deductions: unknown }>(salary: T) {
+  return {
+    ...salary,
+    basicSalary: Number(salary.basicSalary),
+    allowances: Number(salary.allowances),
+    deductions: Number(salary.deductions),
+  };
+}
+
+function serializePayslip<T extends { basicSalary: unknown; allowances: unknown; deductions: unknown; netPay: unknown }>(payslip: T) {
+  return {
+    ...payslip,
+    basicSalary: Number(payslip.basicSalary),
+    allowances: Number(payslip.allowances),
+    deductions: Number(payslip.deductions),
+    netPay: Number(payslip.netPay),
+  };
+}
+
 export async function listStaffWithSalaries() {
-  return prisma.staff.findMany({
+  const staff = await prisma.staff.findMany({
     include: {
       salary:  true,
       payslips: { orderBy: { month: "desc" }, take: 1 },
@@ -15,6 +34,11 @@ export async function listStaffWithSalaries() {
     },
     orderBy: { lastName: "asc" }
   });
+  return staff.map((member) => ({
+    ...member,
+    salary: member.salary ? serializeSalary(member.salary) : null,
+    payslips: member.payslips.map(serializePayslip),
+  }));
 }
 
 export async function setSalary(
@@ -51,7 +75,7 @@ export async function generatePayslip(actor: SessionUser, staffId: string, month
     include: { staff: { select: { firstName: true, lastName: true } } }
   });
   await audit(actor, "generate_payslip", "Payslip", payslip.id, { staffId, month });
-  return payslip;
+  return serializePayslip(payslip);
 }
 
 export async function updatePayslipStatus(actor: SessionUser, id: string, status: "approved" | "paid") {
@@ -65,13 +89,14 @@ export async function updatePayslipStatus(actor: SessionUser, id: string, status
     include: { staff: { select: { firstName: true, lastName: true } } }
   });
   await audit(actor, `payslip_${status}`, "Payslip", id, {});
-  return payslip;
+  return serializePayslip(payslip);
 }
 
 export async function listPayslips(staffId?: string) {
-  return prisma.payslip.findMany({
+  const payslips = await prisma.payslip.findMany({
     where: staffId ? { staffId } : {},
-    include: { staff: { select: { firstName: true, lastName: true, roleTitle: true } } },
+    include: { staff: { select: { firstName: true, lastName: true, roleTitle: true, staffNo: true } } },
     orderBy: [{ month: "desc" }, { createdAt: "desc" }]
   });
+  return payslips.map(serializePayslip);
 }

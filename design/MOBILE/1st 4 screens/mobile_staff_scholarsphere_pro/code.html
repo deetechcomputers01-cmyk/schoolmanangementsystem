@@ -1,0 +1,363 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Mobile Staff - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "inverse-primary": "#a5ccde",
+                        "on-primary-container": "#779eaf",
+                        "on-secondary-fixed": "#042109",
+                        "inverse-on-surface": "#e9f2fa",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#304d31",
+                        "secondary-container": "#c9ecc5",
+                        "tertiary": "#2a1700",
+                        "surface": "#f5faff",
+                        "surface-container-high": "#e0e9f2",
+                        "primary-fixed-dim": "#a5ccde",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c1c7cb",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-surface": "#141d23",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#c9ecc5",
+                        "on-tertiary-container": "#c88c3d",
+                        "surface-container": "#e6eff8",
+                        "surface-tint": "#3d6473",
+                        "secondary": "#486647",
+                        "surface-bright": "#f5faff",
+                        "on-secondary-container": "#4d6c4d",
+                        "on-primary-fixed": "#001f29",
+                        "tertiary-fixed": "#ffddb7",
+                        "surface-variant": "#dae4ec",
+                        "primary": "#001f29",
+                        "primary-container": "#073543",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#f5faff",
+                        "tertiary-fixed-dim": "#fcba66",
+                        "surface-container-low": "#ebf5fd",
+                        "outline": "#71787c",
+                        "on-primary-fixed-variant": "#244c5a",
+                        "surface-container-highest": "#dae4ec",
+                        "inverse-surface": "#293238",
+                        "tertiary-container": "#472a00",
+                        "on-background": "#141d23",
+                        "secondary-fixed-dim": "#aecfaa",
+                        "on-surface-variant": "#41484b",
+                        "surface-dim": "#d2dbe4",
+                        "primary-fixed": "#c1e9fb",
+                        "brand-indigo": "#5B50F5",
+                        "brand-indigo-dim": "#EFEFFD"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "2xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 24px); }
+        .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col md:hidden">
+<!-- Header -->
+<header class="pt-safe bg-surface sticky top-0 z-40 border-b border-surface-variant flex justify-between items-center px-margin-mobile h-16 shrink-0">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-title-lg font-title-lg text-center absolute left-1/2 -translate-x-1/2 text-brand-indigo">Staff</h1>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-label-md font-bold overflow-hidden border border-outline-variant">
+<img alt="Admin Profile" class="w-full h-full object-cover" data-alt="A small, professional portrait photograph of a Ghanaian school administrator in a modern office setting. Light mode aesthetic, sharp focus, neutral background, corporate attire. Smiling warmly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXpdTK6pO1Gzj14w_Kdyr1vrKPdIw2KVk_HUupKrfR_ZcqP4YtRUbMhGl4SerAwyWJPtg58sm_WdkSg-ENqvfzRDkWv9Lf3onnxJD4QSXoWx6KnYUvcbvbmR8FICQYqC14JsQN3tK2Rslz_3KuH3sBEcfk62FuTvYxrRNdqOiJESE-4c_Ov1JEIkmgtwjJy5ghnmCTycMxXHlOcTvkZ21Ca1ExS3prdhQXGEQssInHClIFJAF4nw_tK0jgyZ6kWQRjf6h3G3bizg">
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile py-lg pb-32">
+<!-- KPIs -->
+<section class="grid grid-cols-2 gap-sm mb-lg">
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span class="text-label-md font-label-md">Total Staff</span>
+</div>
+<div class="text-headline-md font-headline-md text-brand-indigo">7</div>
+</div>
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">school</span>
+<span class="text-label-md font-label-md">Teaching Staff</span>
+</div>
+<div class="text-headline-md font-headline-md text-brand-indigo">2</div>
+</div>
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span class="text-label-md font-label-md">Support Staff</span>
+</div>
+<div class="text-headline-md font-headline-md text-brand-indigo">5</div>
+</div>
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">event_busy</span>
+<span class="text-label-md font-label-md">On Leave</span>
+</div>
+<div class="text-headline-md font-headline-md text-brand-indigo">0</div>
+</div>
+</section>
+<!-- Search & Filters -->
+<section class="mb-lg">
+<div class="relative mb-sm">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-surface-variant rounded-xl py-3 pl-10 pr-4 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-brand-indigo focus:border-transparent shadow-sm" placeholder="Search staff, ID, or subject" type="text">
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
+<button class="shrink-0 bg-brand-indigo text-white px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">All</button>
+<button class="shrink-0 bg-surface-container-lowest border border-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">Teaching</button>
+<button class="shrink-0 bg-surface-container-lowest border border-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">Accounts</button>
+<button class="shrink-0 bg-surface-container-lowest border border-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">Driver</button>
+<button class="shrink-0 bg-surface-container-lowest border border-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">Nurse</button>
+<button class="shrink-0 bg-surface-container-lowest border border-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full text-label-md font-label-md shadow-sm">Security</button>
+</div>
+</section>
+<!-- Primary Action -->
+<button class="w-full bg-brand-indigo text-white rounded-xl py-3 px-4 flex items-center justify-center gap-2 text-body-md font-medium shadow-md mb-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+            Add Staff
+        </button>
+<!-- Staff Directory -->
+<section class="flex flex-col gap-sm">
+<!-- Card 1 (Expanded Action State) -->
+<div class="bg-surface-container-lowest border border-brand-indigo rounded-xl shadow-sm relative overflow-visible">
+<div class="p-md flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex-shrink-0 overflow-hidden">
+<img alt="Kwame Owusu" class="w-full h-full object-cover" data-alt="Professional headshot of a Ghanaian male mathematics teacher in his late 30s, wearing a smart-casual shirt, bright light mode aesthetic, clean white background, confident expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtp0-6lZ4f0K84gJRKxTV2dCrSkUui_fTsxmsDgjao9GHI1s3XpKyDZsrIqb06BUcDqeOIfMNd9JpQNkXj47qrx25e5Q4BVe_KHktCkIvtKmGebkOuMhloTKIlAhcbm2Swnnlz1uCZ0j5yRHR7nX4GvFVa4OFhOVj4dfBeMTT2U_pZHOQQWSDcWYl90lWFzMLXk7ZeU1YKfrHROWKB8WNjwxU5VDqCvW5gz4Vri3jIENj-f9dMa3wvKa0boQdnQLBUspeeo-vgBQ">
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-body-lg font-body-lg font-semibold text-brand-indigo">Kwame Owusu</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">STF-0142 • Mathematics Teacher</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-brand-indigo bg-brand-indigo-dim">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-low border border-surface-variant text-on-surface px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">school</span> Teaching
+                            </span>
+</div>
+<div class="mt-2 text-body-md font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">call</span> +233 24 123 4567
+                        </div>
+</div>
+</div>
+<!-- Overflow Menu / Expanded State -->
+<div class="border-t border-surface-variant bg-surface-container-low rounded-b-xl p-2 grid grid-cols-2 gap-2">
+<button class="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-variant text-body-md text-on-surface">
+<span class="material-symbols-outlined text-[18px]">person</span> View Profile
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-variant text-body-md text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-variant text-body-md text-on-surface">
+<span class="material-symbols-outlined text-[18px]">event_busy</span> Set On Leave
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg hover:bg-error-container text-error text-body-md">
+<span class="material-symbols-outlined text-[18px]">delete</span> Delete
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm flex items-start gap-md active:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center text-on-surface-variant font-bold text-title-lg">
+                    EB
+                </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-body-lg font-body-lg font-semibold text-brand-indigo">Efua Boateng</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">STF-0201 • Registrar</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-low border border-surface-variant text-on-surface px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">admin_panel_settings</span> Administration
+                        </span>
+</div>
+<div class="mt-2 text-body-md font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">call</span> +233 55 987 6543
+                    </div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm flex items-start gap-md active:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center text-on-surface-variant font-bold text-title-lg">
+                    YA
+                </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-body-lg font-body-lg font-semibold text-brand-indigo">Yaw Adjei</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">STF-0315 • Bus Driver</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-low border border-surface-variant text-on-surface px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">directions_bus</span> Support
+                        </span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm flex items-start gap-md active:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center text-on-surface-variant font-bold text-title-lg">
+                    AF
+                </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-body-lg font-body-lg font-semibold text-brand-indigo">Akua Frimpong</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">STF-0442 • School Nurse</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-low border border-surface-variant text-on-surface px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">medical_services</span> Medical
+                        </span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar Shell -->
+<nav class="bg-surface dark:bg-inverse-surface shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] shadow-lg fixed bottom-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-safe pt-2">
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 w-16 scale-95 transition-transform active:bg-surface-container-highest rounded-2xl">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="regular">home</span>
+<span class="text-label-md font-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 w-16 scale-95 transition-transform active:bg-surface-container-highest rounded-2xl">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="regular">group</span>
+<span class="text-label-md font-label-md">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center rounded-2xl p-2 w-16 scale-95 transition-transform active:bg-surface-container-highest bg-brand-indigo text-white">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">badge</span>
+<span class="text-label-md font-label-md">Staff</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 w-16 scale-95 transition-transform active:bg-surface-container-highest rounded-2xl">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="regular">event_available</span>
+<span class="text-label-md font-label-md">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 w-16 scale-95 transition-transform active:bg-surface-container-highest rounded-2xl">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="regular">menu</span>
+<span class="text-label-md font-label-md">More</span>
+</button>
+</nav>
+<!-- Toast Message -->
+<div class="fixed bottom-[90px] left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 animate-[fade-in-up_0.3s_ease-out]">
+<span class="material-symbols-outlined text-[20px] text-secondary-container">check_circle</span>
+<span class="text-body-md font-body-md">Staff record saved</span>
+</div>
+<!-- Hidden Examples for Reference as requested -->
+<div class="hidden">
+<!-- Skeleton Loader -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md flex items-start gap-md animate-pulse">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex-shrink-0"></div>
+<div class="flex-1 space-y-3 py-1">
+<div class="h-4 bg-surface-variant rounded w-3/4"></div>
+<div class="space-y-2">
+<div class="h-3 bg-surface-variant rounded w-1/2"></div>
+<div class="h-3 bg-surface-variant rounded w-5/6"></div>
+</div>
+</div>
+</div>
+<!-- Empty State -->
+<div class="bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[32px]">person_off</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-primary mb-2">No staff found</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-4 max-w-[200px]">Try adjusting your search or filter settings to find what you're looking for.</p>
+<button class="text-brand-indigo text-label-md font-label-md font-bold uppercase tracking-wider">Clear Filters</button>
+</div>
+</div>
+<style>
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            100% { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+
+
+</body></html>

@@ -1,52 +1,113 @@
-﻿/**
- * StudentsScreen — desktop view for Student Management.
- */
-import Link from "next/link";
-import { Download, Filter, Plus, Search } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { StudentTable } from "@/components/modules/students/StudentTable";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@backend/auth/cookies";
 import { listStudents } from "@backend/services/student.service";
-import { requireRole } from "@backend/auth/page-guard";
-import styles from "./StudentsScreen.module.css";
+import { prisma } from "@backend/prisma";
+import { StudentsContent } from "./StudentsContent";
+import { MobileStudentsContent } from "@/screens/mobile/MobileStudentsContent/MobileStudentsContent";
 
 export const dynamic = "force-dynamic";
 
-export async function StudentsScreen() {
-  await requireRole("super_admin", "principal", "teacher", "staff");
-  const students = await listStudents();
-  return (
-    <div className={styles.root}>
-      <section className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="font-heading text-[32px] font-semibold leading-10 text-navy">Student Management</h1>
-          <p className="text-muted">Track admissions, guardians, classes, and learner records.</p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="secondary"><Filter size={18} /> Filter</Button>
-          <Button variant="secondary"><Download size={18} /> Export</Button>
-          <Link href="/students/add"><Button><Plus size={18} /> Add Student</Button></Link>
-        </div>
-      </section>
-      <section className="mb-6 grid gap-4 md:grid-cols-4">
-        <Metric label="Total Students" value={students.length.toString()} />
-        <Metric label="Basic 6" value={students.filter((s) => s.class.name === "Basic 6").length.toString()} />
-        <Metric label="JHS 1" value={students.filter((s) => s.class.name === "JHS 1").length.toString()} />
-        <Metric label="Guardians Linked" value={students.reduce((sum, s) => sum + s.guardians.length, 0).toString()} />
-      </section>
-      <div className="mb-4 flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-3 text-sm text-muted shadow-soft">
-        <Search size={18} /> Search student name, admission number, class, guardian
-      </div>
-      <StudentTable students={students} />
-    </div>
-  );
-}
+export type StudentRow = {
+  id: string;
+  admissionNo: string;
+  name: string;
+  initials: string;
+  photoUrl: string | null;
+  classId: string;
+  className: string;
+  guardianName: string;
+  feeStatus: "Paid" | "Pending" | "None";
+  attendance: string;
+};
 
-function Metric({ label, value }: { label: string; value: string }) {
+const VIEW_ROLES = ["super_admin", "principal", "teacher", "staff"];
+
+export async function StudentsScreen() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  if (!VIEW_ROLES.includes(user.role)) redirect("/dashboard");
+  const canManageGuardians = ["super_admin", "principal", "teacher"].includes(user.role);
+  const [raw, attendanceRows] = await Promise.all([
+    listStudents(),
+    prisma.attendance.groupBy({ by: ["studentId", "status"], _count: { _all: true } }),
+  ]);
+
+  const attendanceMap = new Map<string, { total: number; good: number }>();
+  for (const row of attendanceRows) {
+    const entry = attendanceMap.get(row.studentId) ?? { total: 0, good: 0 };
+    entry.total += row._count._all;
+    if (row.status === "present" || row.status === "late") entry.good += row._count._all;
+    attendanceMap.set(row.studentId, entry);
+  }
+
+  const students: StudentRow[] = raw.map((s) => {
+    const latestFee = s.feeRecords[0];
+    const feeStatus: StudentRow["feeStatus"] =
+      !latestFee ? "None"
+      : latestFee.status === "paid" ? "Paid"
+      : "Pending";
+
+    const name = `${s.firstName} ${s.lastName}`;
+    const initials = `${s.firstName[0] ?? ""}${s.lastName[0] ?? ""}`.toUpperCase();
+    const att = attendanceMap.get(s.id);
+    const attendance = att && att.total > 0 ? `${Math.round((att.good / att.total) * 100)}%` : "—";
+
+    return {
+      id: s.id,
+      admissionNo: s.admissionNo,
+      name,
+      initials,
+      photoUrl: s.photoUrl,
+      classId: s.classId,
+      className: s.class.name,
+      guardianName: s.guardians[0]?.name ?? "—",
+      feeStatus,
+      attendance,
+    };
+  });
+
+  const total = students.length;
+  const withGuardian = raw.filter((s) => s.guardians.length > 0).length;
+  const guardiansLinked = total > 0 ? Math.round((withGuardian / total) * 100) : 0;
+
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const newAdmissions = raw.filter((s) => new Date(s.createdAt) >= thirtyDaysAgo).length;
+
+  const genderSummary = raw.reduce(
+    (sum, s) => {
+      const g = s.gender.toLowerCase();
+      if (g === "male" || g === "boy") sum.boys += 1;
+      if (g === "female" || g === "girl") sum.girls += 1;
+      return sum;
+    },
+    { boys: 0, girls: 0 },
+  );
+
+  const classes = Array.from(new Map(raw.map((s) => [s.classId, s.class.name])).entries())
+    .map(([id, name]) => ({ id, name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   return (
-    <div className="rounded-xl border border-line bg-white p-4 shadow-soft">
-      <p className="label-sm text-muted">{label}</p>
-      <p className="font-data mt-1 text-2xl font-semibold text-navy">{value}</p>
-    </div>
+    <>
+      <div className="mobileOnly">
+        <MobileStudentsContent
+          students={students}
+          totalStudents={total}
+          genderSummary={genderSummary}
+          classes={classes}
+          canManageGuardians={canManageGuardians}
+        />
+      </div>
+      <div className="desktopOnly">
+        <StudentsContent
+          students={students}
+          totalStudents={total}
+          guardiansLinked={guardiansLinked}
+          newAdmissions={newAdmissions}
+          canManageGuardians={canManageGuardians}
+        />
+      </div>
+    </>
   );
 }

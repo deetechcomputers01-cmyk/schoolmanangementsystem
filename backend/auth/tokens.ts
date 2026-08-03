@@ -1,16 +1,17 @@
 import { jwtVerify, SignJWT } from "jose";
 import type { SessionUser, JwtPayload } from "@/types/auth";
+import { readLocalEnvValue } from "../prisma";
 
 const encoder = new TextEncoder();
 
-const accessSecret = () => encoder.encode(process.env.JWT_ACCESS_SECRET ?? "dev-access-secret-change-me");
-const refreshSecret = () => encoder.encode(process.env.JWT_REFRESH_SECRET ?? "dev-refresh-secret-change-me");
+const accessSecret = () => encoder.encode(readLocalEnvValue("JWT_ACCESS_SECRET") ?? "dev-access-secret-change-me");
+const refreshSecret = () => encoder.encode(readLocalEnvValue("JWT_REFRESH_SECRET") ?? "dev-refresh-secret-change-me");
 
-export async function signAccessToken(user: SessionUser) {
+export async function signAccessToken(user: SessionUser, timeoutMinutes = 15) {
   return new SignJWT({ ...user, tokenType: "access" })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("15m")
+    .setExpirationTime(`${timeoutMinutes}m`)
     .sign(accessSecret());
 }
 

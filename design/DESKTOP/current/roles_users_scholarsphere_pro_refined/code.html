@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Roles &amp; Users - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "surface": "#FFFFFF",
+                        "background": "#F8FAFC",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1E293B",
+                        "on-surface-variant": "#64748B",
+                        "secondary": "#5B50F5",
+                        "surface-container": "#FFFFFF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "gutter": "20px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #E2E8F0; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen flex overflow-hidden antialiased">
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-[260px] bg-white border-r border-outline z-20 transition-transform duration-300">
+<!-- Logo Area -->
+<div class="px-md py-lg flex items-center gap-3">
+<div class="w-8 h-8 rounded-DEFAULT bg-primary text-white flex items-center justify-center font-bold text-lg">
+                S
+            </div>
+<div>
+<h1 class="font-bold text-on-surface text-[18px] leading-tight">ScholarSphere Pro</h1>
+<p class="text-[12px] text-on-surface-variant">Ghana Academy</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-sm py-md overflow-y-auto custom-scrollbar flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-slate-50 hover:text-primary transition-colors rounded-DEFAULT group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 bg-primary/10 text-primary border-r-4 border-primary rounded-r-none rounded-l-DEFAULT transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-bold">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-slate-50 hover:text-primary transition-colors rounded-DEFAULT group" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-sm font-medium">Academic</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-slate-50 hover:text-primary transition-colors rounded-DEFAULT group" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="text-sm font-medium">Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-slate-50 hover:text-primary transition-colors rounded-DEFAULT group" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<!-- Footer Action -->
+<div class="p-4 border-t border-outline mt-auto">
+<div class="flex items-center gap-2 text-on-surface-variant px-2 mb-4">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span>
+<span class="text-xs font-medium">System Online</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-outline rounded-DEFAULT text-on-surface-variant hover:bg-slate-50 hover:text-primary transition-colors text-xs font-semibold">
+                Support Center
+            </button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-[260px] h-screen overflow-hidden bg-background relative z-10">
+<!-- Top App Bar -->
+<header class="h-[56px] bg-white border-b border-outline flex items-center justify-between px-md w-full shrink-0 z-10 sticky top-0">
+<!-- Breadcrumbs / Left -->
+<div class="flex items-center gap-2 text-on-surface-variant text-sm font-medium">
+<span class="hover:text-primary cursor-pointer transition-colors">Settings</span>
+<span class="material-symbols-outlined text-[16px] text-slate-300">chevron_right</span>
+<span class="text-on-surface font-semibold">Roles &amp; Users</span>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-slate-50 rounded-DEFAULT px-3 py-1.5 border border-outline focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface placeholder:text-slate-400 p-0 h-5" placeholder="Quick search..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-DEFAULT transition-colors cursor-pointer relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-DEFAULT transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline mx-1"></div>
+<img alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover border border-outline" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPhR9lZ5fZM6AJO5u7Nkn7X-aXGirht7VdrqFn6BL0341TJiINdxYs9jJJHvDOCe-Z4Ygwl7aQSiw2dlgVBsILIuc0gPv7dJlIZ7cDHoCG4anysAG2YxjdMJxWn7479PX_swydvMX1riFvqcM2PykQSoja09us_Rwx8_ktEKcsGnmFMweO4M3mxmG2IzzFy86JIoN7HUrqjLIbJW13_xcrgF3Nkkuxt0P92zJnimbqPbgWwmIylfLuZGqdfc4F4cReqoWvvBTGkA"/>
+</div>
+</header>
+<!-- Main Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-margin-mobile md:p-margin-desktop space-y-lg pb-12">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<h2 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">Roles &amp; Users Management</h2>
+<p class="text-sm text-on-surface-variant mt-1">Manage institutional roles, permissions, and user access across the academy.</p>
+</div>
+<button class="shrink-0 flex items-center justify-center gap-2 bg-primary hover:bg-[#4A40D4] text-white px-5 py-2.5 rounded-DEFAULT text-sm font-semibold shadow-sm transition-all active:scale-95 group">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Invite User
+                </button>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Stat Card 1 -->
+<div class="bg-white border border-outline rounded-DEFAULT p-5 shadow-sm hover:border-primary/20 transition-colors">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total Users</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-bold text-on-surface">1,450</h3>
+<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+12%</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white border border-outline rounded-DEFAULT p-5 shadow-sm hover:border-primary/20 transition-colors">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Active Users</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-bold text-on-surface">1,380</h3>
+<span class="text-xs font-medium text-on-surface-variant">95.1%</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-white border border-outline rounded-DEFAULT p-5 shadow-sm lg:col-span-1 hover:border-primary/20 transition-colors">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Roles Overview</p>
+<div class="flex flex-wrap gap-1.5 mt-2">
+<span class="px-2 py-0.5 bg-slate-900 text-white text-[10px] font-bold rounded-sm">ADM: 5</span>
+<span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold rounded-sm">TCH: 84</span>
+<span class="px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-100 text-[10px] font-bold rounded-sm">STF: 22</span>
+<span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold rounded-sm">STD: 1.2K</span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-white border border-outline rounded-DEFAULT p-5 shadow-sm hover:border-primary/20 transition-colors">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Needs Attention</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-bold text-on-surface">70</h3>
+<span class="text-xs font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">Action req.</span>
+</div>
+</div>
+</div>
+<!-- Main Data Table Container -->
+<div class="bg-white border border-outline rounded-DEFAULT shadow-sm overflow-hidden flex flex-col">
+<!-- Table Controls -->
+<div class="p-4 border-b border-outline bg-slate-50/50 flex flex-col md:flex-row gap-3 items-center justify-between">
+<div class="w-full md:w-auto flex-1 max-w-md relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">search</span>
+<input class="w-full pl-9 pr-4 py-2 bg-white border border-outline rounded-DEFAULT focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm placeholder:text-slate-400 transition-shadow" placeholder="Search by name, email or role..." type="text"/>
+</div>
+<div class="flex w-full md:w-auto gap-2">
+<select class="flex-1 md:w-36 py-2 px-3 bg-white border border-outline rounded-DEFAULT text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary/20 appearance-none cursor-pointer">
+<option value="">All Roles</option>
+<option value="admin">Admin</option>
+<option value="teacher">Teacher</option>
+</select>
+<select class="flex-1 md:w-32 py-2 px-3 bg-white border border-outline rounded-DEFAULT text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary/20 appearance-none cursor-pointer">
+<option value="">All Status</option>
+<option value="active">Active</option>
+<option value="disabled">Disabled</option>
+</select>
+<button class="shrink-0 p-2 bg-white border border-outline rounded-DEFAULT text-on-surface-variant hover:text-primary hover:bg-slate-50 transition-colors" title="Export">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[900px]">
+<thead>
+<tr class="bg-slate-50 border-b border-outline">
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider w-12">
+<input class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider">User Profile</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider">Assigned Role</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider">Linked Entity</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider">Last Activity</th>
+<th class="py-3 px-6 font-bold text-[11px] text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline text-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="py-4 px-6">
+<input class="rounded border-outline text-primary focus:ring-primary opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">KO</div>
+<div>
+<div class="font-semibold text-on-surface">Kwame Owusu</div>
+<div class="text-xs text-on-surface-variant">k.owusu@school.edu.gh</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold bg-slate-900 text-white">Admin</span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant font-medium">Staff: Kwame Owusu</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">2 mins ago</td>
+<td class="py-4 px-6 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary rounded hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="py-4 px-6">
+<input class="rounded border-outline text-primary focus:ring-primary opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-indigo-50 text-primary flex items-center justify-center font-bold text-xs shrink-0">AA</div>
+<div>
+<div class="font-semibold text-on-surface">Akosua Asare</div>
+<div class="text-xs text-on-surface-variant">a.asare@school.edu.gh</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold bg-indigo-50 text-primary border border-indigo-100">Teacher</span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant font-medium">Staff: Akosua Asare</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">1 hr ago</td>
+<td class="py-4 px-6 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary rounded hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="py-4 px-6">
+<input class="rounded border-outline text-primary focus:ring-primary opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-xs shrink-0">KM</div>
+<div>
+<div class="font-semibold text-on-surface-variant">Kofi Mensah</div>
+<div class="text-xs text-slate-400">k.mensah@student.edu.gh</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">Student</span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant font-medium">Student: Kofi Mensah</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Disabled
+                                    </span>
+</td>
+<td class="py-4 px-6 text-slate-400 text-xs">12 Oct 2024</td>
+<td class="py-4 px-6 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary rounded hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="py-4 px-6">
+<input class="rounded border-outline text-primary focus:ring-primary opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<img alt="Ama Serwaa" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDERKBZD_4oB3D656bLMSMTo5abN95dWwn4BUaYP6IcU7kf1KMrSooC4ERC3lfl83Q2GlT0DP2CptZIpfNrlNjaPZexizrnvNhFJuKsyotmoXYA1VRRMmHvx0vHuCC_6ZLbO15FQr8EHxo_jNkOpXqFwHCSXz6OOybXZTuLSQCXYNaVefmV8zeopcPcc8YJeeoekHWYCyJeIgEIJ8jSndT35zR7B9cKT3sw8iGBOVhDhh0ErSNl6ayGsAV5QDzSkXWZEQABFeVWYQ"/>
+<div>
+<div class="font-semibold text-on-surface">Ama Serwaa</div>
+<div class="text-xs text-on-surface-variant">a.serwaa@school.edu.gh</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold bg-indigo-50 text-primary border border-indigo-100">Teacher</span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant font-medium">Staff: Ama Serwaa</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">Yesterday</td>
+<td class="py-4 px-6 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary rounded hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline bg-white flex items-center justify-between text-xs font-medium text-on-surface-variant">
+<div>Showing 1 - 4 of 1,450 entries</div>
+<div class="flex items-center gap-1">
+<button class="px-3 py-1.5 rounded border border-outline hover:bg-slate-50 disabled:opacity-30" disabled="">Prev</button>
+<button class="px-3 py-1.5 rounded bg-primary text-white font-bold">1</button>
+<button class="px-3 py-1.5 rounded border border-outline hover:bg-slate-50">2</button>
+<button class="px-3 py-1.5 rounded border border-outline hover:bg-slate-50">3</button>
+<span class="px-2 text-slate-300">...</span>
+<button class="px-3 py-1.5 rounded border border-outline hover:bg-slate-50">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

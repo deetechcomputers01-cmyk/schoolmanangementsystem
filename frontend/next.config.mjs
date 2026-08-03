@@ -38,14 +38,9 @@ const nextConfig = {
     ];
   },
 
-  // Redirect legacy /disciplinary → /discipline (URL changed in new arch)
   async redirects() {
     return [
-      { source: "/disciplinary", destination: "/discipline", permanent: true },
-      { source: "/portal",       destination: "/student-portal", permanent: false },
-      { source: "/admin/audit",  destination: "/audit-logs", permanent: true },
-      { source: "/admin/users",  destination: "/user-role",  permanent: true },
-      { source: "/admin/blocked-ips", destination: "/user-role", permanent: true },
+      { source: "/portal",        destination: "/dashboard", permanent: false },
       { source: "/fees/payments", destination: "/fees/receipt", permanent: true },
     ];
   },

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere Pro - Settings: Offline &amp; Sync</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .card {
+                @apply bg-white rounded border border-outline shadow-sm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans antialiased min-h-screen flex">
+<!-- SideNavBar (Updated to SCREEN_44 style) -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">domain</span>
+<span class="text-body-md">Institutions</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-body-md">User Management</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+<span class="text-body-md">System Health</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-body-md">Financials</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">receipt_long</span>
+<span class="text-body-md">Audit Logs</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="text-body-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-body-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area Wrapper -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar (Updated to SCREEN_44 style) -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<nav class="flex items-center gap-2 text-on-surface-variant text-body-md">
+<span>Administration</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-bold text-on-surface">Settings</span>
+</nav>
+</div>
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 mr-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Online</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    A
+                </div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-8 overflow-y-auto max-w-[1400px] mx-auto w-full">
+<!-- Page Header Area -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Settings &amp; School Profile</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Configure global application behavior and school-wide defaults.</p>
+</div>
+<div class="flex gap-3">
+<button class="btn-secondary">Reset Defaults</button>
+<button class="btn-secondary">Preview Letterhead</button>
+<button class="btn-primary">Save Changes</button>
+</div>
+</div>
+<!-- Settings Layout Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+<!-- Left: Sub-Nav Card -->
+<div class="md:col-span-3">
+<div class="card py-2">
+<nav class="flex flex-col">
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">School Profile</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Academic Calendar</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Branding</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Fees</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Attendance</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Gradebook</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Users &amp; Security</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Notifications</a>
+<a class="px-6 py-3 bg-[#EEEDFF] text-primary font-bold border-l-[3px] border-primary text-body-md" href="#">Offline &amp; Sync</a>
+<a class="px-6 py-3 text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors text-body-md" href="#">Integrations</a>
+</nav>
+</div>
+</div>
+<!-- Center: Form Area Card -->
+<div class="md:col-span-6">
+<div class="card p-8">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">wifi</span>
+<h3 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">OFFLINE &amp; SYNC</h3>
+</div>
+<p class="text-on-surface-variant text-body-md mb-8">Control offline caching behavior and background sync intervals for student records and financial data.</p>
+<div class="space-y-8">
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-on-surface uppercase tracking-wider">Sync Interval (minutes)</label>
+<input class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="5"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-on-surface uppercase tracking-wider">Offline Cache Size (MB)</label>
+<input class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary" type="number" value="50"/>
+</div>
+<div class="pt-6 border-t border-outline flex items-center justify-between">
+<div>
+<h4 class="font-semibold text-on-surface text-body-lg">Enable Offline Mode</h4>
+<p class="text-on-surface-variant text-body-md">Allow users to continue working without an active internet connection</p>
+</div>
+<!-- Switch Component -->
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none">
+<span class="inline-block h-4 w-4 translate-x-6 transform rounded-full bg-white transition-transform"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Preview Panel Card -->
+<div class="md:col-span-3">
+<div class="card h-full flex flex-col bg-surface-container-low">
+<div class="px-6 py-4 border-b border-outline">
+<h3 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">SYNC STATUS PREVIEW</h3>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 text-center gap-6">
+<div class="w-20 h-20 rounded-full bg-white shadow-sm flex items-center justify-center border border-outline">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 0;">cloud_done</span>
+</div>
+<div>
+<p class="font-bold text-title-md text-on-surface">System Ready</p>
+<p class="text-body-md text-on-surface-variant mt-2">Changes will be cached locally if connection drops.</p>
+</div>
+<div class="w-full bg-white border border-outline rounded p-4 text-left space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Last Synced</span>
+<span class="font-mono-data text-body-md text-on-surface">Just now</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Cache Usage</span>
+<span class="font-mono-data text-body-md text-on-surface">12 / 50 MB</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[24%] transition-all"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -7,7 +7,8 @@ import { z } from "zod";
 const schema = z.object({
   title: z.string().min(1), author: z.string().min(1),
   isbn: z.string().optional(), category: z.string().min(1),
-  quantity: z.number().int().positive().default(1)
+  quantity: z.number().int().positive().default(1),
+  shelfLocation: z.string().optional(),
 });
 
 export async function GET(request: NextRequest) {

@@ -1,25 +1,664 @@
-﻿/**
- * FeesScreen.module.css — scoped to FeesScreen only.
- * DESIGN PENDING — Stitch "Institutional Excellence" desktop spec.
- * All visual values come from tokens.css custom properties.
+/**
+ * FeesScreen.module.css — /fees (Fees & Payments) split-pane screen.
  */
 
 .root {
-  width: 100%;
-  min-height: 100%;
-  /* Design fills: background, padding */
+  display: flex;
+  height: 100%;
+  min-height: calc(100vh - var(--layout-topbar-h) - 48px);
+  margin: -24px;
+  background: var(--clr-app-surface);
 }
 
-/* ── Placeholder (remove when Stitch design is applied) ── */
-.placeholder {
+.canvas {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px;
+  border-right: 1px solid var(--clr-app-border);
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0 0 4px;
+  color: var(--clr-app-text);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--clr-app-muted);
+  font-size: var(--text-sm);
+}
+
+.headerActions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.btnOutline,
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btnOutline {
+  border: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+}
+.btnOutline:hover { background: var(--clr-app-surface-alt); }
+
+.btnPrimary {
+  border: 1px solid var(--clr-app-accent);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+}
+.btnPrimary:hover { background: var(--clr-app-accent-hover); }
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kpiCard {
+  padding: 16px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+
+.kpiLabel {
+  margin: 0 0 4px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.kpiValue {
+  margin: 0;
+  color: var(--clr-app-text);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.kpiMeta {
+  margin: 8px 0 0;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.kpiProgressTrack {
+  height: 6px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--clr-app-border);
+  overflow: hidden;
+}
+.kpiProgressFill { height: 100%; border-radius: 999px; background: var(--clr-app-accent); }
+
+.kpiCardOverdue { border-color: #f3c9c9; }
+.kpiOverdueRow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.kpiLabelOverdue {
+  margin: 0 0 4px;
+  color: #ba1a1a;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.kpiOverdueIcon { color: #ba1a1a; flex-shrink: 0; }
+.kpiMetaOverdue { margin: 8px 0 0; color: #ba1a1a; font-size: var(--text-xs); font-weight: 600; }
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.controlsLeft { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.searchWrapper { position: relative; }
+.searchIcon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--clr-app-muted); pointer-events: none; }
+.searchInput {
+  height: 34px;
+  padding: 0 12px 0 32px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  outline: none;
+  width: 220px;
+}
+.searchInput:focus { border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+
+.filterSelect {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  outline: none;
+}
+
+.controlsRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+
+.pageIconBtn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-2);
-  padding: var(--sp-10);
-  min-height: 60vh;
-  opacity: 0.5;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  cursor: pointer;
 }
-.label  { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
-.hint   { font-size: var(--text-sm); }
+.pageIconBtn:hover:not(:disabled) { background: var(--clr-app-surface-alt); }
+.pageIconBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.tableCard {
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  overflow: hidden;
+}
+
+.table { width: 100%; border-collapse: collapse; text-align: left; }
+.table thead { background: var(--clr-app-surface-alt); border-bottom: 1px solid var(--clr-app-border); }
+
+.thCheck { width: 40px; padding: 10px 12px; }
+.th {
+  padding: 10px 12px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.thRight { text-align: right; }
+.thAction { width: 44px; }
+
+.tr { border-bottom: 1px solid var(--clr-app-border); cursor: pointer; transition: background-color 0.12s ease; }
+.tr:last-child { border-bottom: none; }
+.tr:hover { background: var(--clr-app-surface-alt); }
+.trSelected, .trSelected:hover { background: var(--clr-app-accent-soft); }
+
+.td { padding: 10px 12px; font-size: var(--text-xs); color: var(--clr-app-text); }
+.tdCheck { padding: 10px 12px; }
+.tdInvoice { color: var(--clr-app-accent); font-weight: 600; }
+.tdMuted { color: var(--clr-app-muted); }
+.tdRight { text-align: right; }
+.tdMono { font-variant-numeric: tabular-nums; }
+.tdBold { font-weight: 700; }
+.tdRed { color: #ba1a1a; }
+.tdAction { padding: 10px 12px; }
+
+.checkbox { width: 14px; height: 14px; accent-color: var(--clr-app-accent); cursor: pointer; }
+
+.studentCell { display: flex; align-items: center; gap: 8px; }
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.studentName { font-weight: 500; }
+
+.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+.menuBtn:hover { color: var(--clr-app-text); }
+
+.emptyCell { padding: 40px; text-align: center; color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.badgePaid, .badgePending, .badgeOverdue {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.badgePaid { background: #e6f7ec; color: #1b7a3d; border: 1px solid #bfe6cd; }
+.badgePending { background: #fdf3e2; color: #a5720f; border: 1px solid #f2dcac; }
+.badgeOverdue { background: #fdeaea; color: #ba1a1a; border: 1px solid #f3c9c9; }
+
+/* ── Persistent detail panel ─────────────────────────────────────── */
+.detailPanel {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-app-surface);
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface-alt);
+}
+.detailHeader h3 { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+
+.detailClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+.detailClose:hover { color: var(--clr-app-text); }
+
+.detailBody { flex: 1; overflow-y: auto; padding: 20px 16px; }
+
+.detailEmpty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.detailIdentity { text-align: center; margin-bottom: 20px; }
+.detailAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+.detailIdentity h4 { margin: 0; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.detailIdentity p { margin: 2px 0 8px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.detailStatusChip { display: inline-flex; }
+.scholarshipBadge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 3px 9px;
+  border: 1px solid var(--clr-app-accent);
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.detailScholarshipValue { color: var(--clr-app-accent); }
+
+.detailSummaryBox {
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+.detailSummaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: var(--text-xs);
+  color: var(--clr-app-text);
+}
+.detailSummaryRow:last-child { margin-bottom: 0; }
+.detailPaidValue { color: #1b7a3d; }
+.detailDivider { height: 1px; margin: 8px 0; background: var(--clr-app-border); }
+.detailBalanceLabel { font-weight: 700; }
+.detailBalanceValue { font-size: var(--text-md); font-weight: 700; color: var(--clr-app-accent); }
+
+.detailSection { margin-bottom: 20px; }
+.detailSection h5 {
+  margin: 0 0 10px;
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.detailBreakdownList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.detailBreakdownList li {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--clr-app-muted);
+}
+
+.detailGuardianBox {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.detailGuardianBox h5 {
+  margin: 0 0 8px;
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.detailGuardianName { margin: 0; color: var(--clr-app-text); font-size: var(--text-xs); font-weight: 600; }
+.detailGuardianPhone { margin: 2px 0 6px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.detailReminderLink {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.detailReminderLink:hover { text-decoration: underline; }
+
+.detailPrimaryBtn,
+.detailSecondaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.detailPrimaryBtn {
+  margin-bottom: 8px;
+  border: 1px solid var(--clr-app-accent);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+}
+.detailPrimaryBtn:hover { background: var(--clr-app-accent-hover); }
+
+.detailSecondaryBtn {
+  border: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+}
+.detailSecondaryBtn:hover { background: var(--clr-app-surface-alt); }
+
+@media (max-width: 1100px) {
+  .kpiGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .root { flex-direction: column; }
+  .canvas { border-right: none; border-bottom: 1px solid var(--clr-app-border); }
+  .detailPanel { flex: 0 0 auto; }
+}
+
+/* ── Create Invoice / Record Payment modals (ported from FeeInvoicesScreen) ── */
+.modalOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
+  z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.modal {
+  background: var(--clr-app-surface); border: 1px solid var(--clr-app-border);
+  border-radius: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  width: 100%; max-width: 520px; overflow: hidden;
+}
+.modalHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 22px; border-bottom: 1px solid #ececf3;
+  background: var(--clr-app-surface);
+}
+.modalEyebrow { margin: 0 0 4px; color: var(--clr-app-accent); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.modalTitle { margin: 0; font-size: var(--text-xl); font-weight: 600; color: var(--clr-app-text); }
+.modalSubtitle { margin-top: 6px; color: var(--clr-app-muted); font-size: var(--text-xs); line-height: 20px; }
+.modalClose {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: none; color: #41484b; cursor: pointer;
+}
+.modalClose:hover { background: #e8e8e8; }
+.modalBody { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+.paymentSummaryLabel {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-app-muted);
+}
+
+.invoiceSummaryCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: 4px;
+  background: var(--clr-app-surface-alt);
+}
+.invoiceSummaryItem { display: flex; flex-direction: column; gap: 4px; }
+.invoiceSummaryItemEnd { align-items: flex-end; text-align: right; }
+.invoiceSummaryValue { font-size: var(--text-sm); font-weight: 700; color: var(--clr-app-text); }
+.invoiceSummaryBalance { font-size: var(--text-sm); font-weight: 700; color: #ba1a1a; }
+
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formGroup { display: flex; flex-direction: column; gap: 6px; }
+.formLabel { font-size: var(--text-xs); font-weight: 600; color: #5f6475; }
+.formLabelRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.useFullBalanceLink {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.useFullBalanceLink:hover { text-decoration: underline; }
+
+.amountInputWrap { position: relative; }
+.amountPrefix {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5f6475;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  pointer-events: none;
+}
+.amountInput { padding-left: 44px; width: 100%; box-sizing: border-box; }
+
+.formTextarea {
+  padding: 10px 12px;
+  background: var(--clr-app-surface);
+  border: 1px solid #e0e3ef;
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  color: var(--clr-app-text);
+  font-family: inherit;
+  resize: vertical;
+}
+.formTextarea:focus { outline: none; border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+.formTextarea::placeholder { color: #c1c7cb; }
+
+.studentSearchWrap { position: relative; }
+.studentSearchIcon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--clr-app-muted); pointer-events: none; }
+.studentSearchSelect { padding-left: 34px; width: 100%; box-sizing: border-box; }
+
+.lineItemsSection { display: flex; flex-direction: column; gap: 10px; }
+.lineItemsHeader { display: flex; align-items: center; justify-content: space-between; }
+.lineItemsAmountLabel { color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.lineItemsList { display: flex; flex-direction: column; gap: 8px; }
+.lineItemRow { display: flex; align-items: center; gap: 10px; }
+
+.lineItemLabelInput {
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  background: #fbfbfe;
+  border: 1px solid #e0e3ef;
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  color: var(--clr-app-text);
+}
+.lineItemLabelInput:focus { outline: none; border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+
+.lineItemAmountInput {
+  width: 128px;
+  height: 38px;
+  padding: 0 12px;
+  background: var(--clr-app-surface);
+  border: 1px solid #e0e3ef;
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  color: var(--clr-app-text);
+  text-align: right;
+}
+.lineItemAmountInput:focus { outline: none; border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+
+.lineItemDelete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #c0656580;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.lineItemDelete:hover:not(:disabled) { color: #ba1a1a; }
+.lineItemDelete:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.addLineItemBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.addLineItemBtn:hover { background: var(--clr-app-accent-soft); }
+
+.modalDivider { height: 1px; background: var(--clr-app-border); }
+
+.invoiceFooterRow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.invoiceFooterRow .formRow { flex: 1; }
+.invoiceTotalBlock { text-align: right; flex-shrink: 0; }
+.invoiceTotalValue { margin: 0; color: var(--clr-app-text); font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.01em; }
+
+.formSelect {
+  height: 40px; padding: 0 12px;
+  background: var(--clr-app-surface); border: 1px solid #e0e3ef; border-radius: 4px;
+  font-size: var(--text-xs); color: var(--clr-app-text);
+}
+.formSelect:focus { outline: none; border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+.formInput {
+  height: 40px; padding: 0 12px;
+  background: var(--clr-app-surface); border: 1px solid #e0e3ef; border-radius: 4px;
+  font-size: var(--text-xs); color: var(--clr-app-text);
+}
+.formInput:focus { outline: none; border-color: var(--clr-app-accent); box-shadow: 0 0 0 3px rgba(91,80,245,0.11); }
+.formInput::placeholder { color: #c1c7cb; }
+
+.paymentProjection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: 4px;
+  background: var(--clr-app-surface);
+}
+.paymentProjectionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: var(--text-sm);
+  color: var(--clr-app-text);
+}
+.paymentCreditValue { color: var(--clr-app-accent); }
+
+.modalFooter {
+  display: flex; justify-content: flex-end; gap: 12px;
+  padding: 16px 22px; border-top: 1px solid #ececf3; background: var(--clr-app-surface);
+}
+.btnCancel {
+  height: 40px; padding: 0 16px;
+  background: transparent; border: 1px solid #e0e3ef; border-radius: 4px;
+  font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-text); cursor: pointer;
+}
+.btnCancel:hover { background: #f7f8fc; }

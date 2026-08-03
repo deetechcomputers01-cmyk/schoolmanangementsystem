@@ -3,15 +3,23 @@ import { verifyAccessToken } from "../auth/tokens";
 
 export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
-  if (!header?.startsWith("Bearer ")) {
+  const accessToken = header?.startsWith("Bearer ")
+    ? header.slice(7)
+    : readCookie(req.headers.cookie, "accessToken");
+
+  if (!accessToken) {
     return res.status(401).json({ error: "No token provided" });
   }
   try {
-    const token = header.slice(7);
-    const payload = await verifyAccessToken(token);
+    const payload = await verifyAccessToken(accessToken);
     (req as any).user = payload;
     next();
   } catch {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
+}
+
+function readCookie(header: string | undefined, name: string) {
+  const value = header?.split(";").find((part) => part.trim().startsWith(`${name}=`));
+  return value ? decodeURIComponent(value.trim().slice(name.length + 1)) : undefined;
 }

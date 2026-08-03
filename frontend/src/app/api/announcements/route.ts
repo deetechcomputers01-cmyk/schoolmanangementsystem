@@ -19,7 +19,12 @@ export async function POST(request: NextRequest) {
   if (!user) return unauthorized();
   if (user.role !== "super_admin" && user.role !== "principal") return forbidden();
 
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return badRequest({ body: ["Valid JSON body is required"] });
+  }
   const parsed = createAnnouncementSchema.safeParse(body);
   if (!parsed.success) return badRequest(parsed.error.flatten().fieldErrors);
 

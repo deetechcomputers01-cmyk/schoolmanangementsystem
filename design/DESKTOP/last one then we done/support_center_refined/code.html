@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere - Support Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background-color: #E4E4EC;
+                border-radius: 4px;
+            }
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm;
+            }
+            .table-container {
+                @apply w-full overflow-hidden bg-white rounded border border-outline;
+            }
+            .table-header {
+                @apply font-label-sm text-label-sm text-on-surface-variant bg-[#F8FAFC] text-left px-4 py-3 border-b border-outline whitespace-nowrap uppercase tracking-wider;
+            }
+            .table-cell {
+                @apply font-body-md text-body-md text-on-surface px-4 py-3 border-b border-outline whitespace-nowrap;
+            }
+            .table-row {
+                @apply hover:bg-[#F1F5F9] transition-colors cursor-pointer;
+            }
+            .pill {
+                @apply inline-flex items-center justify-center px-2 py-0.5 rounded-full font-label-sm text-[11px] font-bold uppercase;
+            }
+            .pill-active { @apply bg-[#DCFCE7] text-[#15803D]; }
+            .pill-maintenance { @apply bg-[#FEF9C3] text-[#A16207]; }
+            .pill-alert { @apply bg-[#FEE2E2] text-[#B91C1C]; }
+            .pill-neutral { @apply bg-[#F1F5F9] text-[#475569]; }
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-on-surface font-sans min-h-screen flex antialiased overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="text-body-md">Tickets</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">book</span>
+<span class="text-body-md">Knowledge Base</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-body-md">Staff Directory</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+<span class="text-body-md">Reports</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_center</span>
+<span class="text-body-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-body-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full bg-white border-b border-outline flex justify-between items-center px-8 z-30 flex-shrink-0">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider">
+<span>Administration</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Support</span>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<div class="hidden lg:flex items-center gap-6 mr-4">
+<a class="text-primary font-bold border-b-2 border-primary h-[56px] flex items-center text-label-sm uppercase" href="#">Tickets</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors h-[56px] flex items-center text-label-sm uppercase" href="#">Archive</a>
+</div>
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKHo-6Sp9oVRje5GGsZfxRi5Y80bAXYJmqI62Gp2thDFAc-rm5DEZ3c6eK3lh2Bp0I48Sb0dpk-QZJeWroqGlew_FxZjoclcBNXH26XaWYKb61P0VqgcZvzwgSOKT9XPhv0gdQS2WocawBlzaTKkLLOYAx8bzO19LPX3yUcE3vWkPRs0J3zNJXq3ZkM-z5yn0PVqMUcdKI9O1xMg0CaC12xZMPDHNPIxX25VTuRlOIMHOv7CizWu6K6p576Ai1K4S9mEnhVJeWQ"/>
+</div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-8 bg-[#F8FAFC] flex flex-col gap-8">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Support Center</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Manage and resolve institutional support requests.</p>
+</div>
+<button class="btn-primary">
+<span class="material-symbols-outlined">add</span>
+                New Ticket
+            </button>
+</div>
+<!-- KPI Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded border border-outline shadow-sm">
+<div class="flex justify-between items-center mb-3">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Open Tickets</p>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">inbox</span>
+</div>
+<div class="flex items-baseline">
+<span class="text-3xl font-bold text-on-surface">14</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm border-l-4 border-l-error">
+<div class="flex justify-between items-center mb-3">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Urgent</p>
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+</div>
+<div class="flex items-baseline">
+<span class="text-3xl font-bold text-error">03</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm">
+<div class="flex justify-between items-center mb-3">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Assigned to Me</p>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
+</div>
+<div class="flex items-baseline">
+<span class="text-3xl font-bold text-on-surface">05</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded border border-outline shadow-sm border-l-4 border-l-[#15803D]">
+<div class="flex justify-between items-center mb-3">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Resolved</p>
+<span class="material-symbols-outlined text-[#15803D] text-[20px]">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-on-surface">42</span>
+<span class="text-[#15803D] font-bold text-[11px] mb-1">+4 this week</span>
+</div>
+</div>
+</div>
+<!-- Main Content Split Layout -->
+<div class="flex flex-col lg:flex-row gap-6 min-h-[600px]">
+<!-- Left Pane: Ticket Table -->
+<div class="lg:w-2/3 flex flex-col bg-white border border-outline rounded shadow-sm overflow-hidden">
+<!-- Filters Bar -->
+<div class="p-4 border-b border-outline bg-[#F8FAFC] flex flex-wrap items-center gap-4">
+<div class="relative flex-1 min-w-[200px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Search tickets..." type="text"/>
+</div>
+<div class="flex gap-2">
+<select class="bg-white border border-outline rounded text-body-md py-2 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option>All Queues</option>
+<option>Maintenance</option>
+<option>IT Support</option>
+<option>Finance</option>
+</select>
+<select class="bg-white border border-outline rounded text-body-md py-2 px-4 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px]">
+<option>Any Priority</option>
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+<button class="btn-secondary px-3 py-2">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="flex-1 overflow-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-[#F1F5F9] z-10">
+<tr>
+<th class="table-header w-20">ID</th>
+<th class="table-header">Subject</th>
+<th class="table-header">Requester</th>
+<th class="table-header hidden xl:table-cell">Queue</th>
+<th class="table-header">Status</th>
+<th class="table-header text-right">Updated</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline">
+<tr class="table-row bg-[#EEEDFF]">
+<td class="table-cell font-mono-data text-[13px] text-primary font-bold">#1042</td>
+<td class="table-cell font-semibold max-w-[180px] truncate">Projector not working in JHS 2A</td>
+<td class="table-cell">
+<div class="flex flex-col">
+<span class="font-medium">Ama Serwaa</span>
+<span class="text-[11px] text-on-surface-variant">Teacher</span>
+</div>
+</td>
+<td class="table-cell hidden xl:table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">Maintenance</span>
+</td>
+<td class="table-cell">
+<span class="pill pill-maintenance">In Progress</span>
+</td>
+<td class="table-cell text-right text-[12px] text-on-surface-variant">2h ago</td>
+</tr>
+<tr class="table-row">
+<td class="table-cell font-mono-data text-[13px] text-on-surface-variant">#1041</td>
+<td class="table-cell font-semibold max-w-[180px] truncate">Fee portal access error</td>
+<td class="table-cell">
+<div class="flex flex-col">
+<span class="font-medium">Abena Appiah</span>
+<span class="text-[11px] text-on-surface-variant">Parent</span>
+</div>
+</td>
+<td class="table-cell hidden xl:table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">IT Support</span>
+</td>
+<td class="table-cell">
+<span class="pill pill-alert">Open</span>
+</td>
+<td class="table-cell text-right text-[12px] text-on-surface-variant">4h ago</td>
+</tr>
+<tr class="table-row">
+<td class="table-cell font-mono-data text-[13px] text-on-surface-variant">#1039</td>
+<td class="table-cell font-semibold max-w-[180px] truncate">Gradebook sync issue</td>
+<td class="table-cell">
+<div class="flex flex-col">
+<span class="font-medium">Kofi Mensah</span>
+<span class="text-[11px] text-on-surface-variant">Teacher</span>
+</div>
+</td>
+<td class="table-cell hidden xl:table-cell">
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[11px] font-bold text-on-surface-variant uppercase">IT Support</span>
+</td>
+<td class="table-cell">
+<span class="pill pill-active">Resolved</span>
+</td>
+<td class="table-cell text-right text-[12px] text-on-surface-variant">Yesterday</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline bg-white flex justify-between items-center text-body-md text-on-surface-variant">
+<span>Showing <span class="font-bold text-on-surface">1-3</span> of 42 tickets</span>
+<div class="flex gap-2">
+<button class="btn-secondary px-3 py-1 bg-white opacity-50 cursor-not-allowed shadow-none" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="btn-secondary px-3 py-1 bg-white">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Pane: Ticket Detail -->
+<div class="lg:w-1/3 flex flex-col bg-white border border-outline rounded shadow-sm overflow-hidden">
+<!-- Detail Header -->
+<div class="p-5 border-b border-outline bg-white flex-shrink-0">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-[12px] text-on-surface-variant">TICKET #1042</span>
+<div class="flex items-center gap-2">
+<span class="pill pill-alert">High Priority</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface leading-tight">Projector not working in JHS 2A</h3>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#E0E7FF] text-primary flex items-center justify-center font-bold text-xs overflow-hidden">
+<img alt="Requester" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA73N5w1FCE3IYF7qNLlVy-u6T7Vj2-PdvdzCFwbnFhkAshWW6YXcSX4gQGSSPP7qk90tV69h1OSRIFZjveYv6gL_Vr7AGmQTVTdWtArlc6UFTf-vr6wRoEM1pi3892K2vvNkVVbX9CPdGU1SlUHjDaZVe47vORdqF-k-plRPYvKREVw6JigXgRb2fFhxrMK35XLgBfkEv3RzRoXPTXY2JYdSEct49Msn5AKtPRU63yyjp4cDMELOL5OLpC_kWKBY_jlrBufQSLkQ"/>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-sm">Ama Serwaa</span>
+<span class="text-[11px] text-on-surface-variant uppercase font-semibold">Maintenance Queue</span>
+</div>
+</div>
+</div>
+<!-- Conversation Area -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-6 bg-surface-container-low">
+<!-- Client Message -->
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-outline flex-shrink-0 overflow-hidden">
+<img alt="Ama" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtng9GHvg-bHmlnZcmwOipEUDT1_BC-oFcYgEQ_wAs0wVzwjb3S3nGwRJxsvgAbFcUTKm7ddxPp7otA42F2aSFM95IPZmngcTOc6_aMlo1torzeJ4cOsXwBwB3775vkbzrCXj1QbDjnYZ9d6daAKCYMfVNpxKpPK_4Rop6iyC1tkZkmpSRq8i0BsEuhI8UFKi-ub-9pTixHT7-zmumnzVo-ajMsCLcN_CgTUEqBZLnqss8ltEWjTy_r__geH_alJkVEWeFExB0lg"/>
+</div>
+<div class="flex-1">
+<div class="flex items-baseline justify-between mb-1">
+<span class="font-bold text-xs text-on-surface">Ama Serwaa</span>
+<span class="text-[10px] text-on-surface-variant font-medium">08:30 AM</span>
+</div>
+<div class="bg-white border border-outline p-3 rounded text-sm text-on-surface shadow-sm leading-relaxed">
+                                Good morning team, the projector in classroom JHS 2A is not powering on. The power cable seems loose and it smells slightly like burnt plastic. We have a presentation in 2 hours, please help!
+                            </div>
+</div>
+</div>
+<!-- System Event -->
+<div class="flex justify-center">
+<span class="bg-[#F1F5F9] text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 border border-outline/50">
+<span class="material-symbols-outlined text-[14px]">person_add</span>
+                            Assigned to Kwame Owusu
+                        </span>
+</div>
+<!-- Internal Note -->
+<div class="flex gap-3 flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary flex-shrink-0 overflow-hidden">
+<img alt="Kwame" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSYJu6bB2hiiStnBjyIzofkXte7pBF0AKZ1Rq43esMbIvw661kKr3LO7rmrW2e9xjUimT5OD7yZH4zcWOLcd3mw3kZ4jYIPVUV9sqOytY8XOB3dZufb3SP5fZR4iHHtTDHKDrV96e7e_HOZwqQ-y4jObUW_MVegJy51mOMre6yOylUoOhGs83Rf0mDFG0U37ExRlA6ncdT82bJgCeRl-r2Dx6x6dUHMZ5UEnwix9Wm2CIW1h3d71yzgF19xf8LOZAj5Xfke6a9kw"/>
+</div>
+<div class="flex-1 flex flex-col items-end">
+<div class="flex items-baseline justify-between w-full mb-1 flex-row-reverse">
+<span class="font-bold text-xs text-on-surface">Kwame Owusu</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant font-medium">09:15 AM</span>
+<span class="bg-[#FEF9C3] text-[#A16207] text-[10px] font-bold px-1.5 py-0.5 rounded uppercase border border-[#EAB308]/20">Note</span>
+</div>
+</div>
+<div class="bg-[#FEF9C3]/40 border border-[#EAB308]/30 p-3 rounded text-sm text-[#854D0E] shadow-sm italic leading-relaxed max-w-[95%]">
+                                Checked the logs, this projector (SN-4920) was flagged for a faulty power supply last term. Bringing a replacement unit just in case.
+                            </div>
+</div>
+</div>
+<!-- Reply -->
+<div class="flex gap-3 flex-row-reverse">
+<div class="w-8 h-8 rounded-full opacity-0 flex-shrink-0"></div>
+<div class="flex-1 flex flex-col items-end">
+<div class="flex items-baseline justify-between w-full mb-1 flex-row-reverse">
+<span class="font-bold text-xs text-on-surface">Kwame Owusu</span>
+<span class="text-[10px] text-on-surface-variant font-medium">09:18 AM</span>
+</div>
+<div class="bg-primary text-white p-3 rounded text-sm shadow-md leading-relaxed max-w-[95%]">
+                                Hello Ama, I am heading to JHS 2A now with a replacement power cable and a backup projector. We will get it sorted before your presentation.
+                            </div>
+</div>
+</div>
+</div>
+<!-- Composer -->
+<div class="p-4 border-t border-outline bg-white flex-shrink-0">
+<div class="border border-outline rounded bg-surface-container-low focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
+<div class="flex items-center gap-1 border-b border-outline/50 px-2 py-1.5 bg-white">
+<button class="p-1.5 hover:bg-surface-container-high rounded text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-[18px]">format_bold</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-[18px]">format_italic</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-[18px]">attach_file</span></button>
+</div>
+<textarea class="w-full p-3 text-sm border-none focus:ring-0 resize-none bg-transparent" placeholder="Write your reply here..." rows="3"></textarea>
+<div class="p-3 border-t border-outline/30 flex justify-between items-center bg-white">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-[12px] font-semibold text-on-surface-variant group-hover:text-on-surface">Mark Resolved</span>
+</label>
+<div class="flex gap-2">
+<button class="btn-secondary px-3 py-2 text-sm">Note</button>
+<button class="btn-primary px-4 py-2 text-sm">Send Reply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

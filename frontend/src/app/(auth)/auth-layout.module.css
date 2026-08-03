@@ -1,11 +1,5 @@
-﻿/**
- * auth-layout.module.css — scoped wrapper for (auth) layout.
- * DESIGN PENDING.
- */
 .authShell {
   display: flex;
   min-height: 100dvh;
-  align-items: center;
-  justify-content: center;
-  /* Design fills: background */
+  background: #ffffff;
 }

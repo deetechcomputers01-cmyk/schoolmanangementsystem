@@ -4,22 +4,23 @@ import Link from "next/link";
 import { CheckCircle2, Download, FileSpreadsheet, FileText, Printer, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { MarkAttendanceModal } from "@/components/desktop/modules/dashboard/MarkAttendanceModal";
 
 export function DashboardActionBar() {
   const [open, setOpen] = useState(false);
+  const [attendanceOpen, setAttendanceOpen] = useState(false);
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Link href="/students/new">
+      <Link href="/students">
         <Button className="transition hover:scale-105 active:scale-95">
           <UserPlus size={18} /> Add Student
         </Button>
       </Link>
-      <Link href="/attendance">
-        <Button className="bg-emerald transition hover:scale-105 hover:bg-emerald/90 active:scale-95">
-          <CheckCircle2 size={18} /> Mark Attendance
-        </Button>
-      </Link>
+      <Button className="bg-emerald transition hover:scale-105 hover:bg-emerald/90 active:scale-95" onClick={() => setAttendanceOpen(true)}>
+        <CheckCircle2 size={18} /> Mark Attendance
+      </Button>
+      <MarkAttendanceModal open={attendanceOpen} onClose={() => setAttendanceOpen(false)} />
       <div className="relative">
         <Button variant="secondary" onClick={() => setOpen((current) => !current)} aria-expanded={open} aria-haspopup="menu">
           <Download size={18} /> Export Report

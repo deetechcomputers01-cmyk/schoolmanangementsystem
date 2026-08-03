@@ -1,14 +1,30 @@
 ﻿import { getCurrentUser } from "@backend/auth/cookies";
-import { handleApiError, ok } from "@/lib/http";
+import { handleApiError, ok, unauthorized, forbidden } from "@/lib/http";
 import { saveStudentPhoto } from "@backend/uploads/student-photo";
 import { createStudent, listStudents } from "@backend/services/student.service";
 import { studentSchema } from "@backend/validation/students";
+import { prisma } from "@backend/prisma";
 
 export const runtime = "nodejs";
 
+const STUDENTS_READ_ROLES = ["super_admin", "principal", "teacher", "staff"];
+
 export async function GET() {
   try {
-    return ok({ students: await listStudents() });
+    const user = await getCurrentUser();
+    if (!user) return unauthorized();
+    if (!STUDENTS_READ_ROLES.includes(user.role)) return forbidden();
+    let classIds: string[] | undefined;
+    if (user?.role === "teacher") {
+      const staff = await prisma.staff.findFirst({
+        where: { userId: user.id },
+        select: { subjects: { select: { classId: true } } }
+      });
+      if (staff?.subjects.length) {
+        classIds = [...new Set(staff.subjects.map((s) => s.classId))];
+      }
+    }
+    return ok({ students: await listStudents(classIds) });
   } catch (error) {
     return handleApiError(error);
   }
@@ -36,7 +52,6 @@ async function parseStudentRequest(request: Request) {
   const photoUrl = photo instanceof File && photo.size > 0 ? await saveStudentPhoto(photo) : undefined;
 
   return studentSchema.parse({
-    admissionNo: String(formData.get("admissionNo") ?? ""),
     firstName: String(formData.get("firstName") ?? ""),
     lastName: String(formData.get("lastName") ?? ""),
     gender: String(formData.get("gender") ?? ""),

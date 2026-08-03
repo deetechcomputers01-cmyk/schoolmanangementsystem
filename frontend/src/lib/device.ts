@@ -4,30 +4,30 @@
  * Never import this in client components; use useMediaQuery hook instead.
  */
 
-const MOBILE_PATTERN =
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile/i;
+/** Matches phone UAs. Android without "Mobile" = tablet or "Request Desktop Site" → not mobile. */
+const MOBILE_UA   = /webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i;
+const ANDROID_MOB = /Android.*Mobile/i;
 
-const TABLET_PATTERN =
-  /iPad|Android(?!.*Mobile)|Tablet|tablet/i;
+/** Matches tablet UAs including Android without "Mobile" (tablet mode). */
+const TABLET_UA   = /iPad|Android(?!.*Mobile)/i;
 
-/** Returns true when the UA string belongs to a phone or small tablet. */
-export function isMobileDevice(userAgent: string): boolean {
-  return MOBILE_PATTERN.test(userAgent);
+export function isMobileDevice(ua: string): boolean {
+  return MOBILE_UA.test(ua) || ANDROID_MOB.test(ua);
 }
 
-/** Returns true for iPad-class tablets. */
-export function isTabletDevice(userAgent: string): boolean {
-  return TABLET_PATTERN.test(userAgent);
+export function isTabletDevice(ua: string): boolean {
+  return TABLET_UA.test(ua);
 }
+
+export type DeviceType = "mobile" | "tablet" | "desktop";
 
 /**
  * Returns 'mobile' | 'tablet' | 'desktop'.
- * Desktop is the fallback (favours desktop on unknown UAs).
+ * Desktop is the safe fallback — favours desktop on unknown UAs and on
+ * Android Chrome "Request Desktop Site" (Android UA without "Mobile").
  */
-export type DeviceType = "mobile" | "tablet" | "desktop";
-
-export function getDeviceType(userAgent: string): DeviceType {
-  if (isMobileDevice(userAgent) && !isTabletDevice(userAgent)) return "mobile";
-  if (isTabletDevice(userAgent)) return "tablet";
+export function getDeviceType(ua: string): DeviceType {
+  if (isMobileDevice(ua)) return "mobile";
+  if (isTabletDevice(ua)) return "tablet";
   return "desktop";
 }

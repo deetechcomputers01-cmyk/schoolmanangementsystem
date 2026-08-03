@@ -16,7 +16,7 @@ export async function listUsers(actor: SessionUser) {
       isActive: true,
       createdAt: true,
       staff:    { select: { staffNo: true, roleTitle: true } },
-      guardian: { select: { id: true, relation: true } },
+      guardians: { select: { id: true, relation: true }, take: 1 },
       student:  { select: { admissionNo: true } }
     }
   });

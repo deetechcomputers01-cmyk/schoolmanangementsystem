@@ -5,17 +5,17 @@ const T = 10_000;
 
 test.describe("Role-Based Access Control", () => {
   // ── Super Admin admin panel ────────────────────────────────────────────────
-  test("super_admin sees User Management and Blocked IPs in sidebar", async ({ page }) => {
+  test("super_admin sees Roles & Users and Blocked IPs in sidebar", async ({ page }) => {
     await login(page, "super_admin");
     await page.goto("/dashboard");
-    await expect(page.locator("text=User Management").first()).toBeVisible({ timeout: T });
+    await expect(page.locator("text=Roles & Users").first()).toBeVisible({ timeout: T });
     await expect(page.locator("text=Blocked IPs").first()).toBeVisible({ timeout: T });
   });
 
   test("super_admin can access /admin/users", async ({ page }) => {
     await login(page, "super_admin");
     await page.goto("/admin/users");
-    await expect(page.locator("body")).toContainText(/System Users|User Management/i, { timeout: T });
+    await expect(page.locator("body")).toContainText(/Roles & Users|User Management/i, { timeout: T });
   });
 
   test("super_admin can access /admin/blocked-ips", async ({ page }) => {
@@ -77,16 +77,16 @@ test.describe("Role-Based Access Control", () => {
     await expect(page.locator("body")).toContainText(/Akosua|Welcome|Portal/i, { timeout: T });
   });
 
-  test("guardian accessing /staff is redirected to dashboard", async ({ page }) => {
+  test("guardian accessing /staff is redirected to parent portal", async ({ page }) => {
     await login(page, "guardian");
     await page.goto("/staff");
-    await expect(page).toHaveURL(/dashboard/, { timeout: T });
+    await expect(page).toHaveURL(/parent-portal/, { timeout: T });
   });
 
-  test("guardian cannot access /library — redirected", async ({ page }) => {
+  test("guardian cannot access /library — redirected to parent portal", async ({ page }) => {
     await login(page, "guardian");
     await page.goto("/library");
-    await expect(page).toHaveURL(/dashboard/, { timeout: T });
+    await expect(page).toHaveURL(/parent-portal/, { timeout: T });
   });
 
   // ── API-level security ─────────────────────────────────────────────────────

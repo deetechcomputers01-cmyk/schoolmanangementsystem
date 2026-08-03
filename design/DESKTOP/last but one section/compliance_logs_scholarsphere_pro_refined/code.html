@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Compliance Audit Trail - ScholarSphere Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5", // ScholarSphere Pro Indigo
+                        "on-primary": "#ffffff",
+                        "background": "#f9f9ff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .table-container {
+                @apply w-full overflow-x-auto bg-white rounded border border-outline;
+            }
+            .table-header {
+                @apply font-label-sm text-label-sm text-on-surface-variant bg-[#F8FAFC] text-left px-4 py-3 border-b border-outline whitespace-nowrap uppercase tracking-wider;
+            }
+            .table-cell {
+                @apply font-body-md text-body-md text-on-surface px-4 py-4 border-b border-outline whitespace-nowrap;
+            }
+            .table-row {
+                @apply hover:bg-[#F1F5F9] transition-colors cursor-default;
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .stat-card {
+                @apply bg-white p-6 rounded border border-outline shadow-sm;
+            }
+            .pill {
+                @apply inline-flex items-center justify-center px-2 py-0.5 rounded font-mono-data text-[11px] font-bold border;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar (from SCREEN_39) -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight text-body-lg">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Ghana Education Service</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="text-body-md">Audit Logs</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">assignment_turned_in</span>
+<span class="text-body-md">Compliance</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-body-md">User Roles</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">help_outline</span>
+<span class="text-body-md">Support</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md">Sync Status</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-body-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar (from SCREEN_39) -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<nav class="hidden md:flex items-center gap-2 text-[13px] text-on-surface-variant">
+<a class="hover:text-primary" href="#">Admin</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary" href="#">Security</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Compliance Logs</span>
+</nav>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">history</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm overflow-hidden">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm0dQMgLbZEGqAnRsm9LtMgmFi7zpIO17ygKX6PEteV_4ira8FVCyjnwUXsEsjGbMqfeeJRAUBm94l3abvhVen0mpV5rAfYMEMN7y-zw0Rp2M3xIdrp6XCONqQQqMftRle3zlXq_pw711fWdAqSLsNeefQs6zzs_B4skEIIhynC62d8Qk9Gu7zoLb_UcYyuYhjl5upmlNUMDAE1YYdVNgfCmztW5J7mjwvuMqUfs2Xn2Z6jsoeS8rBkmmVBgBtoR_wEIBm96uRFQ"/>
+</div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Main Content Content -->
+<main class="flex-1 p-8 overflow-y-auto max-w-[1440px] mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-10">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Compliance Audit Trail</h2>
+<p class="text-body-lg text-on-surface-variant mt-1">Monitor and review institutional system activities and data modifications.</p>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<div class="stat-card">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Events Logged Today</p>
+<div class="flex items-baseline gap-3">
+<span class="text-3xl font-bold text-on-surface">2,482</span>
+<span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +5.4%
+                        </span>
+</div>
+</div>
+<div class="stat-card border-l-4 border-l-amber-500">
+<div class="flex justify-between items-start mb-3">
+<p class="font-label-sm text-amber-700 uppercase tracking-wider">Failed Logins (24h)</p>
+<span class="material-symbols-outlined text-amber-500 text-[20px]">warning</span>
+</div>
+<span class="text-3xl font-bold text-amber-600">14</span>
+</div>
+<div class="stat-card">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Data Changes This Week</p>
+<span class="text-3xl font-bold text-on-surface">842</span>
+</div>
+<div class="stat-card">
+<p class="font-label-sm text-on-surface-variant mb-3 uppercase tracking-wider">Distinct Active Users</p>
+<span class="text-3xl font-bold text-on-surface">156</span>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="bg-white border border-outline rounded p-4 mb-6 flex flex-wrap items-center gap-4 shadow-sm">
+<div class="relative flex-1 min-w-[240px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Search logs..." type="text"/>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="relative">
+<select class="appearance-none bg-white border border-outline rounded text-body-md py-2 pl-3 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px] cursor-pointer">
+<option>All Actions</option>
+<option>Logins</option>
+<option>Updates</option>
+<option>Deletions</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-white border border-outline rounded text-body-md py-2 pl-3 pr-10 focus:ring-1 focus:ring-primary focus:border-primary min-w-[140px] cursor-pointer">
+<option>All Entities</option>
+<option>Users</option>
+<option>Students</option>
+<option>System</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<input class="bg-white border border-outline rounded text-body-md py-2 px-3 focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer" type="date"/>
+<button class="btn-primary">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                        Filter
+                    </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="table-container shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="table-header">Timestamp</th>
+<th class="table-header">User</th>
+<th class="table-header">Action</th>
+<th class="table-header">Entity</th>
+<th class="table-header">Metadata</th>
+<th class="table-header text-right">Actions</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr class="table-row group">
+<td class="table-cell font-mono-data text-xs text-on-surface-variant">Oct 24, 2024 10:45:22</td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-primary text-white flex items-center justify-center text-[10px] font-bold">KO</div>
+<span class="font-semibold">Kwame Owusu</span>
+<span class="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold uppercase">Admin</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="pill bg-emerald-50 text-emerald-700 border-emerald-100">login_success</span>
+</td>
+<td class="table-cell font-semibold">System</td>
+<td class="table-cell font-mono-data text-xs text-on-surface-variant max-w-[200px] truncate" title='{"ip": "197.251.24.18", "device": "macOS"}'>
+                                {"ip": "197.251.24.18", "device": "macOS"}
+                            </td>
+<td class="table-cell text-right">
+<button class="text-primary hover:underline font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                    View Details
+                                </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row group">
+<td class="table-cell font-mono-data text-xs text-on-surface-variant">Oct 24, 2024 10:42:15</td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-indigo-100 text-primary flex items-center justify-center text-[10px] font-bold">AS</div>
+<span class="font-semibold">Ama Serwaa</span>
+<span class="text-[10px] bg-indigo-50 text-primary px-1.5 py-0.5 rounded font-bold uppercase">Teacher</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="pill bg-blue-50 text-blue-700 border-blue-100">update_student</span>
+</td>
+<td class="table-cell font-semibold text-on-surface-variant">Student #ADM-23-001</td>
+<td class="table-cell font-mono-data text-xs text-on-surface-variant max-w-[200px] truncate">
+                                {"field": "address", "old": "...", "new": "..."}
+                            </td>
+<td class="table-cell text-right">
+<button class="text-primary hover:underline font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                    View Details
+                                </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row group">
+<td class="table-cell font-mono-data text-xs text-on-surface-variant">Oct 24, 2024 10:38:04</td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-slate-50 text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+</div>
+<span class="font-semibold">System Auto</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="pill bg-rose-50 text-rose-700 border-rose-100">block_ip</span>
+</td>
+<td class="table-cell font-semibold text-on-surface-variant">IP 45.22.109.4</td>
+<td class="table-cell font-mono-data text-xs text-on-surface-variant max-w-[200px] truncate">
+                                {"reason": "DDoS mitigation trigger"}
+                            </td>
+<td class="table-cell text-right">
+<button class="text-primary hover:underline font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                    View Details
+                                </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row group bg-amber-50/20">
+<td class="table-cell font-mono-data text-xs text-on-surface-variant">Oct 24, 2024 09:15:30</td>
+<td class="table-cell">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">KM</div>
+<span class="font-semibold">Kofi Mensah</span>
+<span class="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-bold uppercase">Student</span>
+</div>
+</td>
+<td class="table-cell">
+<span class="pill bg-amber-50 text-amber-700 border-amber-200">login_failed</span>
+</td>
+<td class="table-cell font-semibold text-on-surface-variant">Account #KM-92</td>
+<td class="table-cell font-mono-data text-xs text-amber-700 max-w-[200px] truncate">
+                                {"attempt": 3, "fail_reason": "invalid_pwd"}
+                            </td>
+<td class="table-cell text-right">
+<button class="text-primary hover:underline font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                    View Details
+                                </button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-outline flex items-center justify-between bg-white">
+<span class="text-body-md text-on-surface-variant">Showing <span class="font-semibold text-on-surface">1 to 4</span> of 842 entries</span>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-slate-50 border border-outline disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded bg-primary text-white text-sm font-bold">1</button>
+<button class="px-3 py-1 rounded hover:bg-slate-50 text-sm font-medium">2</button>
+<button class="px-3 py-1 rounded hover:bg-slate-50 text-sm font-medium">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="p-1 rounded hover:bg-slate-50 border border-outline">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

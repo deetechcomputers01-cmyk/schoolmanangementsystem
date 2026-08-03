@@ -23,11 +23,9 @@ import { gradebookRouter }     from "./routes/gradebook.routes";
 import { timetableRouter }     from "./routes/timetable.routes";
 import { libraryRouter }       from "./routes/library.routes";
 import { healthRouter }        from "./routes/health.routes";
-import { admissionsRouter }    from "./routes/admissions.routes";
 import { examsRouter }         from "./routes/exams.routes";
 import { announcementsRouter } from "./routes/announcements.routes";
 import { academicRouter }      from "./routes/academic.routes";
-import { disciplinaryRouter }  from "./routes/disciplinary.routes";
 import { payrollRouter }       from "./routes/payroll.routes";
 import { reportsRouter }       from "./routes/reports.routes";
 import { settingsRouter }      from "./routes/settings.routes";
@@ -36,19 +34,32 @@ import { adminRouter }         from "./routes/admin.routes";
 // ── Middleware ─────────────────────────────────────────────────────────────
 import { authMiddleware }  from "./middleware/auth.middleware";
 import { errorMiddleware } from "./middleware/error.middleware";
+import { isDatabaseUnavailable, prisma, readLocalEnvValue } from "./prisma";
 
 const app  = express();
 const PORT = process.env.PORT ?? 4000;
+const FRONTEND_URL = readLocalEnvValue("FRONTEND_URL") ?? "http://localhost:3000";
 
 // ── Global middleware ──────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+  origin: FRONTEND_URL,
   credentials: true,
 }));
 app.use(json());
 
 // ── Health check (no auth) ─────────────────────────────────────────────────
-app.get("/health", (_req, res) => res.json({ status: "ok", ts: new Date().toISOString() }));
+app.get("/health", async (_req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: "ok", database: "ok", ts: new Date().toISOString() });
+  } catch (error) {
+    if (isDatabaseUnavailable(error)) {
+      res.status(503).json({ status: "degraded", database: "unavailable", code: "DATABASE_UNAVAILABLE" });
+      return;
+    }
+    throw error;
+  }
+});
 
 // ── Public routes ─────────────────────────────────────────────────────────
 app.use("/api/auth", authRouter);
@@ -63,11 +74,9 @@ app.use("/api/gradebook",     gradebookRouter);
 app.use("/api/timetable",     timetableRouter);
 app.use("/api/library",       libraryRouter);
 app.use("/api/health",        healthRouter);
-app.use("/api/admissions",    admissionsRouter);
 app.use("/api/exams",         examsRouter);
 app.use("/api/announcements", announcementsRouter);
 app.use("/api/academic",      academicRouter);
-app.use("/api/disciplinary",  disciplinaryRouter);
 app.use("/api/payroll",       payrollRouter);
 app.use("/api/reports",       reportsRouter);
 app.use("/api/settings",      settingsRouter);

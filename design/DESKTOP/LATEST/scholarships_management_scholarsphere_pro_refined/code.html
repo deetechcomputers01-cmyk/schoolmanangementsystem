@@ -1,0 +1,432 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Scholarships Management - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#e0e0ff",
+                        "on-primary-container": "#1a164d",
+                        "secondary": "#006c49",
+                        "surface": "#fbf8fe",
+                        "surface-dim": "#dcd9de",
+                        "surface-bright": "#fbf8fe",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f2f8",
+                        "surface-container": "#f1edf2",
+                        "surface-container-high": "#ebe7ed",
+                        "surface-container-highest": "#e5e1e7",
+                        "on-surface": "#1c1b1f",
+                        "on-surface-variant": "#49454f",
+                        "outline": "#79747e",
+                        "outline-variant": "#c9c5d0",
+                        "inverse-surface": "#313033",
+                        "inverse-on-surface": "#f4f0f4",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#410002",
+                        "background": "#fbf8fe",
+                        "on-background": "#1c1b1f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "2xl": "48px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body": ["Inter", "sans-serif"],
+                        "headline": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar (ScholarSphere Pro Branding) -->
+<nav class="hidden md:flex flex-col h-full py-xl fixed left-0 top-0 w-[260px] bg-surface-container-lowest border-r border-outline-variant z-40">
+<div class="px-lg mb-xl flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined icon-fill">school</span>
+</div>
+<div>
+<h1 class="text-[18px] font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[12px] text-on-surface-variant font-medium">Administrator Pro</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto no-scrollbar px-sm space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[14px]">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[14px]">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-[14px]">Staff</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="text-[14px]">Attendance</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">grading</span>
+<span class="text-[14px]">Gradebook</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[14px]">Timetable</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded cursor-pointer" href="#">
+<span class="material-symbols-outlined icon-fill">local_activity</span>
+<span class="text-[14px] font-semibold">Scholarships</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[14px]">Fees &amp; Payments</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded mt-4" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[14px]">Settings</span>
+</a>
+</div>
+<div class="px-lg mt-auto pt-md border-t border-outline-variant">
+<div class="flex items-center gap-2 text-[12px] text-on-surface-variant">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span>Connected - Sync 2m ago</span>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<div class="flex-1 ml-0 md:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="h-[56px] bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-margin-desktop sticky top-0 z-30">
+<div class="flex items-center text-[13px] text-on-surface-variant gap-2">
+<span class="hover:text-primary transition-colors cursor-pointer">Finance</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Scholarships Overview</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img alt="Admin Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8-jxtiry1O23-r4H5TiVWBoUYXCay1w5-Zvs4uI0RlMPfB_vtcxt6AmmZ-IcilgFsFPyBPBCE9beFWU9utvtGcPaxZz_KFffe2Kr2LV1CrUFG1HY5YdGAry6oHFr2DbYPqEf2SHGBkO88uDCJ3DEBLyhE_PghWkEGGAQYI_YP2jGWDB7KqgdinZlNwh4-Btvv6irMDe2INIO1rGmxaxmo_Lh6ry8Lnb_LB3ySPGyR-b0Cnd2xqzlSusClqUeHOYUkqQLFV0dotA">
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop space-y-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div>
+<h2 class="text-[28px] font-bold text-on-surface tracking-tight">Scholarships Management</h2>
+<p class="text-on-surface-variant mt-1 text-[14px]">Manage and monitor institutional aid, student discounts, and financial grants.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:opacity-90 text-white px-md py-sm rounded shadow-sm transition-all self-start whitespace-nowrap">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="text-[14px] font-semibold">Award Scholarship</span>
+</button>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-lg flex items-start gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined icon-fill">verified</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Active Scholarships</p>
+<p class="text-[24px] font-bold text-on-surface leading-none">142</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-lg flex items-start gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined icon-fill">payments</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Total Awarded (23/24)</p>
+<p class="text-[20px] font-bold text-on-surface leading-none">GHS 184,500.00</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-lg flex items-start gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">pie_chart</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Distribution</p>
+<p class="text-[18px] font-bold text-on-surface mt-1 leading-none">65% <span class="text-on-surface-variant font-normal text-[14px]">Percent</span> / 35% <span class="text-on-surface-variant font-normal text-[14px]">Fixed</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-lg flex items-start gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">hourglass_empty</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Pending Approval</p>
+<p class="text-[24px] font-bold text-on-surface leading-none">12</p>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<!-- Filters -->
+<div class="p-md border-b border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-[14px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Search students or programs..." type="text">
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto">
+<select class="w-full md:w-auto px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-[14px] text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary">
+<option>All Statuses</option>
+<option>Active</option>
+<option>Pending</option>
+<option>Expired</option>
+<option>Revoked</option>
+</select>
+<select class="w-full md:w-auto px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-[14px] text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary">
+<option>All Types</option>
+<option>Percent</option>
+<option>Fixed</option>
+</select>
+<button class="border border-outline-variant text-on-surface-variant hover:text-primary p-2 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider">Student</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider">Type</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider text-right">Value</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider">Reason</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider text-center">Year</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-md py-sm text-[12px] font-bold text-on-surface-variant uppercase tracking-wider">Approved By</th>
+<th class="px-md py-sm w-10"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Kofi Mensah -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOjSEcgL-OMRGFYVpTAqRV0mgtV-zbTC5mBxY6_vMG40zxX0u4TgpI9-N_I63RHYiSwS_kV1mw-C2_c_bWU6yZdi1YtjyVUpePVLWmzTagynFV5YXF1_KWiyt6au33Clvg6Q1ZQWt-nGELg4Jh5lly8V1PhtDvPnosHI8PlbYEsH2ja0hkhS2257tpHd9WbnA5m-Rp60z0UozlKo7tI3hF77txy-LlWQxnvl_SOBDUJejiXOfQ7mPEDfeJTBOT2__JTvoy4wZYfA">
+</div>
+<div>
+<p class="text-[14px] font-semibold text-on-surface">Kofi Mensah</p>
+<p class="text-[12px] text-on-surface-variant">JHS 2A</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">Percent</span>
+</td>
+<td class="px-md py-sm text-right text-[14px] font-semibold text-on-surface">50%</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Academic Excellence</td>
+<td class="px-md py-sm text-center text-[13px] text-on-surface-variant">2023/24</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[12px] font-medium bg-secondary/10 text-secondary">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>Active
+                                    </span>
+</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Headmaster</td>
+<td class="px-md py-sm text-right">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Ama Asantewaa -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfL8tpyqw2zrPi-2cOKCiVGQrKLKnmn-b6JmbkHF9r7t32L_vgs66SEGBR2gNtRzatR6dGuwvp3N-zKk0gt8AEgHidxf11q8wF2NnDx7mNp9_DK9eRQxmUBBXvLRDVGgxDIPeWsaAusd7rHZnsI1BN8f68Q1yn7-oHjbfXsTO-zt2lEjDYEQKZ6xGCZyQP3eIxSNIgV9Nm0birJJy_KibYH-DVhsmIrHCzNCRIlILnBvIaJX4vbtP49RxhzHcE1eeG_b9WEOC6KA">
+</div>
+<div>
+<p class="text-[14px] font-semibold text-on-surface">Ama Asantewaa</p>
+<p class="text-[12px] text-on-surface-variant">Primary 4C</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">Fixed</span>
+</td>
+<td class="px-md py-sm text-right text-[14px] font-semibold text-on-surface">GHS 1,200.00</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Financial Hardship</td>
+<td class="px-md py-sm text-center text-[13px] text-on-surface-variant">2023/24</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[12px] font-medium bg-secondary/10 text-secondary">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>Active
+                                    </span>
+</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Bursar</td>
+<td class="px-md py-sm text-right">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Yaw Addo -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRvwxhkmIXl17GXTQMcNiS9MTR-R22Q7xT-FZF1SEba5bdwsJygTox-4_SY1WGnSowgrbiKfh4OnBux644UZpKd1a4iaRi5rCK59RE1GEpd9NShVkCOjO9keUbjmoRB9y1RIlMc-0HevlD6KLUltw08NNZvEZlaE-mmPzm2HJNcJc04X5zOvt2qukTvEL7YjLCHGuVtnlw8aWVAVgDZ6rVQq45oQb-tao5JvRJGFRS2zSXKvSbrRbtqXA_Ms0CG4egGgmKNkQFJg">
+</div>
+<div>
+<p class="text-[14px] font-semibold text-on-surface">Yaw Addo</p>
+<p class="text-[12px] text-on-surface-variant">JHS 1B</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">Percent</span>
+</td>
+<td class="px-md py-sm text-right text-[14px] font-semibold text-on-surface">15%</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Sibling Discount</td>
+<td class="px-md py-sm text-center text-[13px] text-on-surface-variant">2022/23</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[12px] font-medium bg-surface-container-highest text-on-surface-variant">
+<div class="w-1.5 h-1.5 rounded-full bg-outline"></div>Expired
+                                    </span>
+</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Principal</td>
+<td class="px-md py-sm text-right">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Efua Danso -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXADGlAFMT0-bkjRbtceMapgw2M_5pcUw0t85O0IcheIBV2a6wuLo7Fsj-nBR1eX7yEtsf94zUhp_cz8JJUi1fOfJf6I2hD86wiN0uQuEABF79KiyUY2yIJ6GQTaOjo-lm-NaDYDorlwPgs-Jdt2J27feg1XMD-bqmlNOXupEqWltKpBUMdWE1NTB6k1sE1xvcuCEuGJlmjk2VTtwQbERoVnTcRt-2PouzLtevEvZvfPADOMrrzWka5weEIEdq6TC0QaigBYcJJA">
+</div>
+<div>
+<p class="text-[14px] font-semibold text-on-surface">Efua Danso</p>
+<p class="text-[12px] text-on-surface-variant">SHS 1 Science</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">Percent</span>
+</td>
+<td class="px-md py-sm text-right text-[14px] font-semibold text-on-surface">100%</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Staff Ward</td>
+<td class="px-md py-sm text-center text-[13px] text-on-surface-variant">2023/24</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[12px] font-medium bg-secondary/10 text-secondary">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>Active
+                                    </span>
+</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Board</td>
+<td class="px-md py-sm text-right">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Kwabena Boateng -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2nWvDnC1DudC32-gMF2kJXxPTVE66xmnexhbMN7f18g5lMKHxCHN0Sc6aXxovpERcXWZnGLPleP1d_FUMUg8JN73ugYz9dk89BLZ6SYBDz60Dg4vIIRwd7wya-caGJHjVRi7qelElQoLyS94kjQPvX8vC4DwSSPPgJifDj-Vw2uowl5jtdw67FSgQWMotYvN1-vUUqiX_AtRWhm43eOrd9fX3Gy5vnMtB6BY7mEw2IVxQ-3mmHflrGf19Fi3ulLtJ-OAnRVRUAA">
+</div>
+<div>
+<p class="text-[14px] font-semibold text-on-surface">Kwabena Boateng</p>
+<p class="text-[12px] text-on-surface-variant">Basic 6</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">Fixed</span>
+</td>
+<td class="px-md py-sm text-right text-[14px] font-semibold text-on-surface">GHS 500.00</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Community Support</td>
+<td class="px-md py-sm text-center text-[13px] text-on-surface-variant">2023/24</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[12px] font-medium bg-error/10 text-error">
+<div class="w-1.5 h-1.5 rounded-full bg-error"></div>Revoked
+                                    </span>
+</td>
+<td class="px-md py-sm text-[14px] text-on-surface-variant">Admin</td>
+<td class="px-md py-sm text-right">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-md py-sm border-t border-outline-variant flex items-center justify-between text-[13px] text-on-surface-variant bg-surface-container-lowest">
+<span>Showing 1 to 5 of 142 records</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[18px] align-middle">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white rounded font-semibold">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors">3</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px] align-middle">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere - Record Attendance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5b50f5",
+                        "primary-hover": "#4a41d9",
+                        "primary-light": "#f4f3ff",
+                        "outline-variant": "#e4e4ec",
+                        "surface": "#ffffff",
+                        "surface-variant": "#f9f9fb",
+                        "on-surface": "#1e293b",
+                        "on-surface-variant": "#64748b",
+                        "error": "#ef4444",
+                        "warning": "#f59e0b",
+                        "info": "#3b82f6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafc; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Custom radio toggle styles for denser look */
+        .radio-toggle input:checked + label {
+            background-color: #5b50f5;
+            color: white;
+            border-color: #5b50f5;
+        }
+        
+        .radio-toggle input:checked + label.status-absent { background-color: #ef4444; border-color: #ef4444; }
+        .radio-toggle input:checked + label.status-late { background-color: #f59e0b; border-color: #f59e0b; }
+        .radio-toggle input:checked + label.status-excused { background-color: #3b82f6; border-color: #3b82f6; }
+        
+        .radio-toggle label {
+            transition: all 0.15s ease;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex h-screen overflow-hidden text-sm">
+<!-- SideNavBar -->
+<nav class="bg-surface border-r border-outline-variant flex flex-col h-full p-4 gap-1 fixed left-0 top-0 z-50 h-screen w-[260px] hidden md:flex">
+<div class="flex items-center gap-3 mb-8 px-2 mt-2">
+<img class="w-8 h-8 rounded" data-alt="ScholarSphere logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRFXBma4a_rOetN0igcKkPZbCy82W9Q41vCc31AR8HP5ZWFiX_p5qHbRif0SQgTwZh6DlJn9iufwLmlE0Ujd8rWn7UkSEuQnq5cpD5OLjJN7w2roAGDd4YhA-wgrr_r3LcZxi1PYpYMqOYln4Baafhus2TyGjqz_lN8dfjVnAMiMhUVUPosY1CseyWeSLZbmDLyrMNhKZMQQT3rVMPg-B4U71qcO4Sj_j9QiTZ_fZJFKLbu6jeZbgaE9LBgf1DhZ7RK1yIlc5xdg"/>
+<div>
+<h1 class="text-base font-bold text-primary">ScholarSphere</h1>
+<p class="text-xs text-on-surface-variant font-medium">School Management</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 flex-grow font-medium">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">group</span> Students
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">badge</span> Staff
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-light text-primary rounded font-semibold transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">event_available</span> Attendance
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">school</span> Classes
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">payments</span> Financials
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant rounded transition-colors mt-auto" href="#">
+<span class="material-symbols-outlined text-xl">settings</span> Settings
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[260px] h-screen bg-surface">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-6 z-40 top-0 h-16">
+<div class="flex items-center">
+<div class="relative hidden md:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-sm">search</span>
+<input class="pl-9 pr-4 py-2 text-sm rounded border border-outline-variant bg-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors w-72 text-on-surface placeholder:text-slate-400" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors p-2 rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors p-2 rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors p-2 rounded-full cursor-pointer mr-2">
+<span class="material-symbols-outlined text-[20px]">apps</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-1"></div>
+<button class="flex items-center gap-2 cursor-pointer pl-2">
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="Professional headshot of a school administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7aFJdaClO8Qj_tqG6-7Woj44allTrHI8FqO0soa-qo7T5gKrywCr6GEvR8Gk8neVXd3yN-XwE-9NBiub8KhjLQI78uPYaA0SexoUezQCJnGxBGZUu94_gcZmyVp9G2v9jYb9nAMgbkmYGNrSmaXUItrrW5GPO-O_47Hoeiud6ZNAuIGxGw-Pd3ePlHsQbbYT9wmL9l5vG4rept-fyHbEkANZwRrBJ7SCq7qdjDO1TUFZzGUPzSlFF_8LokbPiFsh8uAQG4_7qIQ"/>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto p-6 lg:p-8">
+<div class="max-w-6xl mx-auto flex flex-col h-full">
+<!-- Page Intro Area -->
+<div class="mb-6">
+<nav aria-label="Breadcrumb" class="flex text-sm text-on-surface-variant mb-3 font-medium">
+<ol class="inline-flex items-center space-x-2">
+<li class="inline-flex items-center">
+<a class="hover:text-primary transition-colors" href="#">Attendance</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-sm mx-1 text-slate-400">chevron_right</span>
+<span class="text-on-surface">Record Attendance</span>
+</div>
+</li>
+</ol>
+</nav>
+<h2 class="text-2xl font-bold text-on-surface tracking-tight">Record Attendance</h2>
+<p class="text-sm text-on-surface-variant mt-1">Select a class and date to begin recording attendance.</p>
+</div>
+<!-- Setup & Summary Cards -->
+<div class="flex flex-col lg:flex-row gap-4 mb-6">
+<!-- Setup Card -->
+<div class="flex-grow bg-surface border border-outline-variant rounded p-5 flex flex-col sm:flex-row gap-4 items-end">
+<div class="flex-1 w-full sm:w-auto">
+<label class="block text-xs font-semibold text-on-surface mb-1.5">Select Class</label>
+<select class="w-full border-outline-variant rounded text-sm text-on-surface focus:ring-1 focus:ring-primary focus:border-primary h-9 px-3">
+<option>Form 3 Science (3S)</option>
+<option>Form 3 Arts (3A)</option>
+<option>Form 2 Science (2S)</option>
+<option>Form 1 General (1G)</option>
+</select>
+</div>
+<div class="flex-1 w-full sm:w-auto">
+<label class="block text-xs font-semibold text-on-surface mb-1.5">Attendance Date</label>
+<div class="relative">
+<input class="w-full border-outline-variant rounded text-sm text-on-surface focus:ring-1 focus:ring-primary focus:border-primary h-9 px-3" type="date" value="2023-10-24"/>
+</div>
+</div>
+<div class="flex-1 w-full sm:w-auto">
+<label class="block text-xs font-semibold text-on-surface mb-1.5">Session</label>
+<select class="w-full border-outline-variant rounded text-sm text-on-surface focus:ring-1 focus:ring-primary focus:border-primary h-9 px-3">
+<option>Morning</option>
+<option>Afternoon</option>
+</select>
+</div>
+<button class="bg-primary text-white px-5 h-9 rounded text-sm font-medium hover:bg-primary-hover transition-colors flex items-center justify-center w-full sm:w-auto shrink-0">
+                            Load List
+                        </button>
+</div>
+<!-- Summary Card -->
+<div class="w-full lg:w-64 bg-surface border border-outline-variant rounded p-5 flex flex-col justify-center">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium text-on-surface">Total Students</span>
+<span class="text-base font-bold text-on-surface">32</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-1.5 mb-2">
+<div class="bg-primary h-1.5 rounded-full" style="width: 0%"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs font-medium text-on-surface-variant">Marked</span>
+<span class="text-xs font-bold text-on-surface">0/32</span>
+</div>
+</div>
+</div>
+<!-- Attendance Surface -->
+<div class="flex-grow flex flex-col bg-surface border border-outline-variant rounded overflow-hidden min-h-0">
+<!-- Toolbar -->
+<div class="px-5 py-3 border-b border-outline-variant flex justify-between items-center bg-surface">
+<h3 class="font-semibold text-sm text-on-surface">Form 3 Science Roster</h3>
+<div class="flex gap-2">
+<button class="text-xs font-medium text-primary hover:bg-primary-light px-3 py-1.5 rounded border border-primary/20 transition-colors">
+                                Mark All Present
+                            </button>
+<button class="text-xs font-medium text-warning hover:bg-amber-50 px-3 py-1.5 rounded border border-warning/20 transition-colors">
+                                Mark All Late
+                            </button>
+<button class="text-xs font-medium text-on-surface-variant hover:bg-surface-variant px-3 py-1.5 rounded border border-outline-variant transition-colors">
+                                Clear Notes
+                            </button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-y-auto flex-grow">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead class="bg-surface sticky top-0 z-10 shadow-[0_1px_0_0_#e4e4ec]">
+<tr>
+<th class="px-5 py-2.5 font-semibold text-xs text-on-surface-variant w-12 text-center border-b border-outline-variant bg-surface">#</th>
+<th class="px-5 py-2.5 font-semibold text-xs text-on-surface-variant border-b border-outline-variant bg-surface">Student Name</th>
+<th class="px-5 py-2.5 font-semibold text-xs text-on-surface-variant w-32 border-b border-outline-variant bg-surface">Admission No.</th>
+<th class="px-5 py-2.5 font-semibold text-xs text-on-surface-variant w-[340px] border-b border-outline-variant bg-surface">Status</th>
+<th class="px-5 py-2.5 font-semibold text-xs text-on-surface-variant min-w-[200px] border-b border-outline-variant bg-surface">Notes</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-5 py-2 text-xs text-on-surface-variant text-center font-medium">1</td>
+<td class="px-5 py-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded bg-slate-100 text-xs flex items-center justify-center font-semibold text-slate-600 border border-slate-200">KM</div>
+<span class="font-medium text-on-surface">Kofi Mensah</span>
+</div>
+</td>
+<td class="px-5 py-2 text-xs text-on-surface-variant font-mono">ADM-21-001</td>
+<td class="px-5 py-2">
+<div class="flex bg-slate-50 rounded p-0.5 border border-outline-variant radio-toggle h-8">
+<div class="flex-1 relative">
+<input class="peer sr-only" id="p_1" name="status_1" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent" for="p_1">Present</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="a_1" name="status_1" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-absent" for="a_1">Absent</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="l_1" name="status_1" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-late" for="l_1">Late</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="e_1" name="status_1" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-excused" for="e_1">Excused</label>
+</div>
+</div>
+</td>
+<td class="px-5 py-2 pr-6">
+<input class="w-full h-8 text-xs rounded border-outline-variant bg-surface focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-400 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" placeholder="Add note..." type="text"/>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-5 py-2 text-xs text-on-surface-variant text-center font-medium">2</td>
+<td class="px-5 py-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded bg-slate-100 text-xs flex items-center justify-center font-semibold text-slate-600 border border-slate-200">AO</div>
+<span class="font-medium text-on-surface">Ama Osei</span>
+</div>
+</td>
+<td class="px-5 py-2 text-xs text-on-surface-variant font-mono">ADM-21-042</td>
+<td class="px-5 py-2">
+<div class="flex bg-slate-50 rounded p-0.5 border border-outline-variant radio-toggle h-8">
+<div class="flex-1 relative">
+<input class="peer sr-only" id="p_2" name="status_2" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent" for="p_2">Present</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="a_2" name="status_2" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-absent" for="a_2">Absent</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="l_2" name="status_2" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-late" for="l_2">Late</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="e_2" name="status_2" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-excused" for="e_2">Excused</label>
+</div>
+</div>
+</td>
+<td class="px-5 py-2 pr-6">
+<input class="w-full h-8 text-xs rounded border-outline-variant bg-surface focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-400 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" placeholder="Add note..." type="text"/>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-5 py-2 text-xs text-on-surface-variant text-center font-medium">3</td>
+<td class="px-5 py-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded bg-slate-100 text-xs flex items-center justify-center font-semibold text-slate-600 border border-slate-200">EA</div>
+<span class="font-medium text-on-surface">Esi Appiah</span>
+</div>
+</td>
+<td class="px-5 py-2 text-xs text-on-surface-variant font-mono">ADM-21-088</td>
+<td class="px-5 py-2">
+<div class="flex bg-slate-50 rounded p-0.5 border border-outline-variant radio-toggle h-8">
+<div class="flex-1 relative">
+<input class="peer sr-only" id="p_3" name="status_3" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent" for="p_3">Present</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="a_3" name="status_3" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-absent" for="a_3">Absent</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="l_3" name="status_3" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-late" for="l_3">Late</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="e_3" name="status_3" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-excused" for="e_3">Excused</label>
+</div>
+</div>
+</td>
+<td class="px-5 py-2 pr-6">
+<input class="w-full h-8 text-xs rounded border-outline-variant bg-surface focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-400 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" placeholder="Add note..." type="text"/>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-5 py-2 text-xs text-on-surface-variant text-center font-medium">4</td>
+<td class="px-5 py-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded bg-slate-100 text-xs flex items-center justify-center font-semibold text-slate-600 border border-slate-200">YA</div>
+<span class="font-medium text-on-surface">Yaw Agyemang</span>
+</div>
+</td>
+<td class="px-5 py-2 text-xs text-on-surface-variant font-mono">ADM-21-112</td>
+<td class="px-5 py-2">
+<div class="flex bg-slate-50 rounded p-0.5 border border-outline-variant radio-toggle h-8">
+<div class="flex-1 relative">
+<input class="peer sr-only" id="p_4" name="status_4" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent" for="p_4">Present</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="a_4" name="status_4" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-absent" for="a_4">Absent</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="l_4" name="status_4" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-late" for="l_4">Late</label>
+</div>
+<div class="flex-1 relative">
+<input class="peer sr-only" id="e_4" name="status_4" type="radio"/>
+<label class="flex items-center justify-center h-full text-[11px] font-semibold rounded-[2px] cursor-pointer text-slate-600 peer-hover:bg-slate-200/50 border border-transparent status-excused" for="e_4">Excused</label>
+</div>
+</div>
+</td>
+<td class="px-5 py-2 pr-6">
+<input class="w-full h-8 text-xs rounded border-outline-variant bg-surface focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-400 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" placeholder="Add note..." type="text"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="mt-6 flex justify-end gap-3 shrink-0 pb-2">
+<button class="px-4 h-9 rounded text-sm font-medium text-on-surface-variant bg-surface border border-outline-variant hover:bg-slate-50 transition-colors">
+                        Cancel
+                    </button>
+<button class="px-5 h-9 rounded text-sm font-medium text-white bg-primary hover:bg-primary-hover transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                        Save Attendance
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

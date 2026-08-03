@@ -1,297 +1,549 @@
-﻿/**
- * DashboardScreen — desktop view for the Dashboard module.
- * Wrapped by (app)/layout.tsx which provides sidebar + topbar.
- * Design: PENDING — Stitch "Institutional Excellence" desktop spec.
- */
-
+import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
-import { Banknote, CheckCircle2, GraduationCap, UsersRound } from "lucide-react";
-import { DashboardActionBar } from "@/components/modules/dashboard/DashboardActionBar";
-import { FloatingQuickAction } from "@/components/modules/dashboard/FloatingQuickAction";
+import { Download, Bell, Sparkles } from "lucide-react";
 import { PaymentActionsMenu } from "@/components/modules/dashboard/PaymentActionsMenu";
-import { Badge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
+import { AnnouncementsWidget } from "@/components/modules/announcements/AnnouncementsWidget";
+import { TeacherDashboard } from "@/components/modules/dashboard/TeacherDashboard";
+import { StaffDashboard } from "@/components/modules/dashboard/StaffDashboard";
+import { ParentDashboard } from "@/components/modules/dashboard/ParentDashboard";
+import { StudentPortal } from "@/components/modules/portal/StudentPortal";
+import { DesktopPageFrame } from "@/components/desktop/layout/DesktopPageFrame/DesktopPageFrame";
+import { MobileDashboardContent } from "@/screens/mobile/MobileDashboardContent/MobileDashboardContent";
+import { DashboardStudentsTable, type DashboardStudentRow } from "@/components/modules/dashboard/DashboardStudentsTable";
 import { currency } from "@backend/utils";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { isDatabaseUnavailable, prisma } from "@backend/prisma";
 import { listAttendance } from "@backend/services/attendance.service";
 import { getDashboardStats } from "@backend/services/dashboard.service";
 import { listFees } from "@backend/services/fee.service";
-import { getCurrentUser } from "@backend/auth/cookies";
-import { TeacherDashboard } from "@/components/modules/dashboard/TeacherDashboard";
-import { StaffDashboard } from "@/components/modules/dashboard/StaffDashboard";
-import { getTeacherDashboardData, getStaffDashboardData, getSuperAdminExtras } from "@backend/services/portal.service";
-import { AnnouncementsWidget } from "@/components/modules/announcements/AnnouncementsWidget";
-import styles from "./DashboardScreen.module.css";
+import { listStudents } from "@backend/services/student.service";
+import {
+  getGuardianPortalData,
+  getStaffDashboardData,
+  getStudentPortalData,
+  getSuperAdminExtras,
+  getTeacherDashboardData,
+} from "@backend/services/portal.service";
+import css from "./DashboardScreen.module.css";
 
 export const dynamic = "force-dynamic";
+
+type AttendancePoint = {
+  label: string;
+  present: number;
+  absent: number;
+};
+
+type GenderSummary = {
+  boys: number;
+  girls: number;
+};
+
+const APP = {
+  accent: "var(--clr-app-accent)",
+  accentSoft: "var(--clr-app-accent-soft)",
+  border: "var(--clr-app-border)",
+  info: "var(--clr-app-info)",
+  muted: "var(--clr-app-muted)",
+  text: "var(--clr-app-text)",
+} as const;
 
 export async function DashboardScreen() {
   const user = await getCurrentUser();
 
-  if (user?.role === "teacher") {
-    const data = await getTeacherDashboardData(user.id);
-    return (
-      <div className={styles.root}>
-        <TeacherDashboard data={data} userName={user.name} />
-        <AnnouncementsWidget role="teacher" />
-      </div>
-    );
-  }
+  try {
+    if (user?.role === "teacher") {
+      const data = await getTeacherDashboardData(user.id);
+      return (
+        <>
+          <TeacherDashboard data={data} userName={user.name} />
+          <AnnouncementsWidget role="teacher" />
+        </>
+      );
+    }
 
-  if (user?.role === "staff") {
-    const data = await getStaffDashboardData();
-    return (
-      <div className={styles.root}>
-        <StaffDashboard data={data} userName={user.name} />
-        <AnnouncementsWidget role="staff" />
-      </div>
-    );
-  }
+    if (user?.role === "staff") {
+      const data = await getStaffDashboardData();
+      return (
+        <>
+          <StaffDashboard data={data} userName={user.name} />
+          <AnnouncementsWidget role="staff" />
+        </>
+      );
+    }
 
-  const [stats, attendance, fees, adminExtras] = await Promise.all([
+    if (user?.role === "student") {
+      const data = await getStudentPortalData(user.id).catch(() => null);
+      if (!data) {
+        return (
+          <div className={css.accountUnlinked}>
+            <div className={css.accountUnlinkedIcon}>!</div>
+            <h2>Account not linked yet</h2>
+            <p>Your student account has not been linked to a student record. Please contact the school office.</p>
+          </div>
+        );
+      }
+      return <StudentPortal data={data} />;
+    }
+
+    if (user?.role === "guardian") {
+      const data = await getGuardianPortalData(user.id).catch(() => null);
+      return <ParentDashboard data={data} userName={user.name} />;
+    }
+
+  const [stats, attendance, fees, adminExtras, rawStudents, upcomingEventRows] = await Promise.all([
     getDashboardStats(),
     listAttendance(),
     listFees(),
     user?.role === "super_admin" ? getSuperAdminExtras() : Promise.resolve(null),
+    listStudents(),
+    prisma.calendarEvent.findMany({
+      where: { date: { gte: new Date() }, approved: true },
+      orderBy: { date: "asc" },
+      take: 3,
+    }),
   ]);
 
-  const present = attendance.filter((row) => row.status === "present").length;
+  const present = stats.attendanceToday;
   const attendanceRate = stats.students ? Math.round((present / stats.students) * 100) : 0;
   const collected = fees.reduce(
-    (sum, fee) => sum + fee.payments.reduce((inner, p) => inner + Number(p.amount), 0),
+    (sum, fee) => sum + fee.payments.reduce((inner, payment) => inner + Number(payment.amount), 0),
     0,
   );
   const expected = fees.reduce((sum, fee) => sum + Number(fee.amountDue), 0);
   const pendingFees = Math.max(expected - collected, 0);
-  const months = buildMonthlySeries(attendance, fees);
   const payments = fees
-    .flatMap((fee) =>
-      fee.payments.map((p) => ({
-        id: p.id,
-        student: fee.student,
-        className: fee.student.class.name,
-        reference: p.reference,
-        amount: Number(p.amount),
-        status: fee.status,
-      })),
-    )
-    .slice(0, 4);
-  const revenueChart = buildRevenueChart(months, expected);
+    .flatMap((fee) => fee.payments.map((payment) => ({
+      id: payment.id,
+      student: fee.student,
+      className: fee.student.class.name,
+      amount: Number(payment.amount),
+      status: fee.status,
+    })))
+    .slice(0, 5);
+  const students = mapStudents(rawStudents);
+  const attendanceSeries = buildWeeklyAttendance(attendance);
+  const genderSummary = buildGenderSummary(rawStudents);
+  const firstName = user?.name?.split(" ")[0] ?? "Administrator";
+  const greetingName = user?.role === "super_admin" ? "Administrator" : firstName;
 
-  return (
-    <div className={styles.root}>
-      <section className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-center">
-        <div>
-          <h1 className="font-heading text-2xl font-semibold text-navy md:text-[32px] md:leading-10">
-            Academic Dashboard
-          </h1>
-          <p className="mt-1 text-base text-muted">
-            Good morning, {user?.name ?? "Admin"}. Here is the school overview for today.
-          </p>
-        </div>
-        <DashboardActionBar />
-      </section>
+  const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+  const todaysAttendance = attendance.filter((a) => a.date >= todayStart);
+  const attendanceTodayBreakdown = {
+    present: todaysAttendance.filter((a) => a.status === "present").length,
+    absent: todaysAttendance.filter((a) => a.status === "absent" || a.status === "excused").length,
+    late: todaysAttendance.filter((a) => a.status === "late").length,
+  };
+  const todayStatusByStudent = new Map(todaysAttendance.map((a) => [a.studentId, a.status]));
+  const mobileRecentStudents = [...rawStudents]
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 3)
+    .map((s) => ({
+      id: s.id,
+      name: `${s.firstName} ${s.lastName}`,
+      initials: `${s.firstName[0] ?? ""}${s.lastName[0] ?? ""}`.toUpperCase(),
+      className: s.class.name,
+      status: (todayStatusByStudent.get(s.id) ?? null) as "present" | "absent" | "late" | "excused" | null,
+    }));
+  const mobilePayments = payments.slice(0, 3).map((p) => ({
+    id: p.id,
+    amount: p.amount,
+    description: p.status === "paid" ? "Fee payment" : "Partial payment",
+    studentName: `${p.student.firstName} ${p.student.lastName}`,
+  }));
+  const mobileUpcomingEvents = upcomingEventRows.map((e) => ({
+    id: e.id,
+    title: e.title,
+    date: e.date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }),
+  }));
 
-      <section className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard icon={<GraduationCap size={22} />} label="Total Students" value={stats.students.toLocaleString()} marker={`${fees.length} invoices`} />
-        <StatCard icon={<CheckCircle2 size={22} />} label="Present Today" value={present.toLocaleString()} marker={`${attendanceRate}% Today`} success />
-        <StatCard icon={<Banknote size={22} />} label="Pending Fees" value={currency(pendingFees)} marker={`${fees.filter((f) => f.status !== "paid").length} open`} warning />
-        <StatCard icon={<UsersRound size={22} />} label="Staff Count" value={stats.staff.toLocaleString()} />
-      </section>
-
-      <section className="mb-8 grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Card>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-heading text-xl font-semibold text-navy">Monthly Attendance</h2>
+    return (
+      <>
+      <div className="mobileOnly">
+        <MobileDashboardContent
+          greetingName={greetingName}
+          todayLabel={new Date().toLocaleDateString("en-GB", { weekday: "long", day: "2-digit", month: "long", year: "numeric" })}
+          studentsCount={stats.students}
+          staffCount={stats.staff}
+          classesCount={stats.classes}
+          feesCollected={collected}
+          attendanceToday={attendanceTodayBreakdown}
+          genderSummary={genderSummary}
+          systemOverview={adminExtras ? {
+            offlineQueue: 0,
+            pendingApprovals: 0,
+            auditEventsToday: adminExtras.recentAudit.filter((a) => a.createdAt >= todayStart).length,
+          } : null}
+          recentStudents={mobileRecentStudents}
+          recentPayments={mobilePayments}
+          upcomingEvents={mobileUpcomingEvents}
+        />
+      </div>
+      <div className="desktopOnly">
+      <DesktopPageFrame
+        title={`Hello, ${greetingName}. Welcome back.`}
+        subtitle="Here is your school overview for today."
+        action={null}
+      >
+      <div className={css.dashboard}>
+        <div className={css.dashboardToolbar}>
+          <div className={css.toolbarLead}>
+            <span className={css.toolbarHint}>Overview</span>
           </div>
-          <div className="flex h-64 items-end justify-between gap-1 px-2 pt-4">
-            {months.map((month) => (
-              <div key={month.label} className="flex flex-1 flex-col items-center">
-                <div className="relative w-full rounded-t-lg bg-emerald/20" style={{ height: month.height }}>
-                  <div className="absolute inset-x-0 bottom-0 rounded-t-lg bg-emerald" style={{ height: month.attendanceFill }} />
-                </div>
-                <span className="label-sm mt-2 text-muted">{month.label}</span>
+          <div className={css.toolbarActions}>
+            <label className={css.selectWrap}>
+              <span className={css.srOnly}>Dashboard period</span>
+              <select className={css.periodSelect} defaultValue="month">
+                <option value="month">This Month</option>
+                <option value="term">This Term</option>
+                <option value="year">This Year</option>
+              </select>
+            </label>
+            <Link href="/reports" className={css.downloadButton}>
+              <Download size={14} aria-hidden />
+              Download
+            </Link>
+          </div>
+        </div>
+
+        <div className={css.statsGrid}>
+          <StatCard
+            icon={<WalletIcon />}
+            label="Total Revenue"
+            value={currency(collected)}
+            sub="Collected to date"
+            href="/fees"
+          />
+          <StatCard
+            icon={<SchoolIcon />}
+            label="Total Students"
+            value={stats.students.toLocaleString()}
+            sub="Enrolled students"
+            href="/students"
+          />
+          <StatCard
+            icon={<CheckIcon />}
+            label="Present Today"
+            value={present.toLocaleString()}
+            sub={`${attendanceRate}% attendance rate`}
+            progress={attendanceRate}
+            href="/attendance"
+          />
+          <StatCard
+            icon={<BadgeIcon />}
+            label="Staff Count"
+            value={stats.staff.toLocaleString()}
+            sub="Active staff members"
+            href="/staff"
+          />
+        </div>
+
+        <div className={css.analyticsGrid}>
+          <SurfaceCard title="Attendance">
+            <AttendanceChart data={attendanceSeries} />
+          </SurfaceCard>
+
+          <SurfaceCard title="Students Boys/Girls">
+            <GenderChart data={genderSummary} total={rawStudents.length} />
+          </SurfaceCard>
+        </div>
+
+        <SurfaceCard title="Recent Students" className={css.tableSurface}>
+          <DashboardStudentsTable rows={students} total={students.length} />
+        </SurfaceCard>
+
+        <div className={css.commsGrid}>
+          <SurfaceCard
+            title="Announcements"
+            action={
+              <Link href="/announcements" className={css.cardLink}>
+                View All
+              </Link>
+            }
+          >
+            <AnnouncementsWidget role={user?.role ?? "principal"} showHeader={false} />
+          </SurfaceCard>
+
+          <SurfaceCard
+            title="Communication Status"
+            action={<span className={css.toolbarMini}><Bell size={12} aria-hidden /> Live</span>}
+          >
+            <div className={css.communicationStack}>
+              <div className={css.communicationItem}>
+                <span className={css.communicationLabel}>Pinned notices</span>
+                <strong className={css.communicationValue}>3 active</strong>
+                <small className={css.communicationMeta}>Critical updates remain visible across user dashboards.</small>
               </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-heading text-xl font-semibold text-navy">Revenue Trends (GHS)</h2>
-            <div className="flex items-center gap-3">
-              <Legend color="bg-navy" label="Budget" />
-              <Legend color="bg-emerald" label="Actual" />
+              <div className={css.communicationItem}>
+                <span className={css.communicationLabel}>Reach this week</span>
+                <strong className={css.communicationValue}>Students, staff, guardians</strong>
+                <small className={css.communicationMeta}>Targeted announcements are enabled and publishing normally.</small>
+              </div>
             </div>
-          </div>
-          <div className="relative h-64">
-            <svg className="h-full w-full" viewBox="0 0 400 150" role="img" aria-label="Revenue trend chart">
-              <defs>
-                <linearGradient id="revenueGradient" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#6cf8bb" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#6cf8bb" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path d={revenueChart.actualArea} fill="url(#revenueGradient)" />
-              <polyline points={revenueChart.actualPoints} fill="transparent" stroke="#006c49" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-              <polyline points={revenueChart.budgetPoints} fill="transparent" stroke="#131b2e" strokeDasharray="4" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <div className="label-sm mt-2 flex justify-between px-2 text-muted">
-              {months.map((m) => <span key={m.label}>{m.label}</span>)}
+          </SurfaceCard>
+        </div>
+
+        <div className={css.lowerGrid}>
+          <SurfaceCard title="Recent Fee Payments" action={<Link href="/fees/receipt" className={css.cardLink}>View All</Link>}>
+            <div className={css.paymentTableWrap}>
+              <table className={css.paymentTable}>
+                <thead>
+                  <tr>
+                    {['Student', 'Class', 'Amount', 'Status', ''].map((heading) => <th key={heading}>{heading}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {payments.map((payment) => (
+                    <tr key={payment.id}>
+                      <td className={css.paymentStudent}>{payment.student.firstName} {payment.student.lastName}</td>
+                      <td>{payment.className}</td>
+                      <td className={css.paymentAmount}>{currency(payment.amount)}</td>
+                      <td><StatusPill status={payment.status} /></td>
+                      <td className={css.paymentAction}><PaymentActionsMenu studentId={payment.student.id} /></td>
+                    </tr>
+                  ))}
+                  {payments.length === 0 && <tr><td colSpan={5} className={css.emptyState}>No payments recorded yet.</td></tr>}
+                </tbody>
+              </table>
             </div>
-          </div>
-        </Card>
-      </section>
+          </SurfaceCard>
 
-      <section className="overflow-hidden rounded-xl border border-line bg-white shadow-soft">
-        <div className="flex items-center justify-between border-b border-line p-6">
-          <h2 className="font-heading text-xl font-semibold text-navy">Recent Fee Payments</h2>
-          <Link href="/fees/receipt" className="label-sm text-emerald">View All Records</Link>
+          <SurfaceCard title="Quick Actions" action={<span className={css.toolbarMini}><Sparkles size={12} aria-hidden /> Ready</span>}>
+            <div className={css.quickActionsGrid}>
+              <QuickAction href="/students" icon={<UserPlusIcon />} label="Add Student" />
+              <QuickAction href="/attendance" icon={<ClipboardCheckIcon />} label="Mark Attendance" />
+              <QuickAction href="/fees" icon={<ReceiptIcon />} label="Record Payment" />
+              <QuickAction href="/reports" icon={<FileTextIcon />} label="Generate Report" />
+            </div>
+          </SurfaceCard>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="label-sm bg-slate-100 text-muted">
-              <tr>
-                <th className="p-4">Student Name</th>
-                <th className="p-4">Class / Grade</th>
-                <th className="p-4">Reference ID</th>
-                <th className="p-4 text-right">Amount (GHS)</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {payments.map((payment) => (
-                <tr key={payment.id} className="transition hover:translate-x-1 hover:bg-slate-50">
-                  <td className="p-4">
-                    <div className="flex items-center gap-4">
-                      <div className="grid h-8 w-8 place-items-center rounded-full bg-navy text-[10px] font-bold text-white">
-                        {payment.student.firstName[0]}{payment.student.lastName[0]}
-                      </div>
-                      <p className="font-heading font-semibold text-navy">
-                        {payment.student.firstName} {payment.student.lastName}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="p-4 text-muted">{payment.className}</td>
-                  <td className="font-data p-4 text-muted">{payment.reference}</td>
-                  <td className="font-data p-4 text-right font-semibold text-navy">{currency(payment.amount)}</td>
-                  <td className="p-4">
-                    <Badge tone={payment.status === "paid" ? "success" : "warning"}>{payment.status}</Badge>
-                  </td>
-                  <td className="p-4">
-                    <PaymentActionsMenu studentId={payment.student.id} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
 
-      {adminExtras && (
-        <section className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="rounded-2xl border border-purple-100 bg-purple-50 p-5">
-            <p className="label-sm text-purple-600">Total Users</p>
-            <p className="font-data mt-1 text-3xl font-bold text-purple-800">{adminExtras.userCount}</p>
-            <Link href="/user-role" className="mt-2 block text-xs font-semibold text-purple-600 hover:underline">Manage Users →</Link>
-          </div>
-          <div className="rounded-2xl border border-rose-100 bg-rose-50 p-5">
-            <p className="label-sm text-rose-600">Blocked IPs</p>
-            <p className="font-data mt-1 text-3xl font-bold text-rose-700">{adminExtras.blockedIPCount}</p>
-            <Link href="/user-role" className="mt-2 block text-xs font-semibold text-rose-600 hover:underline">Manage Security →</Link>
-          </div>
-          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-5">
-            <p className="label-sm text-amber-700">Last System Action</p>
-            {adminExtras.recentAudit[0] ? (
-              <>
-                <p className="mt-1 font-heading text-sm font-semibold text-amber-900">{adminExtras.recentAudit[0].action}</p>
-                <p className="text-xs text-amber-700">by {adminExtras.recentAudit[0].user?.name ?? "System"}</p>
-              </>
-            ) : (
-              <p className="text-sm text-amber-700">No actions yet</p>
-            )}
-            <Link href="/audit-logs" className="mt-2 block text-xs font-semibold text-amber-700 hover:underline">View Audit Trail →</Link>
-          </div>
-        </section>
-      )}
+        {adminExtras && (
+          <SurfaceCard title="System Overview">
+            <div className={css.systemGrid}>
+              <SystemMetric label="Total Users" value={adminExtras.userCount.toLocaleString()} href="/user-role" linkLabel="Manage" />
+              <SystemMetric label="Blocked IPs" value={adminExtras.blockedIPCount.toLocaleString()} href="/admin/blocked-ips" linkLabel="Review" danger />
+              {adminExtras.recentAudit[0] && (
+                <div className={css.auditMetric}>
+                  <span className={css.systemLabel}>Last System Action</span>
+                  <strong>{adminExtras.recentAudit[0].action}</strong>
+                  <small>by {adminExtras.recentAudit[0].user?.name ?? "System"}</small>
+                  <Link href="/audit-logs" className={css.inlineLink}>View audit trail</Link>
+                </div>
+              )}
+            </div>
+          </SurfaceCard>
+        )}
 
-      <AnnouncementsWidget role={user?.role ?? "principal"} />
+        <Link href="/offline-sync" className={css.syncCard}>
+          <span className={css.syncDot} />
+          <span><strong>Offline Sync Status</strong><small>System online · Last activity is current</small></span>
+          <span className={css.syncArrow}>›</span>
+        </Link>
 
-      <footer className="mt-8 flex flex-wrap items-center justify-between gap-2 text-xs text-muted/70">
-        <p>(c) 2026 Ghanaian Academy. All Rights Reserved.</p>
-        <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald" />Primary Server Online
-        </span>
-      </footer>
+        <footer className={css.footer}>
+          © {new Date().getFullYear()} School Administration · ScholarSphere
+        </footer>
+      </div>
+      </DesktopPageFrame>
+      </div>
+      </>
+    );
+  } catch (error) {
+    if (isDatabaseUnavailable(error)) {
+      const { DatabaseUnavailable } = await import("@/components/system/DatabaseUnavailable");
+      return <DatabaseUnavailable />;
+    }
+    throw error;
+  }
+}
 
-      <FloatingQuickAction />
+function SurfaceCard({
+  title,
+  action,
+  children,
+  className = "",
+}: {
+  title: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`${css.surfaceCard} ${className}`}>
+      <div className={css.surfaceHeader}>
+        <h2 className={css.surfaceTitle}>{title}</h2>
+        {action}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function StatCard({
+  icon,
+  label,
+  value,
+  sub,
+  href,
+  progress,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  sub: string;
+  href: string;
+  progress?: number;
+}) {
+  return (
+    <Link href={href} className={css.statCard}>
+      <div className={css.statTop}>
+        <span className={css.statLabel}>{label}</span>
+        <span className={css.statIcon}>{icon}</span>
+      </div>
+      <div>
+        <strong className={css.statValue}>{value}</strong>
+        {progress !== undefined && <span className={css.statProgress} aria-hidden><span style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }} /></span>}
+        <span className={css.statSub}>{sub}</span>
+      </div>
+    </Link>
+  );
+}
+
+function QuickAction({ href, icon, label }: { href: string; icon: ReactNode; label: string }) {
+  return (
+    <Link href={href} className={css.quickAction}>
+      <span className={css.quickActionIcon}>{icon}</span>
+      <span>{label}</span>
+    </Link>
+  );
+}
+
+function SystemMetric({ label, value, href, linkLabel, danger = false }: { label: string; value: string; href: string; linkLabel: string; danger?: boolean }) {
+  return (
+    <div className={css.systemMetric}>
+      <span className={css.systemLabel}>{label}</span>
+      <strong className={danger ? css.systemValueDanger : undefined}>{value}</strong>
+      <Link href={href} className={css.inlineLink}>{linkLabel}</Link>
     </div>
   );
 }
 
-function buildMonthlySeries(
-  attendance: Awaited<ReturnType<typeof listAttendance>>,
-  fees: Awaited<ReturnType<typeof listFees>>,
-) {
-  const now = new Date();
-  return Array.from({ length: 6 }).map((_, index) => {
-    const date = new Date(now.getFullYear(), now.getMonth() - (5 - index), 1);
-    const label = date.toLocaleString("en", { month: "short" });
-    const monthAtt = attendance.filter(
-      (row) => row.date.getMonth() === date.getMonth() && row.date.getFullYear() === date.getFullYear(),
-    );
-    const present = monthAtt.filter((row) => row.status === "present").length;
-    const rate = monthAtt.length ? Math.round((present / monthAtt.length) * 100) : 0;
-    const revenue = fees.reduce(
-      (sum, fee) =>
-        sum + fee.payments
-          .filter((p) => p.paidAt.getMonth() === date.getMonth() && p.paidAt.getFullYear() === date.getFullYear())
-          .reduce((inner, p) => inner + Number(p.amount), 0),
-      0,
-    );
-    return { label, revenue, height: `${Math.max(32, rate || 35)}%`, attendanceFill: `${Math.max(16, rate || 20)}%` };
+function StatusPill({ status }: { status: string }) {
+  const tone = status === "paid" ? css.statusPaid : status === "partial" ? css.statusPartial : css.statusUnpaid;
+  return <span className={`${css.statusPill} ${tone}`}>{status}</span>;
+}
+
+function AttendanceChart({ data }: { data: AttendancePoint[] }) {
+  const max = Math.max(...data.flatMap((point) => [point.present, point.absent]), 1);
+  const hasData = data.some((point) => point.present > 0 || point.absent > 0);
+  const scaleLabels = Array.from({ length: 5 }, (_, index) => {
+    const value = max * (1 - index * 0.25);
+    return value === 0 ? "0" : max < 10 ? value.toFixed(1) : Math.round(value).toLocaleString();
+  });
+  return (
+    <div className={css.attendanceChart}>
+      <div className={css.chartScale} aria-hidden>
+        {scaleLabels.map((label, index) => <span key={`${label}-${index}`}>{label}</span>)}
+      </div>
+      <div className={css.attendancePlot}>
+        <div className={css.chartGridLines} aria-hidden />
+        {hasData ? (
+          <div className={css.barColumns}>
+            {data.map((point) => (
+              <div key={point.label} className={css.barColumn}>
+                <div className={css.barPair}>
+                  <span className={`${css.attendanceBar} ${css.presentBar}`} style={{ height: `${Math.max(point.present ? 5 : 0, (point.present / max) * 100)}%` }} title={`${point.present} present`} />
+                  <span className={`${css.attendanceBar} ${css.absentBar}`} style={{ height: `${Math.max(point.absent ? 5 : 0, (point.absent / max) * 100)}%` }} title={`${point.absent} absent`} />
+                </div>
+                <span className={css.barLabel}>{point.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : <span className={css.chartEmpty}>No attendance recorded this week.</span>}
+      </div>
+      <div className={css.chartLegend}>
+        <span><i className={css.legendPresent} />Present / late</span>
+        <span><i className={css.legendAbsent} />Absent / excused</span>
+      </div>
+    </div>
+  );
+}
+
+function GenderChart({ data, total }: { data: GenderSummary; total: number }) {
+  const boysAngle = total ? (data.boys / total) * 360 : 0;
+  const boysPercent = total ? Math.round((data.boys / total) * 100) : 0;
+  const girlsPercent = total ? Math.round((data.girls / total) * 100) : 0;
+  const chartStyle: CSSProperties = {
+    background: total
+      ? `conic-gradient(${APP.accent} 0deg ${boysAngle}deg, ${APP.info} ${boysAngle}deg 360deg)`
+      : APP.border,
+  };
+  return (
+    <div className={css.genderChart}>
+      <div className={css.donut} style={chartStyle}>
+        <div className={css.donutHole}>
+          <strong>{total.toLocaleString()}</strong>
+          <span>Total</span>
+        </div>
+      </div>
+      <div className={css.genderLegend}>
+        <span><i className={css.legendBoys} />Boys ({boysPercent}%)</span>
+        <span><i className={css.legendGirls} />Girls ({girlsPercent}%)</span>
+      </div>
+    </div>
+  );
+}
+
+function mapStudents(rawStudents: Awaited<ReturnType<typeof listStudents>>): DashboardStudentRow[] {
+  return rawStudents.map((student) => {
+    const fee = student.feeRecords[0];
+    const feeStatus: DashboardStudentRow["feeStatus"] = !fee ? "None" : fee.status === "paid" ? "Paid" : fee.status === "partial" ? "Partial" : "Unpaid";
+    return {
+      id: student.id,
+      name: `${student.firstName} ${student.lastName}`,
+      initials: `${student.firstName[0] ?? ""}${student.lastName[0] ?? ""}`.toUpperCase(),
+      photoUrl: student.photoUrl,
+      admissionNo: student.admissionNo,
+      className: student.class.name,
+      guardianName: student.guardians[0]?.name ?? "—",
+      feeStatus,
+    };
   });
 }
 
-function buildRevenueChart(months: ReturnType<typeof buildMonthlySeries>, expected: number) {
-  const max = Math.max(...months.map((m) => m.revenue), expected / 6, 1);
-  const pts = months.map((m, i) => ({
-    x: months.length === 1 ? 0 : Math.round((i / (months.length - 1)) * 400),
-    y: Math.max(18, Math.round(130 - (m.revenue / max) * 105)),
-  }));
-  const budgetY = Math.max(18, Math.round(130 - ((expected / 6) / max) * 105));
-  return {
-    actualPoints: pts.map((p) => `${p.x},${p.y}`).join(" "),
-    budgetPoints: pts.map((p) => `${p.x},${budgetY}`).join(" "),
-    actualArea: `M ${pts.map((p) => `${p.x},${p.y}`).join(" L ")} L 400,150 L 0,150 Z`,
-  };
+function buildWeeklyAttendance(attendance: Awaited<ReturnType<typeof listAttendance>>): AttendancePoint[] {
+  const today = new Date();
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (6 - index));
+    return date;
+  });
+
+  return days.map((day) => {
+    const sameDay = attendance.filter((record) => record.date.toDateString() === day.toDateString());
+    return {
+      label: day.toLocaleDateString("en-GB", { weekday: "short" }),
+      present: sameDay.filter((record) => record.status === "present" || record.status === "late").length,
+      absent: sameDay.filter((record) => record.status === "absent" || record.status === "excused").length,
+    };
+  });
 }
 
-function StatCard({ icon, label, value, marker, success = false, warning = false }: {
-  icon: React.ReactNode; label: string; value: string; marker?: string; success?: boolean; warning?: boolean;
-}) {
-  return (
-    <Card className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <span className={`grid h-10 w-10 place-items-center rounded-lg ${success ? "bg-emerald/10 text-emerald" : warning ? "bg-amber/10 text-amber" : "bg-navy/5 text-navy"}`}>
-          {icon}
-        </span>
-        {marker && (
-          <span className={`text-xs font-bold ${success ? "rounded-full bg-emerald/20 px-2 py-0.5 text-emerald" : "text-emerald"}`}>
-            {marker}
-          </span>
-        )}
-      </div>
-      <p className="label-sm text-muted">{label}</p>
-      <h3 className="font-data text-[32px] font-semibold leading-10 text-navy">{value}</h3>
-    </Card>
-  );
+function buildGenderSummary(rawStudents: Awaited<ReturnType<typeof listStudents>>): GenderSummary {
+  return rawStudents.reduce<GenderSummary>((summary, student) => {
+    const gender = student.gender.toLowerCase();
+    if (gender === "male" || gender === "boy") summary.boys += 1;
+    if (gender === "female" || gender === "girl") summary.girls += 1;
+    return summary;
+  }, { boys: 0, girls: 0 });
 }
 
-function Legend({ color, label }: { color: string; label: string }) {
-  return (
-    <span className="label-sm flex items-center gap-1 text-muted">
-      <span className={`h-2 w-2 rounded-full ${color}`} />{label}
-    </span>
-  );
-}
+const SchoolIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 10 12 5l9 5-9 5-9-5Z" /><path d="M6 12v5c3 2 9 2 12 0v-5" /></svg>;
+const CheckIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="m8 12 2.5 2.5L16 9" /></svg>;
+const WalletIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 7h16a2 2 0 0 1 2 2v9H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h15v4" /><circle cx="17" cy="13" r="1" /></svg>;
+const BadgeIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="9" cy="7" r="4" /><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2M16 3a4 4 0 0 1 0 8" /></svg>;
+const UserPlusIcon = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="9" cy="7" r="4" /><path d="M2 21v-2a4 4 0 0 1 4-4h6M19 8v6M22 11h-6" /></svg>;
+const ClipboardCheckIcon = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4V2h6v2M8 13l2 2 5-5" /></svg>;
+const ReceiptIcon = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 3h14v18l-3-2-4 2-4-2-3 2V3Z" /><path d="M8 8h8M8 12h8M8 16h4" /></svg>;
+const FileTextIcon = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6M8 13h8M8 17h6" /></svg>;

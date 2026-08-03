@@ -1,14 +1,34 @@
-﻿/**
- * dashboard/page.tsx — entry point for /dashboard.
- * Detects device; renders desktop or mobile DashboardScreen.
- */
 import { headers } from "next/headers";
-import { getDeviceType } from "@/lib/device";
-import { DashboardScreen }        from "@/screens/desktop/DashboardScreen/DashboardScreen";
-import { MobileDashboardScreen }  from "@/screens/mobile/MobileDashboardScreen/MobileDashboardScreen";
+import { redirect } from "next/navigation";
+import { prisma, readFromDatabase } from "@backend/prisma";
+import { DashboardScreen } from "@/screens/desktop/DashboardScreen/DashboardScreen";
 
-export default function DashboardPage() {
-  const ua     = headers().get("user-agent") ?? "";
-  const device = getDeviceType(ua);
-  return device === "mobile" ? <MobileDashboardScreen /> : <DashboardScreen />;
+export const dynamic = "force-dynamic";
+
+const STAFF_CATEGORY_PORTALS: Record<string, string> = {
+  driver:   "/transport-portal",
+  caterer:  "/canteen-portal",
+  nurse:    "/health-portal",
+  security: "/security-portal",
+};
+
+export default async function DashboardPage() {
+  const hdrs   = headers();
+  const dbRole = hdrs.get("x-user-role");
+  const userId = hdrs.get("x-user-id");
+
+  if (dbRole === "staff" && userId) {
+    const staffRecord = await readFromDatabase(
+      () => prisma.staff.findFirst({
+        where: { userId },
+        select: { staffCategory: true }
+      }),
+      null,
+    );
+    const cat = staffRecord?.staffCategory ?? "accounts";
+    const portalPath = STAFF_CATEGORY_PORTALS[cat];
+    if (portalPath) redirect(portalPath);
+  }
+
+  return <DashboardScreen />;
 }

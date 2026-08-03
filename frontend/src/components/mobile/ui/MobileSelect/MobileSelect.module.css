@@ -1,11 +1,12 @@
-﻿/**
- * MobileSelect.module.css — scoped to MobileSelect component only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- * Use CSS custom properties from tokens.css; never hard-code raw values here.
- */
-
 .root {
-  /* Native-feeling dropdown select with custom chevron. Optimised for mobile keyboard avoidance. */
-  /* Design fills all visual properties below */
-  min-height: 44px; /* Minimum tap target */
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--border-neutral, #d8ddd8);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 10px 12px;
+  color: var(--on-surface, #141d23);
 }

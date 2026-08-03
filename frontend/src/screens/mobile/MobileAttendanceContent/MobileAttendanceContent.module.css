@@ -1,0 +1,224 @@
+.root { display: flex; flex-direction: column; gap: 12px; padding-bottom: 8px; }
+
+.offlineBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-error-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-error-bg);
+  color: var(--clr-error);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+
+.fieldRow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { color: var(--clr-app-muted); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.select {
+  height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-sm);
+}
+
+.segmented {
+  display: flex;
+  padding: 3px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+.segBtn {
+  flex: 1;
+  padding: 7px 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.segBtnActive { background: var(--clr-app-surface); color: var(--clr-app-text); box-shadow: var(--shadow-xs); }
+
+/* ── Stat chips ── */
+.statsScroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.statsScroll::-webkit-scrollbar { display: none; }
+.statChip {
+  flex-shrink: 0;
+  min-width: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.statChip span { color: var(--clr-app-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; }
+.statChip strong { color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.statChipAccent { border-color: var(--clr-app-accent); }
+.statChipAccent strong { color: var(--clr-app-accent); }
+.statChipGood { background: var(--clr-success-bg); border-color: var(--clr-success-border); }
+.statChipGood strong, .statChipGood span { color: var(--clr-success); }
+.statChipBad { background: var(--clr-error-bg); border-color: var(--clr-error-border); }
+.statChipBad strong, .statChipBad span { color: var(--clr-error); }
+.statChipWarn { background: var(--clr-warning-bg); border-color: var(--clr-warning-border); }
+.statChipWarn strong, .statChipWarn span { color: var(--clr-warning); }
+
+.progressTrack {
+  height: 6px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  overflow: hidden;
+}
+.progressFill { height: 100%; background: var(--clr-app-accent); }
+.progressLabelRow {
+  display: flex;
+  justify-content: space-between;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+}
+.progressLabelRow strong { color: var(--clr-app-accent); }
+
+.quickRow { display: flex; gap: 8px; }
+.quickBtn, .quickBtnDanger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.quickBtnDanger { margin-left: auto; color: var(--clr-error); }
+
+.roster { display: flex; flex-direction: column; gap: 10px; }
+.emptyText { padding: 24px 0; color: var(--clr-app-muted); font-size: var(--text-sm); text-align: center; }
+
+.studentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-left: 4px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.border_present { border-left-color: var(--clr-success); }
+.border_absent { border-left-color: var(--clr-error); }
+.border_late { border-left-color: var(--clr-warning); }
+.border_excused { border-left-color: var(--clr-app-muted); }
+
+.studentTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.studentLeft { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.rowIndex { width: 16px; flex-shrink: 0; color: var(--clr-app-muted); font-size: var(--text-xs); text-align: right; }
+
+.studentAvatar, .studentAvatarImg { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; }
+.studentAvatar {
+  display: grid;
+  place-items: center;
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+.studentAvatarImg { object-fit: cover; }
+
+.studentName { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; line-height: 18px; }
+.studentAdm { margin: 0; color: var(--clr-app-muted); font-size: 11px; }
+
+.expandBtn {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  color: var(--clr-app-muted);
+  font-size: var(--text-sm);
+  letter-spacing: 1px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.statusGroup {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+}
+.statusBtn {
+  flex: 1;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-app-muted);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.statusBtnActive_present { background: var(--clr-success); color: #ffffff; }
+.statusBtnActive_absent { background: var(--clr-error); color: #ffffff; }
+.statusBtnActive_late { background: var(--clr-warning); color: #ffffff; }
+.statusBtnActive_excused { background: var(--clr-app-muted); color: #ffffff; }
+
+.noteField { display: flex; flex-direction: column; gap: 4px; }
+.noteField label { color: var(--clr-app-muted); font-size: 11px; font-weight: 600; }
+.noteInput {
+  padding: 8px 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-text);
+  font-size: var(--text-sm);
+  resize: none;
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-base);
+  font-weight: 700;
+  cursor: pointer;
+}
+.saveBtn:disabled { opacity: 0.6; }
+
+.syncHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}

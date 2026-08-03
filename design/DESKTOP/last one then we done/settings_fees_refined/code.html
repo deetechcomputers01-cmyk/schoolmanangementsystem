@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Fees | ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "outline": "#E4E4EC",
+                        "outline-variant": "#E4E4EC",
+                        "on-surface": "#1A1A1E",
+                        "on-surface-variant": "#64748B",
+                        "surface-container-low": "#F8FAFC",
+                        "surface-container-high": "#F1F5F9",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "2xl": "48px",
+                        "margin-desktop": "32px",
+                        "sm": "8px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        .nav-link { @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors; }
+        .nav-link-active { @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF]; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans text-body-md overflow-hidden antialiased">
+<!-- SideNavBar (Restructured to match Assets Management) -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-white border-r border-outline py-6 z-40 flex flex-col">
+<!-- Brand Logo -->
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">SS</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">ScholarSphere</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Pro Edition</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<ul class="flex-1 space-y-1">
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="text-body-md">Dashboard</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">school</span><span class="text-body-md">Students</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">groups</span><span class="text-body-md">Staff</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="text-body-md">Attendance</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">grading</span><span class="text-body-md">Gradebook</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">payments</span><span class="text-body-md">Financials</span></a></li>
+<li><a class="nav-link" href="#"><span class="material-symbols-outlined text-[22px]">inventory_2</span><span class="text-body-md">Assets</span></a></li>
+<li><a class="nav-link-active" href="#"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span><span class="text-body-md">Settings</span></a></li>
+</ul>
+<!-- Footer Nav -->
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md text-sm">Sync Status</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="text-body-md text-sm">Support</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-260px)] bg-white border-b border-outline flex justify-between items-center px-8 z-30">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-on-surface-variant">Administration</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">chevron_right</span>
+<span class="font-medium text-on-surface">Settings</span>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-0.5 right-0.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img alt="Admin Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZyrbAkQjTvyUhViXsRmt5CM2usNDKKL9gXuecTDCowqn6dHS96dWRCGjooq7qNfFIEzuIpb_H4CT3pkj3qltpT0200AL96vGELdoMZkEfp9Ikwzi7NR8t0LixXldDfW8ciILpKnMj-Kgb9-Y4cNpGtvIbMnrneexXck_P2iI0a21Q4NRCQ10JHw5ttD9ub47z5KfUB6i2oKX_v67dJJeaTdnd8y5hGiWH009s66aLVrFSWhVTaPEMIZW1hEOaUKP8ZalxkjbXjg"/>
+</div>
+<span class="text-body-md font-semibold text-on-surface group-hover:text-primary transition-colors">Admin User</span>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[260px] mt-[56px] h-[calc(100vh-56px)] flex">
+<!-- Settings Sub-navigation -->
+<aside class="w-[240px] border-r border-outline bg-white h-full overflow-y-auto p-lg flex flex-col gap-1">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-sm px-2">Settings &amp; Profile</div>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">School Profile</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Academic Calendar</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Branding</a>
+<a class="px-3 py-2 rounded text-sm text-primary bg-[#EEEDFF] font-bold border-l-4 border-primary" href="#">Fees</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Attendance</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Gradebook</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Users &amp; Security</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Notifications</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Offline &amp; Sync</a>
+<a class="px-3 py-2 rounded text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Integrations</a>
+</aside>
+<!-- Center Form Area -->
+<section class="flex-1 h-full overflow-y-auto bg-surface-container-low flex flex-col relative">
+<!-- Sticky Header Actions -->
+<div class="sticky top-0 bg-white border-b border-outline p-lg flex justify-between items-center z-10">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Fees Configuration</h1>
+<p class="text-body-md text-on-surface-variant mt-1">Set default fee categories and payment rules for the institution.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 text-body-md font-semibold text-on-surface-variant hover:text-primary transition-colors">Reset Defaults</button>
+<button class="bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2.5 rounded hover:bg-surface-container-low transition-all flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                        Preview Letterhead
+                    </button>
+<button class="bg-primary text-on-primary font-semibold text-body-md px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                        Save Changes
+                    </button>
+</div>
+</div>
+<!-- Form Content -->
+<div class="p-8 max-w-3xl">
+<div class="space-y-8">
+<!-- Section: General Rules -->
+<div class="bg-white border border-outline p-6 rounded shadow-sm space-y-6">
+<h2 class="text-title-md font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                            General Financial Rules
+                        </h2>
+<div class="space-y-4">
+<!-- Field 1 -->
+<div class="space-y-1.5">
+<label class="block font-label-sm text-on-surface-variant uppercase tracking-wider">Default Currency</label>
+<div class="relative">
+<select class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
+<option selected="" value="GHS">GHS — Ghanaian Cedi</option>
+<option value="USD">USD — US Dollar</option>
+<option value="EUR">EUR — Euro</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<p class="text-[12px] text-on-surface-variant italic">All financial reports and new fee schedules will default to this currency.</p>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="block font-label-sm text-on-surface-variant uppercase tracking-wider">Late Payment Penalty (%)</label>
+<input class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary font-mono-data" type="number" value="5"/>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label-sm text-on-surface-variant uppercase tracking-wider">Grace Period (Days)</label>
+<input class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary font-mono-data" type="number" value="7"/>
+</div>
+</div>
+<!-- Field 4 -->
+<div class="space-y-1.5">
+<label class="block font-label-sm text-on-surface-variant uppercase tracking-wider">Invoice Auto-Send Rule</label>
+<div class="relative">
+<select class="w-full bg-white border border-outline rounded px-4 py-2.5 text-body-md focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
+<option>At term start</option>
+<option>Manual only</option>
+<option selected="">Both automatically and manually</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Notification Defaults -->
+<div class="bg-white border border-outline p-6 rounded shadow-sm">
+<h2 class="text-title-md font-bold text-on-surface flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+                            Default Reminders
+                        </h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 border border-outline rounded bg-surface-container-low">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">mail</span>
+<div>
+<div class="font-semibold">Upcoming Due Date</div>
+<div class="text-xs text-on-surface-variant">Send 3 days before deadline</div>
+</div>
+</div>
+<div class="relative inline-block w-10 align-middle select-none">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 border-outline appearance-none cursor-pointer checked:right-0 checked:border-primary transition-all duration-200 right-5" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-surface-container-high cursor-pointer border border-outline"></label>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline rounded bg-surface-container-low">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">sms</span>
+<div>
+<div class="font-semibold">SMS Payment Receipt</div>
+<div class="text-xs text-on-surface-variant">Notify parents immediately on payment</div>
+</div>
+</div>
+<div class="relative inline-block w-10 align-middle select-none">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 border-outline appearance-none cursor-pointer checked:right-0 checked:border-primary transition-all duration-200 right-5" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-surface-container-high cursor-pointer border border-outline"></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side Preview Panel (High-fidelity document preview style) -->
+<aside class="w-[380px] border-l border-outline bg-surface-container-high h-full overflow-y-auto flex flex-col">
+<div class="p-4 border-b border-outline flex items-center justify-between bg-white sticky top-0 z-10 shadow-sm">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                    Document Preview
+                </span>
+<div class="flex gap-1">
+<button class="p-1.5 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[20px]">zoom_in</span></button>
+<button class="p-1.5 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[20px]">file_download</span></button>
+</div>
+</div>
+<div class="p-8 flex flex-col items-center">
+<!-- Document Sheet -->
+<div class="w-full bg-white shadow-xl rounded-sm border border-outline overflow-hidden flex flex-col" style="aspect-ratio: 1/1.414;">
+<!-- Invoice Header -->
+<div class="p-8 border-b-2 border-primary/20 bg-surface-container-low flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm">SS</div>
+<div class="font-bold text-on-surface text-sm uppercase tracking-wider">ScholarSphere Academy</div>
+</div>
+<h3 class="text-headline-lg-mobile font-bold text-on-surface mb-1">INVOICE</h3>
+<p class="text-xs text-on-surface-variant">#INV-2024-0012</p>
+</div>
+<div class="text-right space-y-1">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Date</p>
+<p class="text-xs font-semibold">October 12, 2024</p>
+</div>
+</div>
+<!-- Invoice Body -->
+<div class="p-8 flex-1 flex flex-col">
+<div class="flex justify-between mb-8">
+<div class="space-y-1">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Bill To</p>
+<p class="text-sm font-bold">Kofi Mensah</p>
+<p class="text-xs text-on-surface-variant">Grade 10 - Blue House</p>
+</div>
+</div>
+<div class="flex-1">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="border-b border-outline">
+<th class="py-2 font-bold text-on-surface-variant uppercase tracking-wider">Description</th>
+<th class="py-2 text-right font-bold text-on-surface-variant uppercase tracking-wider">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline/50">
+<td class="py-3 font-medium">Tuition Fees - Term 1</td>
+<td class="py-3 text-right font-mono-data">2,500.00</td>
+</tr>
+<tr class="border-b border-outline/50">
+<td class="py-3 font-medium">Library &amp; ICT Resource Fee</td>
+<td class="py-3 text-right font-mono-data">150.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Totals -->
+<div class="mt-8 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-on-surface-variant">Subtotal</span>
+<span class="font-mono-data">GHS 2,650.00</span>
+</div>
+<div class="flex justify-between items-center py-3 border-t-2 border-primary/10">
+<span class="font-bold text-on-surface">Total Due</span>
+<span class="font-bold text-primary text-sm font-mono-data">GHS 2,650.00</span>
+</div>
+</div>
+<!-- Conditional Note from Rules -->
+<div class="mt-6 p-4 bg-primary/5 rounded border border-primary/10 flex items-start gap-3">
+<span class="material-symbols-outlined text-[18px] text-primary mt-0.5">info</span>
+<p class="text-[10px] leading-relaxed text-on-surface-variant">
+<strong>Payment Policy:</strong> This invoice is subject to a <span class="text-primary font-bold">5% penalty</span> if payment is received more than <span class="text-primary font-bold">7 days</span> after the due date.
+                            </p>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="p-6 bg-surface-container-low border-t border-outline text-[9px] text-center text-on-surface-variant uppercase tracking-widest font-semibold">
+                        Education for the Future — ScholarSphere Pro
+                    </div>
+</div>
+<p class="mt-6 text-xs text-on-surface-variant text-center max-w-[240px]">
+                    This is a live preview of how invoices will appear to parents based on your current configuration.
+                </p>
+</div>
+</aside>
+</main>
+</body></html>

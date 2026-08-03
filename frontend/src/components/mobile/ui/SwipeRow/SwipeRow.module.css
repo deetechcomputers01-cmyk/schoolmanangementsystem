@@ -1,0 +1,38 @@
+.wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.rightPanel,
+.leftPanel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  display: flex;
+}
+
+.rightPanel { right: 0; }
+.leftPanel { left: 0; }
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 100%;
+  border: 0;
+  cursor: pointer;
+}
+
+.tone_primary { background: var(--clr-app-accent); color: #ffffff; }
+.tone_soft { background: var(--clr-app-accent-soft); color: var(--clr-app-accent); }
+.tone_danger { background: var(--clr-error); color: #ffffff; }
+
+.content {
+  position: relative;
+  z-index: 1;
+  background: var(--clr-app-surface);
+  touch-action: pan-y;
+}

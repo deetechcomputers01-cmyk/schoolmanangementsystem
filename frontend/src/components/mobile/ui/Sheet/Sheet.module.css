@@ -1,11 +1,15 @@
-﻿/**
- * Sheet.module.css — scoped to Sheet component only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- * Use CSS custom properties from tokens.css; never hard-code raw values here.
- */
-
 .root {
-  /* Bottom sheet drawer. Animates up from bottom. Supports snap points and drag-to-dismiss. */
-  /* Design fills all visual properties below */
-  min-height: 44px; /* Minimum tap target */
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 70;
+  max-height: 88dvh;
+  overflow: auto;
+  border: 1px solid var(--border-neutral, #d8ddd8);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+  background: #fff;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  box-shadow: 0 -16px 36px rgba(20, 29, 35, 0.18);
 }

@@ -1,32 +1,44 @@
-﻿/**
- * UserRoleScreen — desktop view for User Role Management and Security.
- * Covers: user management, role assignments, and blocked IP management.
- */
-import { redirect } from "next/navigation";
 import { getCurrentUser } from "@backend/auth/cookies";
+import { redirect } from "next/navigation";
+import { prisma } from "@backend/prisma";
 import { listUsers } from "@backend/services/user.service";
-import { listBlockedIPs } from "@backend/services/blocked-ip.service";
-import { UserManagementClient } from "@/components/modules/admin/UserManagementClient";
-import { BlockedIPClient } from "@/components/modules/admin/BlockedIPClient";
-import styles from "./UserRoleScreen.module.css";
+import { UserRoleContent } from "./UserRoleContent";
 
 export const dynamic = "force-dynamic";
 
 export async function UserRoleScreen() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "super_admin") redirect("/dashboard");
-  const [users, blocked] = await Promise.all([listUsers(user), listBlockedIPs()]);
-  return (
-    <div className={styles.root}>
-      <section className="mb-6">
-        <p className="label-sm text-emerald">Security & Access</p>
-        <h1 className="font-heading text-[32px] font-semibold leading-10 text-navy">Roles & Users</h1>
-        <p className="text-muted">Manage staff accounts, role assignments, and blocked IP addresses.</p>
-      </section>
-      <div className="grid gap-8">
-        <UserManagementClient users={users} currentUserId={user.id} />
-        <BlockedIPClient initialList={blocked} />
-      </div>
-    </div>
-  );
+  if (!user) redirect("/login");
+  if (user.role !== "super_admin") redirect("/dashboard");
+
+  const [users, lastLogins] = await Promise.all([
+    listUsers(user),
+    prisma.auditLog.findMany({
+      where: { action: "login_success", userId: { not: null } },
+      orderBy: { createdAt: "desc" },
+      distinct: ["userId"],
+      select: { userId: true, createdAt: true },
+    }),
+  ]);
+
+  const lastLoginMap = new Map(lastLogins.map((l) => [l.userId as string, l.createdAt.toISOString()]));
+
+  const serialized = users.map((u) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    role: u.role,
+    isActive: u.isActive,
+    createdAt: u.createdAt.toISOString(),
+    lastActivity: lastLoginMap.get(u.id) ?? null,
+    linkedEntity: u.staff
+      ? `${u.staff.roleTitle} · ${u.staff.staffNo}`
+      : u.student
+        ? `Student · ${u.student.admissionNo}`
+        : u.guardians[0]
+          ? `Guardian (${u.guardians[0].relation})`
+          : null,
+  }));
+
+  return <UserRoleContent users={serialized} currentUserId={user.id} />;
 }

@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 export function FloatingQuickAction() {
   return (
     <Link
-      href="/students/new"
+      href="/students"
       className="group fixed bottom-8 right-8 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-emerald text-white shadow-emerald transition hover:scale-110 active:scale-95 md:flex"
       aria-label="Quick action"
     >

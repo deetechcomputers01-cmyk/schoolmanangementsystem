@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Timetable - ScholarSphere Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "background": "#faf9ff",
+                      "secondary-fixed": "#d2e4ff",
+                      "primary-container": "#5b50f5",
+                      "tertiary-container": "#b34b00",
+                      "secondary-container": "#55a7fe",
+                      "on-tertiary-container": "#ffe8de",
+                      "surface-dim": "#d9d9e1",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#191b21",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#793000",
+                      "on-tertiary": "#ffffff",
+                      "surface-bright": "#faf9ff",
+                      "outline-variant": "#c7c4d8",
+                      "on-error": "#ffffff",
+                      "tertiary": "#8c3900",
+                      "surface-container": "#ededf5",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "surface-tint": "#4e41e8",
+                      "on-primary-fixed": "#100069",
+                      "inverse-primary": "#c3c0ff",
+                      "tertiary-fixed-dim": "#ffb692",
+                      "surface-container-highest": "#e2e2ea",
+                      "on-surface": "#191b21",
+                      "on-primary-fixed-variant": "#341dd1",
+                      "error": "#ba1a1a",
+                      "secondary": "#0061a7",
+                      "tertiary-fixed": "#ffdbcb",
+                      "on-secondary-fixed-variant": "#00487f",
+                      "secondary-fixed-dim": "#a1c9ff",
+                      "on-secondary-fixed": "#001c37",
+                      "primary-fixed": "#e3dfff",
+                      "on-surface-variant": "#464555",
+                      "inverse-surface": "#2e3036",
+                      "surface-container-high": "#e7e7ef",
+                      "on-secondary-container": "#003b69",
+                      "inverse-on-surface": "#f0f0f8",
+                      "primary": "#4131dc",
+                      "on-tertiary-fixed": "#341100",
+                      "surface": "#faf9ff",
+                      "on-primary-container": "#edeaff",
+                      "on-secondary": "#ffffff",
+                      "outline": "#777587",
+                      "surface-variant": "#e2e2ea",
+                      "surface-container-low": "#f3f3fb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Inter"
+                      ],
+                      "display": [
+                              "Inter"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="w-64 h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant flex flex-col p-4 gap-2 z-50">
+<div class="mb-8 px-2 mt-2">
+<h1 class="text-lg font-headline font-bold text-on-surface dark:text-inverse-on-surface">ScholarSphere Pro</h1>
+<p class="text-sm text-on-surface-variant font-body">School Management</p>
+</div>
+<div class="flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+                Students
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+                Staff
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">event_available</span>
+                Attendance
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+                Gradebook
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container font-medium rounded-lg cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                Timetable
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">event_note</span>
+                Academic Calendar
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+                Reports
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+                Report Cards
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                Fees &amp; Payments
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 font-body text-label-large mt-auto" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                Settings
+            </a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 w-[calc(100%-16rem)] bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant flex justify-between items-center px-6 z-40">
+<div class="flex-1 flex items-center gap-4">
+<div class="flex items-center gap-2 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Timetable</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-medium text-on-surface">Weekly View</span>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2">
+<img alt="Administrator Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx_Ifz5RT0ocvZEwgsTIMqakrrAk96SX0xxrhBgBMjF92HT4ZQVwGdFwyGUzhIlXnjQEg1SRYU-s9bTOq8J_0Nh-0v4yOy_ZD8itzIQtMlpJ4WnGYN58C2yFdlP4MY9EVyg3iC-TKEpic1XylKIrgeEUPms-fCDmsNfATN7u7N7PGS5rhCoNLjWUfK7h_85lhUZIW4ImEs4gzhtpjiVuO1hS1FANOW-zxlLfSlk36jAgt1fwcv_XXdYjHIY3pUQMXmFgIb5tPReQ">
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 mt-16 p-6 lg:p-8 bg-surface-container-low overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+<div>
+<h2 class="text-2xl font-bold font-headline text-on-surface">Timetable</h2>
+<p class="text-sm text-on-surface-variant mt-1">Build and manage the weekly class schedule</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 border border-outline text-on-surface font-medium rounded-lg hover:bg-surface-container-highest transition-colors flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export PDF
+                    </button>
+<button class="px-4 py-2 bg-primary text-on-primary font-medium rounded-lg hover:bg-surface-tint transition-colors shadow-sm flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Add Period
+                    </button>
+</div>
+</div>
+<!-- Filters & Stats Row -->
+<div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8">
+<!-- Filter Card -->
+<div class="bg-surface-container-lowest rounded-lg p-5 border border-outline-variant shadow-sm xl:col-span-1">
+<h3 class="text-sm font-semibold text-on-surface mb-4 uppercase tracking-wider">Filters</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-medium text-on-surface-variant mb-1">Class</label>
+<select class="w-full text-sm border-outline-variant rounded-lg focus:ring-primary focus:border-primary bg-surface-container-lowest">
+<option>Form 3 Science</option>
+<option>Form 3 Arts</option>
+<option>Form 4 Science</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-medium text-on-surface-variant mb-1">Term</label>
+<select class="w-full text-sm border-outline-variant rounded-lg focus:ring-primary focus:border-primary bg-surface-container-lowest">
+<option>Term 2</option>
+<option>Term 1</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-medium text-on-surface-variant mb-1">View</label>
+<select class="w-full text-sm border-outline-variant rounded-lg focus:ring-primary focus:border-primary bg-surface-container-lowest">
+<option>Weekly</option>
+<option>Daily</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- KPI Stats -->
+<div class="xl:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest rounded-lg p-5 border border-outline-variant shadow-sm flex flex-col justify-center">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[20px]">view_week</span>
+<span class="text-xs font-medium">Periods / Week</span>
+</div>
+<div class="text-2xl font-bold font-headline text-on-surface">32</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-5 border border-outline-variant shadow-sm flex flex-col justify-center">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[20px]">coffee</span>
+<span class="text-xs font-medium">Free Periods</span>
+</div>
+<div class="text-2xl font-bold font-headline text-on-surface">4</div>
+</div>
+<div class="bg-error-container bg-opacity-20 rounded-lg p-5 border border-error border-opacity-30 shadow-sm flex flex-col justify-center">
+<div class="flex items-center gap-2 text-error mb-2">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+<span class="text-xs font-medium">Teacher Conflicts</span>
+</div>
+<div class="text-2xl font-bold font-headline text-error">1</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-5 border border-outline-variant shadow-sm flex flex-col justify-center">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[20px]">meeting_room</span>
+<span class="text-xs font-medium">Room Utilization</span>
+</div>
+<div class="text-2xl font-bold font-headline text-on-surface">78%</div>
+</div>
+</div>
+</div>
+<!-- Main Layout: Grid & Details Panel -->
+<div class="flex flex-col xl:flex-row gap-6 h-[600px]">
+<!-- Left: Timetable Grid (75%) -->
+<div class="flex-1 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant bg-surface-container-lowest flex justify-between items-center">
+<h3 class="font-semibold text-on-surface">Form 3 Science - Weekly Grid</h3>
+<div class="flex items-center gap-2 text-sm">
+<button class="p-1 hover:bg-surface-container-highest rounded text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+<span class="font-medium px-2">Week 4 (Oct 9 - Oct 13)</span>
+<button class="p-1 hover:bg-surface-container-highest rounded text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-sm text-left border-collapse min-w-[800px]">
+<thead class="bg-surface-container-low text-on-surface-variant sticky top-0 z-10 border-b border-outline-variant">
+<tr>
+<th class="py-3 px-4 w-24 font-medium border-r border-outline-variant text-center">Time</th>
+<th class="py-3 px-4 font-medium border-r border-outline-variant text-center w-[18%]">Monday</th>
+<th class="py-3 px-4 font-medium border-r border-outline-variant text-center w-[18%]">Tuesday</th>
+<th class="py-3 px-4 font-medium border-r border-outline-variant text-center w-[18%]">Wednesday</th>
+<th class="py-3 px-4 font-medium border-r border-outline-variant text-center w-[18%]">Thursday</th>
+<th class="py-3 px-4 font-medium text-center w-[18%]">Friday</th>
+</tr>
+</thead>
+<tbody>
+<!-- 08:00 Slot -->
+<tr class="border-b border-outline-variant group">
+<td class="py-3 px-4 border-r border-outline-variant text-center text-on-surface-variant font-medium bg-surface-container-lowest">08:00<br><span class="text-xs font-normal">08:45</span></td>
+<td class="p-2 border-r border-outline-variant align-top relative">
+<div class="bg-primary-container bg-opacity-10 border-2 border-primary rounded-lg p-2 h-full cursor-pointer shadow-sm relative overflow-hidden group-hover:bg-opacity-20 transition-all">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="font-semibold text-primary mb-1 pl-1">Mathematics</div>
+<div class="flex justify-between items-end pl-1">
+<span class="text-xs text-on-surface-variant">Lab 2</span>
+<span class="inline-flex items-center justify-center bg-primary text-on-primary rounded text-[10px] font-bold px-1.5 py-0.5">KO</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Physics</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 1</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">EJ</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Chemistry</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 3</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">MT</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">English</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Rm 102</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">SA</span>
+</div>
+</div>
+</td>
+<td class="p-2 align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Biology</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 4</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">RJ</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- 08:45 Slot -->
+<tr class="border-b border-outline-variant group">
+<td class="py-3 px-4 border-r border-outline-variant text-center text-on-surface-variant font-medium bg-surface-container-lowest">08:45<br><span class="text-xs font-normal">09:30</span></td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Mathematics</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 2</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">KO</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Physics</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 1</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">EJ</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="border border-dashed border-outline-variant rounded-lg p-2 h-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Geography</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Rm 201</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">PL</span>
+</div>
+</div>
+</td>
+<td class="p-2 align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">P.E.</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Field</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">DK</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Break -->
+<tr class="bg-surface-container-highest border-b border-outline-variant text-on-surface-variant">
+<td class="py-2 px-4 border-r border-outline-variant text-center font-medium bg-surface-container-lowest">10:00<br><span class="text-xs font-normal">10:30</span></td>
+<td class="py-2 text-center text-sm font-medium tracking-widest uppercase" colspan="5">Morning Break</td>
+</tr>
+<!-- 10:30 Slot -->
+<tr class="border-b border-outline-variant group">
+<td class="py-3 px-4 border-r border-outline-variant text-center text-on-surface-variant font-medium bg-surface-container-lowest">10:30<br><span class="text-xs font-normal">11:15</span></td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Chemistry</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 3</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">MT</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="border border-error-container bg-error-container bg-opacity-10 rounded-lg p-2 h-full cursor-pointer relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="font-medium text-on-surface mb-1 pl-1">English</div>
+<div class="flex justify-between items-end pl-1">
+<span class="text-[10px] text-error font-medium flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">warning</span> Conflict</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">SA</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">History</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Rm 105</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">FR</span>
+</div>
+</div>
+</td>
+<td class="p-2 border-r border-outline-variant align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Mathematics</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Lab 2</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">KO</span>
+</div>
+</div>
+</td>
+<td class="p-2 align-top">
+<div class="bg-surface-container border border-outline-variant rounded-lg p-2 h-full cursor-pointer hover:border-primary transition-colors">
+<div class="font-medium text-on-surface mb-1">Computer Sci.</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Comp Lab</span>
+<span class="inline-flex items-center justify-center bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold px-1.5 py-0.5">WB</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Lunch -->
+<tr class="bg-surface-container-highest border-b border-outline-variant text-on-surface-variant">
+<td class="py-2 px-4 border-r border-outline-variant text-center font-medium bg-surface-container-lowest">12:30<br><span class="text-xs font-normal">13:30</span></td>
+<td class="py-2 text-center text-sm font-medium tracking-widest uppercase" colspan="5">Lunch Break</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right: Slot Details Panel (25%) -->
+<div class="w-full xl:w-80 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm flex flex-col flex-shrink-0">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-semibold text-on-surface">Slot Details</h3>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-5 flex-1 overflow-y-auto">
+<div class="mb-6">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+<h4 class="text-xl font-bold text-on-surface font-headline">Mathematics</h4>
+</div>
+<p class="text-sm text-on-surface-variant ml-5">Form 3 Science</p>
+</div>
+<div class="space-y-4 mb-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]">person</span>
+<div>
+<p class="text-xs text-on-surface-variant font-medium">Teacher</p>
+<p class="text-sm text-on-surface font-medium">Kwame Owusu</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]">meeting_room</span>
+<div>
+<p class="text-xs text-on-surface-variant font-medium">Room</p>
+<p class="text-sm text-on-surface font-medium">Lab 2 (Capacity: 35)</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]">schedule</span>
+<div>
+<p class="text-xs text-on-surface-variant font-medium">Time</p>
+<p class="text-sm text-on-surface font-medium">Monday, 08:00 - 08:45</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<p class="text-xs text-on-surface-variant font-medium mb-2">Recurrence</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary-container text-on-primary-container text-xs font-medium rounded-full border border-primary-fixed">Every Week</span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-xs font-medium rounded-full border border-outline-variant hover:bg-surface-container-high cursor-pointer">Alt Weeks</span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-xs font-medium rounded-full border border-outline-variant hover:bg-surface-container-high cursor-pointer">Custom</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-medium text-on-surface-variant mb-1">Internal Note</label>
+<textarea class="w-full text-sm border-outline-variant rounded-lg focus:ring-primary focus:border-primary bg-surface-container-lowest h-20 resize-none" placeholder="Add notes for this specific period..."></textarea>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest flex justify-between items-center rounded-b-lg gap-2 mt-auto">
+<button class="px-4 py-2 text-error font-medium hover:bg-error-container hover:bg-opacity-20 rounded-lg transition-colors text-sm">
+                            Remove
+                        </button>
+<button class="px-6 py-2 bg-primary text-on-primary font-medium rounded-lg hover:bg-surface-tint transition-colors shadow-sm text-sm">
+                            Save
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,8 +1,29 @@
 ﻿import { NextResponse, type NextRequest } from "next/server";
 import { getCurrentUser } from "@backend/auth/cookies";
-import { submitScores } from "@backend/services/exam.service";
+import { getExam, submitScores } from "@backend/services/exam.service";
 import { scoreEntrySchema } from "@backend/validation/exams";
-import { ok, badRequest, forbidden, unauthorized } from "@/lib/http";
+import { ok, badRequest, forbidden, unauthorized, handleApiError } from "@/lib/http";
+
+export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+  const user = await getCurrentUser();
+  if (!user) return unauthorized();
+  try {
+    const exam = await getExam(params.id);
+    const scoreMap = new Map(exam.scores.map((s) => [s.studentId, s]));
+    return ok({
+      maxScore: exam.maxScore,
+      roster: exam.class.students.map((s) => ({
+        studentId: s.id,
+        name: `${s.firstName} ${s.lastName}`,
+        admissionNo: s.admissionNo,
+        score: scoreMap.get(s.id)?.score ?? null,
+        remarks: scoreMap.get(s.id)?.remarks ?? null,
+      })),
+    });
+  } catch (e) {
+    return handleApiError(e);
+  }
+}
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();

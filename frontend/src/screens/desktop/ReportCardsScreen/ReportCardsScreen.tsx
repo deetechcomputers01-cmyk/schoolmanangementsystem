@@ -1,19 +1,23 @@
-﻿/**
+/**
  * ReportCardsScreen — desktop view for Report Cards.
  */
-import Link from "next/link";
-import { FileText, GraduationCap } from "lucide-react";
 import { getCurrentAcademicContext } from "@backend/services/academic.service";
 import { prisma } from "@backend/prisma";
+import { ReportCardsClient } from "./ReportCardsClient";
 import styles from "./ReportCardsScreen.module.css";
 
 export const dynamic = "force-dynamic";
 
 export async function ReportCardsScreen() {
-  const [context, classes] = await Promise.all([
+  const [context, years, classes, grades] = await Promise.all([
     getCurrentAcademicContext(),
+    prisma.academicYear.findMany({
+      orderBy: { startDate: "desc" },
+      include: { terms: { orderBy: { startDate: "asc" } } },
+    }),
     prisma.class.findMany({
-      orderBy: { name: "asc" },
+      where: { isActive: true },
+      orderBy: [{ order: { sort: "asc", nulls: "last" } }, { name: "asc" }],
       include: {
         students: {
           orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
@@ -21,51 +25,47 @@ export async function ReportCardsScreen() {
         },
       },
     }),
+    prisma.grade.findMany({ select: { studentId: true, term: true, score: true } }),
   ]);
+
+  // Per-student, per-term average — computed once here so the client can switch
+  // the Term filter instantly without a round trip.
+  const averages = new Map<string, Map<string, number>>();
+  const totals = new Map<string, Map<string, { sum: number; count: number }>>();
+  for (const g of grades) {
+    if (!totals.has(g.studentId)) totals.set(g.studentId, new Map());
+    const byTerm = totals.get(g.studentId)!;
+    const entry = byTerm.get(g.term) ?? { sum: 0, count: 0 };
+    entry.sum += g.score;
+    entry.count += 1;
+    byTerm.set(g.term, entry);
+  }
+  for (const [studentId, byTerm] of totals) {
+    const perTerm = new Map<string, number>();
+    for (const [term, { sum, count }] of byTerm) perTerm.set(term, Math.round((sum / count) * 10) / 10);
+    averages.set(studentId, perTerm);
+  }
+
+  const classesWithAverages = classes.map((cls) => ({
+    id: cls.id,
+    name: cls.name,
+    students: cls.students.map((s) => ({
+      ...s,
+      termAverages: Object.fromEntries(averages.get(s.id) ?? []),
+    })),
+  }));
+
+  const academicContext = `${context.year?.name ?? "No active year"} · ${context.term?.name ?? "No active term"}`;
+
   return (
     <div className={styles.root}>
-      <div className="mb-6 flex items-center gap-4 rounded-2xl border border-emerald/20 bg-emerald/5 px-5 py-4">
-        <FileText size={20} className="text-emerald" />
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted">Showing for</p>
-          <p className="font-heading font-semibold text-navy">
-            {context.year?.name ?? "No active year"} · {context.term?.name ?? "No active term"}
-          </p>
-        </div>
-      </div>
-      <div className="grid gap-6">
-        {classes.map((cls) => (
-          <div key={cls.id} className="overflow-hidden rounded-2xl border border-line bg-white">
-            <div className="flex items-center gap-3 border-b border-line bg-slate-50 px-6 py-4">
-              <GraduationCap size={18} className="text-navy" />
-              <h2 className="font-heading font-semibold text-navy">{cls.name}</h2>
-              <span className="ml-auto label-sm text-muted">{cls.students.length} students</span>
-            </div>
-            {cls.students.length === 0 ? (
-              <p className="px-6 py-6 text-sm text-muted">No students in this class.</p>
-            ) : (
-              <table className="w-full text-left text-sm">
-                <thead className="bg-white text-xs font-semibold text-muted">
-                  <tr><th className="px-6 py-3">Student Name</th><th className="px-6 py-3">Admission No</th><th className="px-6 py-3 text-right">Report Card</th></tr>
-                </thead>
-                <tbody className="divide-y divide-line">
-                  {cls.students.map((student) => (
-                    <tr key={student.id} className="transition hover:bg-slate-50">
-                      <td className="px-6 py-3 font-semibold text-navy">{student.firstName} {student.lastName}</td>
-                      <td className="font-data px-6 py-3 text-muted">{student.admissionNo}</td>
-                      <td className="px-6 py-3 text-right">
-                        <Link href={`/report-cards/${student.id}`} className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-emerald hover:text-emerald">
-                          <FileText size={13} /> View Report Card
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        ))}
-      </div>
+      <ReportCardsClient
+        classes={classesWithAverages}
+        years={years.map((y) => ({ id: y.id, name: y.name, terms: y.terms.map((t) => ({ id: t.id, name: t.name })) }))}
+        currentYearId={context.year?.id ?? null}
+        currentTermName={context.term?.name ?? null}
+        academicContext={academicContext}
+      />
     </div>
   );
 }

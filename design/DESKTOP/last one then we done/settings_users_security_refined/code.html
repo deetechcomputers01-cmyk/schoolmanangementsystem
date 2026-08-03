@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Users &amp; Security - EduGlobal Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#5B50F5",
+                    "on-primary": "#ffffff",
+                    "background": "#F8FAFC",
+                    "surface": "#ffffff",
+                    "outline": "#E4E4EC",
+                    "outline-variant": "#E4E4EC",
+                    "on-surface": "#1A1A1E",
+                    "on-surface-variant": "#64748B",
+                    "surface-container-low": "#F8FAFC",
+                    "surface-container-high": "#F1F5F9",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#EF4444",
+                    "secondary": "#006c49",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "4px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "md": "16px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "gutter": "20px",
+                    "xs": "4px",
+                    "2xl": "48px"
+            },
+            "fontFamily": {
+                    "sans": ["Inter", "sans-serif"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                    "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                    "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                    "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+            }
+          },
+        },
+      }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nav-link {
+                @apply flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors;
+            }
+            .nav-link-active {
+                @apply flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-[3px] border-primary bg-[#EEEDFF] hover:bg-[#E6E4FF];
+            }
+            .btn-primary {
+                @apply bg-primary text-on-primary font-semibold text-body-md px-4 py-2 rounded hover:opacity-90 transition-all flex items-center gap-2 shadow-sm;
+            }
+            .btn-secondary {
+                @apply bg-white text-on-surface border border-outline font-semibold text-body-md px-4 py-2 rounded hover:bg-surface-container-low transition-all flex items-center gap-2;
+            }
+            .input-field {
+                @apply w-full bg-white border border-outline rounded px-3 py-2 text-body-md focus:ring-1 focus:ring-primary focus:border-primary transition-all;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky left-0 top-0 w-[260px] bg-white border-r border-outline py-6 z-40">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-bold text-xl">EG</div>
+<div>
+<h1 class="font-bold text-on-surface leading-tight">EduGlobal</h1>
+<p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Admin Portal</p>
+</div>
+</div>
+<ul class="flex-1 space-y-1">
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">school</span>
+<span class="text-body-md">Students</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-body-md">Staff</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+<span class="text-body-md">Attendance</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">grading</span>
+<span class="text-body-md">Gradebook</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-body-md">Financials</span>
+</a>
+</li>
+<li>
+<a class="nav-link-active" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-6 space-y-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-semibold">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+<span>System Online</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-body-md text-xs">Last synced: 2m ago</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar -->
+<header class="h-[56px] w-full sticky top-0 z-30 bg-white border-b border-outline flex justify-between items-center px-8">
+<div class="flex items-center gap-6">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline rounded text-body-md focus:ring-1 focus:ring-primary focus:border-primary w-80" placeholder="Search settings..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">sync</span>
+</button>
+<div class="h-8 w-[1px] bg-outline mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                        A
+                    </div>
+<span class="text-body-md font-semibold text-on-surface hidden sm:block">Admin User</span>
+</div>
+</div>
+</header>
+<main class="flex-1 p-8 overflow-y-auto max-w-[1400px] mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<nav aria-label="Breadcrumb" class="flex text-on-surface-variant text-label-sm mb-2">
+<ol class="inline-flex items-center space-x-1">
+<li class="inline-flex items-center">
+<a class="hover:text-primary transition-colors" href="#">Administration</a>
+</li>
+<li class="flex items-center">
+<span class="material-symbols-outlined text-[14px] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Settings</a>
+</li>
+</ol>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Settings &amp; School Profile</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="btn-secondary">Preview Letterhead</button>
+<button class="btn-secondary">Reset Defaults</button>
+<button class="btn-primary">Save Changes</button>
+</div>
+</div>
+<!-- Three Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Settings Sub-nav -->
+<div class="lg:col-span-3">
+<div class="bg-white border border-outline rounded p-2 flex flex-col gap-1 shadow-sm">
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            School Profile
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Academic Calendar
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Branding
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Fees
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Attendance
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Gradebook
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<!-- Active Sub-nav -->
+<a class="px-3 py-2.5 rounded bg-[#EEEDFF] text-primary font-bold text-body-md flex items-center justify-between border-r-[3px] border-primary" href="#">
+                            Users &amp; Security
+                            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Notifications
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Offline &amp; Sync
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+<a class="px-3 py-2.5 rounded text-on-surface-variant font-medium text-body-md hover:bg-surface-container-low transition-colors flex items-center justify-between group" href="#">
+                            Integrations
+                            <span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Center Column: Form Area -->
+<div class="lg:col-span-6">
+<div class="bg-white border border-outline rounded shadow-sm overflow-hidden">
+<div class="p-lg border-b border-outline bg-surface-container-low">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-9 h-9 rounded bg-[#EEEDFF] text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">shield</span>
+</div>
+<h2 class="font-title-md text-title-md text-on-surface uppercase tracking-tight">Users &amp; Security</h2>
+</div>
+<p class="text-body-md text-on-surface-variant">Manage password policy, session settings, and access control.</p>
+</div>
+<div class="p-lg space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-label-sm text-on-surface mb-2" for="min-password">Minimum Password Length</label>
+<input class="input-field font-mono-data" id="min-password" type="number" value="8"/>
+</div>
+<div>
+<label class="block text-label-sm text-on-surface mb-2" for="session-timeout">Session Timeout (minutes)</label>
+<input class="input-field font-mono-data" id="session-timeout" type="number" value="60"/>
+</div>
+</div>
+<div>
+<label class="block text-label-sm text-on-surface mb-2" for="password-policy">Password Reset Policy</label>
+<div class="relative">
+<select class="input-field appearance-none pr-10" id="password-policy">
+<option>Never expire</option>
+<option>Every 30 days</option>
+<option selected="">Every 90 days</option>
+<option>Every 180 days</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="pt-6 border-t border-outline">
+<div class="flex items-start gap-4">
+<div class="flex items-center h-6">
+<input checked="" class="h-4 w-4 rounded border-outline text-primary focus:ring-primary cursor-pointer" id="enforce-2fa" type="checkbox"/>
+</div>
+<label class="cursor-pointer" for="enforce-2fa">
+<div class="text-body-md font-semibold text-on-surface">Enforce Two-Factor Authentication (2FA) for Admins</div>
+<div class="text-[12px] text-on-surface-variant">Requires authenticator app setup on next login.</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Status/Info -->
+<div class="lg:col-span-3">
+<div class="bg-white border border-outline rounded shadow-sm p-6 flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600">verified</span>
+<h3 class="font-title-md text-[16px] text-on-surface">Security Status</h3>
+</div>
+<div class="space-y-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[20px] text-green-600">check_circle</span>
+<div>
+<div class="text-label-sm text-on-surface">Password Policy</div>
+<div class="text-[12px] text-on-surface-variant">Meets institutional standards.</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[20px] text-green-600">check_circle</span>
+<div>
+<div class="text-label-sm text-on-surface">Two-factor Auth</div>
+<div class="text-[12px] text-on-surface-variant">Enforced for Admin roles.</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[20px] text-amber-500">warning</span>
+<div>
+<div class="text-label-sm text-on-surface">Session Logs</div>
+<div class="text-[12px] text-on-surface-variant">Retention below 90-day requirement.</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-6 border-t border-outline">
+<button class="btn-secondary w-full justify-center">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                                Export Security Audit
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

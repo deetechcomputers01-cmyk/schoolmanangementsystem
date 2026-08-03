@@ -154,9 +154,9 @@ test.describe("Library", () => {
     await expect(page.locator("body")).toContainText(/Book|Library/i);
   });
 
-  test("guardian cannot access library — page guard redirects", async ({ page }) => {
+  test("guardian cannot access library — page guard redirects to parent portal", async ({ page }) => {
     await login(page, "guardian");
     await page.goto("/library");
-    await expect(page).toHaveURL(/dashboard/, { timeout: 10_000 });
+    await expect(page).toHaveURL(/parent-portal/, { timeout: 10_000 });
   });
 });

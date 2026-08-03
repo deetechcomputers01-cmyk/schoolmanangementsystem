@@ -1,8 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
 
-export function listStudents() {
+export function listStudents(classIds?: string[]) {
   return prisma.student.findMany({
+    where: classIds?.length ? { classId: { in: classIds } } : undefined,
     orderBy: [{ class: { name: "asc" } }, { lastName: "asc" }],
     include: { class: true, guardians: true, feeRecords: true }
   });
@@ -16,7 +17,8 @@ export function getStudent(id: string) {
       guardians: true,
       attendance: { orderBy: { date: "desc" }, take: 30 },
       grades: { include: { subject: true }, orderBy: { createdAt: "desc" } },
-      feeRecords: { include: { payments: true }, orderBy: { createdAt: "desc" } }
+      feeRecords: { include: { payments: true, scholarship: true }, orderBy: { createdAt: "desc" } },
+      healthRecord: { include: { visits: { orderBy: { date: "desc" }, take: 5 }, vaccinations: { orderBy: { date: "desc" } } } },
     }
   });
 }

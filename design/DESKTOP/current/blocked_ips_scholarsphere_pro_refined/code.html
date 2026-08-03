@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Blocked IPs - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#5B50F5",
+                      "on-primary": "#ffffff",
+                      "background": "#ffffff",
+                      "surface": "#ffffff",
+                      "surface-container": "#F8F8FA",
+                      "surface-container-low": "#FCFCFD",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#E4E4EC",
+                      "on-surface": "#1A1A1E",
+                      "on-surface-variant": "#646470",
+                      "secondary": "#5B50F5",
+                      "error": "#D93025"
+              },
+              "borderRadius": {
+                      "DEFAULT": "4px",
+                      "lg": "8px",
+                      "xl": "12px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "base": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "2xl": "48px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "sans": ["Inter", "sans-serif"],
+                      "body-md": ["Inter", "sans-serif"],
+                      "mono-data": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { background-color: #ffffff; color: #1A1A1E; font-family: 'Inter', sans-serif; }
+        .table-container::-webkit-scrollbar { height: 6px; width: 6px; }
+        .table-container::-webkit-scrollbar-track { background: #F8F8FA; }
+        .table-container::-webkit-scrollbar-thumb { background: #E4E4EC; border-radius: 3px; }
+        .sidebar-active { background-color: #F0EFFF; color: #5B50F5; border-right: 3px solid #5B50F5; font-weight: 600; }
+    </style>
+</head>
+<body class="antialiased flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-white border-r border-outline-variant z-20 flex flex-col py-lg px-md hidden md:flex">
+<!-- Brand -->
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight text-on-surface">ScholarSphere</h1>
+<p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Academic Management</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-sm py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Users &amp; Roles</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="text-sm font-medium">Security Logs</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">System Settings</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="text-sm font-medium">Audit Trail</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2.5 sidebar-active" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">lock_open</span>
+<span class="text-sm">Access Control</span>
+</a>
+</nav>
+<!-- Footer Tabs -->
+<div class="mt-auto border-t border-outline-variant pt-md flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+<span class="text-sm font-medium">Sync Status</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="text-sm font-medium">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area Wrapper -->
+<div class="flex-1 md:ml-[260px] min-h-screen flex flex-col relative bg-white">
+<!-- TopAppBar -->
+<header class="h-[56px] sticky top-0 bg-white border-b border-outline-variant z-10 flex justify-between items-center px-lg">
+<div class="flex items-center gap-md">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center gap-sm bg-surface-container px-3 py-1.5 rounded-full border border-outline-variant focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+<input class="bg-transparent border-none outline-none text-sm text-on-surface placeholder:text-on-surface-variant w-[240px]" placeholder="Global search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<nav class="hidden lg:flex items-center gap-md">
+<a class="text-sm font-semibold text-primary border-b-2 border-primary h-[56px] flex items-center px-1" href="#">Security</a>
+<a class="text-sm font-medium text-on-surface-variant hover:text-on-surface h-[56px] flex items-center px-1" href="#">Logs</a>
+<a class="text-sm font-medium text-on-surface-variant hover:text-on-surface h-[56px] flex items-center px-1" href="#">Admin</a>
+</nav>
+<div class="flex items-center gap-sm">
+<div class="hidden sm:flex items-center gap-xs px-2 py-1 rounded-full border border-outline-variant text-[11px] font-bold text-on-surface-variant uppercase tracking-tight">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    System Status
+                </div>
+<button class="w-9 h-9 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant relative">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-xs">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2tNrtld4VqkgxF3gfn1P0XGfxfoGRQpN4JqCu5TEN0Z2sLDZBg5mH3mntnGP8ArYeen3q_MsXWkuouY9DkgSphVxBCX9us5EkztK8vgKJrBuC3SJpLy21EHUSgXYIOTM3Ck7D27hegEcKTmkt3UDo-XSGpM1jfYlmHptsKaopMhy_4tC4KroCYaozUjoJQ54RbFQ3adbBHeAs-LPoM81MpDoq8Seye4e-vFM38_r_E7YZngW6NCzR-A3t6Qa54Zn9b3yLYA5GNA"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Content -->
+<main class="p-margin-mobile md:p-margin-desktop max-w-[1400px] w-full mx-auto flex flex-col gap-lg">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-xs text-on-surface-variant text-[12px] font-medium uppercase tracking-wider">
+<a class="hover:text-primary transition-colors" href="#">Admin</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Security</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-bold">Blocked IPs</span>
+</div>
+<!-- Page Title & Action -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-md">
+<div>
+<h2 class="text-2xl font-bold text-on-surface tracking-tight">Blocked IP Addresses</h2>
+<p class="text-sm text-on-surface-variant mt-1">Manage and review restricted network addresses to secure system access.</p>
+</div>
+<button class="inline-flex items-center justify-center gap-sm px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded shadow-sm hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]">block</span>
+                Block IP Address
+            </button>
+</div>
+<!-- Summary Card -->
+<div class="max-w-xs">
+<div class="bg-white border border-outline-variant rounded p-lg shadow-sm">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Currently Blocked</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-surface">142</span>
+<span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+2.4%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-white border border-outline-variant rounded shadow-sm overflow-hidden flex flex-col">
+<!-- Toolbar -->
+<div class="p-md border-b border-outline-variant flex flex-col sm:flex-row sm:items-center justify-between gap-md bg-surface-container-low">
+<div class="relative w-full sm:w-[400px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary outline-none transition-all" placeholder="Filter by IP address or reason..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-sm px-3.5 py-2 border border-outline-variant bg-white text-on-surface text-xs font-semibold rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+                        Filter
+                    </button>
+<button class="inline-flex items-center gap-sm px-3.5 py-2 border border-outline-variant bg-white text-on-surface text-xs font-semibold rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Export
+                    </button>
+</div>
+</div>
+<!-- Scrollable Table -->
+<div class="overflow-x-auto table-container">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant">
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">IP Address</th>
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Reason</th>
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Blocked By</th>
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Date Blocked</th>
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Expiry</th>
+<th class="py-3 px-md text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-md font-mono-data text-[13px] text-on-surface">197.251.24.18</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Repeated failed login attempts</td>
+<td class="py-4 px-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGThqgnzLaylL2xGykyVlQd52uD3xlKDBD7cJHcQT-m4PIDNF71R_nn3TMLPi70UUb291MbX4a8y6ml14vXhuDjqdwbKIGc6_hRkL682mmuSwCpvWjZnWQPPFzHHcllL_6kQ1NqQoUXCJj5BP9WCZ7Fbe6HxRY5_I4RJ94GWKJPskblm7WzKQTp9E8gU9iMAvpiLfnxuFK_as0afKbgSGs9k1Wg-Oz1EMhJitmPplhGKpCfJiflyETcdTCJ2pcFGoxeFX7BrVr_A"/>
+<span class="text-[13px] font-medium">E. Mensah</span>
+</div>
+</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Oct 24, 2024</td>
+<td class="py-4 px-md">
+<span class="text-[11px] font-bold text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded uppercase">Never</span>
+</td>
+<td class="py-4 px-md text-right">
+<button class="p-1 hover:bg-surface-container rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-md font-mono-data text-[13px] text-on-surface">45.22.109.4</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Suspicious API scraping activity</td>
+<td class="py-4 px-md">
+<div class="flex items-center gap-2 text-primary font-semibold text-[13px]">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+                                    System Auto
+                                </div>
+</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Oct 24, 2024</td>
+<td class="py-4 px-md text-[13px] text-on-surface-variant">Oct 25, 2024</td>
+<td class="py-4 px-md text-right">
+<button class="p-1 hover:bg-surface-container rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-md font-mono-data text-[13px] text-on-surface">102.164.88.21</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">DDoS mitigation trigger</td>
+<td class="py-4 px-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-vMwODJxDlw1uvrLBYiS_Kk2GWwkeMMkh6huLARVi-8fNC-W8e5B3kD-uCmIldtP0-IkW4qyf6il6A2fBdpO2NGlLacLp5HkOoKwyyQcLhjZq7rafInihVx0amxOC-zdXZR_Xaz_MSucjss9FkO1MMyDp0isA5X66MiG8Sd6ysUmMWPa6W0zudFTQQ-s3BXSw274hwwA4TqboS_Bi55C91wXXwMLJ8JHh22X5eAe6o8MCEea62WByIBvUsnUXMyummpv9xUFdaQ"/>
+<span class="text-[13px] font-medium">K. Osei</span>
+</div>
+</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Oct 23, 2024</td>
+<td class="py-4 px-md">
+<span class="text-[13px] font-semibold text-error">Today, 11:30 PM</span>
+</td>
+<td class="py-4 px-md text-right">
+<button class="p-1 hover:bg-surface-container rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-md font-mono-data text-[13px] text-on-surface">8.8.4.4</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Manual admin investigation</td>
+<td class="py-4 px-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrr1ZW-80LpeO11bNBA4gk3mwrWIRpgGPN6q8pzAVlMrkVsxLM35VkCaczNDG_wwS3Lbi0AvGObj0sh14NDqjfRQ66Urmtd4ztGnlbFhcr6b8yPmfsTyUJFU4Ad__XCX43ytLQoAxy4thTPkUFpYjn9yulgIqgdMjUKl98p5_ewYOXsUxsmjHy1Pwywg1e1pB58FNsA60ATYqDUomv_9xInZsGxbQiBwfc-Br6CY0CtITdSgMZCMa67Q0CkDS-EhQS1fkFfqG3gA"/>
+<span class="text-[13px] font-medium">E. Mensah</span>
+</div>
+</td>
+<td class="py-4 px-md text-sm text-on-surface-variant">Oct 21, 2024</td>
+<td class="py-4 px-md">
+<span class="text-[11px] font-bold text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded uppercase">Never</span>
+</td>
+<td class="py-4 px-md text-right">
+<button class="p-1 hover:bg-surface-container rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-md py-3 bg-white border-t border-outline-variant flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Showing <span class="font-bold text-on-surface">1-4</span> of <span class="font-bold text-on-surface">142</span> records</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded border border-primary bg-primary text-white text-xs font-bold flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded border border-outline-variant text-on-surface-variant text-xs font-medium flex items-center justify-center hover:bg-surface-container">2</button>
+<button class="w-8 h-8 rounded border border-outline-variant text-on-surface-variant text-xs font-medium flex items-center justify-center hover:bg-surface-container">3</button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

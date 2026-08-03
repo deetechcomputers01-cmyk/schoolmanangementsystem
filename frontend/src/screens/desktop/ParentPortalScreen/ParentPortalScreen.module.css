@@ -1,25 +1,182 @@
-﻿/**
- * ParentPortalScreen.module.css — scoped to ParentPortalScreen only.
- * DESIGN PENDING — Stitch "Institutional Excellence" desktop spec.
- * All visual values come from tokens.css custom properties.
- */
+﻿/* ParentPortalScreen.module.css */
 
 .root {
-  width: 100%;
-  min-height: 100%;
-  /* Design fills: background, padding */
-}
-
-/* ── Placeholder (remove when Stitch design is applied) ── */
-.placeholder {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  padding: var(--sp-10);
-  min-height: 60vh;
-  opacity: 0.5;
+  gap: 20px;
+  background: transparent;
+  min-height: 100%;
 }
-.label  { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
-.hint   { font-size: var(--text-sm); }
+
+/* ── No-link state ───────────────────────────────────────────────────────── */
+.noLink {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; min-height: 60vh; gap: 12px;
+}
+.noLinkIcon {
+  width: 64px; height: 64px; border-radius: 4px;
+  background: #fff8f1; display: flex; align-items: center; justify-content: center;
+  color: #653e00;
+}
+.noLinkTitle { font-size: var(--text-xl); font-weight: 700; color: #141d23; margin: 4px 0 0; }
+.noLinkText  { font-size: var(--text-sm); color: #41484b; max-width: 340px; line-height: 1.6; }
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+.pageHeader { padding: 20px 24px 0; }
+.breadcrumb {
+  display: flex; align-items: center; gap: 4px;
+  font-size: var(--text-xs); color: #41484b; margin-bottom: 6px;
+}
+.breadcrumbSep { color: #c1c7cb; }
+.breadcrumbActive { color: #073543; font-weight: 600; }
+.pageTitle { font-size: var(--text-2xl); font-weight: 700; color: #141d23; margin: 0 0 2px; }
+.pageSubtitle { font-size: var(--text-xs); color: #41484b; margin: 0; }
+
+/* ── Main grid: center + right ───────────────────────────────────────────── */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  padding: 0 24px 24px;
+  flex: 1;
+  align-items: start;
+}
+@media (max-width: 1024px) { .mainGrid { grid-template-columns: 1fr; } }
+
+/* ── Center ──────────────────────────────────────────────────────────────── */
+.center { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── Child card ──────────────────────────────────────────────────────────── */
+.childCard {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: #ffffff; border: 1px solid #c1c7cb; border-radius: 4px; padding: 20px;
+  flex-wrap: wrap;
+}
+.childCard:hover { background: #fafafa; }
+.childInfo { display: flex; align-items: center; gap: 16px; }
+.childAvatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #073543; color: #ffffff; font-size: var(--text-lg); font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  border: 2px solid #073543;
+}
+.childName {
+  font-size: var(--text-lg); font-weight: 700; color: #141d23; margin: 0 0 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.classBadge {
+  font-size: var(--text-xs); font-weight: 600; color: #486647;
+  background: #c9ecc5; border-radius: 4px; padding: 2px 8px;
+}
+.childMeta { font-size: var(--text-xs); color: #41484b; margin: 0; }
+.childTabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.childTab {
+  padding: 6px 12px; border-radius: 4px; border: 1px solid #c1c7cb;
+  font-size: var(--text-xs); font-weight: 600; color: #41484b; background: transparent; cursor: pointer;
+}
+.childTabActive { background: rgba(7,53,67,0.08); color: #073543; border-color: rgba(7,53,67,0.2); }
+
+/* ── Stats row ───────────────────────────────────────────────────────────── */
+.statsRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.statCard {
+  background: #ffffff; border: 1px solid #c1c7cb; border-radius: 4px; padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.statTop { display: flex; align-items: flex-start; justify-content: space-between; }
+.statBadgeGreen {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: var(--text-xs); font-weight: 600; color: #486647;
+}
+.statBadgeDue {
+  font-size: var(--text-xs); font-weight: 700; color: #ba1a1a;
+  background: rgba(186,26,26,0.08); padding: 2px 6px; border-radius: 4px;
+}
+.statLabel { font-size: var(--text-xs); font-weight: 600; color: #41484b; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 6px; }
+.statValue { font-size: var(--text-3xl); font-weight: 700; color: #141d23; line-height: 1; font-variant-numeric: tabular-nums; margin: 0; }
+.statValueRed { color: #ba1a1a; }
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs { display: flex; border-bottom: 1px solid #c1c7cb; }
+.tab {
+  padding: 10px 16px; font-size: var(--text-sm); font-weight: 500;
+  color: #41484b; background: none; border: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer;
+}
+.tab:hover { color: #141d23; }
+.tabActive { color: #073543; font-weight: 600; border-bottom-color: #073543; }
+
+/* ── Overview grid ───────────────────────────────────────────────────────── */
+.overviewGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .overviewGrid { grid-template-columns: 1fr; } }
+
+/* ── Info card ───────────────────────────────────────────────────────────── */
+.infoCard {
+  background: #ffffff; border: 1px solid #c1c7cb; border-radius: 4px; padding: 20px;
+}
+.infoCardHead {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.infoCardTitle { font-size: var(--text-xs); font-weight: 700; color: #141d23; }
+.infoCardRef { font-size: var(--text-xs); color: #41484b; }
+
+/* ── Invoice ─────────────────────────────────────────────────────────────── */
+.invoiceRows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.invoiceRow { display: flex; justify-content: space-between; font-size: var(--text-xs); color: #41484b; }
+.invoiceDivider { height: 1px; background: #e8e8e8; margin: 8px 0; }
+.invoiceBalance {
+  display: flex; justify-content: space-between; font-size: var(--text-sm); font-weight: 600;
+  color: #141d23; margin-bottom: 14px;
+}
+.payBtn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px; background: #073543; color: #ffffff;
+  border: none; border-radius: 4px; font-size: var(--text-sm); font-weight: 600; cursor: pointer;
+}
+.payBtn:hover { background: #0a4555; }
+
+/* ── Teacher notes ───────────────────────────────────────────────────────── */
+.notesList { display: flex; flex-direction: column; gap: 12px; }
+.noteItem { display: flex; gap: 10px; align-items: flex-start; }
+.noteAvatar {
+  width: 30px; height: 30px; border-radius: 50%; background: #c1c7cb;
+  color: #141d23; font-size: var(--text-xs); font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.noteTeacher { font-size: var(--text-xs); font-weight: 700; color: #141d23; margin: 0 0 3px; }
+.noteText { font-size: var(--text-xs); color: #41484b; line-height: 1.5; margin: 0; }
+
+/* ── Right panel ─────────────────────────────────────────────────────────── */
+.rightPanel { display: flex; flex-direction: column; gap: 16px; }
+.panelCard {
+  background: #ffffff; border: 1px solid #c1c7cb; border-radius: 4px; padding: 16px;
+}
+.panelTitle { font-size: var(--text-xs); font-weight: 700; color: #141d23; margin: 0 0 12px; }
+
+/* ── Quick actions ───────────────────────────────────────────────────────── */
+.quickActions { display: flex; flex-direction: column; gap: 8px; }
+.actionBtn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px 14px; background: #073543; color: #ffffff;
+  border: none; border-radius: 4px; font-size: var(--text-xs); font-weight: 600; cursor: pointer;
+}
+.actionBtn:hover { background: #0a4555; }
+.actionBtnOutline {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 9px 14px; background: #ffffff; color: #141d23;
+  border: 1px solid #c1c7cb; border-radius: 4px; font-size: var(--text-xs); font-weight: 500; cursor: pointer;
+}
+.actionBtnOutline:hover { background: #f5f5f5; }
+
+/* ── Guardian profile ────────────────────────────────────────────────────── */
+.profileRows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.profileRow { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-xs); }
+.profileKey { color: #41484b; }
+.profileVal { color: #141d23; font-weight: 500; text-align: right; }
+.statusBadge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: var(--text-xs); font-weight: 600; color: #486647;
+}
+.updateLink {
+  font-size: var(--text-xs); font-weight: 600; color: #073543;
+  background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;
+}

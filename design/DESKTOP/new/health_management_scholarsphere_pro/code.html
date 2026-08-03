@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sick Bay Management - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#5B50F5",
+                        secondary: "#3B92E8",
+                        border: "#E4E4EC",
+                        background: "#F7F9FB",
+                        "text-main": "#111827",
+                        "text-muted": "#6B7280"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "4px",
+                        "md": "4px",
+                        "lg": "4px",
+                        "xl": "4px"
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-text-main font-sans antialiased flex h-screen overflow-hidden text-sm">
+<!-- Sidebar -->
+<aside class="w-[260px] flex-shrink-0 border-r border-border bg-white flex flex-col h-full z-20">
+<!-- Brand -->
+<div class="h-[56px] border-b border-border flex items-center px-4 shrink-0">
+<div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold mr-3">
+            SS
+        </div>
+<div class="flex flex-col">
+<span class="text-sm font-bold truncate">ScholarSphere Pro</span>
+<span class="text-[10px] text-text-muted uppercase tracking-wider font-semibold">School Management</span>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex-1 overflow-y-auto px-2 py-4 space-y-1 scrollbar-hide">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+            Dashboard
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+            Students
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+            Staff
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">event_available</span>
+            Attendance
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+            Gradebook
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+            Timetable
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">event_note</span>
+            Academic Calendar
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+            Reports
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+            Report Cards
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+            Fees &amp; Payments
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-primary/10 text-primary font-semibold transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+            Health
+        </a>
+</div>
+<!-- Footer Nav -->
+<div class="p-2 border-t border-border space-y-1 shrink-0">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+            Settings
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-text-muted hover:bg-gray-50 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+            Support
+        </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- Topbar -->
+<header class="h-[56px] border-b border-border bg-white flex items-center justify-between px-6 shrink-0 z-10">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-text-muted">Health</span>
+<span class="material-symbols-outlined text-[16px] text-text-muted">chevron_right</span>
+<span class="font-bold">Sick Bay</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-text-muted hover:text-text-main transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-text-muted hover:text-text-main transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<button class="text-text-muted hover:text-text-main transition-colors">
+<span class="material-symbols-outlined text-[20px]">apps</span>
+</button>
+<div class="h-6 w-px bg-border mx-2"></div>
+<div class="flex items-center gap-2 cursor-pointer">
+<img alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover border border-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6LuWqzM_hjNU_idn25egid-njZpI-86ADb9r7Gc_kQ4X1iOi_BYb9bqSX08BZ8J9XuZGBcrYAsSvig_nYkk9NOiJ0Xh0ogtbk87bJ9hcZ-ol19NTqwGtYj0etZ-ODB2zwtdwo7dUyv5pyQIsAuh0qzbNoUoiIL9ZlTjCrH7y6nIZQBc-nn1D0KrCP7NgRdY9uHwTwRmE0en2iERVKXAUgiduaM_VG2k2ZmBzeR9ln0QkadzRvXg0VXGTd2PpnjTjTD9OdITdygQ"/>
+<span class="text-sm font-semibold hidden md:block">Admin. Mensah</span>
+</div>
+</div>
+</header>
+<!-- Main Scrollable Area -->
+<main class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Page Header -->
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-2xl font-bold text-text-main">Sick Bay Management</h1>
+<p class="text-text-muted">Monitor current cases and manage student health records.</p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded flex items-center gap-2 text-sm font-semibold hover:bg-opacity-90 shadow-sm transition-all">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+                Log Sick Visit
+            </button>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-white border border-border rounded p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs text-text-muted font-bold uppercase tracking-wider">Visits Today</span>
+<div class="w-8 h-8 bg-primary/10 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">group</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<h3 class="text-2xl font-bold">12</h3>
+<span class="text-xs font-semibold text-green-600 flex items-center">
+<span class="material-symbols-outlined text-[12px]">arrow_upward</span> 2
+                    </span>
+</div>
+</div>
+<div class="bg-white border border-border rounded p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs text-text-muted font-bold uppercase tracking-wider">Queue / Consult</span>
+<div class="w-8 h-8 bg-primary/10 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<h3 class="text-2xl font-bold">4</h3>
+<span class="text-xs text-text-muted font-medium">Students waiting</span>
+</div>
+</div>
+<div class="bg-white border border-border rounded p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs text-text-muted font-bold uppercase tracking-wider">Vax Due This Month</span>
+<div class="w-8 h-8 bg-primary/10 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">vaccines</span>
+</div>
+</div>
+<div>
+<h3 class="text-2xl font-bold">28</h3>
+</div>
+</div>
+<div class="bg-white border border-border rounded p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs text-text-muted font-bold uppercase tracking-wider text-red-600">Medical Alerts</span>
+<div class="w-8 h-8 bg-red-100 text-red-600 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<h3 class="text-2xl font-bold text-red-600">15</h3>
+<span class="text-xs text-red-600 font-semibold">Action req.</span>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Two Column -->
+<div class="grid grid-cols-3 gap-6">
+<!-- Left Column: Sick Bay Queue -->
+<div class="col-span-2 space-y-6">
+<div class="bg-white border border-border rounded overflow-hidden">
+<div class="p-4 border-b border-border flex justify-between items-center">
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-text-main">Sick Bay Queue</h3>
+<span class="bg-gray-100 text-text-muted text-[10px] px-2 py-0.5 rounded font-bold">8 ACTIVE</span>
+</div>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-[18px] text-text-muted">search</span>
+<input class="border border-border rounded pl-8 pr-3 py-1 text-xs focus:ring-primary focus:border-primary w-48" placeholder="Search..." type="text"/>
+</div>
+<button class="border border-border rounded p-1.5 flex items-center text-text-muted hover:bg-gray-50">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-gray-50 text-[11px] uppercase text-text-muted border-b border-border font-bold tracking-wider">
+<tr>
+<th class="px-4 py-3">Student</th>
+<th class="px-4 py-3">Complaint</th>
+<th class="px-4 py-3">Triage</th>
+<th class="px-4 py-3">Status</th>
+<th class="px-4 py-3">Vitals</th>
+<th class="px-4 py-3">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="bg-primary/5 hover:bg-primary/10 cursor-pointer transition-colors border-l-4 border-l-primary">
+<td class="px-4 py-3">
+<div class="flex items-center gap-3">
+<img alt="Kofi Mensah" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAendhBN88GgzJkI_oqA0L_7l96f8e1lIOKZNeWCMzGKnDlSDlWWHIecdeJQngxJjCAFxrYol0mqDeWX7DCToR0VR1fegzJjBGikSf0jXB2-gB3d1McpVlSV3EPwGnN4dZ0i62A9FRqJubGbrlc87Uy-19KItyh6hrXfL51IZt3sPyBT08Oba6zS0hQ5GNbYJoxZ6rE5OEun1J7DohJXvGSFE3OAJeanjbyHAaT0hOHjmCPM6AzbwxA46YH3n9eCEcD0L2nklS15w"/>
+<div>
+<p class="font-bold text-primary">Kofi Mensah</p>
+<p class="text-[10px] text-text-muted">JHS 1A • #2034</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-3">Fever &amp; Headache</td>
+<td class="px-4 py-3">
+<span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tight">Urgent</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1 text-text-muted">
+<span class="material-symbols-outlined text-[14px]">local_hospital</span>
+<span class="text-xs">In Consult</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<p class="text-red-600 font-bold font-mono">38.5°C</p>
+</td>
+<td class="px-4 py-3">
+<button class="text-primary font-bold hover:underline text-[11px]">MANAGE</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-4 py-3">
+<div class="flex items-center gap-3">
+<img alt="Ama Serwaa" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc57LpVKoMuMXKVLIHci3dkzLjCIJ4jkuXBeor0J469vXJ97zwW_BhVlzXJfHZOUZPSMqZYSWQ86whUxg5FB68sGh4NnTkhPjUH0cGqtH-kfDxVABgRGXk9Bi-BJNHUUa0P1iiP7IpNr9WpUe9yOhv5DWAVFsQuZRzg5jYduvGsMJ-iecIHO3lbuCtUt5Nv2CGb3_7YUHrENGxV_wSCAsKJZ205ORhLEMAsDhEnt9HSxajO3Mh9nVf7B1wrKHQz9uMy2I5Lup2Hg"/>
+<div>
+<p class="font-bold">Ama Serwaa</p>
+<p class="text-[10px] text-text-muted">Primary 4C • #1092</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-3">Stomach Ache</td>
+<td class="px-4 py-3">
+<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tight">Routine</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1 text-text-muted">
+<span class="material-symbols-outlined text-[14px]">airline_seat_recline_normal</span>
+<span class="text-xs">Waiting</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<p class="text-text-muted font-mono">36.8°C</p>
+</td>
+<td class="px-4 py-3">
+<button class="text-primary font-bold hover:underline text-[11px]">MANAGE</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-200 text-text-muted flex items-center justify-center font-bold text-xs">EO</div>
+<div>
+<p class="font-bold">Emmanuel Osei</p>
+<p class="text-[10px] text-text-muted">SHS 2 • #4421</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-3">Sports Injury - Knee</td>
+<td class="px-4 py-3">
+<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tight">Emergency</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1 text-green-600">
+<span class="material-symbols-outlined text-[14px]">medication</span>
+<span class="text-xs font-medium">Meds Due</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<p class="text-text-main font-bold font-mono">37.1°C</p>
+</td>
+<td class="px-4 py-3">
+<button class="text-primary font-bold hover:underline text-[11px]">MANAGE</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 border-t border-border flex justify-between items-center bg-gray-50">
+<span class="text-[11px] text-text-muted font-medium">Showing 1-3 of 8 active records</span>
+<div class="flex gap-1">
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border text-text-muted hover:bg-white disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border text-text-muted hover:bg-white">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Student Health Focus -->
+<div class="col-span-1 space-y-6">
+<!-- Focus Profile Card -->
+<div class="bg-white border border-border rounded overflow-hidden">
+<div class="bg-primary/5 p-4 flex items-center gap-4 border-b border-border">
+<div class="relative">
+<img alt="Kofi Mensah" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWVH4EdG_DUqQFKzItqiwgKqlLJD9UQCXttqSA48PorSWkr3YqVZfrOn7iZZeS-iJpTq2BhMG_o_yZ0kFHo9v9PpfTxuPx5-3tvTCIi3O7x31DSUuvCuxd7P7Pp_lp8YR6lfcQLVvNS_JOs4PD6hAeJS1VwrkWXnmqrcR_bLCkmK-RjrzNWj1ZzH1XffFdxKleze53HHplaWcr4a06VpoOw5UM2gM8dH8i6TI3fBEcHaZA89OF_Fj-XRQ7JsX_7jKGZ2Ri0-IRrA"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[10px]">priority_high</span>
+</span>
+</div>
+<div>
+<h3 class="font-bold text-lg leading-tight">Kofi Mensah</h3>
+<p class="text-xs text-text-muted">JHS 1A • Male • 13 yrs</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px] font-bold border border-red-100 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">bloodtype</span> O+
+                                </span>
+</div>
+</div>
+</div>
+<div class="p-4 space-y-5">
+<!-- Critical Info -->
+<div>
+<h4 class="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-red-600">health_and_safety</span>
+                                Critical Info
+                            </h4>
+<div class="bg-red-50 border border-red-100 rounded p-3">
+<p class="text-xs font-bold text-red-700">Allergies: Peanuts</p>
+<p class="text-[10px] text-red-600 font-medium mt-1 leading-relaxed italic">SEVERE - EPI-PEN REQ. ALWAYS. INHALER KEPT IN ADMIN OFFICE.</p>
+</div>
+</div>
+<!-- Emergency Contact -->
+<div>
+<h4 class="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">contact_emergency</span>
+                                Emergency Contact
+                            </h4>
+<div class="flex items-center justify-between border border-border p-3 rounded">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-[10px] font-bold">DM</div>
+<div>
+<p class="text-xs font-bold">Daniel Mensah</p>
+<p class="text-[10px] text-text-muted">Father • +233 24 123 4567</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+</div>
+<!-- Vaccinations -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">vaccines</span>
+                                    Vaccinations
+                                </h4>
+<a class="text-[10px] font-bold text-primary hover:underline uppercase" href="#">View All</a>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded bg-gray-50 border border-border">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-600 text-[16px]">check_circle</span>
+<span class="text-[11px] font-semibold">BCG Vaccine</span>
+</div>
+<span class="text-[10px] text-text-muted">May 2010</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-gray-50 border border-border">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-600 text-[16px]">check_circle</span>
+<span class="text-[11px] font-semibold">Yellow Fever</span>
+</div>
+<span class="text-[10px] text-text-muted">Jun 2022</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded border border-red-200 bg-red-50/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-600 text-[16px]">cancel</span>
+<span class="text-[11px] font-bold text-red-600">Meningitis</span>
+</div>
+<span class="text-[10px] font-bold text-red-600 uppercase">OVERDUE</span>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full bg-text-main text-white py-2 rounded text-[11px] font-bold uppercase tracking-widest hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">history_edu</span>
+                                Full Medical History
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

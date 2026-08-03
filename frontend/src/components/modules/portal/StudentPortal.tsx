@@ -1,11 +1,12 @@
 ﻿import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { currency, gradeFromScore } from "@backend/utils";
+import { currency, gradeFromScore, type GradeBand } from "@backend/utils";
 import {
   BookOpen, CalendarDays, CheckCircle2, GraduationCap,
-  Receipt, XCircle, AlertCircle, Clock
+  Receipt, XCircle, AlertCircle, Clock, ClipboardList
 } from "lucide-react";
+import { OnlineExamsWidget } from "./OnlineExamsWidget";
 
 type Props = { data: Awaited<ReturnType<typeof import("@backend/services/portal.service").getStudentPortalData>> };
 
@@ -19,7 +20,7 @@ const statusIcon: Record<string, React.ReactNode> = {
 };
 
 export function StudentPortal({ data }: Props) {
-  const { student, activeTerm, attendance, grades, examScores, feeRecords } = data;
+  const { student, activeTerm, attendance, grades, examScores, feeRecords, gradingScale } = data;
 
   const present  = attendance.filter((a) => a.status === "present").length;
   const total    = attendance.length;
@@ -98,7 +99,7 @@ export function StudentPortal({ data }: Props) {
                 {grades.map((g) => {
                   const exam  = examMap[g.subjectId] ?? null;
                   const total = exam !== null ? Math.round(g.score * 0.3 + exam * 0.7) : g.score;
-                  const grade = gradeFromScore(total);
+                  const grade = gradeFromScore(total, 100, gradingScale as GradeBand[]);
                   return (
                     <tr key={g.id}>
                       <td className="py-2 font-semibold text-navy">{g.subject.name}</td>
@@ -171,6 +172,9 @@ export function StudentPortal({ data }: Props) {
           </div>
         </Card>
       )}
+
+      {/* Online Exams */}
+      <OnlineExamsWidget />
 
       {/* Fees */}
       {feeRecords.length > 0 && (

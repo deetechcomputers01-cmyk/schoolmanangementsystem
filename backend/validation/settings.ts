@@ -1,5 +1,55 @@
 import { z } from "zod";
 
+const extraSchema = z.object({
+  gesCode: z.string().max(50).optional(),
+  schoolType: z.string().max(100).optional(),
+  headteacher: z.string().max(200).optional(),
+  region: z.string().max(100).optional(),
+  district: z.string().max(100).optional(),
+  website: z.string().max(200).optional(),
+  term1Start: z.string().optional(),
+  term1End: z.string().optional(),
+  term2Start: z.string().optional(),
+  term2End: z.string().optional(),
+  term3Start: z.string().optional(),
+  term3End: z.string().optional(),
+  primaryColor: z.string().max(20).optional(),
+  accentColor: z.string().max(20).optional(),
+  currency: z.string().max(10).optional(),
+  latePaymentPenalty: z.number().optional(),
+  gracePeriod: z.number().optional(),
+  invoiceAutoSend: z.string().optional(),
+  minAttendanceRate: z.number().optional(),
+  alertThreshold: z.number().optional(),
+  lateArrivalCutoff: z.number().optional(),
+  minPassMark: z.number().optional(),
+  distinctionThreshold: z.number().optional(),
+  term1Weight: z.number().optional(),
+  term2Weight: z.number().optional(),
+  term3Weight: z.number().optional(),
+  minPasswordLength: z.number().optional(),
+  sessionTimeout: z.number().optional(),
+  passwordResetPolicy: z.string().optional(),
+  feeReminders: z.boolean().optional(),
+  attendanceAlerts: z.boolean().optional(),
+  examResultNotifications: z.boolean().optional(),
+  staffAnnouncements: z.boolean().optional(),
+  syncInterval: z.number().optional(),
+  cacheSizeMb: z.number().optional(),
+  offlineModeEnabled: z.boolean().optional(),
+  smsProvider: z.string().optional(),
+  smsApiKey: z.string().optional(),
+  paymentGateway: z.string().optional(),
+  paymentApiKey: z.string().optional(),
+}).optional();
+
+const gradingScaleSchema = z.array(z.object({
+  grade:  z.string().min(1).max(10),
+  min:    z.number().min(0).max(100),
+  max:    z.number().min(0).max(100),
+  remark: z.string().max(100).optional(),
+})).min(1).optional();
+
 export const updateSettingsSchema = z.object({
   name:         z.string().min(1).max(200).optional(),
   address:      z.string().max(500).optional(),
@@ -8,5 +58,7 @@ export const updateSettingsSchema = z.object({
   email:        z.string().email().optional().or(z.literal("")),
   logoUrl:      z.string().url().optional().or(z.literal("")),
   reportFooter: z.string().max(500).optional(),
-  timezone:     z.string().max(60).optional()
+  timezone:     z.string().max(60).optional(),
+  extra:        extraSchema,
+  gradingScale: gradingScaleSchema,
 });

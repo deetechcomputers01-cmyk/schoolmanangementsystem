@@ -1,13 +1,19 @@
-﻿/**
- * report-cards/page.tsx — entry point for /report-cards.
- */
-import { headers } from "next/headers";
-import { getDeviceType } from "@/lib/device";
-import { ReportCardsScreen }        from "@/screens/desktop/ReportCardsScreen/ReportCardsScreen";
-import { MobileReportCardsScreen }  from "@/screens/mobile/MobileReportCardsScreen/MobileReportCardsScreen";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@backend/auth/cookies";
+import { prisma } from "@backend/prisma";
+import { ReportCardsScreen } from "@/screens/desktop/ReportCardsScreen/ReportCardsScreen";
 
-export default function ReportCardsPage() {
-  const ua     = headers().get("user-agent") ?? "";
-  const device = getDeviceType(ua);
-  return device === "mobile" ? <MobileReportCardsScreen /> : <ReportCardsScreen />;
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+
+  if (user.role === "student") {
+    const student = await prisma.student.findFirst({ where: { userId: user.id }, select: { id: true } });
+    if (student) redirect(`/report-cards/${student.id}`);
+    redirect("/dashboard");
+  }
+
+  return <ReportCardsScreen />;
 }

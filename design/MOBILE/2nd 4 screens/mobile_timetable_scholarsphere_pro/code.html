@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Mobile Timetable - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#faf9ff",
+                        "secondary-container": "#55a7fe",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#b34b00",
+                        "on-tertiary-container": "#ffe8de",
+                        "inverse-surface": "#2e3036",
+                        "secondary": "#0061a7",
+                        "secondary-fixed-dim": "#a1c9ff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#003b69",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f8",
+                        "surface-container": "#ededf5",
+                        "surface-container-highest": "#e2e2ea",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-error-container": "#93000a",
+                        "primary": "#4131dc",
+                        "secondary-fixed": "#d2e4ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191b21",
+                        "inverse-primary": "#c3c0ff",
+                        "on-secondary-fixed": "#001c37",
+                        "primary-container": "#5b50f5",
+                        "surface-tint": "#4e41e8",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "on-primary-fixed": "#100069",
+                        "tertiary": "#8c3900",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "outline-variant": "#c7c4d8",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2ea",
+                        "on-primary-container": "#edeaff",
+                        "surface-container-high": "#e7e7ef",
+                        "surface": "#faf9ff",
+                        "outline": "#777587",
+                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d9d9e1",
+                        "surface-container-low": "#f3f3fb",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#e3dfff",
+                        "on-primary-fixed-variant": "#341dd1",
+                        "background": "#faf9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191b21",
+                        "on-secondary-fixed-variant": "#00487f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Mobile Specific Overrides */
+        body { max-width: 390px; margin: 0 auto; min-height: 100vh; overflow-x: hidden; position: relative; background-color: #e7e7ef; }
+        .mobile-container { background-color: #faf9ff; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .timeline-line { position: absolute; left: 16px; top: 0; bottom: 0; width: 2px; background-color: #c7c4d8; z-index: 0; }
+        .timeline-dot { position: absolute; left: -5px; top: 12px; width: 12px; height: 12px; border-radius: 50%; z-index: 1; border: 2px solid #faf9ff; }
+        
+        /* Bottom Sheet Animation */
+        .bottom-sheet { transform: translateY(100%); transition: transform 0.3s ease-in-out; }
+        .bottom-sheet.active { transform: translateY(0); }
+        
+        /* Hide scrollbar for segmented control */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-high text-on-surface font-body-md antialiased">
+<div class="mobile-container pb-[80px]"> <!-- PB for bottom nav -->
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm fixed top-0 w-full max-w-[390px] z-50">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+<div class="flex-1 px-4 text-center">
+<h1 class="font-title-lg text-title-lg font-bold text-primary-container truncate">Timetable</h1>
+</div>
+<div class="flex items-center gap-xs">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_month</span>
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant active:scale-95 duration-150">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5IYGZmBdi2NlJ6AbJlnhn_iH_hslUPiBuHvw5WCPHb3ktVlQsTJ7OG98nTCl_n8rhkpcgAjd2qekXPx7Zr8S3fFlE7FMnY6C7S4kv4QPGWX_GpZb-NiWwbKfKqDJywnd6tMW9PC_vx8jAWwZEgouH2IalGZ-dQcanGX7DzZvnKXLUQ-8seF9fwKULMU6arS7Kh3FOJIAg8gH23RKcumBxoaLPBj1kOPxabo5lLhC6412nhdppWRZd9CpdZuBpnsNjckk8UtHA0g"/>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-16 px-margin-mobile">
+<!-- Header Card (Filters) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md mt-sm shadow-sm">
+<div class="grid grid-cols-2 gap-sm mb-sm">
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 text-label-md font-label-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container pr-8">
+<option>Basic 6</option>
+<option>Basic 7</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 text-label-md font-label-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container pr-8">
+<option>Term 1</option>
+<option>Term 2</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 text-label-md font-label-md text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container pr-8">
+<option>All Teachers</option>
+<option>Mr. Acheampong</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Day Selector (Segmented Control) -->
+<div class="mt-md flex space-x-2 overflow-x-auto no-scrollbar pb-sm">
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg bg-surface border border-outline-variant text-on-surface-variant active:scale-95 transition-transform">
+<span class="text-label-md font-label-md">Mon</span>
+<span class="text-title-lg font-title-lg font-bold">12</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg bg-primary-container text-on-primary border border-primary-container shadow-sm active:scale-95 transition-transform">
+<span class="text-label-md font-label-md">Tue</span>
+<span class="text-title-lg font-title-lg font-bold">13</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg bg-surface border border-outline-variant text-on-surface-variant active:scale-95 transition-transform">
+<span class="text-label-md font-label-md">Wed</span>
+<span class="text-title-lg font-title-lg font-bold">14</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg bg-surface border border-outline-variant text-on-surface-variant active:scale-95 transition-transform">
+<span class="text-label-md font-label-md">Thu</span>
+<span class="text-title-lg font-title-lg font-bold">15</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg bg-surface border border-outline-variant text-on-surface-variant active:scale-95 transition-transform">
+<span class="text-label-md font-label-md">Fri</span>
+<span class="text-title-lg font-title-lg font-bold">16</span>
+</button>
+</div>
+<!-- Overview Card -->
+<div class="mt-sm bg-secondary-fixed rounded-xl p-md flex items-center justify-between border border-outline-variant">
+<div>
+<h3 class="text-title-lg font-title-lg text-on-secondary-fixed-variant">6 periods, 2 breaks</h3>
+<p class="text-label-md font-label-md text-on-secondary-fixed-variant opacity-80 mt-xs">Next: Mathematics at 9:00 AM</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+</div>
+<!-- Timeline -->
+<div class="mt-lg relative pl-8 pb-xl">
+<div class="timeline-line"></div>
+<!-- Block 1 (Completed) -->
+<div class="relative mb-lg opacity-60">
+<div class="timeline-dot bg-outline"></div>
+<div class="bg-surface-container rounded-xl p-md border border-outline-variant flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">08:00 - 08:45</span>
+<span class="bg-surface-dim px-2 py-1 rounded text-label-md font-label-md text-on-surface-variant">Completed</span>
+</div>
+<h4 class="text-body-lg font-body-lg font-semibold text-on-surface">English Language</h4>
+<div class="flex items-center gap-2 mt-xs text-on-surface-variant text-body-md font-body-md">
+<span class="material-symbols-outlined text-sm">group</span> Basic 6A
+                            <span class="material-symbols-outlined text-sm ml-2">door_open</span> Room 101
+                        </div>
+</div>
+</div>
+<!-- Block 2 (Current) -->
+<div class="relative mb-lg">
+<div class="timeline-dot bg-primary-container"></div>
+<div class="bg-surface-container-lowest rounded-xl p-md border-2 border-primary-container shadow-sm flex flex-col cursor-pointer active:scale-[0.98] transition-transform" onclick="document.getElementById('bottomSheet').classList.add('active'); document.getElementById('scrim').classList.remove('hidden');">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-md font-label-md text-primary-container font-bold">09:00 - 09:45</span>
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-40"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-container"></span>
+</span>
+</div>
+<h4 class="text-body-lg font-body-lg font-semibold text-on-surface">Mathematics</h4>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Mr. Acheampong</p>
+<div class="flex items-center gap-2 mt-sm text-on-surface-variant text-body-md font-body-md bg-surface-container-low p-2 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary-container">group</span> Basic 6A
+                            <span class="material-symbols-outlined text-sm ml-2 text-primary-container">door_open</span> Room 102
+                        </div>
+</div>
+</div>
+<!-- Break -->
+<div class="relative mb-lg py-sm">
+<div class="timeline-dot bg-surface-variant border-surface-variant"></div>
+<div class="flex items-center text-on-surface-variant border-t border-dashed border-outline-variant pt-sm">
+<span class="material-symbols-outlined mr-2">local_cafe</span>
+<span class="text-body-md font-body-md italic">09:45 - 10:00 • Morning Break</span>
+</div>
+</div>
+<!-- Block 3 (Conflict) -->
+<div class="relative mb-lg">
+<div class="timeline-dot bg-error"></div>
+<div class="bg-error-container rounded-xl p-md border border-error bg-opacity-30 flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-md font-label-md text-error font-bold">10:00 - 10:45</span>
+</div>
+<h4 class="text-body-lg font-body-lg font-semibold text-on-surface">Integrated Science</h4>
+<div class="flex items-center gap-2 mt-sm text-on-surface-variant text-body-md font-body-md">
+<span class="material-symbols-outlined text-sm">group</span> Basic 6A
+                        </div>
+<div class="mt-sm bg-surface-container-lowest border border-error rounded p-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+<span class="text-label-md font-label-md text-error">Teacher double-booked</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-sm mb-lg">
+<button class="flex-1 bg-primary-container text-on-primary rounded-lg py-3 text-label-md font-label-md font-bold shadow-sm active:bg-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Period
+                </button>
+<button class="flex-1 bg-surface-container text-on-surface rounded-lg py-3 border border-outline-variant text-label-md font-label-md font-bold shadow-sm active:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Week
+                </button>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="bg-surface border-t border-outline-variant shadow-lg fixed bottom-0 w-full max-w-[390px] z-50 rounded-t-xl">
+<div class="flex justify-around items-center h-20 w-full px-xs pb-safe">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">event_available</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary rounded-full px-4 py-1 hover:bg-primary transition-colors active:opacity-80 duration-100">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">calendar_view_day</span>
+<span class="font-label-md text-label-md">Timetable</span>
+</button>
+</div>
+</nav>
+<!-- Scrim -->
+<div class="fixed inset-0 bg-on-surface bg-opacity-40 z-[60] hidden transition-opacity" id="scrim" onclick="document.getElementById('bottomSheet').classList.remove('active'); this.classList.add('hidden');"></div>
+<!-- Bottom Sheet Interaction Overlay -->
+<div class="bottom-sheet fixed bottom-0 left-0 w-full max-w-[390px] bg-surface-container-lowest rounded-t-xl z-[70] p-md shadow-[0_-8px_16px_rgba(20,29,35,0.1)] mx-auto right-0" id="bottomSheet">
+<div class="w-12 h-1 bg-outline-variant rounded-full mx-auto mb-md"></div>
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface mb-xs">Mathematics</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-md border-b border-outline-variant pb-md">09:00 - 09:45 • Basic 6A</p>
+<ul class="space-y-2">
+<li>
+<button class="w-full flex items-center gap-md p-sm hover:bg-surface-container rounded-lg active:bg-surface-variant transition-colors text-on-surface text-body-lg font-body-lg">
+<span class="material-symbols-outlined text-primary-container">edit</span> Edit Period
+                    </button>
+</li>
+<li>
+<button class="w-full flex items-center gap-md p-sm hover:bg-surface-container rounded-lg active:bg-surface-variant transition-colors text-on-surface text-body-lg font-body-lg">
+<span class="material-symbols-outlined text-primary-container">content_copy</span> Duplicate
+                    </button>
+</li>
+<li>
+<button class="w-full flex items-center gap-md p-sm hover:bg-surface-container rounded-lg active:bg-surface-variant transition-colors text-on-surface text-body-lg font-body-lg">
+<span class="material-symbols-outlined text-primary-container">swap_vert</span> Move Slot
+                    </button>
+</li>
+<li>
+<button class="w-full flex items-center gap-md p-sm hover:bg-error-container hover:text-error rounded-lg active:bg-error-container transition-colors text-error text-body-lg font-body-lg" onclick="showToast(); document.getElementById('bottomSheet').classList.remove('active'); document.getElementById('scrim').classList.add('hidden');">
+<span class="material-symbols-outlined text-error">delete</span> Delete Period
+                    </button>
+</li>
+</ul>
+</div>
+<!-- Toast Notification -->
+<div class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-[80] opacity-0 pointer-events-none transition-opacity duration-300" id="toast">
+<span class="material-symbols-outlined text-inverse-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-md font-body-md font-medium whitespace-nowrap">Timetable slot updated</span>
+</div>
+</div>
+<script>
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body></html>

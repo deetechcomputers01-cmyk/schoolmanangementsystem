@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Students Directory - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#e0e0ff",
+                        "on-primary-container": "#1a164d",
+                        "secondary": "#006c49",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#e0f2eb",
+                        "on-secondary-container": "#002114",
+                        "tertiary": "#2a1700",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#472a00",
+                        "on-tertiary-container": "#c88c3d",
+                        "surface": "#fbf8fe",
+                        "on-surface": "#1c1b1f",
+                        "surface-variant": "#e5e1e7",
+                        "on-surface-variant": "#49454f",
+                        "outline": "#79747e",
+                        "outline-variant": "#c9c5d0",
+                        "inverse-surface": "#313033",
+                        "inverse-on-surface": "#f4f0f4",
+                        "background": "#fbf8fe",
+                        "on-background": "#1c1b1f",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#410002",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f2f8",
+                        "surface-container": "#f1edf2",
+                        "surface-container-high": "#ebe7ed",
+                        "surface-container-highest": "#e5e1e7",
+                        "surface-dim": "#dcd9de",
+                        "surface-bright": "#fbf8fe",
+                        "surface-tint": "#5B50F5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .swipe-revealed { transform: translateX(-120px); transition: transform 0.3s ease-out; }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex items-center justify-between px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-4">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A small circular avatar placeholder image of a Ghanaian school administrator with a warm smile, professionally dressed in a tailored blazer against a clean light background, high resolution, soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB-obDC04OQdddWHtzjp1lf39vOAGYNlOvZcvdwYefSnBpXZCSlAHbxALHgm4XAXUwUvgIA2MorMPbcMHcTWj5g_lWif4Y9HhSKwq-Fjdqk3qd1L0x6pcssVgtgEUzBwJN2Itanl9Plz2vrjDI2yCMrbxdhbze2K2ZaSEgUrEALvar1QUrlsvzcMrhqc6GzDTQVEg8_rXDc2o0tyfITPC0EzoR0Pz5PVJ08RmXLpJrqQ8SdPelL9PyhPuO_r6f4-29pKHbYAc8sA"/>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">SchoolAdmin</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+</header>
+<main class="pt-20 px-margin-mobile flex flex-col gap-lg">
+<!-- Search & Actions -->
+<div class="flex flex-col gap-sm">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary text-body-md font-body-md text-on-surface" placeholder="Search by name, ID, or guardian" type="text"/>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-sm py-2">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap">All</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Basic 6</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">JHS 1</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Paid</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Pending</button>
+</div>
+</div>
+<!-- Summary Stats -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-lowest p-sm rounded-xl border border-outline-variant shadow-sm flex flex-col gap-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Students</span>
+<span class="font-title-lg text-title-lg text-primary">8</span>
+</div>
+<div class="bg-surface-container-lowest p-sm rounded-xl border border-outline-variant shadow-sm flex flex-col gap-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Boys / Girls</span>
+<span class="font-title-lg text-title-lg text-primary">4 / 4</span>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">add</span>
+        Add Student
+    </button>
+<!-- Student List -->
+<div class="flex flex-col gap-sm relative overflow-hidden">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-2">Students</h2>
+<!-- Card 1 (Default) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-sm flex flex-col gap-sm relative z-10">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md">A</div>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Akosua Asare</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">ADM-2201 • Basic 6A</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">more_vert</span>
+</div>
+<div class="flex items-center gap-4 mt-2 border-t border-surface-variant pt-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+<span class="font-label-md text-label-md text-secondary">Paid</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+<span class="font-label-md text-label-md text-primary">96% Att.</span>
+</div>
+</div>
+</div>
+<!-- Card 2 (Pressed) -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-4 shadow-sm flex flex-col gap-sm relative z-10 scale-[0.98] transition-transform">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md">K</div>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Kofi Antwi</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">ADM-23-001 • JHS 1</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">more_vert</span>
+</div>
+</div>
+<!-- Card 3 (Swipe Revealed) -->
+<div class="relative rounded-xl border border-outline-variant overflow-hidden bg-surface-container-lowest">
+<!-- Underneath Actions -->
+<div class="absolute right-0 top-0 h-full flex items-stretch">
+<button class="bg-primary text-on-primary px-4 flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+<button class="bg-primary-container text-on-primary-container px-4 flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</button>
+</div>
+<!-- Foreground Card -->
+<div class="bg-surface-container-lowest p-4 flex flex-col gap-sm relative z-10 swipe-revealed shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md">A</div>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Abena Kyei</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">ADM-24-005 • Basic 6B</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">more_vert</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface border-t border-outline-variant shadow-sm flex justify-around items-center h-20 pb-safe w-full md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px] mb-1">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md font-semibold">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px] mb-1">payments</span>
+<span class="font-label-md text-label-md">Finance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px] mb-1">menu</span>
+<span class="font-label-md text-label-md">More</span>
+</button>
+</nav>
+<!-- Toast Feedback -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-lg shadow-md font-body-md text-body-md z-50 opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">info</span>
+    Student list updated
+</div>
+</body></html>

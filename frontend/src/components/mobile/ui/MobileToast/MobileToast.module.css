@@ -1,11 +1,12 @@
-﻿/**
- * MobileToast.module.css — scoped to MobileToast component only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- * Use CSS custom properties from tokens.css; never hard-code raw values here.
- */
-
 .root {
-  /* Temporary feedback notification appearing at the bottom of the screen above the nav bar. */
-  /* Design fills all visual properties below */
-  min-height: 44px; /* Minimum tap target */
+  position: fixed;
+  right: 16px;
+  bottom: calc(88px + env(safe-area-inset-bottom));
+  left: 16px;
+  z-index: 90;
+  border-radius: var(--radius-sm);
+  background: var(--inverse-surface, #293238);
+  color: var(--inverse-on-surface, #e9f2fa);
+  padding: 12px 14px;
+  box-shadow: 0 12px 32px rgba(20, 29, 35, 0.18);
 }

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academic Calendar - EduManager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c7c4d8",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed": "#d2e4ff",
+                      "tertiary-fixed": "#ffdbcb",
+                      "outline": "#777587",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#55a7fe",
+                      "tertiary-container": "#b34b00",
+                      "on-secondary-fixed": "#001c37",
+                      "primary-container": "#5b50f5",
+                      "on-tertiary-fixed-variant": "#793000",
+                      "tertiary": "#8c3900",
+                      "background": "#faf9ff",
+                      "primary-fixed": "#e3dfff",
+                      "surface-bright": "#faf9ff",
+                      "on-tertiary-container": "#ffe8de",
+                      "tertiary-fixed-dim": "#ffb692",
+                      "on-background": "#191b21",
+                      "secondary-fixed-dim": "#a1c9ff",
+                      "surface": "#faf9ff",
+                      "on-tertiary-fixed": "#341100",
+                      "surface-tint": "#4e41e8",
+                      "surface-variant": "#e2e2ea",
+                      "secondary": "#0061a7",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#c3c0ff",
+                      "on-primary-fixed": "#100069",
+                      "on-secondary-fixed-variant": "#00487f",
+                      "on-primary-container": "#edeaff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f3f3fb",
+                      "surface-container": "#ededf5",
+                      "primary": "#4131dc",
+                      "on-surface": "#191b21",
+                      "inverse-surface": "#2e3036",
+                      "surface-container-high": "#e7e7ef",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#464555",
+                      "on-secondary-container": "#003b69",
+                      "on-primary-fixed-variant": "#341dd1",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#f0f0f8",
+                      "surface-dim": "#d9d9e1",
+                      "surface-container-highest": "#e2e2ea",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Inter"
+                      ],
+                      "display": [
+                              "Inter"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #faf9ff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      </style>
+</head>
+<body class="bg-background text-on-background antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-lowest border-r border-outline-variant w-[260px] h-full flex flex-col py-4 fixed left-0 top-0 z-20">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xl">
+                E
+            </div>
+<div>
+<h1 class="text-xl font-headline font-bold text-primary">EduManager</h1>
+<p class="text-xs text-on-surface-variant">Admin Portal</p>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full bg-primary text-on-primary rounded-lg py-2.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 hover:bg-surface-tint transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+                New Admission
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 mx-2 rounded-lg py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body text-sm font-medium">Dashboard</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 mx-2 rounded-lg py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-body text-sm font-medium">Students</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 mx-2 rounded-lg py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-body text-sm font-medium">Staff</span>
+</a>
+<a class="bg-primary-container text-on-primary-container font-semibold rounded-lg mx-2 transition-all duration-200 ease-in-out hover:translate-x-1 py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined fill-icon">calendar_month</span>
+<span class="font-body text-sm">Academic</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 mx-2 rounded-lg py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-body text-sm font-medium">Attendance</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 mx-2 rounded-lg py-3 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body text-sm font-medium">Settings</span>
+</a>
+</div>
+<div class="mt-auto px-2 space-y-1 pt-4 border-t border-outline-variant mx-4">
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-in-out hover:translate-x-1 rounded-lg py-2.5 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body text-sm font-medium">Support</span>
+</a>
+<a class="text-error hover:bg-error-container transition-all duration-200 ease-in-out hover:translate-x-1 rounded-lg py-2.5 px-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body text-sm font-medium">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-[260px] flex flex-col h-full bg-background">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest border-b border-outline-variant h-16 flex justify-between items-center px-8 shrink-0 z-10 shadow-sm sticky top-0">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-on-surface-variant font-medium">Academic Calendar</span>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+<span class="text-on-surface font-semibold">Events Calendar</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors duration-150">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="h-8 w-8 rounded-full bg-secondary-container overflow-hidden border border-outline-variant cursor-pointer">
+<img alt="Administrator Profile" class="w-full h-full object-cover" data-alt="Close up professional headshot of an administrator in a well lit office setting, neutral background, looking friendly. High quality corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvnbZ1Vq04H7Ujb1Pj1vd9qg40fHhBMd1jK3s-_a5nAq4E3i98Seabjj-TL2ATRFituSyILNk7aycISw26E6fkpSfBs90rlxN4I7DqGF8OkHkmGg7PAzS4GjyVFc0rJ8G2ro8lw81aiO83PSQis6cC3S4xNfenHI3GeJmeKN_03mWJ6uK9Q0yyq_1AOhnpjsC3GtqMDVLSsmtS3sQaO5a-ZKNYSs48fJrWhTikppH-hJzD0pwgp4Mb68KG84MOk2IHvo0Ial27gA"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+<div>
+<h2 class="text-3xl font-headline font-bold text-on-surface mb-1">Academic Calendar</h2>
+<p class="text-on-surface-variant font-body">Manage the school year, terms, and events</p>
+</div>
+<button class="bg-primary text-on-primary px-5 py-2.5 rounded-lg font-semibold text-sm flex items-center gap-2 hover:bg-surface-tint transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Add Event
+                    </button>
+</div>
+<!-- Tabs -->
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-lg w-fit border border-outline-variant">
+<button class="px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-medium text-sm shadow-sm transition-colors">
+                        Events Calendar
+                    </button>
+<button class="px-4 py-2 text-on-surface-variant hover:text-on-surface rounded-lg font-medium text-sm transition-colors">
+                        Years &amp; Terms
+                    </button>
+</div>
+<!-- Quick Action Bento -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant hover:border-primary-fixed-dim transition-colors cursor-pointer group flex items-start gap-4 shadow-sm hover:shadow">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center shrink-0 group-hover:bg-secondary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-secondary text-xl">event_busy</span>
+</div>
+<div>
+<h3 class="font-semibold text-on-surface text-sm mb-0.5">Add Holiday</h3>
+<p class="text-xs text-on-surface-variant">Mark public dates</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant hover:border-primary-fixed-dim transition-colors cursor-pointer group flex items-start gap-4 shadow-sm hover:shadow">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center shrink-0 group-hover:bg-tertiary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-tertiary text-xl">edit_document</span>
+</div>
+<div>
+<h3 class="font-semibold text-on-surface text-sm mb-0.5">Schedule Exam</h3>
+<p class="text-xs text-on-surface-variant">Academic assessments</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant hover:border-primary-fixed-dim transition-colors cursor-pointer group flex items-start gap-4 shadow-sm hover:shadow">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center shrink-0 group-hover:bg-secondary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-secondary text-xl text-[#3b92e8]">location_on</span>
+</div>
+<div>
+<h3 class="font-semibold text-on-surface text-sm mb-0.5">Book Venue</h3>
+<p class="text-xs text-on-surface-variant">Reserve facilities</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant hover:border-primary-fixed-dim transition-colors cursor-pointer group flex items-start gap-4 shadow-sm hover:shadow">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0 group-hover:bg-surface-dim transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">share</span>
+</div>
+<div>
+<h3 class="font-semibold text-on-surface text-sm mb-0.5">Publish Calendar</h3>
+<p class="text-xs text-on-surface-variant">Share with parents</p>
+</div>
+</div>
+</div>
+<!-- Calendar View -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-sm flex flex-col">
+<!-- Calendar Header -->
+<div class="p-5 border-b border-outline-variant flex justify-between items-center bg-surface-bright rounded-t-lg">
+<div class="flex items-center gap-4">
+<h3 class="text-xl font-bold text-on-surface w-36">July 2026</h3>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<button class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded text-sm font-medium text-on-surface hover:bg-surface-container transition-colors">
+                            Today
+                        </button>
+</div>
+<!-- Calendar Grid -->
+<div class="flex-1 min-h-[600px] flex flex-col">
+<!-- Days Header -->
+<div class="grid grid-cols-7 border-b border-outline-variant bg-surface-container-lowest">
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider">Sun</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Mon</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Tue</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Wed</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Thu</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Fri</div>
+<div class="py-3 text-center text-xs font-semibold text-outline uppercase tracking-wider border-l border-outline-variant">Sat</div>
+</div>
+<!-- Grid Cells -->
+<div class="grid grid-cols-7 flex-1 bg-outline-variant gap-[1px]">
+<!-- Row 1 -->
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer text-outline">
+<div class="text-right text-sm font-medium mb-1">28</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer text-outline">
+<div class="text-right text-sm font-medium mb-1">29</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer text-outline">
+<div class="text-right text-sm font-medium mb-1">30</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">1</div>
+<div class="space-y-1 mt-2">
+<div class="text-xs bg-[#e0f2fe] text-[#0369a1] px-2 py-1 rounded truncate border border-[#bae6fd]">Term 3 Begins</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">2</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">3</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">4</div>
+<div class="space-y-1 mt-2">
+<div class="text-xs bg-error-container text-on-error-container px-2 py-1 rounded truncate border border-[#fbcfe8]">Mid-Term Math</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">5</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">6</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer bg-primary-container/10">
+<div class="flex justify-between items-center mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="text-sm font-bold text-primary">7</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">8</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">9</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">10</div>
+<div class="space-y-1 mt-2">
+<div class="text-xs bg-[#dcfce7] text-[#166534] px-2 py-1 rounded truncate border border-[#bbf7d0]">Soccer Finals</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">11</div>
+</div>
+<!-- Row 3 -->
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">12</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">13</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">14</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">15</div>
+<div class="space-y-1 mt-2">
+<div class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-1 rounded truncate border border-primary-fixed-dim">Staff Training</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">16</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">17</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">18</div>
+</div>
+<!-- Row 4 -->
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">19</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">20</div>
+<div class="space-y-1 mt-2">
+<div class="text-xs bg-[#fce7f3] text-[#9d174d] px-2 py-1 rounded truncate border border-[#fbcfe8]">Summer Break Begins</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">21</div>
+<div class="w-full h-1 bg-[#fce7f3] mt-1"></div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">22</div>
+<div class="w-full h-1 bg-[#fce7f3] mt-1"></div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">23</div>
+<div class="w-full h-1 bg-[#fce7f3] mt-1"></div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">24</div>
+<div class="w-full h-1 bg-[#fce7f3] mt-1"></div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">25</div>
+<div class="w-full h-1 bg-[#fce7f3] mt-1"></div>
+</div>
+<!-- Row 5 -->
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">26</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">27</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">28</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">29</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">30</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="text-right text-sm font-medium mb-1 text-on-surface">31</div>
+</div>
+<div class="bg-surface-container-lowest min-h-[120px] p-2 hover:bg-surface-bright transition-colors cursor-pointer text-outline">
+<div class="text-right text-sm font-medium mb-1">1</div>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="p-4 border-t border-outline-variant bg-surface-bright rounded-b-lg flex flex-wrap gap-4 items-center">
+<span class="text-sm font-semibold text-on-surface mr-2">Categories:</span>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-[#0ea5e9]"></span>
+<span class="text-sm text-on-surface-variant">Academic</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="text-sm text-on-surface-variant">Exams</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-[#22c55e]"></span>
+<span class="text-sm text-on-surface-variant">Sports</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-sm text-on-surface-variant">Staff</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-[#ec4899]"></span>
+<span class="text-sm text-on-surface-variant">Holidays</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

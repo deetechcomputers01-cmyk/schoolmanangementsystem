@@ -1,11 +1,14 @@
-﻿/**
- * MobileAvatar.module.css — scoped to MobileAvatar component only.
- * DESIGN PENDING — Stitch "Institutional Excellence" mobile spec.
- * Use CSS custom properties from tokens.css; never hard-code raw values here.
- */
-
 .root {
-  /* User avatar circle: initials or image. Sizes: xs, sm, md, lg. Optional status ring. */
-  /* Design fills all visual properties below */
-  min-height: 44px; /* Minimum tap target */
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border-neutral, #d8ddd8);
+  border-radius: 999px;
+  background: var(--secondary-container, #c9ecc4);
+  color: var(--on-secondary-container, #314d31);
+  font-size: var(--text-xs);
+  font-weight: 800;
 }

@@ -1,72 +1,140 @@
 "use client";
 
-/**
- * DesktopTopbar — one file, one purpose.
- * 64px fixed top bar: page title, search, notifications, avatar.
- * Rendered inside DesktopLayout, above the main content area.
- */
-
+import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { Bell, ChevronDown, RefreshCw, Search } from "lucide-react";
+import { deriveTitle } from "@/lib/pageTitles";
+import { useNotifications, timeAgo, type NotificationItem } from "@/hooks/useNotifications";
 import styles from "./DesktopTopbar.module.css";
 
 interface DesktopTopbarProps {
-  pageTitle: string;
-  pageSubtitle?: string;
-  notificationCount?: number;
-  userInitials?: string;
-  onSearchChange?: (value: string) => void;
-  actions?: React.ReactNode;
+  pageTitle?:          string;
+  notificationCount?:  number;
+  userInitials?:       string;
+  userName?:           string;
+  userRole?:           string;
 }
 
 export function DesktopTopbar({
   pageTitle,
-  pageSubtitle,
   notificationCount = 0,
-  userInitials = "??",
-  actions,
+  userInitials = "SA",
+  userName = "User",
+  userRole = "",
 }: DesktopTopbarProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const title = deriveTitle(pathname) || pageTitle || "";
+  const showSearch = pathname !== "/dashboard";
+
+  const [open, setOpen] = useState(false);
+  const { notifications, unreadCount, markRead, markAllRead } = useNotifications(notificationCount);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  async function handleNotificationClick(n: NotificationItem) {
+    if (!n.isRead) markRead(n.id);
+    setOpen(false);
+    if (n.link) router.push(n.link);
+  }
+
   return (
     <header className={styles.topbar} role="banner">
-      {/* Page heading */}
-      <div className={styles.heading}>
-        <h1 className={styles.pageTitle}>{pageTitle}</h1>
-        {pageSubtitle && <p className={styles.pageSubtitle}>{pageSubtitle}</p>}
-      </div>
-
-      {/* Right-side controls */}
-      <div className={styles.controls}>
-        {/* Contextual page actions slot */}
-        {actions && <div className={styles.actionsSlot}>{actions}</div>}
-
-        {/* Search */}
-        <div className={styles.searchWrap} role="search">
+      {showSearch ? (
+        <label className={styles.searchWrap} aria-label="Search">
           <span className={styles.searchIcon} aria-hidden>
-            {/* Icon filled by Stitch design */}
+            <Search size={14} />
           </span>
           <input
-            type="search"
             className={styles.searchInput}
-            placeholder="Search…"
-            aria-label="Search"
+            placeholder="Search..."
+            type="search"
           />
+        </label>
+      ) : (
+        <div className={styles.heading}>
+          <h1 className={styles.pageTitle}>{title}</h1>
+        </div>
+      )}
+
+      <div className={styles.controls}>
+        <div className={styles.notifWrap} ref={panelRef}>
+          <button
+            type="button"
+            className={styles.iconBtn}
+            aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <Bell size={18} />
+            {unreadCount > 0 && (
+              <span className={styles.badge} aria-hidden>
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
+          </button>
+
+          {open && (
+            <div className={styles.notifPanel} role="menu">
+              <div className={styles.notifPanelHeader}>
+                <span>Notifications</span>
+                {unreadCount > 0 && (
+                  <button type="button" className={styles.notifMarkAll} onClick={markAllRead}>
+                    Mark all read
+                  </button>
+                )}
+              </div>
+              <div className={styles.notifList}>
+                {notifications.length === 0 ? (
+                  <p className={styles.notifEmpty}>No notifications yet.</p>
+                ) : (
+                  notifications.map((n) => (
+                    <button
+                      key={n.id}
+                      type="button"
+                      className={`${styles.notifItem} ${n.isRead ? "" : styles.notifItemUnread}`}
+                      onClick={() => handleNotificationClick(n)}
+                    >
+                      <span className={styles.notifDot} aria-hidden={n.isRead} style={{ visibility: n.isRead ? "hidden" : "visible" }} />
+                      <span className={styles.notifBody}>
+                        <span className={styles.notifTitle}>{n.title}</span>
+                        <span className={styles.notifText}>{n.body}</span>
+                        <span className={styles.notifTime}>{timeAgo(n.createdAt)}</span>
+                      </span>
+                    </button>
+                  ))
+                )}
+              </div>
+              <Link href="/notifications" className={styles.notifViewAll} onClick={() => setOpen(false)}>
+                View all notifications
+              </Link>
+            </div>
+          )}
         </div>
 
-        {/* Notifications */}
-        <button
-          type="button"
-          className={styles.iconBtn}
-          aria-label={`Notifications${notificationCount > 0 ? `, ${notificationCount} unread` : ""}`}
-        >
-          {/* Icon filled by Stitch design */}
-          {notificationCount > 0 && (
-            <span className={styles.badge} aria-hidden>
-              {notificationCount > 99 ? "99+" : notificationCount}
-            </span>
-          )}
-        </button>
+        {userRole === "admin" && (
+          <Link href="/offline-sync" className={styles.iconBtn} aria-label="Open sync status">
+            <RefreshCw size={17} />
+          </Link>
+        )}
 
-        {/* Avatar */}
-        <button type="button" className={styles.avatarBtn} aria-label="Account menu">
+        <span className={styles.divider} aria-hidden />
+
+        <button type="button" className={styles.profileBtn} aria-label="Account menu">
           <span className={styles.avatar} aria-hidden>{userInitials}</span>
+          <span className={styles.profileCopy}>
+            <span className={styles.profileName}>{userName}</span>
+            <span className={styles.profileRole}>{userRole || "Administrator"}</span>
+          </span>
+          <ChevronDown size={14} className={styles.profileChevron} aria-hidden />
         </button>
       </div>
     </header>

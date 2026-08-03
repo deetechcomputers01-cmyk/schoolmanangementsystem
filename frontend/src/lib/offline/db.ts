@@ -8,6 +8,8 @@ export type SyncJob = {
   body: unknown;
   method: "POST" | "PATCH" | "DELETE";
   createdAt: number;
+  attempts?: number;
+  lastError?: string;
 };
 
 interface SchoolDb extends DBSchema {

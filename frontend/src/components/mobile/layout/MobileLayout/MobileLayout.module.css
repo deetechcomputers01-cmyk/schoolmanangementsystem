@@ -1,20 +1,10 @@
-/**
- * MobileLayout.module.css — structural only.
- * DESIGN PENDING — Stitch mobile design system.
- */
-
 .shell {
-  display: flex;
-  flex-direction: column;
   min-height: 100dvh;
-  /* Design fills: background */
+  background: var(--surface-bg, #f7f8f6);
+  color: var(--on-surface, #141d23);
 }
 
 .content {
-  flex: 1;
-  padding: var(--mobile-pad);
-  /* Bottom padding accounts for the fixed bottom nav */
-  padding-bottom: calc(var(--mobile-bottom-h) + var(--sp-4) + env(safe-area-inset-bottom, 0));
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  min-height: calc(100dvh - 132px);
+  padding: 16px 16px calc(92px + env(safe-area-inset-bottom));
 }

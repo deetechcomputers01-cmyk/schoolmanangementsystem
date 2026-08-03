@@ -1,10 +1,13 @@
 "use client";
 
 /**
- * MobileHeader — one file, one purpose.
- * 56px sticky top bar for mobile. Shows page title + optional back + actions.
+ * MobileHeader — sticky top bar for mobile: back/avatar, title, notification bell.
  */
 
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronLeft, Bell } from "lucide-react";
+import { deriveTitle } from "@/lib/pageTitles";
+import { useNotifications } from "@/hooks/useNotifications";
 import styles from "./MobileHeader.module.css";
 
 interface MobileHeaderProps {
@@ -14,6 +17,7 @@ interface MobileHeaderProps {
   onBack?: () => void;
   trailing?: React.ReactNode;
   notificationCount?: number;
+  userInitials?: string;
 }
 
 export function MobileHeader({
@@ -23,39 +27,42 @@ export function MobileHeader({
   onBack,
   trailing,
   notificationCount = 0,
+  userInitials = "SA",
 }: MobileHeaderProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { unreadCount } = useNotifications(notificationCount);
+  const resolvedTitle = deriveTitle(pathname) || title;
+
   return (
     <header className={styles.header}>
-      {showBack && (
-        <button
-          type="button"
-          className={styles.backBtn}
-          onClick={onBack}
-          aria-label="Go back"
-        >
-          {/* Icon: filled by Stitch design */}
+      {showBack ? (
+        <button type="button" className={styles.backBtn} onClick={onBack ?? (() => router.back())} aria-label="Go back">
+          <ChevronLeft size={22} />
+        </button>
+      ) : (
+        <button type="button" className={styles.avatarBtn} onClick={() => router.push("/settings")} aria-label="Account">
+          {userInitials}
         </button>
       )}
 
       <div className={styles.titleBlock}>
-        <h1 className={styles.title}>{title}</h1>
+        <h1 className={styles.title}>{resolvedTitle}</h1>
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
       </div>
 
       <div className={styles.trailing}>
-        {/* Notifications */}
         <button
           type="button"
           className={styles.iconBtn}
-          aria-label={`Notifications${notificationCount > 0 ? `, ${notificationCount} unread` : ""}`}
+          onClick={() => router.push("/notifications")}
+          aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
         >
-          {/* Icon: filled by Stitch design */}
-          {notificationCount > 0 && (
+          <Bell size={20} />
+          {unreadCount > 0 && (
             <span className={styles.notifDot} aria-hidden />
           )}
         </button>
-
-        {/* Custom trailing actions */}
         {trailing}
       </div>
     </header>

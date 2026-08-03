@@ -1,0 +1,144 @@
+/* ── Root ─────────────────────────────────────────────────────────────────── */
+.root { display: flex; flex-direction: column; gap: 24px; background: transparent; min-height: 100%; }
+
+/* ── Page header ──────────────────────────────────────────────────────────── */
+.pageHeader { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.title { font-size: var(--text-3xl); line-height: 36px; font-weight: 700; letter-spacing: -0.01em; color: var(--clr-app-text); margin: 0 0 4px; }
+.subtitle { font-size: var(--text-base); line-height: 24px; color: var(--clr-app-muted); margin: 0; }
+
+.btnPrimary {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 42px; padding: 0 24px; border: none; border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--clr-app-accent); color: #fff; font-size: var(--text-sm); font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+.btnPrimary:hover:not(:disabled) { background: var(--clr-app-accent-hover); }
+.btnPrimary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Tab bar ──────────────────────────────────────────────────────────────── */
+.tabBar { display: flex; border-bottom: 1px solid var(--clr-app-border); gap: 4px; }
+.tabBtn { padding: 14px 20px; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--clr-app-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; }
+.tabBtnActive { font-weight: 700; color: var(--clr-app-accent); border-bottom-color: var(--clr-app-accent); }
+
+/* ── KPI row ──────────────────────────────────────────────────────────────── */
+.statsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.statCard { background: var(--clr-app-surface); border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); padding: 24px; display: flex; flex-direction: column; gap: 6px; }
+.statCardAmber { border-left: 4px solid var(--clr-warning); }
+.statCardError { border-left: 4px solid var(--clr-error); }
+.statLabel { font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.statValue { font-size: var(--text-3xl); font-weight: 800; color: var(--clr-app-text); }
+.statValueAmber { color: var(--clr-warning); }
+.statValueError { color: var(--clr-error); }
+
+/* ── Filter row (flat, no card) ───────────────────────────────────────────── */
+.filterRow { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.searchWrap { flex: 1; min-width: 220px; position: relative; }
+.searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--clr-app-muted); pointer-events: none; }
+.searchInput {
+  width: 100%; height: 42px; padding: 0 12px 0 36px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm);
+  background: var(--clr-app-surface); font-size: var(--text-sm); outline: none; box-sizing: border-box;
+}
+.searchInput:focus { border-color: var(--clr-app-accent); box-shadow: 0 0 0 2px var(--clr-app-accent-soft); }
+.selectWrap { position: relative; }
+.select {
+  height: 42px; padding: 0 32px 0 14px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm);
+  background: var(--clr-app-surface); color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 500;
+  appearance: none; cursor: pointer; outline: none; min-width: 150px;
+}
+.selectChevron { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--clr-app-muted); }
+.countLabel { font-size: var(--text-xs); color: var(--clr-app-muted); white-space: nowrap; }
+
+/* ── Table ────────────────────────────────────────────────────────────────── */
+.tableCard { background: var(--clr-app-surface); border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); overflow: hidden; }
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.table th {
+  padding: 12px 16px; text-align: left; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--clr-app-muted); background: var(--clr-app-surface-alt); border-bottom: 1px solid var(--clr-app-border);
+}
+.row { border-top: 1px solid var(--clr-app-border); cursor: pointer; }
+.row:hover { background: var(--clr-app-surface-alt); }
+.rowActive { background: var(--clr-app-accent-soft) !important; }
+.td { padding: 16px; vertical-align: middle; }
+.nameCell { display: flex; align-items: center; gap: 10px; max-width: 280px; }
+.nameText { font-weight: 600; color: var(--clr-app-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nameSub { font-size: var(--text-xs); color: var(--clr-app-muted); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+.templateTag { background: var(--clr-info-bg); color: var(--clr-info); border-radius: var(--radius-sm); padding: 0 5px; font-size: var(--text-xs); font-weight: 700; }
+.catCell { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); text-transform: capitalize; }
+.catDot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.visCell { display: flex; align-items: center; gap: 5px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.pill { display: inline-flex; padding: 3px 11px; border-radius: 999px; font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; }
+.pillActive { background: var(--clr-success-bg); color: var(--clr-success); }
+.pillPending { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.pillArchived { background: var(--clr-app-surface-alt); color: var(--clr-app-muted); }
+.pillRestricted { background: var(--clr-error-bg); color: var(--clr-error); }
+.tdMuted { color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.rowActions { display: flex; gap: 4px; }
+.iconBtn { width: 30px; height: 30px; border-radius: var(--radius-sm); border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--clr-app-muted); }
+.iconBtn:hover { background: var(--clr-app-surface-alt); }
+.iconBtnAccent { color: var(--clr-app-accent); }
+.iconBtnWarn { color: var(--clr-warning); }
+.iconBtnDanger { color: var(--clr-error); }
+
+.emptyState { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 56px 0; color: var(--clr-app-muted); font-size: var(--text-sm); text-align: center; }
+.emptyIcon { color: var(--clr-app-border); margin-bottom: 12px; }
+
+.paginationBar { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-top: 1px solid var(--clr-app-border); font-size: var(--text-sm); color: var(--clr-app-muted); }
+
+/* ── Detail panel ─────────────────────────────────────────────────────────── */
+.detailPanel { background: var(--clr-app-surface); border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); padding: 20px 24px; }
+.detailHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.detailHeaderLeft { display: flex; align-items: center; gap: 8px; }
+.detailTitle { font-size: var(--text-lg); line-height: 26px; font-weight: 600; color: var(--clr-app-text); margin: 0; }
+.detailClose { background: none; border: none; cursor: pointer; color: var(--clr-app-muted); }
+.detailGrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.detailCell { background: var(--clr-app-surface-alt); border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); padding: 10px 14px; }
+.detailLabel { font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-muted); text-transform: uppercase; margin-bottom: 4px; }
+.detailValue { font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-text); }
+.detailActions { display: flex; gap: 10px; margin-top: 16px; }
+.actionBtn { padding: 8px 16px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); cursor: pointer; font-size: var(--text-xs); font-weight: 600; }
+.actionBtnActive { background: var(--clr-success-bg); color: var(--clr-success); border-color: var(--clr-success-border); }
+.actionBtnRestrict { background: var(--clr-error-bg); color: var(--clr-error); border-color: var(--clr-error-border); }
+.actionBtnArchive { background: var(--clr-app-surface-alt); color: var(--clr-app-muted); }
+.actionBtnDelete { background: transparent; color: var(--clr-error); margin-left: auto; }
+
+/* ── Modal ────────────────────────────────────────────────────────────────── */
+.modalOverlay { position: fixed; inset: 0; background: var(--clr-overlay); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.modal { background: var(--clr-app-surface); border-radius: var(--radius-sm); width: 460px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-xl); }
+.modalDanger { border-top: 4px solid var(--clr-error); }
+.modalHeader { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--clr-app-border); }
+.modalTitle { font-size: var(--text-lg); line-height: 26px; font-weight: 600; color: var(--clr-app-text); margin: 0; display: flex; align-items: center; gap: 8px; }
+.modalClose { width: 32px; height: 32px; border-radius: var(--radius-sm); border: none; background: transparent; color: var(--clr-app-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.modalClose:hover { background: var(--clr-app-surface-alt); }
+.modalBody { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.modalFooter { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid var(--clr-app-border); }
+
+.formGroup { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.formRow { display: flex; gap: 10px; }
+.formLabel { font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-muted); }
+.formInput {
+  padding: 10px 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); font-size: var(--text-sm); color: var(--clr-app-text);
+  background: var(--clr-app-surface); outline: none; box-sizing: border-box; width: 100%;
+}
+.formInput:focus { border-color: var(--clr-app-accent); box-shadow: 0 0 0 2px var(--clr-app-accent-soft); }
+.formSelect { padding: 10px 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); font-size: var(--text-sm); color: var(--clr-app-text); background: var(--clr-app-surface); outline: none; width: 100%; box-sizing: border-box; }
+.checkboxRow { display: flex; gap: 16px; }
+.checkboxLabel { display: flex; align-items: center; gap: 6px; font-size: var(--text-sm); cursor: pointer; color: var(--clr-app-text); }
+.hintBox { padding: 10px 14px; background: var(--clr-info-bg); border-radius: var(--radius-sm); font-size: var(--text-xs); color: var(--clr-info); display: flex; align-items: center; gap: 8px; }
+.warnText { font-size: var(--text-sm); color: var(--clr-app-muted); line-height: 1.6; margin: 0; }
+
+.btnDanger { flex: 1; height: 42px; padding: 0 18px; background: var(--clr-error); color: #fff; border: none; border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
+.btnCancel { flex: 1; height: 42px; padding: 0 18px; background: transparent; color: var(--clr-app-text); border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
+.modalFooter .btnPrimary { flex: 1; justify-content: center; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 1300px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .detailGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .statsGrid { grid-template-columns: 1fr; }
+  .filterRow { flex-direction: column; align-items: stretch; }
+  .detailGrid { grid-template-columns: repeat(2, 1fr); }
+}

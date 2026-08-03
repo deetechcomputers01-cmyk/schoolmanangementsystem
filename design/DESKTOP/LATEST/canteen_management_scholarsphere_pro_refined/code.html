@@ -1,0 +1,431 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Canteen Management - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#5B50F5",
+              "on-primary": "#ffffff",
+              "surface": "#fbf8fe",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f6f2f8",
+              "surface-container-high": "#e6e8ea",
+              "outline": "#76777d",
+              "outline-variant": "#dcd9de",
+              "on-surface": "#191c1e",
+              "on-surface-variant": "#45464d",
+              "background": "#fbf8fe"
+            },
+            "borderRadius": {
+              "DEFAULT": "4px",
+              "lg": "4px",
+              "xl": "4px"
+            },
+            "fontFamily": {
+              "body": ["Inter", "sans-serif"],
+              "headline": ["Inter", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          font-size: 20px;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dcd9de; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex">
+<!-- Sidebar: 260px white sidebar -->
+<aside class="hidden md:flex w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant flex-col z-50">
+<div class="px-6 py-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined !text-[20px]">school</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[16px] font-bold text-on-surface leading-tight">ScholarSphere...</span>
+<span class="text-[11px] text-on-surface-variant">School Management</span>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-sm font-medium">Students</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Staff</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span class="text-sm font-medium">Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-sm font-medium">Gradebook</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Timetable</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="text-sm font-medium">Academic Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-sm font-medium">Report Cards</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Fees &amp; Payments</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 bg-on-surface/5 text-primary rounded font-bold" href="#">
+<span class="material-symbols-outlined !fill-1">restaurant</span>
+<span class="text-sm">Canteen</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<div class="mt-4 flex items-center gap-2 px-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs text-on-surface-variant">Online</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 ml-0 md:ml-[260px] flex flex-col min-h-screen">
+<!-- Header: 56px white header -->
+<header class="h-[56px] sticky top-0 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-6 z-40">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex items-center gap-2 text-[13px] text-on-surface-variant">
+<span class="hover:text-primary cursor-pointer">Canteen</span>
+<span class="material-symbols-outlined !text-[16px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Weekly Menu</span>
+</div>
+<div class="ml-4 relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant !text-[18px]">search</span>
+<input class="w-64 bg-surface border border-outline-variant rounded pl-10 pr-4 py-1 text-sm focus:border-primary outline-none" placeholder="Search canteen..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">apps</span>
+</button>
+<div class="w-px h-5 bg-outline-variant mx-2"></div>
+<button class="flex items-center gap-2 p-1 pl-1 pr-2 hover:bg-surface-container-low rounded transition-colors">
+<img alt="Admin" class="w-7 h-7 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6s2ogWbAJVo2wNBaE363UWE9b94U2uBQ1DqKlXGhxOjwYc6mBruaoJsgtHrSyzMI_nqnujus03ARdPJYy6PFmOSAuEXTuqpZZdokX-SbFqzeaIJNn0EC0yXElhkJCfXNzSRvXQfamtFv2_8coOX2bEvpVajx0pxtBZWpuXW17UYHQUBjuUycBD8e_TdQa6XG6NFhRtcQ2hguLQfNeQL5AgTb7u2odVkKu81vqwp8ekvVbdWEdxdEceEUnYnid7QTeh2MclGad0A">
+<span class="text-sm font-medium hidden sm:block">Admin</span>
+<span class="material-symbols-outlined !text-[18px] text-on-surface-variant">expand_more</span>
+</button>
+</div>
+</header>
+<div class="p-8 flex-1 flex flex-col gap-8 max-w-[1400px]">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="text-[32px] font-bold text-on-surface leading-tight">Canteen Management</h1>
+<p class="text-on-surface-variant mt-1">Manage weekly menus, track servings, and monitor canteen operations.</p>
+</div>
+<button class="text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 transition-colors bg-primary">
+<span class="material-symbols-outlined !text-[18px]">add</span>
+                Add Menu Item
+            </button>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-6 shadow-sm flex flex-col">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Meals Served Today</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-surface">842</span>
+<span class="text-xs text-green-600 font-bold flex items-center"><span class="material-symbols-outlined !text-[12px]">trending_up</span> +12%</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">room_service</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-6 shadow-sm flex flex-col">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Menu Items</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-surface">18</span>
+<span class="text-xs text-on-surface-variant">Active this week</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">restaurant_menu</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-6 shadow-sm flex flex-col">
+<div class="flex justify-between items-start">
+<div class="w-full">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Coverage</span>
+<div class="mt-4 space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs text-on-surface">Breakfast</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs text-on-surface">Lunch</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-gray-300"></div>
+<span class="text-xs text-on-surface-variant italic">Dinner (Not Started)</span>
+</div>
+</div>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-6 shadow-sm flex flex-col">
+<div class="flex justify-between items-start">
+<div class="w-full">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Students Served</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-surface">725</span>
+<span class="text-xs text-on-surface-variant">/ 850 total</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full mt-4 overflow-hidden border border-outline-variant/30">
+<div class="bg-black h-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant shrink-0 ml-2">
+<span class="material-symbols-outlined">groups</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+<!-- Weekly Menu Planner -->
+<section class="xl:col-span-2 bg-surface-container-lowest border border-outline-variant rounded shadow-sm overflow-hidden flex flex-col">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">calendar_month</span>
+<h2 class="text-lg font-bold">Weekly Menu Planner</h2>
+</div>
+<div class="flex items-center border border-outline-variant rounded overflow-hidden">
+<button class="p-1 hover:bg-surface-container-low text-on-surface-variant border-r border-outline-variant"><span class="material-symbols-outlined !text-[16px]">chevron_left</span></button>
+<span class="px-4 py-1 text-xs font-bold">Week of Oct 23 - Oct 27</span>
+<button class="p-1 hover:bg-surface-container-low text-on-surface-variant border-l border-outline-variant"><span class="material-symbols-outlined !text-[16px]">chevron_right</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-3 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider w-40">Day</th>
+<th class="px-6 py-3 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider border-l border-outline-variant">Breakfast</th>
+<th class="px-6 py-3 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider border-l border-outline-variant">Lunch</th>
+<th class="px-6 py-3 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider border-l border-outline-variant">Dinner</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface">
+<td class="px-6 py-6 font-bold text-sm">Monday, Oct 23</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Hausa Koko &amp; Koose</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Jollof Rice &amp; Chicken</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Banku &amp; Okro Stew</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-6 py-6 font-bold text-sm">Tuesday, Oct 24</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Tom Brown &amp; Bread</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border-2 border-primary rounded bg-white text-xs font-bold text-primary flex justify-between items-center cursor-pointer">
+                                        Waakye with Egg &amp; Fish
+                                        <span class="material-symbols-outlined !text-[14px]">edit</span>
+</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Yam &amp; Palava Sauce</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-6 py-6 font-bold text-sm">Wednesday, Oct 25</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Rice Water &amp; Bread</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="p-3 border border-outline-variant rounded bg-white text-xs font-medium cursor-pointer hover:border-primary">Kenkey &amp; Fried Fish</div>
+</td>
+<td class="px-4 py-4 border-l border-outline-variant">
+<div class="h-10 border border-dashed border-outline-variant rounded flex items-center justify-center gap-2 text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-colors">
+<span class="material-symbols-outlined !text-[16px]">add</span>
+<span class="text-[10px] font-bold uppercase">Assign</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Serving Log -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded shadow-sm overflow-hidden flex flex-col">
+<div class="p-6 border-b border-outline-variant flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">receipt_long</span>
+<h2 class="text-lg font-bold">Serving Log</h2>
+</div>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-1 rounded text-[10px] font-bold tracking-tight">TODAY</span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant !text-[18px]">search</span>
+<input class="w-full bg-surface border border-outline-variant rounded pl-10 pr-4 py-1.5 text-xs outline-none focus:border-primary" placeholder="Search student..." type="text">
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low sticky top-0 border-b border-outline-variant">
+<tr>
+<th class="px-4 py-2 text-[10px] font-bold text-on-surface-variant uppercase w-[60%]">Student</th>
+<th class="px-4 py-2 text-[10px] font-bold text-on-surface-variant uppercase">Details</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant text-[13px]">
+<tr class="hover:bg-surface">
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<img alt="Kofi Mensah" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANTcGnM0fRcRc4uASHV1uQhFGP-gqTd-Dl1qbPd4PlkJ9S20BEe9weTwk7OfTO8K4FdnIMIfoQ0zoGH8aNptSDVFVkwxNdmVomGyQEtI6du2F9bYAp6RGaAk1vSqKJpgVsEmXuC93DQ7sxWesVa4hSh1I31u2xGh49ik8azLa7kjsLljAWL_AlP5SwvRWSlIO_IV9CGAvQc1y2GhDOLZ3H2y-yk8_39qnKpszovPIiK6iNVIEPR021RI9avRFkHOYJG9OS6o171w">
+<div class="flex flex-col">
+<span class="font-bold">Kofi Mensah</span>
+<span class="text-[11px] text-on-surface-variant leading-none mt-0.5">JHS 2A • Lunch</span>
+</div>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="font-bold">12:45 PM</span>
+<span class="text-[11px] text-on-surface-variant">by Ama Serwaa</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#ffddb8] text-[#2a1700] flex items-center justify-center font-bold text-[11px]">AA</div>
+<div class="flex flex-col">
+<span class="font-bold">Abena Appiah</span>
+<span class="text-[11px] text-on-surface-variant leading-none mt-0.5">SHS 1 Science • Lunch</span>
+</div>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="font-bold">12:42 PM</span>
+<span class="text-[11px] text-on-surface-variant">by Ama Serwaa</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<img alt="Grace Osei" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK8D26712HQzaA2n0N0v2qfvrisFK62AM9bbdGvOZLJKMk_EKrkv7ZrDfKFHg3GG3-iLmI5K6iSEdIthlvDZ22GMXlH9FWRe2FDPps1rvflzu-3ik-l7TjHeZoZuUdmhf722XbwU5HZ0lwNK-H3Kb9KuO2Ld4v_XiG5todg0VjKa0I4vGpyvI8I4OG6lASPXDVPenJXxW2dEaK9g7C10Z0dejX19LAuIFoukB8uicP_x4rp2cbEcvzz7dH33Cb5If0ijq2Y4sjOg">
+<div class="flex flex-col">
+<span class="font-bold">Grace Osei</span>
+<span class="text-[11px] text-on-surface-variant leading-none mt-0.5">JHS 3C • Lunch</span>
+</div>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="font-bold">12:39 PM</span>
+<span class="text-[11px] text-on-surface-variant">by Kwame Kyei</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-[11px]">DO</div>
+<div class="flex flex-col">
+<span class="font-bold">Daniel Owusu</span>
+<span class="text-[11px] text-on-surface-variant leading-none mt-0.5">Basic 6 • Lunch</span>
+</div>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="font-bold">12:35 PM</span>
+<span class="text-[11px] text-on-surface-variant">by Kwame Kyei</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface">
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-[11px]">EA</div>
+<div class="flex flex-col">
+<span class="font-bold">Esi Amoah</span>
+<span class="text-[11px] text-on-surface-variant leading-none mt-0.5">Basic 4 • Lunch</span>
+</div>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="font-bold">12:30 PM</span>
+<span class="text-[11px] text-on-surface-variant">by Ama Serwaa</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 border-t border-outline-variant bg-surface-container-low text-center">
+<button class="text-primary text-xs font-bold hover:underline">View Full Log</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+
+
+</body></html>

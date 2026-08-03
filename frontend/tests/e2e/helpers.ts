@@ -7,8 +7,12 @@ export const ACCOUNTS = {
   principal:   { email: "principal@scholarsphere.edu.gh",  password: "Password123!", role: "principal" },
   teacher:     { email: "teacher1@scholarsphere.edu.gh",   password: "Password123!", role: "teacher" },
   staff:       { email: "staff@scholarsphere.edu.gh",      password: "Password123!", role: "staff" },
-  student:     { email: "akosua.student@scholarsphere.edu.gh", password: "Password123!", role: "student" },
-  guardian:    { email: "asare.guardian@scholarsphere.edu.gh", password: "Password123!", role: "guardian" },
+  driver:      { email: "driver@scholarsphere.edu.gh",     password: "Password123!", role: "staff" },
+  caterer:     { email: "caterer@scholarsphere.edu.gh",    password: "Password123!", role: "staff" },
+  nurse:       { email: "nurse@scholarsphere.edu.gh",      password: "Password123!", role: "staff" },
+  security:    { email: "security@scholarsphere.edu.gh",   password: "Password123!", role: "staff" },
+  student:     { email: "akosua.asare@scholarsphere.edu.gh", password: "Password123!", role: "student" },
+  guardian:    { email: "aba.asare@scholarsphere.edu.gh", password: "Password123!", role: "guardian" },
 } as const;
 
 /**
