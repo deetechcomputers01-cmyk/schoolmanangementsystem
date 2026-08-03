@@ -80,6 +80,7 @@
   border-left: 4px solid transparent;
   border-radius: var(--radius-sm);
   background: var(--clr-app-surface);
+  cursor: pointer;
 }
 .cardOverdue { border-left-color: var(--clr-error); }
 .cardOpen { border-color: var(--clr-app-accent); }
@@ -96,7 +97,23 @@
   cursor: pointer;
   text-align: left;
 }
-.cardHeadLeft { min-width: 0; }
+.cardHeadLeft { flex: 1; min-width: 0; }
+
+.moreBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: -4px -4px -4px 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--clr-app-muted);
+  cursor: pointer;
+}
+.moreBtn:active { background: var(--clr-app-surface-alt); }
 .cardName { margin: 0; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
 .cardSub { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
 

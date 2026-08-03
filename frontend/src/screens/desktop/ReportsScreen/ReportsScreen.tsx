@@ -231,6 +231,15 @@ export async function ReportsScreen() {
           feeCollection={feeCollection}
           overdueInvoiceCount={overdueInvoiceCount}
           weeklyAttendanceTrend={weeklyTrend}
+          termPerformance={{
+            classAverage, trendPts, passRate,
+            highest: topGrade ? { score: topGrade.score, subject: topGrade.subject.name } : null,
+            atRiskCount: atRiskStudentIds.size,
+            subjectAverages,
+            classPerformance,
+          }}
+          subjectMastery={subjectMastery}
+          teacherGradingPatterns={teacherGradingPatterns}
         />
       </div>
       <div className="desktopOnly">

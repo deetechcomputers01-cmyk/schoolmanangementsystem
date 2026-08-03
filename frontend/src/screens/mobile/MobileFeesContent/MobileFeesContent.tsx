@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Search, Plus, FileText, Wallet, CheckCircle2, AlertCircle, AlertTriangle,
-  Eye, Printer, Bell, X, Smartphone, Banknote, CreditCard, Landmark, Receipt,
+  Eye, Printer, Bell, X, Smartphone, Banknote, CreditCard, Landmark, Receipt, MoreVertical,
 } from "lucide-react";
 import { currency } from "@backend/utils";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
@@ -163,8 +163,15 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
           const isOpen = openId === r.id;
           const progressPct = r.amountDue > 0 ? Math.min(100, Math.round((r.amountPaid / r.amountDue) * 100)) : 0;
           return (
-            <div key={r.id} className={`${styles.card} ${r.status === "overdue" ? styles.cardOverdue : ""} ${isOpen ? styles.cardOpen : ""}`}>
-              <button type="button" className={styles.cardHead} onClick={() => setOpenId(isOpen ? null : r.id)}>
+            <div
+              key={r.id}
+              className={`${styles.card} ${r.status === "overdue" ? styles.cardOverdue : ""} ${isOpen ? styles.cardOpen : ""}`}
+              role="button"
+              tabIndex={0}
+              onClick={() => setOpenId(isOpen ? null : r.id)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenId(isOpen ? null : r.id); } }}
+            >
+              <div className={styles.cardHead}>
                 <div className={styles.cardHeadLeft}>
                   <h4 className={styles.cardName}>{r.studentName}</h4>
                   <p className={styles.cardSub}>{r.className} • {r.invoiceNo}</p>
@@ -172,7 +179,15 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
                 <span className={`${styles.statusPill} ${styles[`status_${r.status}`]}`}>
                   {r.status === "paid" ? "Paid" : r.status === "overdue" ? "Overdue" : "Pending"}
                 </span>
-              </button>
+                <button
+                  type="button"
+                  className={styles.moreBtn}
+                  onClick={(e) => { e.stopPropagation(); setOpenId(isOpen ? null : r.id); }}
+                  aria-label="More actions"
+                >
+                  <MoreVertical size={18} />
+                </button>
+              </div>
 
               {r.status === "paid" ? (
                 <div className={styles.cardRow}>
@@ -191,7 +206,7 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
               )}
 
               {isOpen && (
-                <div className={styles.expandActions}>
+                <div className={styles.expandActions} onClick={(e) => e.stopPropagation()}>
                   {r.status !== "paid" && (
                     <button type="button" className={styles.expandBtnPrimary} onClick={() => openPaySheet(r)}>
                       <Wallet size={15} /> Record Payment

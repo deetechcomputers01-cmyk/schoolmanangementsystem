@@ -17,6 +17,7 @@ export interface MobileSlotRow {
   day: string; startsAt: string; endsAt: string;
   room: string | null;
   recurrence: string;
+  effectiveDate: string | null;
   notes: string | null;
 }
 interface Props {
@@ -42,6 +43,16 @@ function getMondayUTC(): Date {
 function todayDayNum(): number {
   return new Date().getUTCDate();
 }
+// Matches desktop TimetableManageContent's isoWeek() exactly, needed to
+// replicate its "biweekly slots show on odd ISO weeks" heuristic.
+function isoWeek(d: Date): number {
+  const thu = addDaysUTC(d, 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(thu.getUTCFullYear(), 0, 1));
+  return Math.ceil((((thu.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
+function dateToISO(d: Date): string {
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
 
 const DAYS = [
   { key: "MON", label: "Mon", full: "Monday" },
@@ -50,6 +61,7 @@ const DAYS = [
   { key: "THU", label: "Thu", full: "Thursday" },
   { key: "FRI", label: "Fri", full: "Friday" },
 ] as const;
+const DAY_OFFSET: Record<string, number> = { MON: 0, TUE: 1, WED: 2, THU: 3, FRI: 4 };
 
 const TIME_SLOTS = [
   { id: "p1", label: "7:00 AM", start: "07:00", end: "08:00", isBreak: false },
@@ -85,9 +97,16 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
   const [addSubjectId, setAddSubjectId] = useState("");
   const [addSlotId, setAddSlotId] = useState(TIME_SLOTS.find((t) => !t.isBreak)?.id ?? "");
   const [addRoom, setAddRoom] = useState("");
+  const [addRecurrence, setAddRecurrence] = useState<"weekly" | "biweekly" | "one_time">("weekly");
+  const [addDate, setAddDate] = useState("");
   const [addSaving, setAddSaving] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [editRoom, setEditRoom] = useState("");
+  const [editNotes, setEditNotes] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
 
   const selectedDay = DAYS[dayIdx];
 
@@ -108,10 +127,22 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
     return ids;
   }, [slots]);
 
+  const weekNum = useMemo(() => isoWeek(monday), [monday]);
+  const selectedDayISO = useMemo(() => dateToISO(addDaysUTC(monday, DAY_OFFSET[selectedDay.key])), [monday, selectedDay]);
+
+  // Recurrence-aware visibility — mirrors desktop's visibleSlots filter exactly
+  // (weekly always shows, biweekly shows on odd ISO weeks, one_time only on
+  // its exact effectiveDate). Previously mobile showed every slot regardless
+  // of recurrence, which could surface one-time/biweekly periods on the
+  // wrong day entirely.
   const daySlots = useMemo(() => {
-    return slots.filter((s) => s.classId === classId && s.day === selectedDay.full)
-      .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
-  }, [slots, classId, selectedDay]);
+    return slots.filter((s) => {
+      if (s.classId !== classId || s.day !== selectedDay.full) return false;
+      if (s.recurrence === "one_time") return s.effectiveDate === selectedDayISO;
+      if (s.recurrence === "biweekly") return weekNum % 2 === 1;
+      return true; // "weekly"
+    }).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  }, [slots, classId, selectedDay, selectedDayISO, weekNum]);
 
   const classSubjects = subjectOptions.filter((s) => !s.classId || s.classId === classId);
   const now = nowHM();
@@ -152,14 +183,43 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
     setAddSubjectId(classSubjects[0]?.id ?? "");
     setAddSlotId(TIME_SLOTS.find((t) => !t.isBreak)?.id ?? "");
     setAddRoom("");
+    setAddRecurrence("weekly");
+    setAddDate(selectedDayISO);
     setAddError(null);
     setAddOpen(true);
+  }
+
+  function openEdit() {
+    if (!sheetSlot) return;
+    setEditRoom(sheetSlot.room ?? "");
+    setEditNotes(sheetSlot.notes ?? "");
+    setEditOpen(true);
+  }
+
+  async function saveEdit() {
+    if (!sheetSlot) return;
+    setEditSaving(true);
+    try {
+      const res = await fetch(`/api/timetable/${sheetSlot.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ room: editRoom.trim() || null, notes: editNotes.trim() || null }),
+      });
+      if (!res.ok) { showToast("Failed to save changes.", "error"); return; }
+      showToast("Timetable slot updated.");
+      setEditOpen(false);
+      setSheetSlotId(null);
+      router.refresh();
+    } finally {
+      setEditSaving(false);
+    }
   }
 
   async function submitAdd() {
     const ts = TIME_SLOTS.find((t) => t.id === addSlotId);
     if (!addSubjectId || !ts) { setAddError("Select a subject and period."); return; }
     if (!addRoom.trim()) { setAddError("Room is required."); return; }
+    if (addRecurrence === "one_time" && !addDate) { setAddError("Date is required for one-time periods."); return; }
     setAddSaving(true); setAddError(null);
     try {
       const res = await fetch("/api/timetable", {
@@ -167,7 +227,8 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           classId, subjectId: addSubjectId, day: selectedDay.full,
-          startsAt: ts.start, endsAt: ts.end, room: addRoom.trim(), recurrence: "weekly",
+          startsAt: ts.start, endsAt: ts.end, room: addRoom.trim(),
+          recurrence: addRecurrence, effectiveDate: addRecurrence === "one_time" ? addDate : undefined,
         }),
       });
       if (!res.ok) {
@@ -262,14 +323,29 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
       )}
 
       {sheetSlot && (
-        <div className={styles.sheetBackdrop} onClick={() => setSheetSlotId(null)}>
+        <div className={styles.sheetBackdrop} onClick={() => { setSheetSlotId(null); setEditOpen(false); }}>
           <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
             <div className={styles.sheetHandle} />
             <h3 className={styles.sheetSlotTitle}>{sheetSlot.subjectName}</h3>
             <p className={styles.sheetSlotMeta}>{sheetSlot.startsAt} - {sheetSlot.endsAt} • {sheetSlot.className}</p>
-            {canEdit ? (
+            {editOpen ? (
+              <>
+                <div className={styles.field}>
+                  <label>Room</label>
+                  <input className={styles.select} value={editRoom} onChange={(e) => setEditRoom(e.target.value)} placeholder="e.g. Room 102" />
+                </div>
+                <div className={styles.field}>
+                  <label>Notes (optional)</label>
+                  <input className={styles.select} value={editNotes} onChange={(e) => setEditNotes(e.target.value)} placeholder="e.g. Bring textbooks, double period…" />
+                </div>
+                <div className={styles.sheetFooter}>
+                  <button type="button" className={styles.btnOutline} onClick={() => setEditOpen(false)} disabled={editSaving}>Cancel</button>
+                  <button type="button" className={styles.btnPrimary} onClick={saveEdit} disabled={editSaving}>{editSaving ? "Saving…" : "Save Changes"}</button>
+                </div>
+              </>
+            ) : canEdit ? (
               <div className={styles.sheetActions}>
-                <button type="button" className={styles.sheetAction} onClick={() => showToast("Edit Period is not available yet.")}>
+                <button type="button" className={styles.sheetAction} onClick={openEdit}>
                   <Edit2 size={18} /> Edit Period
                 </button>
                 <button type="button" className={styles.sheetActionDanger} onClick={handleDelete} disabled={deleting}>
@@ -308,6 +384,20 @@ export function MobileTimetableContent({ classOptions, subjectOptions, slots, ca
               <label>Room</label>
               <input className={styles.select} value={addRoom} onChange={(e) => setAddRoom(e.target.value)} placeholder="e.g. Room 102" />
             </div>
+            <div className={styles.field}>
+              <label>Recurrence</label>
+              <select className={styles.select} value={addRecurrence} onChange={(e) => setAddRecurrence(e.target.value as typeof addRecurrence)}>
+                <option value="weekly">Every Week</option>
+                <option value="biweekly">Every 2 Weeks</option>
+                <option value="one_time">One-Time</option>
+              </select>
+            </div>
+            {addRecurrence === "one_time" && (
+              <div className={styles.field}>
+                <label>Date</label>
+                <input className={styles.select} type="date" value={addDate} onChange={(e) => setAddDate(e.target.value)} />
+              </div>
+            )}
             <div className={styles.sheetFooter}>
               <button type="button" className={styles.btnOutline} onClick={() => setAddOpen(false)} disabled={addSaving}>Cancel</button>
               <button type="button" className={styles.btnPrimary} onClick={submitAdd} disabled={addSaving}>{addSaving ? "Saving…" : "Add Period"}</button>

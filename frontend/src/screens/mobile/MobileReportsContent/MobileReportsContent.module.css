@@ -83,7 +83,20 @@
 .chartLabel { color: var(--clr-app-muted); font-size: 10px; font-weight: 600; }
 
 .classList { display: flex; flex-direction: column; gap: 8px; }
-.classRow { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--clr-app-border); }
+.classRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 10px; padding: 8px 0; border-bottom: 1px solid var(--clr-app-border); }
 .classRow:last-child { border-bottom: 0; }
 .classRowName { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
-.classRowRate { color: var(--clr-app-accent); font-size: var(--text-sm); font-weight: 700; }
+.classRowRate { color: var(--clr-app-accent); font-size: var(--text-xs); font-weight: 700; text-align: right; }
+
+.kpiCardWarn { border-color: #f2d69e; background: #fffdf4; }
+.kpiTrend { color: var(--clr-app-muted); font-size: 11px; font-weight: 600; }
+
+.subCardTitle { margin: 4px 0 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+
+.hbarList { display: flex; flex-direction: column; gap: 8px; }
+.hbarRow { display: grid; grid-template-columns: 88px 1fr 40px; align-items: center; gap: 8px; }
+.hbarLabel { color: var(--clr-app-text); font-size: var(--text-xs); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbarTrack { height: 10px; border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); overflow: hidden; }
+.hbarFill { height: 100%; background: var(--clr-app-accent); border-radius: var(--radius-sm); }
+.hbarFillBad { background: var(--clr-error); }
+.hbarValue { color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 700; text-align: right; }

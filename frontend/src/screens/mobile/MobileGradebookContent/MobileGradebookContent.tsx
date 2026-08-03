@@ -33,6 +33,24 @@ interface Props {
 
 const TERMS = ["Term 1", "Term 2", "Term 3"];
 type Tab = "entry" | "summary";
+type ScoreEntry = { classScore: string; examScore: string; dirty: boolean };
+
+// Matches desktop GradebookContent exactly: the backend only ever stores one
+// combined `score` per student/subject/term — Class(30)/Exam(70) is a
+// client-side-only split for entry, summed before it's ever sent to the API.
+function totalOf(entry: ScoreEntry | undefined): number | null {
+  if (!entry) return null;
+  const c = parseInt(entry.classScore, 10);
+  const e = parseInt(entry.examScore, 10);
+  if (Number.isNaN(c) && Number.isNaN(e)) return null;
+  return (Number.isNaN(c) ? 0 : c) + (Number.isNaN(e) ? 0 : e);
+}
+function fieldInvalid(entry: ScoreEntry | undefined, field: "classScore" | "examScore") {
+  if (!entry || entry[field] === "") return false;
+  const value = parseInt(entry[field], 10);
+  const max = field === "classScore" ? 30 : 70;
+  return Number.isNaN(value) || value < 0 || value > max;
+}
 
 export function MobileGradebookContent({ classes, subjects, studentsByClass, existingGrades, gradingScale }: Props) {
   const { showToast } = useToast();
@@ -40,7 +58,7 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
   const [subjectId, setSubjectId] = useState("");
   const [term, setTerm] = useState("Term 1");
   const [tab, setTab] = useState<Tab>("entry");
-  const [scores, setScores] = useState<Record<string, { value: string; dirty: boolean }>>({});
+  const [scores, setScores] = useState<Record<string, ScoreEntry>>({});
   const [saving, setSaving] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
 
@@ -54,21 +72,27 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
   }, [classSubjects]);
 
   useEffect(() => {
-    const next: Record<string, { value: string; dirty: boolean }> = {};
+    const next: Record<string, ScoreEntry> = {};
     roster.forEach((s) => {
       const match = existingGrades.find((g) => g.studentId === s.studentId && g.subjectId === subjectId && g.term === term);
-      next[s.studentId] = { value: match ? String(match.score) : "", dirty: false };
+      if (match) {
+        const classScore = Math.round(match.score * 0.3);
+        const examScore = Math.max(0, match.score - classScore);
+        next[s.studentId] = { classScore: String(classScore), examScore: String(examScore), dirty: false };
+      } else {
+        next[s.studentId] = { classScore: "", examScore: "", dirty: false };
+      }
     });
     setScores(next);
   }, [roster, subjectId, term, existingGrades]);
 
-  function setScore(studentId: string, value: string) {
-    setScores((prev) => ({ ...prev, [studentId]: { value, dirty: true } }));
+  function setScore(studentId: string, field: "classScore" | "examScore", value: string) {
+    setScores((prev) => ({ ...prev, [studentId]: { ...prev[studentId], [field]: value, dirty: true } }));
   }
 
   const gradedScores = roster
-    .map((s) => Number(scores[s.studentId]?.value))
-    .filter((n) => Number.isFinite(n) && n >= 0);
+    .map((s) => totalOf(scores[s.studentId]))
+    .filter((n): n is number => n !== null);
   const classAvg = gradedScores.length ? Math.round(gradedScores.reduce((a, b) => a + b, 0) / gradedScores.length) : null;
 
   const distribution = useMemo(() => {
@@ -85,8 +109,8 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
   const topPerformer = useMemo(() => {
     type Best = { name: string; score: number };
     return roster.reduce<Best | null>((best, s) => {
-      const v = Number(scores[s.studentId]?.value);
-      if (!Number.isFinite(v)) return best;
+      const v = totalOf(scores[s.studentId]);
+      if (v === null) return best;
       if (!best || v > best.score) return { name: s.studentName, score: v };
       return best;
     }, null);
@@ -97,12 +121,16 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
   // difference is Publish gates it behind a confirmation step first.
   async function saveDraft(successMessage: string) {
     if (!subjectId) { showToast("Select a subject first.", "error"); return; }
-    const dirty = roster.filter((s) => scores[s.studentId]?.dirty && scores[s.studentId]?.value !== "");
+    const dirty = roster.filter((s) => {
+      const entry = scores[s.studentId];
+      return entry?.dirty && (entry.classScore !== "" || entry.examScore !== "");
+    });
     if (dirty.length === 0) { showToast("No changes to save."); return; }
     setSaving(true);
     try {
       const results = await Promise.allSettled(dirty.map((s) => {
-        const score = Math.min(100, Math.max(0, Number(scores[s.studentId].value)));
+        const total = totalOf(scores[s.studentId]) ?? 0;
+        const score = Math.min(100, Math.max(0, total));
         return fetch("/api/grades", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -170,26 +198,51 @@ export function MobileGradebookContent({ classes, subjects, studentsByClass, exi
             {roster.length === 0 ? (
               <p className={styles.emptyText}>No students in this class.</p>
             ) : roster.map((s) => {
-              const raw = scores[s.studentId]?.value ?? "";
-              const numeric = raw === "" ? null : Number(raw);
-              const grade = numeric !== null && Number.isFinite(numeric) ? gradeFromScore(numeric, 100, gradingScale) : null;
+              const entry = scores[s.studentId];
+              const total = totalOf(entry);
+              const grade = total !== null ? gradeFromScore(total, 100, gradingScale) : null;
+              const classInvalid = fieldInvalid(entry, "classScore");
+              const examInvalid = fieldInvalid(entry, "examScore");
               return (
                 <div key={s.studentId} className={styles.studentRow}>
-                  <span className={styles.avatar}>{s.initials}</span>
-                  <div className={styles.studentInfo}>
-                    <p className={styles.studentName}>{s.studentName}</p>
-                    <p className={styles.studentId}>ID: {s.admNo}</p>
+                  <div className={styles.studentTop}>
+                    <span className={styles.avatar}>{s.initials}</span>
+                    <div className={styles.studentInfo}>
+                      <p className={styles.studentName}>{s.studentName}</p>
+                      <p className={styles.studentId}>ID: {s.admNo}</p>
+                    </div>
+                    <span className={styles.gradeBadge}>{grade ?? "—"}</span>
                   </div>
-                  <input
-                    className={styles.scoreInput}
-                    type="number"
-                    min={0}
-                    max={100}
-                    placeholder="0-100"
-                    value={raw}
-                    onChange={(e) => setScore(s.studentId, e.target.value)}
-                  />
-                  <span className={styles.gradeBadge}>{grade ?? "—"}</span>
+                  <div className={styles.scoreInputRow}>
+                    <label className={styles.scoreInputField}>
+                      <span className={styles.scoreInputLabel}>Class (30)</span>
+                      <input
+                        className={`${styles.scoreInput} ${classInvalid ? styles.scoreInputError : ""}`}
+                        type="number"
+                        min={0}
+                        max={30}
+                        placeholder="—"
+                        value={entry?.classScore ?? ""}
+                        onChange={(e) => setScore(s.studentId, "classScore", e.target.value)}
+                      />
+                    </label>
+                    <label className={styles.scoreInputField}>
+                      <span className={styles.scoreInputLabel}>Exam (70)</span>
+                      <input
+                        className={`${styles.scoreInput} ${examInvalid ? styles.scoreInputError : ""}`}
+                        type="number"
+                        min={0}
+                        max={70}
+                        placeholder="—"
+                        value={entry?.examScore ?? ""}
+                        onChange={(e) => setScore(s.studentId, "examScore", e.target.value)}
+                      />
+                    </label>
+                    <div className={styles.scoreInputField}>
+                      <span className={styles.scoreInputLabel}>Total</span>
+                      <span className={styles.scoreTotal}>{total ?? "—"}</span>
+                    </div>
+                  </div>
                 </div>
               );
             })}
