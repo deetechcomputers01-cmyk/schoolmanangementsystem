@@ -322,7 +322,7 @@ export async function getAccountantPortalData() {
 export async function getTransportPortalData(userId: string) {
   const staffRecord = await prisma.staff.findFirst({
     where: { userId },
-    select: { id: true, firstName: true, lastName: true, staffNo: true }
+    select: { id: true, firstName: true, lastName: true, staffNo: true, phone: true }
   });
 
   const vehicles = await prisma.vehicle.findMany({

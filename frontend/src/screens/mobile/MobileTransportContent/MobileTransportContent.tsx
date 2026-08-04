@@ -27,14 +27,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Bus, Users, Route as RouteIcon, Plus, Clock, MessageSquare, Phone,
-  ChevronDown, ChevronUp, UserPlus, Trash2,
+  ChevronDown, ChevronUp, UserPlus, Trash2, Pencil,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
 import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import { vehicleLiveStatus } from "@/screens/desktop/TransportScreen/TransportContent";
-import type { TransportContentProps, VehicleRow } from "@/screens/desktop/TransportScreen/TransportContent";
+import type { TransportContentProps, VehicleRow, RouteRow } from "@/screens/desktop/TransportScreen/TransportContent";
 import styles from "./MobileTransportContent.module.css";
 
 function initials(name: string) {
@@ -59,8 +59,9 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
     return (Date.now() - new Date(v.locationUpdatedAt).getTime()) / 60000 <= 15;
   });
 
-  // ── Add Route sheet ──────────────────────────────────────────────────
+  // ── Add / Edit Route sheet ─────────────────────────────────────────
   const [routeOpen, setRouteOpen] = useState(false);
+  const [editingRoute, setEditingRoute] = useState<RouteRow | null>(null);
   const [newName, setNewName] = useState("");
   const [newVehicle, setNewVehicle] = useState("");
   const [newMorning, setNewMorning] = useState("06:30");
@@ -69,7 +70,15 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
   const [savingRoute, setSavingRoute] = useState(false);
 
   function openAddRoute() {
+    setEditingRoute(null);
     setNewName(""); setNewVehicle(""); setNewMorning("06:30"); setNewAfter("15:30"); setNewStops("");
+    setRouteOpen(true);
+  }
+
+  function openEditRoute(r: RouteRow) {
+    setEditingRoute(r);
+    setNewName(r.name); setNewVehicle(r.vehicleId ?? ""); setNewMorning(r.morningPickup); setNewAfter(r.afternoonDrop);
+    setNewStops(r.stops.join("\n"));
     setRouteOpen(true);
   }
 
@@ -77,8 +86,9 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
     if (!newName.trim()) { showToast("Route name is required.", "error"); return; }
     setSavingRoute(true);
     try {
-      const res = await fetch("/api/transport/routes", {
-        method: "POST",
+      const url = editingRoute ? `/api/transport/routes/${editingRoute.id}` : "/api/transport/routes";
+      const res = await fetch(url, {
+        method: editingRoute ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newName.trim(),
@@ -90,10 +100,10 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
       });
       if (!res.ok) throw new Error("Failed");
       setRouteOpen(false);
-      showToast("Route added");
+      showToast(editingRoute ? "Route updated" : "Route added");
       router.refresh();
     } catch {
-      showToast("Failed to save route", "error");
+      showToast(editingRoute ? "Failed to update route" : "Failed to save route", "error");
     } finally {
       setSavingRoute(false);
     }
@@ -314,6 +324,7 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
                       )}
 
                       <div className={styles.actionRow}>
+                        <button type="button" className={styles.actionBtn} onClick={() => openEditRoute(r)}><Pencil size={13} /> Edit Route</button>
                         <button type="button" className={styles.actionBtn} onClick={() => openRoster(r.id)}><UserPlus size={13} /> Manage Roster</button>
                         <button type="button" className={styles.actionBtn} onClick={() => showToast("Message sent to driver.")}><MessageSquare size={13} /> Message Driver</button>
                       </div>
@@ -326,15 +337,15 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
         </>
       )}
 
-      {/* Add Route */}
+      {/* Add / Edit Route */}
       <MobileSheet
         open={routeOpen}
         onClose={() => !savingRoute && setRouteOpen(false)}
-        title="Add New Route"
+        title={editingRoute ? `Edit ${editingRoute.name}` : "Add New Route"}
         footer={<>
           <button type="button" className={kit.btnOutline} onClick={() => setRouteOpen(false)} disabled={savingRoute}>Cancel</button>
           <button type="button" className={kit.btnPrimary} onClick={saveRoute} disabled={savingRoute || !newName.trim()}>
-            {savingRoute ? "Saving…" : "Save Route"}
+            {savingRoute ? "Saving…" : editingRoute ? "Save Changes" : "Save Route"}
           </button>
         </>}
       >

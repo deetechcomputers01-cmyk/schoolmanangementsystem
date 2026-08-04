@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   Bus, Users, Clock, Plus, ChevronRight,
   MessageSquare, Route as RouteIcon,
-  Download, X, Activity, Trash2, MoreVertical,
+  Download, X, Activity, Trash2, MoreVertical, Pencil,
 } from "lucide-react";
 import { VehicleMapLoader } from "@/components/transport/VehicleMapLoader";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
@@ -89,6 +89,15 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
   const [newStops,   setNewStops]   = useState("");
   const [saving,     setSaving]     = useState(false);
 
+  // Edit route form state
+  const [editRouteOpen, setEditRouteOpen] = useState(false);
+  const [erName,    setErName]    = useState("");
+  const [erVehicle, setErVehicle] = useState("");
+  const [erMorning, setErMorning] = useState("06:30");
+  const [erAfter,   setErAfter]   = useState("15:30");
+  const [erStops,   setErStops]   = useState("");
+  const [savingEditRoute, setSavingEditRoute] = useState(false);
+
   // Add vehicle modal
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [vRegNo, setVRegNo] = useState("");
@@ -146,6 +155,43 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
       toast("Network error.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  function openEditRoute(r: RouteRow) {
+    setErName(r.name);
+    setErVehicle(r.vehicleId ?? "");
+    setErMorning(r.morningPickup);
+    setErAfter(r.afternoonDrop);
+    setErStops(r.stops.join("\n"));
+    setEditRouteOpen(true);
+  }
+
+  async function saveEditRoute() {
+    if (!selectedRoute || !erName.trim()) return;
+    setSavingEditRoute(true);
+    try {
+      const res = await fetch(`/api/transport/routes/${selectedRoute.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: erName.trim(),
+          vehicleId: erVehicle || null,
+          morningPickup: erMorning,
+          afternoonDrop: erAfter,
+          stops: erStops.split("\n").map(s => s.trim()).filter(Boolean),
+        }),
+      });
+      if (res.ok) {
+        setEditRouteOpen(false);
+        router.refresh();
+      } else {
+        toast("Failed to update route.");
+      }
+    } catch {
+      toast("Network error.");
+    } finally {
+      setSavingEditRoute(false);
     }
   }
 
@@ -500,7 +546,10 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
                       <Clock size={11} /> Morning: {selectedRoute.morningPickup} · Drop-off: {selectedRoute.afternoonDrop}
                     </div>
                   </div>
-                  <span className={styles.opsTripBadge}>MORNING TRIP</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span className={styles.opsTripBadge}>MORNING TRIP</span>
+                    <button className={styles.actionBtn} onClick={() => openEditRoute(selectedRoute)} title="Edit route"><Pencil size={13} /></button>
+                  </div>
                 </div>
 
                 {/* Vehicle card */}
@@ -609,6 +658,53 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
               <button className={styles.btnOutline} onClick={() => setShowModal(false)}>Cancel</button>
               <button className={styles.btnPrimary} onClick={saveRoute} disabled={saving}>
                 {saving ? "Saving…" : "Save Route"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Route Modal */}
+      {editRouteOpen && (
+        <div className={styles.modalBackdrop} onClick={() => setEditRouteOpen(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Edit Route</h2>
+              <button className={styles.modalClose} onClick={() => setEditRouteOpen(false)}><X size={18} /></button>
+            </div>
+            <div className={styles.modalBody}>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Route Name *</label>
+                <input className={styles.formInput} value={erName} onChange={e => setErName(e.target.value)} placeholder="e.g. East Legon" />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Assign Vehicle</label>
+                <select className={styles.formSelect} value={erVehicle} onChange={e => setErVehicle(e.target.value)}>
+                  <option value="">No vehicle</option>
+                  {vehicles.map(v => (
+                    <option key={v.id} value={v.id}>{v.regNo} — {v.make}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Morning Pickup</label>
+                  <input className={styles.formInput} type="time" value={erMorning} onChange={e => setErMorning(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Afternoon Drop-off</label>
+                  <input className={styles.formInput} type="time" value={erAfter} onChange={e => setErAfter(e.target.value)} />
+                </div>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Stops (one per line)</label>
+                <textarea className={styles.formTextarea} rows={4} value={erStops} onChange={e => setErStops(e.target.value)} placeholder={"Stop 1\nStop 2\nSchool Campus"} />
+              </div>
+            </div>
+            <div className={styles.modalFooter}>
+              <button className={styles.btnOutline} onClick={() => setEditRouteOpen(false)}>Cancel</button>
+              <button className={styles.btnPrimary} onClick={saveEditRoute} disabled={savingEditRoute}>
+                {savingEditRoute ? "Saving…" : "Save Changes"}
               </button>
             </div>
           </div>

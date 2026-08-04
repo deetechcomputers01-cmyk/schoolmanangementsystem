@@ -102,7 +102,83 @@
   font-weight: 700;
   cursor: pointer;
 }
+.actionBtnOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--clr-app-accent);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
 .scoredHint { display: inline-flex; align-items: center; gap: 4px; color: var(--clr-success); font-size: 11px; font-weight: 600; }
+
+/* ── Edit Exam sheet ──────────────────────────────────────────────── */
+.readonlyGrid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; padding: 10px 12px; border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); }
+.readonlyGrid div { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--text-xs); }
+.readonlyGrid span { color: var(--clr-app-muted); }
+.readonlyGrid strong { color: var(--clr-app-text); font-weight: 600; text-align: right; }
+
+.qForm { display: flex; flex-direction: column; gap: 10px; padding: 12px; margin-bottom: 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); }
+.optionRow { display: flex; align-items: center; gap: 8px; }
+.optLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: 50%;
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.optLetterActive { border-color: var(--clr-success); background: var(--clr-success); color: #ffffff; }
+.optionRow .input, .optionRow input { flex: 1; }
+
+.qList { display: flex; flex-direction: column; gap: 8px; }
+.qCard { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); }
+.qCardTop { display: flex; align-items: center; gap: 8px; }
+.qNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.qTypePill { padding: 2px 8px; border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.qMarks { margin-left: auto; color: var(--clr-app-accent); font-size: var(--text-xs); font-weight: 700; }
+.qText { margin: 0; color: var(--clr-app-text); font-size: var(--text-xs); line-height: 16px; }
+.qActions { display: flex; gap: 8px; }
+.qActionBtn, .qActionBtnDanger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.qActionBtnDanger { border-color: var(--clr-error-border); background: var(--clr-error-bg); color: var(--clr-error); }
 
 .rosterList { display: flex; flex-direction: column; gap: 8px; }
 .rosterRow {

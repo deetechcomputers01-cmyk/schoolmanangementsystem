@@ -123,15 +123,6 @@ export function CanteenContent({ weekOf, weekLabel, menuGrid, students, servingL
     setEditItemsText(items.join("\n"));
   }
 
-  function openQuickAdd() {
-    for (const d of menuGrid) {
-      for (const m of d.meals) {
-        if (m.items.length === 0) { openEditCell(d.day, m.mealType, []); return; }
-      }
-    }
-    openEditCell(defaultDay, "Lunch", menuGrid.find((d) => d.day === defaultDay)?.meals.find((m) => m.mealType === "Lunch")?.items ?? []);
-  }
-
   async function saveMenuCell() {
     if (!editingCell) return;
     setSavingMenu(true);
@@ -170,11 +161,6 @@ export function CanteenContent({ weekOf, weekLabel, menuGrid, students, servingL
         <div>
           <h1 className={styles.title}>Canteen Management</h1>
           <p className={styles.subtitle}>Manage weekly menus, track servings, and monitor canteen operations.</p>
-        </div>
-        <div className={styles.headerActions}>
-          <button className={styles.btnPrimary} onClick={openQuickAdd}>
-            <Pencil size={14} /> Edit Menu
-          </button>
         </div>
       </div>
 

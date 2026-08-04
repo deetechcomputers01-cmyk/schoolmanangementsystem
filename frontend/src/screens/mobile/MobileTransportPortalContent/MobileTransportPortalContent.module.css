@@ -1,0 +1,71 @@
+.root { display: flex; flex-direction: column; gap: 14px; }
+
+.hero {
+  padding: 18px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--clr-app-accent), #4131dc);
+  color: #ffffff;
+}
+.heroTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.heroLabel { margin: 0 0 4px; color: rgba(255, 255, 255, 0.75); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.heroName { margin: 0; font-size: var(--text-xl); font-weight: 700; }
+.heroSub { margin: 4px 0 0; color: rgba(255, 255, 255, 0.85); font-size: var(--text-sm); }
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.statsRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.statTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 4px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  text-align: center;
+}
+.statTile strong { color: var(--clr-app-accent); font-size: var(--text-lg); font-weight: 800; }
+.statTile span { color: var(--clr-app-muted); font-size: 10px; font-weight: 600; line-height: 13px; }
+
+.emptyState { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px 16px; color: var(--clr-app-muted); font-size: var(--text-sm); }
+
+.sectionTitle { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+
+.list { display: flex; flex-direction: column; gap: 14px; }
+.vehicleBlock { display: flex; flex-direction: column; gap: 10px; }
+
+.vehicleCard { border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); overflow: hidden; }
+.vehicleHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 12px; border-bottom: 1px solid var(--clr-app-border); background: var(--clr-app-surface-alt); }
+.vehicleName { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.vehicleReg { color: var(--clr-app-muted); font-weight: 400; }
+.vehicleMeta { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.typePill { flex-shrink: 0; padding: 3px 9px; border-radius: var(--radius-full, 999px); background: var(--clr-app-surface); border: 1px solid var(--clr-app-border); color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: capitalize; }
+
+.routeList { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+.routeCard { display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); }
+.routeHeader { display: flex; align-items: center; gap: 8px; border: 0; background: transparent; padding: 0; text-align: left; cursor: pointer; color: var(--clr-app-text); }
+.routeHeaderText { flex: 1; min-width: 0; }
+.routeName { display: block; color: var(--clr-app-accent); font-size: var(--text-sm); font-weight: 700; }
+.routeTime { display: inline-flex; align-items: center; gap: 4px; margin-top: 2px; color: var(--clr-app-muted); font-size: 11px; }
+.studentPill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: var(--radius-full, 999px); background: var(--clr-app-accent-soft); color: var(--clr-app-accent); font-size: 10px; font-weight: 700; }
+
+.stopRow { display: flex; gap: 6px; overflow-x: auto; }
+.stopRow::-webkit-scrollbar { display: none; }
+.stopChip { flex-shrink: 0; padding: 4px 9px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); color: var(--clr-app-text); font-size: 11px; }
+
+.manifestList { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; border-top: 1px solid var(--clr-app-border); }
+.manifestRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; }
+.manifestName { color: var(--clr-app-text); font-weight: 600; }
+.manifestMeta { color: var(--clr-app-muted); }

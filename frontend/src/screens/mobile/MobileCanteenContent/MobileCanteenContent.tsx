@@ -22,11 +22,17 @@
  *   - "Meal Session Selector" → real Day + Breakfast/Lunch/Dinner picker
  *     driving the Weekly Menu / Serve views (mealTypes are Breakfast/
  *     Lunch/Dinner — the mockup's "Supper" doesn't exist in this schema).
- *   - "Record Sale"/"Update Stock" CTAs → real "Edit Menu" (opens the
- *     ported menu-cell sheet) and "Serve Meals" (jumps to the real
- *     mark-served flow).
- *   - Priced/stocked "Menu Items" list → real weekly menu, reflowed as one
- *     card per day showing that day's real dishes; tap a meal chip to edit.
+ *   - "Record Sale"/"Update Stock" CTAs → real "Serve Meals" action.
+ *   - Priced/stocked "Menu Items" list → a single reactive "{selectedDay}'s
+ *     Menu" section scoped to whichever day chip is selected above it (tap a
+ *     meal row to edit — opens the ported menu-cell sheet). Originally this
+ *     was a static list of all 5 days shown at once, so tapping a day chip
+ *     changed which day the header CTA/serve-tab targeted but nothing
+ *     visibly changed on screen — fixed so the visible menu content itself
+ *     is driven by `selectedDay`/`selectedMealType`. The redundant "Edit
+ *     Menu" header button (openQuickAdd()'s ambiguous first-empty-slot
+ *     target) was removed from desktop too — meal rows are directly
+ *     tappable/specific on both platforms now.
  *   - Prepaid-balance "Student Meal Plan" card → no wallet/balance system
  *     exists; omitted. Real per-student dietary info lives in the Dietary
  *     Notes tab instead (real allergies/conditions).
@@ -38,7 +44,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  AlertTriangle, Users, Receipt, Search, Pencil,
+  AlertTriangle, Users, Receipt, Search,
   ChevronLeft, ChevronRight, Check, TrendingUp, TrendingDown,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
@@ -205,37 +211,30 @@ export function MobileCanteenContent({ weekOf, weekLabel, menuGrid, students, se
         </div>
       </section>
 
-      <div className={styles.ctaRow}>
-        <button type="button" className={styles.btnOutline} onClick={() => openEditCell(selectedDay, selectedMealType, activeMenu?.items ?? [])}>
-          <Pencil size={14} /> Edit Menu
-        </button>
-        <button type="button" className={styles.btnPrimary} disabled={serving || selectedIds.size === 0} onClick={markServed}>
-          <Check size={14} /> Mark {selectedIds.size || ""} Served
-        </button>
-      </div>
-
       <section>
-        <h2 className={styles.sectionTitle}>Weekly Menu</h2>
+        <h2 className={styles.sectionTitle}>{selectedDay}&apos;s Menu</h2>
         <div className={styles.list}>
-          {menuGrid.map((d) => (
-            <article key={d.day} className={styles.menuDayCard}>
-              <span className={styles.menuDayName}>{d.day}</span>
-              <div className={styles.menuMealRow}>
-                {d.meals.map((m) => (
-                  <button key={m.mealType} type="button" className={styles.menuMealChip} onClick={() => openEditCell(d.day, m.mealType, m.items)}>
-                    <span className={styles.menuMealType}>{m.mealType}</span>
-                    {m.items.length === 0 ? (
-                      <span className={styles.menuEmpty}>Not set</span>
-                    ) : (
-                      <span className={styles.menuItemsText}>{m.items.join(", ")}</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </article>
+          {(menuGrid.find((d) => d.day === selectedDay)?.meals ?? []).map((m) => (
+            <button
+              key={m.mealType}
+              type="button"
+              className={`${styles.menuMealChip} ${m.mealType === selectedMealType ? styles.menuMealChipActive : ""}`}
+              onClick={() => { setSelectedMealType(m.mealType); openEditCell(selectedDay, m.mealType, m.items); }}
+            >
+              <span className={styles.menuMealType}>{m.mealType}</span>
+              {m.items.length === 0 ? (
+                <span className={styles.menuEmpty}>Tap to set menu</span>
+              ) : (
+                <span className={styles.menuItemsText}>{m.items.join(", ")}</span>
+              )}
+            </button>
           ))}
         </div>
       </section>
+
+      <button type="button" className={styles.btnPrimary} disabled={serving || selectedIds.size === 0} onClick={markServed} style={{ width: "100%" }}>
+        <Check size={14} /> Mark {selectedIds.size || ""} Served
+      </button>
 
       <section>
         <h2 className={styles.sectionTitle}>Recent Servings</h2>

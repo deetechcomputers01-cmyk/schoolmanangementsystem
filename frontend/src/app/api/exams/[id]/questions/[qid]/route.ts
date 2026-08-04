@@ -16,13 +16,14 @@ export async function PATCH(
   if (!["super_admin", "principal", "teacher"].includes(user.role)) return forbidden();
 
   try {
-    const { text, options, correctAnswer, marks } = await req.json();
+    const { text, type, options, correctAnswer, marks } = await req.json();
     if (!text?.trim()) return fail("Question text is required", 400);
 
     await prisma.examQuestion.update({
       where: { id: params.qid },
       data: {
         text: text.trim(),
+        type: type ?? undefined,
         options: options ?? Prisma.DbNull,
         correctAnswer: correctAnswer ?? null,
         marks: Number(marks) || 1,

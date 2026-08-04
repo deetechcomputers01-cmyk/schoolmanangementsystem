@@ -31,6 +31,18 @@ export async function createStaff(user: SessionUser | null, input: {
   return staff;
 }
 
+// Self-service: a staff member (e.g. a driver) updating only their own contact
+// phone number, scoped by their own userId — never gated behind staff:write.
+export async function updateOwnPhone(actor: SessionUser | null, phone: string) {
+  if (!actor) throw new Error("Unauthorized");
+  if (!phone.trim()) throw new Error("Phone number is required");
+  const staff = await prisma.staff.findFirst({ where: { userId: actor.id } });
+  if (!staff) throw new Error("No staff record found for this account");
+  const updated = await prisma.staff.update({ where: { id: staff.id }, data: { phone: phone.trim() } });
+  await audit(actor, "update", "Staff", staff.id, { phone: "self-updated" });
+  return updated;
+}
+
 export async function updateStaff(user: SessionUser | null, id: string, input: Partial<{
   staffNo: string; firstName: string; lastName: string;
   phone: string; roleTitle: string; email: string; photoUrl: string;

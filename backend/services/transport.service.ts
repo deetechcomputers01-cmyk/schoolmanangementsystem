@@ -49,6 +49,13 @@ export async function updateVehicleLocation(
   });
 }
 
+export async function updateRoute(actor: SessionUser, id: string, input: Partial<{ name: string; vehicleId: string | null; morningPickup: string; afternoonDrop: string; stops: string[] }>) {
+  assertCanManage(actor);
+  const route = await prisma.transportRoute.update({ where: { id }, data: input });
+  await audit(actor, "update", "TransportRoute", id, input);
+  return route;
+}
+
 export async function assignStudentsToRoute(actor: SessionUser, routeId: string, studentIds: string[]) {
   assertCanManage(actor);
   const results = await Promise.all(

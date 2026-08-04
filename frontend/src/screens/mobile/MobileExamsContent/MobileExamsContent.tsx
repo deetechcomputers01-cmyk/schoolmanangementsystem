@@ -7,20 +7,29 @@
  * component) and the real /api/exams endpoints:
  *   - exam list, stats, Add Exam form -> same fields/POST /api/exams as desktop's saveExam()
  *   - Enter Scores -> GET/POST /api/exams/:id/scores, same roster shape (ScoreRosterRow) as desktop
+ *   - Edit Exam (Details tab) -> PATCH /api/exams/:id { isOnline, duration } — this is
+ *     the ENTIRE real metadata-edit capability on desktop too; title/class/subject/
+ *     date/maxScore are create-only everywhere in this app, not just on mobile.
+ *   - Edit Exam (Questions tab) -> full ExamQuestion CRUD, same endpoints/handlers as
+ *     desktop's Questions tab: GET/POST /api/exams/:id/questions, PATCH/DELETE
+ *     /api/exams/:id/questions/:qid. CSV import and the Attempts/Grading tab (online
+ *     exam submissions) are desktop-only power-user workflows, intentionally not
+ *     reproduced here — everything else desktop can edit about a question, mobile can too.
  *
  * The Stitch mockup's "Invigilation" tab, "Assign Invigilator" action, and
  * "Scripts Pending" stat have NO real backing anywhere in the schema or
  * service layer (no invigilator/room field on Exam) — intentionally not
- * reproduced. The desktop's Questions/Attempts/Grading tabs (question
- * bank authoring, CSV import, per-attempt manual grading) are a large,
- * genuinely desktop-oriented workflow and are out of scope for this pass;
- * only the list + schedule + score-entry workflows are covered here.
+ * reproduced.
  */
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Search, Calendar, ClipboardList, CheckCircle2, Wifi, Clock } from "lucide-react";
+import {
+  Plus, Search, Calendar, ClipboardList, CheckCircle2, Wifi, Clock,
+  Pencil, Trash2, Check,
+} from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
 import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./MobileExamsContent.module.css";
@@ -36,6 +45,10 @@ interface SubjectOption { id: string; name: string; code: string; classId: strin
 interface TermOption { id: string; name: string }
 interface Stats { total: number; scored: number; pending: number; upcoming: number; termName: string; yearName: string }
 interface ScoreRosterRow { studentId: string; name: string; admissionNo: string; score: number | null; remarks: string | null }
+interface ExamQuestion {
+  id: string; order: number; text: string; type: string;
+  options: string[] | null; correctAnswer: string | null; marks: number;
+}
 
 interface Props {
   exams: ExamRow[];
@@ -57,6 +70,7 @@ function fmtTime(iso: string) {
 export function MobileExamsContent({ exams, stats, classOptions, subjectOptions, termOptions }: Props) {
   const router = useRouter();
   const { showToast } = useToast();
+  const confirm = useConfirm();
 
   const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState("");
@@ -165,6 +179,149 @@ export function MobileExamsContent({ exams, stats, classOptions, subjectOptions,
     }
   }
 
+  // ── Edit Exam sheet — Details tab (PATCH /api/exams/:id) ────────────
+  const [editExam, setEditExam] = useState<ExamRow | null>(null);
+  const [editTab, setEditTab] = useState<"details" | "questions">("details");
+  const [edOnline, setEdOnline] = useState(false);
+  const [edDuration, setEdDuration] = useState("");
+  const [savingDetails, setSavingDetails] = useState(false);
+
+  // ── Edit Exam sheet — Questions tab (same endpoints as desktop) ─────
+  const [questions, setQuestions] = useState<ExamQuestion[]>([]);
+  const [questionsLoaded, setQuestionsLoaded] = useState(false);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [qFormOpen, setQFormOpen] = useState(false);
+  const [qEditingId, setQEditingId] = useState<string | null>(null);
+  const [qText, setQText] = useState("");
+  const [qType, setQType] = useState<"mcq" | "short_answer">("mcq");
+  const [qOptions, setQOptions] = useState(["", "", "", ""]);
+  const [qCorrect, setQCorrect] = useState("A");
+  const [qMarks, setQMarks] = useState("1");
+  const [qSaving, setQSaving] = useState(false);
+  const [qDeletingId, setQDeletingId] = useState<string | null>(null);
+
+  function openEditExam(exam: ExamRow) {
+    setEditExam(exam);
+    setEditTab("details");
+    setEdOnline(exam.isOnline);
+    setEdDuration(exam.duration ? String(exam.duration) : "");
+    setQuestions([]);
+    setQuestionsLoaded(false);
+    setQFormOpen(false);
+  }
+
+  function loadQuestions(examId: string) {
+    setQuestionsLoading(true);
+    fetch(`/api/exams/${examId}/questions`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((rows: ExamQuestion[]) => { setQuestions(rows); setQuestionsLoaded(true); })
+      .catch(() => showToast("Failed to load questions.", "error"))
+      .finally(() => setQuestionsLoading(false));
+  }
+
+  function switchEditTab(tab: "details" | "questions") {
+    setEditTab(tab);
+    if (tab === "questions" && editExam && !questionsLoaded) loadQuestions(editExam.id);
+  }
+
+  async function saveDetails() {
+    if (!editExam) return;
+    setSavingDetails(true);
+    try {
+      const res = await fetch(`/api/exams/${editExam.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isOnline: edOnline, duration: edOnline && edDuration ? Number(edDuration) : null }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      showToast("Exam details updated");
+      setEditExam(null);
+      router.refresh();
+    } catch {
+      showToast("Failed to update exam", "error");
+    } finally {
+      setSavingDetails(false);
+    }
+  }
+
+  const questionTotalMarks = questions.reduce((s, q) => s + q.marks, 0);
+
+  function switchQType(type: "mcq" | "short_answer") {
+    setQType(type);
+    if (type === "mcq" && !["A", "B", "C", "D"].includes(qCorrect)) setQCorrect("A");
+    if (type === "short_answer" && ["A", "B", "C", "D"].includes(qCorrect)) setQCorrect("");
+  }
+
+  function openAddQuestion() {
+    setQEditingId(null);
+    setQText(""); setQType("mcq"); setQOptions(["", "", "", ""]); setQCorrect("A"); setQMarks("1");
+    setQFormOpen(true);
+  }
+
+  function openEditQuestion(q: ExamQuestion) {
+    setQEditingId(q.id);
+    setQText(q.text);
+    const isShort = q.type === "short_answer";
+    setQType(isShort ? "short_answer" : "mcq");
+    setQCorrect(q.correctAnswer ?? (isShort ? "" : "A"));
+    setQMarks(String(q.marks));
+    const opts = q.options ?? [];
+    setQOptions([opts[0] ?? "", opts[1] ?? "", opts[2] ?? "", opts[3] ?? ""]);
+    setQFormOpen(true);
+  }
+
+  async function submitQuestion() {
+    if (!editExam || !qText.trim()) { showToast("Question text is required.", "error"); return; }
+    setQSaving(true);
+    try {
+      const body: Record<string, unknown> = { text: qText.trim(), type: qType, marks: parseFloat(qMarks) || 1 };
+      if (qType === "mcq") {
+        body.options = qOptions.map((o) => o.trim()).filter(Boolean);
+        body.correctAnswer = qCorrect;
+      } else {
+        body.options = null;
+        body.correctAnswer = null;
+      }
+      const url = qEditingId ? `/api/exams/${editExam.id}/questions/${qEditingId}` : `/api/exams/${editExam.id}/questions`;
+      const res = await fetch(url, {
+        method: qEditingId ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error("Failed");
+      if (qEditingId) {
+        setQuestions((prev) => prev.map((q) => (q.id === qEditingId ? { ...q, text: body.text as string, type: qType, options: body.options as string[] | null, correctAnswer: body.correctAnswer as string | null, marks: body.marks as number } : q)));
+        showToast("Question updated");
+      } else {
+        const created = await res.json();
+        setQuestions((prev) => [...prev, created]);
+        showToast("Question added");
+      }
+      setQFormOpen(false);
+    } catch {
+      showToast("Failed to save question", "error");
+    } finally {
+      setQSaving(false);
+    }
+  }
+
+  async function removeQuestion(q: ExamQuestion) {
+    if (!editExam) return;
+    const sure = await confirm({ message: `Delete this question? This can't be undone.`, confirmLabel: "Delete" });
+    if (!sure) return;
+    setQDeletingId(q.id);
+    try {
+      const res = await fetch(`/api/exams/${editExam.id}/questions/${q.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed");
+      setQuestions((prev) => prev.filter((x) => x.id !== q.id));
+      showToast("Question removed");
+    } catch {
+      showToast("Failed to delete question", "error");
+    } finally {
+      setQDeletingId(null);
+    }
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.statsRow}>
@@ -223,6 +380,9 @@ export function MobileExamsContent({ exams, stats, classOptions, subjectOptions,
                 <div className={styles.actionRow}>
                   <button type="button" className={styles.actionBtnPrimary} onClick={() => openScores(e)}>
                     <ClipboardList size={15} /> {e.status === "scored" ? "Update Scores" : "Enter Scores"}
+                  </button>
+                  <button type="button" className={styles.actionBtnOutline} onClick={() => openEditExam(e)}>
+                    <Pencil size={14} /> Edit
                   </button>
                   {e.status === "scored" && (
                     <span className={styles.scoredHint}><CheckCircle2 size={13} /> {e.scoredCount} scored</span>
@@ -333,6 +493,135 @@ export function MobileExamsContent({ exams, stats, classOptions, subjectOptions,
               </div>
             ))}
           </div>
+        )}
+      </MobileSheet>
+
+      {/* Edit Exam sheet — Details + Questions tabs */}
+      <MobileSheet
+        open={!!editExam}
+        onClose={() => !savingDetails && setEditExam(null)}
+        title={editExam ? `Edit Exam — ${editExam.title}` : ""}
+        subtitle={editExam ? `${editExam.className} · ${editExam.subjectName}` : undefined}
+        footer={editTab === "details" ? <>
+          <button type="button" className={kit.btnOutline} onClick={() => setEditExam(null)} disabled={savingDetails}>Cancel</button>
+          <button type="button" className={kit.btnPrimary} onClick={saveDetails} disabled={savingDetails}>
+            {savingDetails ? "Saving…" : "Save Changes"}
+          </button>
+        </> : undefined}
+      >
+        {editExam && (
+          <>
+            <div className={kit.segmented} style={{ marginBottom: 14 }}>
+              <button type="button" className={`${kit.segBtn} ${editTab === "details" ? kit.segBtnActive : ""}`} onClick={() => switchEditTab("details")}>Details</button>
+              <button type="button" className={`${kit.segBtn} ${editTab === "questions" ? kit.segBtnActive : ""}`} onClick={() => switchEditTab("questions")}>Questions</button>
+            </div>
+
+            {editTab === "details" ? (
+              <>
+                <div className={styles.readonlyGrid}>
+                  <div><span>Class</span><strong>{editExam.className}</strong></div>
+                  <div><span>Subject</span><strong>{editExam.subjectName}</strong></div>
+                  <div><span>Term</span><strong>{editExam.termName ?? "—"}</strong></div>
+                  <div><span>Scheduled</span><strong>{fmtDate(editExam.scheduledAt)} · {fmtTime(editExam.scheduledAt)}</strong></div>
+                  <div><span>Max Score</span><strong>{editExam.questionTotalMarks || editExam.maxScore}</strong></div>
+                </div>
+                <label className={kit.checkboxRow}>
+                  <input type="checkbox" checked={edOnline} onChange={(e) => setEdOnline(e.target.checked)} />
+                  <span>
+                    <span className={kit.checkboxLabel}>Online Exam</span>
+                    <span className={kit.checkboxSub}>Students can take this exam digitally.</span>
+                  </span>
+                </label>
+                {edOnline && (
+                  <div className={kit.field}>
+                    <label>Duration (minutes)</label>
+                    <input className={kit.input} type="number" min={1} max={480} placeholder="Untimed" value={edDuration} onChange={(e) => setEdDuration(e.target.value)} />
+                  </div>
+                )}
+                <p className={kit.helperText}>Title, class, subject, and schedule can&apos;t be changed after creation.</p>
+              </>
+            ) : (
+              <>
+                <p className={kit.pickCount}>{questions.length} question{questions.length === 1 ? "" : "s"} · {questionTotalMarks} total marks</p>
+
+                {!qFormOpen && (
+                  <button type="button" className={styles.addBtn} onClick={openAddQuestion} style={{ marginBottom: 12 }}>
+                    <Plus size={16} /> Add Question
+                  </button>
+                )}
+
+                {qFormOpen && (
+                  <div className={styles.qForm}>
+                    <div className={kit.segmented}>
+                      <button type="button" className={`${kit.segBtn} ${qType === "mcq" ? kit.segBtnActive : ""}`} onClick={() => switchQType("mcq")}>MCQ</button>
+                      <button type="button" className={`${kit.segBtn} ${qType === "short_answer" ? kit.segBtnActive : ""}`} onClick={() => switchQType("short_answer")}>Short Answer</button>
+                    </div>
+                    <div className={kit.field}>
+                      <label>Question Text *</label>
+                      <textarea className={kit.textarea} rows={2} value={qText} onChange={(e) => setQText(e.target.value)} placeholder="Enter the question…" />
+                    </div>
+                    {qType === "mcq" ? (
+                      <>
+                        {(["A", "B", "C", "D"] as const).map((letter, i) => (
+                          <div key={letter} className={styles.optionRow}>
+                            <button type="button" className={`${styles.optLetter} ${qCorrect === letter ? styles.optLetterActive : ""}`} onClick={() => setQCorrect(letter)} title="Mark as correct answer">
+                              {qCorrect === letter ? <Check size={13} /> : letter}
+                            </button>
+                            <input
+                              className={kit.input}
+                              value={qOptions[i]}
+                              onChange={(e) => setQOptions((prev) => prev.map((o, idx) => (idx === i ? e.target.value : o)))}
+                              placeholder={`Option ${letter}`}
+                            />
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <div className={kit.field}>
+                        <label>Model Answer</label>
+                        <input className={kit.input} value={qCorrect} onChange={(e) => setQCorrect(e.target.value)} placeholder="Expected answer (for reference)" />
+                      </div>
+                    )}
+                    <div className={kit.field}>
+                      <label>Marks</label>
+                      <input className={kit.input} type="number" min={0} step="0.5" value={qMarks} onChange={(e) => setQMarks(e.target.value)} />
+                    </div>
+                    <div className={kit.fieldRow}>
+                      <button type="button" className={kit.btnOutline} onClick={() => setQFormOpen(false)} disabled={qSaving}>Cancel</button>
+                      <button type="button" className={kit.btnPrimary} onClick={submitQuestion} disabled={qSaving || !qText.trim()}>
+                        {qSaving ? "Saving…" : qEditingId ? "Save Changes" : "Add Question"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {questionsLoading ? (
+                  <p className={kit.emptyText}>Loading questions…</p>
+                ) : questions.length === 0 && !qFormOpen ? (
+                  <p className={kit.emptyText}>No questions added yet.</p>
+                ) : (
+                  <div className={styles.qList}>
+                    {questions.map((q, i) => (
+                      <div key={q.id} className={styles.qCard}>
+                        <div className={styles.qCardTop}>
+                          <span className={styles.qNumber}>{i + 1}</span>
+                          <span className={styles.qTypePill}>{q.type === "short_answer" ? "Short Answer" : "MCQ"}</span>
+                          <span className={styles.qMarks}>{q.marks} pts</span>
+                        </div>
+                        <p className={styles.qText}>{q.text}</p>
+                        <div className={styles.qActions}>
+                          <button type="button" className={styles.qActionBtn} onClick={() => openEditQuestion(q)}><Pencil size={13} /> Edit</button>
+                          <button type="button" className={styles.qActionBtnDanger} onClick={() => removeQuestion(q)} disabled={qDeletingId === q.id}>
+                            <Trash2 size={13} /> {qDeletingId === q.id ? "…" : "Delete"}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </>
         )}
       </MobileSheet>
     </div>
