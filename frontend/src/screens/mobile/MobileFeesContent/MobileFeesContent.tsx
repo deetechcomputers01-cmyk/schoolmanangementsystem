@@ -44,6 +44,11 @@ function fmtGHS(v: number) {
 function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
+function scholarshipLabel(scholarship: FeesInvoiceRow["scholarship"], discountApplied: number) {
+  if (!scholarship || discountApplied <= 0) return null;
+  const off = scholarship.type === "percent" ? `${scholarship.value}% off` : `GHS ${scholarship.value.toLocaleString()} off`;
+  return scholarship.reason ? `${off} · ${scholarship.reason}` : off;
+}
 
 export function MobileFeesContent({
   rows, stats, classes, recentPayments,
@@ -62,6 +67,8 @@ export function MobileFeesContent({
   const [payReference, setPayReference] = useState("");
   const [paySaving, setPaySaving] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+
+  const [viewTarget, setViewTarget] = useState<FeesInvoiceRow | null>(null);
 
   const unpaidRows = useMemo(() => rows.filter((r) => r.status !== "paid"), [rows]);
 
@@ -204,7 +211,7 @@ export function MobileFeesContent({
               key={r.id}
               rightActions={[
                 ...(r.status !== "paid" ? [{ key: "pay", icon: Wallet, label: "Record Payment", tone: "primary" as const, onClick: () => openPaySheet(r) }] : []),
-                { key: "view", icon: Eye, label: "View Invoice", tone: "soft" as const, onClick: () => router.push(`/fees?studentId=${r.studentId}`) },
+                { key: "view", icon: Eye, label: "View Invoice", tone: "soft" as const, onClick: () => setViewTarget(r) },
               ]}
               leftActions={[
                 { key: "print", icon: Printer, label: "Print Receipt", onClick: () => showToast("Print Receipt is not available yet.") },
@@ -264,7 +271,7 @@ export function MobileFeesContent({
                         <Wallet size={15} /> Record Payment
                       </button>
                     )}
-                    <Link href={`/fees?studentId=${r.studentId}`} className={styles.cardActionBtn}><Eye size={15} /> View Invoice</Link>
+                    <button type="button" className={styles.cardActionBtn} onClick={() => setViewTarget(r)}><Eye size={15} /> View Invoice</button>
                     <button type="button" className={styles.cardActionBtn} onClick={() => showToast("Print Receipt is not available yet.")}><Printer size={15} /> Print Receipt</button>
                     {r.status !== "paid" && (
                       <button type="button" className={styles.cardActionBtn} onClick={() => showToast("Send Reminder is not available yet.")}>
@@ -343,6 +350,67 @@ export function MobileFeesContent({
             <div className={styles.sheetFooter}>
               <button type="button" className={styles.btnOutline} onClick={() => setPayOpen(false)} disabled={paySaving}>Cancel</button>
               <button type="button" className={styles.btnPrimary} onClick={submitPayment} disabled={paySaving}>{paySaving ? "Saving…" : "Save Payment"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewTarget && (
+        <div className={styles.sheetBackdrop} onClick={() => setViewTarget(null)}>
+          <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.sheetHeader}>
+              <div>
+                <p className={styles.sheetEyebrow}>Fee Invoices</p>
+                <h3 className={styles.sheetTitle}>{viewTarget.invoiceNo}</h3>
+                <p className={styles.sheetSubtitle}>{viewTarget.studentName} • {viewTarget.className}</p>
+              </div>
+              <button type="button" className={styles.sheetClose} onClick={() => setViewTarget(null)} aria-label="Close"><X size={20} /></button>
+            </div>
+            <div className={styles.sheetBody}>
+              <div className={styles.viewStatusRow}>
+                <span className={`${styles.statusPill} ${styles[`status_${viewTarget.status}`]}`}>
+                  {viewTarget.status === "paid" ? (viewTarget.paidByScholarship ? "Paid (Scholarship)" : "Paid") : viewTarget.status === "overdue" ? "Overdue" : "Pending"}
+                </span>
+                {scholarshipLabel(viewTarget.scholarship, viewTarget.discountApplied) && (
+                  <span className={styles.viewScholarshipBadge}>{scholarshipLabel(viewTarget.scholarship, viewTarget.discountApplied)}</span>
+                )}
+              </div>
+
+              <div className={styles.viewSummaryBox}>
+                {viewTarget.discountApplied > 0 && (
+                  <div className={styles.viewSummaryRow}><span>Scholarship Discount</span><strong className={styles.textGood}>- {currency(viewTarget.discountApplied)}</strong></div>
+                )}
+                <div className={styles.viewSummaryRow}><span>Total Due</span><strong>{currency(viewTarget.amountDue)}</strong></div>
+                <div className={styles.viewSummaryRow}><span>Amount Paid</span><strong className={styles.textGood}>{currency(viewTarget.amountPaid)}</strong></div>
+                {viewTarget.latePenalty > 0 && (
+                  <div className={styles.viewSummaryRow}><span className={styles.textBad}>Late Payment Penalty</span><strong className={styles.textBad}>{currency(viewTarget.latePenalty)}</strong></div>
+                )}
+                <div className={styles.viewSummaryDivider} />
+                <div className={styles.viewSummaryRow}><span className={styles.viewBalanceLabel}>Balance</span><strong className={styles.viewBalanceValue}>{currency(viewTarget.balance)}</strong></div>
+              </div>
+
+              <div className={styles.field}>
+                <label>Fee Breakdown</label>
+                <ul className={styles.viewBreakdownList}>
+                  {viewTarget.description.split(",").map((s) => s.trim()).filter(Boolean).length > 0
+                    ? viewTarget.description.split(",").map((part) => part.trim()).filter(Boolean).map((part) => <li key={part}>{part}</li>)
+                    : <li>{viewTarget.description}</li>}
+                </ul>
+              </div>
+
+              <div className={styles.field}>
+                <label>Primary Contact</label>
+                <p className={styles.viewGuardianName}>{viewTarget.guardianName}</p>
+                <p className={styles.viewGuardianPhone}>{viewTarget.guardianPhone}</p>
+              </div>
+            </div>
+            <div className={styles.sheetFooter}>
+              <button type="button" className={styles.btnOutline} onClick={() => setViewTarget(null)}>Close</button>
+              {viewTarget.balance > 0 && (
+                <button type="button" className={styles.btnPrimary} onClick={() => { const target = viewTarget; setViewTarget(null); openPaySheet(target); }}>
+                  <Wallet size={15} /> Record Payment
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -133,6 +133,22 @@
 .cardAmountSm { margin: 2px 0 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
 .textBad { color: var(--clr-error); }
 .textWarn { color: var(--clr-warning); }
+.textGood { color: var(--clr-success); }
+
+/* ── Invoice Details sheet ────────────────────────────────────────────── */
+.viewStatusRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.viewScholarshipBadge { padding: 3px 10px; border-radius: 999px; background: var(--clr-success-bg); color: var(--clr-success); font-size: 11px; font-weight: 700; }
+
+.viewSummaryBox { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); }
+.viewSummaryRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: var(--text-sm); color: var(--clr-app-text); }
+.viewSummaryDivider { height: 1px; background: var(--clr-app-border); margin: 2px 0; }
+.viewBalanceLabel { font-weight: 700; }
+.viewBalanceValue { color: var(--clr-app-accent); font-size: var(--text-lg); }
+
+.viewBreakdownList { margin: 0; padding-left: 18px; color: var(--clr-app-text); font-size: var(--text-sm); display: flex; flex-direction: column; gap: 4px; }
+
+.viewGuardianName { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
+.viewGuardianPhone { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
 
 .progressTrack { height: 6px; border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); overflow: hidden; }
 .progressFill { height: 100%; background: var(--clr-app-accent); }
