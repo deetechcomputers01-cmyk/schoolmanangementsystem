@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -30,6 +30,9 @@ interface Props {
   };
   classes: { id: string; name: string }[];
   recentPayments: MobileRecentPayment[];
+  initialStudentId?: string;
+  initialFeeRecordId?: string;
+  recordPaymentOnLoad?: boolean;
 }
 
 const METHOD_ICON = { cash: Banknote, mobile_money: Smartphone, bank_transfer: Landmark, card: CreditCard } as const;
@@ -42,7 +45,10 @@ function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
-export function MobileFeesContent({ rows, stats, classes, recentPayments }: Props) {
+export function MobileFeesContent({
+  rows, stats, classes, recentPayments,
+  initialStudentId, initialFeeRecordId, recordPaymentOnLoad = false,
+}: Props) {
   const router = useRouter();
   const { showToast } = useToast();
   const [search, setSearch] = useState("");
@@ -80,6 +86,27 @@ export function MobileFeesContent({ rows, stats, classes, recentPayments }: Prop
     setPayError(null);
     setPayOpen(true);
   }
+
+  // Arriving here from another screen's "Record Payment" link (Students
+  // list, Student Detail, Dashboard) via ?studentId=&recordPayment=1 should
+  // open straight into that student's payment sheet, not just land on the
+  // plain list — same behaviour as the desktop Fees screen.
+  const initialActionHandled = useRef(false);
+  useEffect(() => {
+    if (initialActionHandled.current) return;
+    if (!recordPaymentOnLoad) return;
+
+    const targetRow =
+      (initialFeeRecordId ? rows.find((row) => row.id === initialFeeRecordId) : null) ??
+      (initialStudentId
+        ? rows.find((row) => row.studentId === initialStudentId && row.balance > 0)
+        : rows.find((row) => row.balance > 0));
+
+    if (!targetRow) return;
+    initialActionHandled.current = true;
+    openPaySheet(targetRow);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);
 
   function handleTargetChange(id: string) {
     setPayTargetId(id);

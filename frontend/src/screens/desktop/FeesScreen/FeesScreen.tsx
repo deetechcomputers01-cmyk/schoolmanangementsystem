@@ -155,6 +155,9 @@ export async function FeesScreen({
           stats={{ expectedGHS: expected, collectedGHS: collected, outstandingGHS: outstanding, overdueCount }}
           classes={classes}
           recentPayments={recentPayments}
+          initialStudentId={studentId}
+          initialFeeRecordId={feeRecordId}
+          recordPaymentOnLoad={recordPayment === "1"}
         />
       </div>
       <div className="desktopOnly">

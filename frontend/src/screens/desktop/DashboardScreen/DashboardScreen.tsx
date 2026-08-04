@@ -111,6 +111,7 @@ export async function DashboardScreen() {
   const payments = fees
     .flatMap((fee) => fee.payments.map((payment) => ({
       id: payment.id,
+      feeId: fee.id,
       student: fee.student,
       className: fee.student.class.name,
       amount: Number(payment.amount),
@@ -287,7 +288,7 @@ export async function DashboardScreen() {
                       <td>{payment.className}</td>
                       <td className={css.paymentAmount}>{currency(payment.amount)}</td>
                       <td><StatusPill status={payment.status} /></td>
-                      <td className={css.paymentAction}><PaymentActionsMenu studentId={payment.student.id} /></td>
+                      <td className={css.paymentAction}><PaymentActionsMenu studentId={payment.student.id} feeRecordId={payment.feeId} /></td>
                     </tr>
                   ))}
                   {payments.length === 0 && <tr><td colSpan={5} className={css.emptyState}>No payments recorded yet.</td></tr>}

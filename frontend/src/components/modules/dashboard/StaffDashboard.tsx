@@ -52,7 +52,7 @@ export function StaffDashboard({ data, userName }: Props) {
       <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 4, overflow: "hidden", marginBottom: 24 }}>
         <div style={{ padding: "20px 24px", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 600, color: T.onBg }}>Recent Payments</h3>
-          <Link href="/fees/payments" style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: T.pContainer, textDecoration: "none" }}>View All</Link>
+          <Link href="/fees" style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: T.pContainer, textDecoration: "none" }}>View All</Link>
         </div>
         {recentPayments.length === 0 ? (
           <p style={{ padding: "24px", fontSize: "var(--text-sm)", color: T.outline }}>No payments recorded yet.</p>
