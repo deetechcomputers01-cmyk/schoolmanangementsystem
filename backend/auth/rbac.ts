@@ -1,7 +1,7 @@
 import type { Role } from "@prisma/client";
 import type { SessionUser } from "@/types/auth";
 
-const permissions: Record<Role, string[]> = {
+export const permissions: Record<Role, string[]> = {
   super_admin: ["*"],
 
   principal: [

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@backend/auth/cookies";
 import { prisma } from "@backend/prisma";
 import { AuditLogsClient } from "./AuditLogsClient";
+import { MobileAuditLogsContent } from "@/screens/mobile/MobileAuditLogsContent/MobileAuditLogsContent";
 import styles from "./AuditLogsScreen.module.css";
 
 export const dynamic = "force-dynamic";
@@ -27,8 +28,15 @@ export async function AuditLogsScreen() {
   }));
 
   return (
-    <div className={styles.root}>
-      <AuditLogsClient logs={serialized} />
-    </div>
+    <>
+      <div className="mobileOnly">
+        <MobileAuditLogsContent logs={serialized} />
+      </div>
+      <div className="desktopOnly">
+        <div className={styles.root}>
+          <AuditLogsClient logs={serialized} />
+        </div>
+      </div>
+    </>
   );
 }

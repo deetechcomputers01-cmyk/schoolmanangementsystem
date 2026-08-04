@@ -8,11 +8,9 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./UserRoleScreen.module.css";
 
-type UserRow = {
+export type UserRow = {
   id: string;
   name: string;
   email: string;
@@ -23,14 +21,15 @@ type UserRow = {
   linkedEntity: string | null;
 };
 
-interface Props {
+export interface UserRoleContentProps {
   users: UserRow[];
   currentUserId: string;
 }
+type Props = UserRoleContentProps;
 
-const ROLE_OPTIONS = ["super_admin", "principal", "teacher", "staff", "student", "guardian"] as const;
+export const ROLE_OPTIONS = ["super_admin", "principal", "teacher", "staff", "student", "guardian"] as const;
 
-const ROLE_LABEL: Record<string, string> = {
+export const ROLE_LABEL: Record<string, string> = {
   super_admin: "Super Admin",
   principal: "Principal",
   teacher: "Teacher",
@@ -39,11 +38,11 @@ const ROLE_LABEL: Record<string, string> = {
   guardian: "Guardian",
 };
 
-function initials(name: string) {
+export function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
-function relTime(iso: string | null) {
+export function relTime(iso: string | null) {
   if (!iso) return "Never";
   const diffMs = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diffMs / 60000);
@@ -396,7 +395,7 @@ export function UserRoleContent({ users, currentUserId }: Props) {
       </div>
 
       {roleModalUser && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !busyId && setRoleModalUser(null)}>
+        <div className={styles.modalOverlay} onClick={() => !busyId && setRoleModalUser(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div>
@@ -423,38 +422,6 @@ export function UserRoleContent({ users, currentUserId }: Props) {
           </div>
         </div>
       )}
-
-      <div className="mobileOnly">
-        <MobileSheet
-          open={!!roleModalUser}
-          onClose={() => !busyId && setRoleModalUser(null)}
-          title="Change Role"
-          subtitle={roleModalUser ? `${roleModalUser.name} · ${roleModalUser.email}` : undefined}
-          compact
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setRoleModalUser(null)} disabled={!!busyId}>Cancel</button>
-            <button
-              type="button"
-              className={kit.btnPrimary}
-              onClick={submitRoleChange}
-              disabled={!!busyId || !roleModalUser || newRole === roleModalUser.role}
-            >
-              {busyId ? "Saving…" : "Update Role"}
-            </button>
-          </>}
-        >
-          {error && <p className={kit.errorText}>{error}</p>}
-          <div className={kit.field}>
-            <label>Role</label>
-            <select className={kit.select} value={newRole} onChange={(e) => setNewRole(e.target.value)}>
-              {ROLE_OPTIONS.map((r) => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
-            </select>
-          </div>
-          <div className={`${kit.banner} ${kit.bannerWarn}`}>
-            Changing this user&apos;s role immediately updates their access permissions.
-          </div>
-        </MobileSheet>
-      </div>
     </div>
   );
 }

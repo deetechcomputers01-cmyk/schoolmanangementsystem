@@ -8,11 +8,11 @@ import {
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./ApprovalWorkflowsScreen.module.css";
 
-type StepDecision = "pending" | "approved" | "rejected";
-type RequestStatus = "pending" | "approved" | "rejected";
-type Scope = "queue" | "mine" | "all";
+export type StepDecision = "pending" | "approved" | "rejected";
+export type RequestStatus = "pending" | "approved" | "rejected";
+export type Scope = "queue" | "mine" | "all";
 
-interface Step {
+export interface Step {
   id: string;
   order: number;
   approverRole: string | null;
@@ -21,8 +21,8 @@ interface Step {
   reason: string | null;
   decidedAt: string | null;
 }
-interface Requester { id: string; name: string; email: string; role: string }
-interface ApprovalRequestRow {
+export interface Requester { id: string; name: string; email: string; role: string }
+export interface ApprovalRequestRow {
   id: string;
   type: string;
   title: string;
@@ -39,15 +39,15 @@ const TABS: { key: Scope; label: string }[] = [
   { key: "mine",  label: "My Requests" },
 ];
 
-function stepLabel(step: Step) {
+export function stepLabel(step: Step) {
   return step.approverRole ? `${step.approverRole.replace("_", " ")} approval` : "Approver review";
 }
 
-function initials(name: string) {
+export function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
-function relTime(iso: string) {
+export function relTime(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   if (hours < 1) return "Just now";
@@ -58,7 +58,7 @@ function relTime(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-function isThisMonth(iso: string) {
+export function isThisMonth(iso: string) {
   const d = new Date(iso);
   const now = new Date();
   return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();

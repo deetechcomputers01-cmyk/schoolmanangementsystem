@@ -6,11 +6,9 @@ import {
   User, Clock, Archive, FileEdit, Search,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./AuditLogsClient.module.css";
 
-type LogRow = {
+export type LogRow = {
   id: string;
   action: string;
   entity: string;
@@ -20,12 +18,12 @@ type LogRow = {
   user: { name: string; role: string } | null;
 };
 
-type ViewFilter = "all" | "security" | "data";
-type TimeRange = "24h" | "7d" | "30d" | "all";
-type Severity = "any" | "high" | "medium" | "low";
+export type ViewFilter = "all" | "security" | "data";
+export type TimeRange = "24h" | "7d" | "30d" | "all";
+export type Severity = "any" | "high" | "medium" | "low";
 
-const CATEGORIES = ["Authentication", "Students", "Fees & Payments", "Grades", "Attendance", "System"] as const;
-type Category = typeof CATEGORIES[number] | "";
+export const CATEGORIES = ["Authentication", "Students", "Fees & Payments", "Grades", "Attendance", "System"] as const;
+export type Category = typeof CATEGORIES[number] | "";
 
 const MODULE_MAP: Record<string, string> = {
   authentication: "Authentication", auth: "Authentication",
@@ -36,7 +34,7 @@ const MODULE_MAP: Record<string, string> = {
   system: "System",
 };
 
-function getModule(action: string, entity: string): string {
+export function getModule(action: string, entity: string): string {
   const combined = `${action} ${entity}`.toLowerCase();
   for (const [key, val] of Object.entries(MODULE_MAP)) {
     if (combined.includes(key)) return val;
@@ -44,13 +42,13 @@ function getModule(action: string, entity: string): string {
   return entity;
 }
 
-function getSeverity(action: string): "high" | "medium" | "low" {
+export function getSeverity(action: string): "high" | "medium" | "low" {
   if (action.includes("delete") || action.includes("fail") || action.includes("reverse") || action.includes("payment_edit")) return "high";
   if (action.includes("update") || action.includes("edit") || action.includes("export")) return "medium";
   return "low";
 }
 
-function getActionStyle(action: string): { background: string; color: string } {
+export function getActionStyle(action: string): { background: string; color: string } {
   if (action.startsWith("delete") || action.startsWith("fail") || action.startsWith("reverse")) return { background: "var(--clr-error-bg)", color: "var(--clr-error)" };
   if (action.startsWith("create") || action.startsWith("login")) return { background: "var(--clr-success-bg)", color: "var(--clr-success)" };
   if (action.startsWith("update") || action.startsWith("edit")) return { background: "var(--clr-warning-bg)", color: "var(--clr-warning)" };
@@ -58,7 +56,7 @@ function getActionStyle(action: string): { background: string; color: string } {
   return { background: "var(--clr-app-surface-alt)", color: "var(--clr-app-muted)" };
 }
 
-function initials(name: string | null | undefined) {
+export function initials(name: string | null | undefined) {
   if (!name) return "?";
   return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
@@ -408,7 +406,7 @@ export function AuditLogsClient({ logs }: { logs: LogRow[] }) {
 
       {/* Review Note modal */}
       {showReviewModal && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowReviewModal(false)}>
+        <div className={styles.modalOverlay} onClick={() => setShowReviewModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Create Review Note</h2>
@@ -441,46 +439,6 @@ export function AuditLogsClient({ logs }: { logs: LogRow[] }) {
           </div>
         </div>
       )}
-
-      {/* Review Note sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showReviewModal}
-          onClose={() => setShowReviewModal(false)}
-          title="Create Review Note"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => { setShowReviewModal(false); setReviewNote(""); }}>Cancel</button>
-            <button
-              type="button"
-              className={kit.btnPrimary}
-              onClick={() => {
-                if (!reviewNote.trim()) return;
-                setShowReviewModal(false);
-                setReviewNote("");
-                showToast("Review note saved");
-              }}
-            >
-              Save Note
-            </button>
-          </>}
-        >
-          {selectedLog && (
-            <p className={kit.helperText}>
-              Linked to: {selectedLog.action.replace(/_/g, " ")} by {selectedLog.user?.name ?? "System"}
-            </p>
-          )}
-          <div className={kit.field}>
-            <label>Review Note *</label>
-            <textarea
-              className={kit.textarea}
-              rows={5}
-              value={reviewNote}
-              onChange={(e) => setReviewNote(e.target.value)}
-              placeholder="Describe your findings, actions taken, or escalation notes…"
-            />
-          </div>
-        </MobileSheet>
-      </div>
     </div>
   );
 }

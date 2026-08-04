@@ -1,0 +1,87 @@
+.root { display: flex; flex-direction: column; gap: 14px; }
+
+.kpiGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.kpiCardWarn { border-color: var(--clr-warning-border, var(--clr-app-border)); background: var(--clr-warning-bg); }
+.kpiLabel { color: var(--clr-app-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.kpiValue { color: var(--clr-app-text); font-size: var(--text-lg); font-weight: 800; }
+.kpiValueWarn { color: var(--clr-warning); font-size: var(--text-lg); font-weight: 800; }
+.kpiSub { color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 600; }
+
+.exportBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  border: 1px solid var(--clr-app-accent);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.exportBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.chipRow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chipRow::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chipActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+
+.list { display: flex; flex-direction: column; gap: 10px; }
+.emptyState { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px 16px; color: var(--clr-app-muted); font-size: var(--text-sm); text-align: center; }
+
+.roleCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-left: 4px solid var(--clr-app-accent);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  cursor: pointer;
+  text-align: left;
+}
+.roleIcon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--clr-app-accent-soft); color: var(--clr-app-accent); flex-shrink: 0; }
+.roleIcon_teacher { background: var(--clr-success-bg); color: var(--clr-success); }
+.roleIcon_staff { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.roleIcon_student { background: var(--clr-app-surface-alt); color: var(--clr-app-muted); }
+.roleIcon_guardian { background: var(--clr-error-bg); color: var(--clr-error); }
+.roleInfo { display: flex; flex-direction: column; gap: 2px; }
+.roleName { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.roleMeta { color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.userCard { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); }
+.userCardInactive { opacity: 0.6; }
+.userInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.userName { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.userEmail { color: var(--clr-app-muted); font-size: var(--text-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.userMeta { color: var(--clr-app-muted); font-size: 11px; }
+.userRight { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+
+.roleBadge { padding: 2px 8px; border-radius: 4px; background: var(--clr-app-surface-alt); color: var(--clr-app-text); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.statusPill { padding: 2px 8px; border-radius: var(--radius-full, 999px); font-size: 10px; font-weight: 700; }
+.statusActive { background: var(--clr-success-bg); color: var(--clr-success); }
+.statusInactive { background: var(--clr-error-bg); color: var(--clr-error); }
