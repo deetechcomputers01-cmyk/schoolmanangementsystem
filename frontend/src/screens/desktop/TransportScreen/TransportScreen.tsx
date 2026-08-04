@@ -1,6 +1,7 @@
 import { requireRole } from "@backend/auth/page-guard";
 import { prisma } from "@backend/prisma";
 import { TransportContent } from "./TransportContent";
+import { MobileTransportContent } from "@/screens/mobile/MobileTransportContent/MobileTransportContent";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,7 @@ export async function TransportScreen() {
 
   const [vehicles, routes, unassignedStudents, drivers] = await Promise.all([
     prisma.vehicle.findMany({
-      include: { driver: { select: { id: true, firstName: true, lastName: true, roleTitle: true } } },
+      include: { driver: { select: { id: true, firstName: true, lastName: true, roleTitle: true, phone: true } } },
       orderBy: { regNo: "asc" },
     }),
     prisma.transportRoute.findMany({
@@ -43,6 +44,7 @@ export async function TransportScreen() {
     type:       v.type,
     driverName: v.driver ? `${v.driver.firstName} ${v.driver.lastName}` : null,
     driverId:   v.driverId ?? null,
+    driverPhone: v.driver?.phone ?? null,
     latitude:   v.latitude,
     longitude:  v.longitude,
     speed:      v.speed,
@@ -75,13 +77,29 @@ export async function TransportScreen() {
     activeDrivers: vehicles.filter((v) => v.driverId).length,
   };
 
+  const unassignedStudentRows = unassignedStudents.map((s) => ({ id: s.id, name: `${s.firstName} ${s.lastName}`, admissionNo: s.admissionNo, className: s.class.name }));
+  const driverRows = drivers.map((d) => ({ id: d.id, name: `${d.firstName} ${d.lastName}` }));
+
   return (
-    <TransportContent
-      vehicles={vehicleRows}
-      routes={routeRows}
-      stats={stats}
-      unassignedStudents={unassignedStudents.map((s) => ({ id: s.id, name: `${s.firstName} ${s.lastName}`, admissionNo: s.admissionNo, className: s.class.name }))}
-      drivers={drivers.map((d) => ({ id: d.id, name: `${d.firstName} ${d.lastName}` }))}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileTransportContent
+          vehicles={vehicleRows}
+          routes={routeRows}
+          stats={stats}
+          unassignedStudents={unassignedStudentRows}
+          drivers={driverRows}
+        />
+      </div>
+      <div className="desktopOnly">
+        <TransportContent
+          vehicles={vehicleRows}
+          routes={routeRows}
+          stats={stats}
+          unassignedStudents={unassignedStudentRows}
+          drivers={driverRows}
+        />
+      </div>
+    </>
   );
 }

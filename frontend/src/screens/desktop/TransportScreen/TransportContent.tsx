@@ -11,32 +11,33 @@ import { VehicleMapLoader } from "@/components/transport/VehicleMapLoader";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import styles from "./TransportScreen.module.css";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
-function vehicleLiveStatus(v: { speed: number | null; locationUpdatedAt: string | null }): { label: string; cls: string; agoText: string } {
-  if (!v.locationUpdatedAt) return { label: "Offline", cls: styles.liveStatusOffline, agoText: "no signal" };
+/** Pure live-status computation shared by desktop (this file) and
+ *  MobileTransportContent — deliberately returns no CSS classes so each
+ *  screen can map the label to its own stylesheet. */
+export function vehicleLiveStatus(v: { speed: number | null; locationUpdatedAt: string | null }): { label: "Moving" | "Idle" | "Offline"; agoText: string } {
+  if (!v.locationUpdatedAt) return { label: "Offline", agoText: "no signal" };
   const minsAgo = Math.round((Date.now() - new Date(v.locationUpdatedAt).getTime()) / 60000);
   const agoText = minsAgo < 1 ? "just now" : `${minsAgo} min${minsAgo === 1 ? "" : "s"} ago`;
-  if (minsAgo > 15) return { label: "Offline", cls: styles.liveStatusOffline, agoText };
-  if ((v.speed ?? 0) > 2) return { label: "Moving", cls: styles.liveStatusMoving, agoText };
-  return { label: "Idle", cls: styles.liveStatusIdle, agoText };
+  if (minsAgo > 15) return { label: "Offline", agoText };
+  if ((v.speed ?? 0) > 2) return { label: "Moving", agoText };
+  return { label: "Idle", agoText };
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-interface VehicleRow {
-  id: string; regNo: string; make: string; capacity: number; type: string; driverName: string | null; driverId: string | null;
+export interface VehicleRow {
+  id: string; regNo: string; make: string; capacity: number; type: string; driverName: string | null; driverId: string | null; driverPhone: string | null;
   latitude: number | null; longitude: number | null; speed: number | null; locationUpdatedAt: string | null;
 }
-interface RouteRow { id: string; name: string; vehicleId: string | null; vehicleRegNo: string | null; vehicleMake: string | null; vehicleType: string | null; vehicleCapacity: number | null; stops: string[]; morningPickup: string; afternoonDrop: string; studentCount: number; students: { id: string; name: string; className: string }[]; }
-interface StudentOption { id: string; name: string; admissionNo: string; className: string }
-interface DriverOption { id: string; name: string }
-interface Props {
+export interface RouteRow { id: string; name: string; vehicleId: string | null; vehicleRegNo: string | null; vehicleMake: string | null; vehicleType: string | null; vehicleCapacity: number | null; stops: string[]; morningPickup: string; afternoonDrop: string; studentCount: number; students: { id: string; name: string; className: string }[]; }
+export interface StudentOption { id: string; name: string; admissionNo: string; className: string }
+export interface DriverOption { id: string; name: string }
+export interface TransportContentProps {
   vehicles: VehicleRow[]; routes: RouteRow[]; stats: { totalVehicles: number; totalRoutes: number; totalStudents: number; activeDrivers: number };
   unassignedStudents: StudentOption[]; drivers: DriverOption[];
 }
 
-export function TransportContent({ vehicles, routes, stats, unassignedStudents, drivers }: Props) {
+export function TransportContent({ vehicles, routes, stats, unassignedStudents, drivers }: TransportContentProps) {
   const router = useRouter();
   const { showToast: showToastFn } = useToast();
   const confirm = useConfirm();
@@ -329,6 +330,7 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
                   <tbody>
                     {vehicles.map((v) => {
                       const live = vehicleLiveStatus(v);
+                      const liveCls = live.label === "Moving" ? styles.liveStatusMoving : live.label === "Idle" ? styles.liveStatusIdle : styles.liveStatusOffline;
                       return (
                         <tr key={v.id} className={styles.tr}>
                           <td className={`${styles.td} ${styles.regLink}`}>{v.regNo}</td>
@@ -347,7 +349,7 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
                           </td>
                           <td className={styles.td}>
                             <div className={styles.liveStatusCell}>
-                              <span className={`${styles.liveStatusDot} ${live.cls}`} />
+                              <span className={`${styles.liveStatusDot} ${liveCls}`} />
                               {live.label} <span className={styles.liveStatusAgo}>({live.agoText})</span>
                             </div>
                           </td>
@@ -568,7 +570,7 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
 
       {/* Add Route Modal */}
       {showModal && (
-        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={() => setShowModal(false)}>
+        <div className={`${styles.modalBackdrop}`} onClick={() => setShowModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Add New Route</h2>
@@ -613,52 +615,9 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
         </div>
       )}
 
-      {/* Add Route sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          title="Add New Route"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowModal(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={saveRoute} disabled={saving}>
-              {saving ? "Saving…" : "Save Route"}
-            </button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Route Name *</label>
-            <input className={kit.input} value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. East Legon" />
-          </div>
-          <div className={kit.field}>
-            <label>Assign Vehicle</label>
-            <select className={kit.select} value={newVehicle} onChange={e => setNewVehicle(e.target.value)}>
-              <option value="">No vehicle</option>
-              {vehicles.map(v => (
-                <option key={v.id} value={v.id}>{v.regNo} — {v.make}</option>
-              ))}
-            </select>
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Morning Pickup</label>
-              <input className={kit.input} type="time" value={newMorning} onChange={e => setNewMorning(e.target.value)} />
-            </div>
-            <div className={kit.field}>
-              <label>Afternoon Drop-off</label>
-              <input className={kit.input} type="time" value={newAfter} onChange={e => setNewAfter(e.target.value)} />
-            </div>
-          </div>
-          <div className={kit.field}>
-            <label>Stops (one per line)</label>
-            <textarea className={kit.textarea} rows={4} value={newStops} onChange={e => setNewStops(e.target.value)} placeholder={"Stop 1\nStop 2\nSchool Campus"} />
-          </div>
-        </MobileSheet>
-      </div>
-
       {/* Add Vehicle Modal */}
       {showVehicleModal && (
-        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={() => setShowVehicleModal(false)}>
+        <div className={`${styles.modalBackdrop}`} onClick={() => setShowVehicleModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Add Vehicle</h2>
@@ -705,54 +664,9 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
         </div>
       )}
 
-      {/* Add Vehicle sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showVehicleModal}
-          onClose={() => setShowVehicleModal(false)}
-          title="Add Vehicle"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowVehicleModal(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={saveVehicle} disabled={savingVehicle}>{savingVehicle ? "Saving…" : "Save Vehicle"}</button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Registration Number *</label>
-            <input className={kit.input} value={vRegNo} onChange={(e) => setVRegNo(e.target.value)} placeholder="e.g. GT-1234-24" />
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Make *</label>
-              <input className={kit.input} value={vMake} onChange={(e) => setVMake(e.target.value)} placeholder="e.g. Toyota Coaster" />
-            </div>
-            <div className={kit.field}>
-              <label>Type</label>
-              <select className={kit.select} value={vType} onChange={(e) => setVType(e.target.value)}>
-                <option value="bus">Bus</option>
-                <option value="van">Van</option>
-                <option value="minibus">Minibus</option>
-              </select>
-            </div>
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Capacity *</label>
-              <input className={kit.input} type="number" min={1} value={vCapacity} onChange={(e) => setVCapacity(e.target.value)} />
-            </div>
-            <div className={kit.field}>
-              <label>Driver</label>
-              <select className={kit.select} value={vDriverId} onChange={(e) => setVDriverId(e.target.value)}>
-                <option value="">No driver assigned</option>
-                {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-              </select>
-            </div>
-          </div>
-        </MobileSheet>
-      </div>
-
       {/* Edit Vehicle Modal */}
       {editVehicle && (
-        <div className={`${styles.modalBackdrop} desktopOnly`} onClick={() => setEditVehicle(null)}>
+        <div className={`${styles.modalBackdrop}`} onClick={() => setEditVehicle(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Edit {editVehicle.regNo}</h2>
@@ -792,45 +706,6 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
           </div>
         </div>
       )}
-
-      {/* Edit Vehicle sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={!!editVehicle}
-          onClose={() => setEditVehicle(null)}
-          title={`Edit ${editVehicle?.regNo ?? ""}`}
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setEditVehicle(null)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={saveEditVehicle} disabled={savingEdit}>{savingEdit ? "Saving…" : "Save Changes"}</button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Make *</label>
-            <input className={kit.input} value={evMake} onChange={(e) => setEvMake(e.target.value)} />
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Type</label>
-              <select className={kit.select} value={evType} onChange={(e) => setEvType(e.target.value)}>
-                <option value="bus">Bus</option>
-                <option value="van">Van</option>
-                <option value="minibus">Minibus</option>
-              </select>
-            </div>
-            <div className={kit.field}>
-              <label>Capacity *</label>
-              <input className={kit.input} type="number" min={1} value={evCapacity} onChange={(e) => setEvCapacity(e.target.value)} />
-            </div>
-          </div>
-          <div className={kit.field}>
-            <label>Driver</label>
-            <select className={kit.select} value={evDriverId} onChange={(e) => setEvDriverId(e.target.value)}>
-              <option value="">No driver assigned</option>
-              {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-            </select>
-          </div>
-        </MobileSheet>
-      </div>
 
       {/* Assign Students Modal */}
       {showAssignModal && selectedRoute && (

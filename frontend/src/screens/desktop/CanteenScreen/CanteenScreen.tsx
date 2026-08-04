@@ -1,6 +1,7 @@
 import { requireRole } from "@backend/auth/page-guard";
 import { prisma } from "@backend/prisma";
 import { CanteenContent } from "./CanteenContent";
+import { MobileCanteenContent } from "@/screens/mobile/MobileCanteenContent/MobileCanteenContent";
 
 export const dynamic = "force-dynamic";
 
@@ -81,25 +82,28 @@ export async function CanteenScreen({ weekParam }: { weekParam?: string }) {
     servedByName: r.servedBy.name,
   }));
 
+  const weekLabel = `${monday.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${weekEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
+  const stats = {
+    servedToday:     servedTodayCount,
+    servedYesterday: servedYesterdayCount,
+    dietaryAlerts:   dietaryAlertCount,
+    studentCount:    students.length,
+    totalDishesThisWeek: currentWeekMenus.reduce((s, m) => s + m.items.length, 0),
+    coverage: {
+      Breakfast: currentWeekMenus.some((m) => m.mealType === "Breakfast" && m.items.length > 0),
+      Lunch:     currentWeekMenus.some((m) => m.mealType === "Lunch" && m.items.length > 0),
+      Dinner:    currentWeekMenus.some((m) => m.mealType === "Dinner" && m.items.length > 0),
+    },
+  };
+
   return (
-    <CanteenContent
-      weekOf={weekOf}
-      weekLabel={`${monday.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${weekEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
-      menuGrid={menuGrid}
-      students={studentRows}
-      servingLog={servingLog}
-      stats={{
-        servedToday:     servedTodayCount,
-        servedYesterday: servedYesterdayCount,
-        dietaryAlerts:   dietaryAlertCount,
-        studentCount:    students.length,
-        totalDishesThisWeek: currentWeekMenus.reduce((s, m) => s + m.items.length, 0),
-        coverage: {
-          Breakfast: currentWeekMenus.some((m) => m.mealType === "Breakfast" && m.items.length > 0),
-          Lunch:     currentWeekMenus.some((m) => m.mealType === "Lunch" && m.items.length > 0),
-          Dinner:    currentWeekMenus.some((m) => m.mealType === "Dinner" && m.items.length > 0),
-        },
-      }}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileCanteenContent weekOf={weekOf} weekLabel={weekLabel} menuGrid={menuGrid} students={studentRows} servingLog={servingLog} stats={stats} />
+      </div>
+      <div className="desktopOnly">
+        <CanteenContent weekOf={weekOf} weekLabel={weekLabel} menuGrid={menuGrid} students={studentRows} servingLog={servingLog} stats={stats} />
+      </div>
+    </>
   );
 }

@@ -9,12 +9,10 @@ import {
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./ExpensesScreen.module.css";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
-type ExpenseStatus = "pending" | "approved" | "rejected";
+export type ExpenseStatus = "pending" | "approved" | "rejected";
 
-interface ExpenseRow {
+export interface ExpenseRow {
   id: string;
   category: string;
   description: string;
@@ -25,19 +23,20 @@ interface ExpenseRow {
   recordedByName: string;
 }
 
-interface Props {
+export interface ExpensesContentProps {
   expenses: ExpenseRow[];
 }
+type Props = ExpensesContentProps;
 
 // Validated categorical palette (dataviz skill reference palette, light mode)
 const CATEGORY_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 const TREND_COLOR = "#5b50f5";
 
-function fmtGHS(n: number) {
+export function fmtGHS(n: number) {
   return `GHS ${n.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 }
 
-function fmtDate(iso: string) {
+export function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
@@ -362,7 +361,7 @@ export function ExpensesContent({ expenses }: Props) {
       </div>
 
       {showModal && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowModal(false)}>
+        <div className={styles.modalOverlay} onClick={() => !saving && setShowModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}><Wallet size={16} style={{ marginRight: 6 }} />Record Expense</h2>
@@ -403,42 +402,6 @@ export function ExpensesContent({ expenses }: Props) {
           </div>
         </div>
       )}
-
-      {/* Record Expense sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showModal}
-          onClose={() => !saving && setShowModal(false)}
-          title="Record Expense"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowModal(false)} disabled={saving}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={submitExpense} disabled={saving}>{saving ? "Saving…" : "Save Expense"}</button>
-          </>}
-        >
-          {error && <p className={kit.errorText}>{error}</p>}
-          <div className={kit.field}>
-            <label>Category *</label>
-            <input className={kit.input} placeholder="e.g. Utilities, Maintenance, Supplies" value={category} onChange={(e) => setCategory(e.target.value)} />
-          </div>
-          <div className={kit.field}>
-            <label>Description *</label>
-            <input className={kit.input} placeholder="What was this expense for?" value={description} onChange={(e) => setDescription(e.target.value)} />
-          </div>
-          <div className={kit.field}>
-            <label>Amount (GHS) *</label>
-            <input className={kit.input} type="number" min={0} value={amount} onChange={(e) => setAmount(e.target.value)} />
-          </div>
-          <div className={kit.field}>
-            <label>Date *</label>
-            <input className={kit.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-          </div>
-          <div className={kit.field}>
-            <label>Vendor</label>
-            <input className={kit.input} placeholder="Optional" value={vendor} onChange={(e) => setVendor(e.target.value)} />
-          </div>
-          <p className={kit.helperText}>This expense will be submitted for approval.</p>
-        </MobileSheet>
-      </div>
     </div>
   );
 }

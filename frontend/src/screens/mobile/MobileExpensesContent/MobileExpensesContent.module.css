@@ -1,0 +1,82 @@
+.root { display: flex; flex-direction: column; gap: 14px; }
+
+.kpiGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.kpiCardAmber { border-color: var(--clr-warning-border, var(--clr-app-border)); background: var(--clr-warning-bg); }
+.kpiCardGreen { border-color: var(--clr-success-border, var(--clr-app-border)); background: var(--clr-success-bg); }
+.kpiLabel { color: var(--clr-app-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.kpiValue { color: var(--clr-app-text); font-size: var(--text-base); font-weight: 800; }
+.kpiSub { color: var(--clr-app-muted); font-size: 10px; }
+.kpiDelta { display: inline-flex; align-items: center; gap: 2px; color: var(--clr-error); font-size: 10px; font-weight: 700; }
+.kpiDeltaUp { color: var(--clr-success); }
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.chipRow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chipRow::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.chipActive { border-color: var(--clr-app-accent); background: var(--clr-app-accent); color: #ffffff; }
+
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.cardHeader { display: flex; align-items: center; gap: 8px; border: 0; background: transparent; padding: 0; text-align: left; cursor: pointer; color: var(--clr-app-text); }
+.cardHeaderText { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.expDesc { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.expMeta { color: var(--clr-app-muted); font-size: var(--text-xs); }
+.cardHeaderRight { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+.expAmount { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+
+.statusPill { padding: 2px 8px; border-radius: var(--radius-full, 999px); font-size: 10px; font-weight: 700; text-transform: capitalize; }
+.status_pending { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.status_approved { background: var(--clr-success-bg); color: var(--clr-success); }
+.status_rejected { background: var(--clr-error-bg); color: var(--clr-error); }
+
+.cardDetail { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--clr-app-border); }
+.detailRow { display: flex; align-items: center; justify-content: space-between; font-size: var(--text-xs); }
+.detailRow span { color: var(--clr-app-muted); }
+.detailRow strong { color: var(--clr-app-text); font-weight: 600; }

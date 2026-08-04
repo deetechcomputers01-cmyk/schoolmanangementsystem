@@ -9,27 +9,25 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./CanteenScreen.module.css";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
-type MealCell = { mealType: string; id: string | null; items: string[] };
-type MenuDay = { day: string; meals: MealCell[] };
-type Student = {
+export type MealCell = { mealType: string; id: string | null; items: string[] };
+export type MenuDay = { day: string; meals: MealCell[] };
+export type Student = {
   id: string; name: string; className: string;
   allergies: string | null; conditions: string | null;
   guardian: { name: string; phone: string; relation: string } | null;
 };
-type ServingLogRow = {
+export type ServingLogRow = {
   id: string; studentName: string; className: string; mealType: string;
   servedAt: string; servedByName: string;
 };
-type Stats = {
+export type Stats = {
   servedToday: number; servedYesterday: number; dietaryAlerts: number; studentCount: number;
   totalDishesThisWeek: number;
   coverage: { Breakfast: boolean; Lunch: boolean; Dinner: boolean };
 };
 
-interface Props {
+export interface CanteenContentProps {
   weekOf: string;
   weekLabel: string;
   menuGrid: MenuDay[];
@@ -37,8 +35,9 @@ interface Props {
   servingLog: ServingLogRow[];
   stats: Stats;
 }
+type Props = CanteenContentProps;
 
-function initials(name: string) {
+export function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
@@ -413,7 +412,7 @@ export function CanteenContent({ weekOf, weekLabel, menuGrid, students, servingL
       </div>
 
       {editingCell && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !savingMenu && setEditingCell(null)}>
+        <div className={styles.modalOverlay} onClick={() => !savingMenu && setEditingCell(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div>
@@ -438,30 +437,6 @@ export function CanteenContent({ weekOf, weekLabel, menuGrid, students, servingL
           </div>
         </div>
       )}
-
-      {/* Menu cell editor sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={!!editingCell}
-          onClose={() => !savingMenu && setEditingCell(null)}
-          title={editingCell ? `${editingCell.day} · ${editingCell.mealType}` : ""}
-          subtitle="One dish per line."
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setEditingCell(null)} disabled={savingMenu}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={saveMenuCell} disabled={savingMenu}>{savingMenu ? "Saving…" : "Save Menu"}</button>
-          </>}
-        >
-          <div className={kit.field}>
-            <textarea
-              className={kit.textarea}
-              value={editItemsText}
-              onChange={(e) => setEditItemsText(e.target.value)}
-              rows={6}
-              placeholder={"e.g. Jollof Rice\nGrilled Chicken\nColeslaw"}
-            />
-          </div>
-        </MobileSheet>
-      </div>
     </div>
   );
 }
