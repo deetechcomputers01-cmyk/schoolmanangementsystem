@@ -76,12 +76,20 @@ export async function getAttendanceTrend(): Promise<{ week: AttendanceTrendPoint
     byDay.set(key, bucket);
   }
 
-  const week: AttendanceTrendPoint[] = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(now);
-    d.setDate(now.getDate() - (6 - i));
-    const bucket = byDay.get(dayKey(d)) ?? { present: 0, absent: 0, late: 0 };
-    return { label: d.toLocaleDateString("en-GB", { weekday: "short" }), ...bucket };
-  });
+  // The 5 most recent weekdays (Mon-Fri) — schools don't hold classes on
+  // weekends, so a rolling "last 7 days" window would show two always-empty
+  // Sat/Sun columns. Walks back from today, skipping Saturday/Sunday, until
+  // 5 real school days are collected.
+  const week: AttendanceTrendPoint[] = [];
+  const cursor = new Date(now);
+  while (week.length < 5) {
+    const dow = cursor.getDay();
+    if (dow !== 0 && dow !== 6) {
+      const bucket = byDay.get(dayKey(cursor)) ?? { present: 0, absent: 0, late: 0 };
+      week.unshift({ label: cursor.toLocaleDateString("en-GB", { weekday: "short" }), ...bucket });
+    }
+    cursor.setDate(cursor.getDate() - 1);
+  }
 
   // Last 30 days grouped into 5 weekly buckets (oldest first) — a 30-bar
   // daily chart would be unreadable at this width, weekly buckets keep the
