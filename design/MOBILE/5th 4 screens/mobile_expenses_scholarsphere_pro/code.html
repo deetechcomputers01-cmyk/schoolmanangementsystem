@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere Pro - Expenses</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#c7c4d8",
+                      "success": "#1B5E20",
+                      "primary-fixed": "#e3dfff",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#e4e1ee",
+                      "secondary-fixed-dim": "#a1c9ff",
+                      "on-secondary-fixed": "#001c37",
+                      "on-secondary-fixed-variant": "#00487f",
+                      "on-primary-fixed": "#100069",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "surface-bright": "#fcf8ff",
+                      "surface-variant": "#e4e1ee",
+                      "primary-container": "#5b50f5",
+                      "tertiary-container": "#b34b00",
+                      "inverse-surface": "#302f39",
+                      "secondary-container": "#55a7fe",
+                      "primary": "#4131dc",
+                      "tertiary": "#8c3900",
+                      "warning": "#FF8F00",
+                      "on-background": "#1b1b24",
+                      "outline": "#E4E4EC",
+                      "on-surface": "#1b1b24",
+                      "surface-tint": "#4e41e8",
+                      "on-surface-variant": "#464555",
+                      "on-primary-fixed-variant": "#341dd1",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "text-secondary": "#858791",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#F7F7FC",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "tertiary-fixed": "#ffdbcb",
+                      "surface-dim": "#dcd8e6",
+                      "error": "#C24747",
+                      "surface-container-low": "#f6f2ff",
+                      "surface-container-high": "#eae6f4",
+                      "on-primary-container": "#edeaff",
+                      "surface": "#FFFFFF",
+                      "on-tertiary-fixed": "#341100",
+                      "on-tertiary-fixed-variant": "#793000",
+                      "background": "#fcf8ff",
+                      "on-secondary-container": "#003b69",
+                      "on-tertiary-container": "#ffe8de",
+                      "text-primary": "#16161D",
+                      "inverse-on-surface": "#f3effd",
+                      "inverse-primary": "#c3c0ff",
+                      "secondary-fixed": "#d2e4ff",
+                      "secondary": "#0061a7",
+                      "tertiary-fixed-dim": "#ffb692"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "lg": "24px",
+                      "sidebar-width": "260px",
+                      "base": "4px",
+                      "gutter": "24px",
+                      "margin-desktop": "24px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "header-height": "56px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-text-primary font-body-md antialiased md:hidden pb-20">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-header-height px-md w-full sticky top-0 z-50 bg-surface border-b border-outline">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover border border-outline" data-alt="A professional headshot of an African school administrator, male, wearing a crisp white shirt and a blue blazer. Bright modern office lighting. Clean white background. High resolution corporate portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArwQ6G8F5AqwjaCrcoaGd8_-AAR1tCGXRDUIcJE_fxPeMgKPKMAOSE4wTE0RHk9p5Imopqk1yKpvc2VeKamat3ZZV2QQNf0fmLMX6TKhIy778rnE558Pxu8eKpldjdIo_DN4QDV9eCJxh8gvPUYdLl1_GGyIOkhnr9fRCepdmaxEiU_ffQ8SIxc8s0wdNgoEboE1gOVsDRk4gC8L231D12dPrjVqhh0yVv5mnbHOPys5U0RjVOWGOvWHjEmAIDnKbwdEyRYgDdKQ"/>
+<h1 class="font-headline-md text-headline-md text-primary">Expenses</h1>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-1 rounded">search</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-1 rounded">filter_list</span>
+</div>
+</header>
+<main class="p-md flex flex-col gap-lg">
+<!-- KPI Grid -->
+<section class="grid grid-cols-2 gap-sm">
+<div class="bg-surface border border-outline p-sm rounded-lg flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-text-secondary">Month Spend</span>
+<span class="font-headline-md text-[18px] leading-[24px] font-bold text-text-primary">GHS 8,720</span>
+</div>
+<div class="bg-surface border border-outline p-sm rounded-lg flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-text-secondary">Pending</span>
+<span class="font-headline-md text-[18px] leading-[24px] font-bold text-warning">GHS 1,540</span>
+</div>
+<div class="bg-surface border border-outline p-sm rounded-lg flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-text-secondary">Approved</span>
+<span class="font-headline-md text-[18px] leading-[24px] font-bold text-success">18</span>
+</div>
+<div class="bg-surface border border-outline p-sm rounded-lg flex flex-col gap-xs relative">
+<span class="font-label-sm text-label-sm text-text-secondary">Over Budget</span>
+<span class="font-headline-md text-[18px] leading-[24px] font-bold text-error">2</span>
+<div class="absolute top-sm right-sm w-2 h-2 rounded-full bg-error"></div>
+</div>
+</section>
+<!-- Budget Period Selector -->
+<section class="bg-surface-container border border-outline rounded-lg p-sm flex justify-between items-center text-body-md">
+<div class="flex items-center gap-xs text-primary font-medium">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+                July 2026
+            </div>
+<div class="flex gap-sm text-text-secondary font-label-md text-label-md">
+<span>Dept: All</span>
+<span>Cat: All</span>
+</div>
+</section>
+<!-- Search Bar -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-text-secondary">search</span>
+<input class="w-full bg-surface border border-outline rounded-lg pl-10 pr-sm py-2 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-text-secondary" placeholder="Search vendor, receipt, or category" type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-xs overflow-x-auto pb-1 -mx-md px-md scrollbar-hide">
+<button class="bg-primary-container text-on-primary-container px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">All Active</button>
+<button class="bg-surface border border-outline text-text-secondary hover:bg-surface-container-low px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">Pending</button>
+<button class="bg-surface border border-outline text-text-secondary hover:bg-surface-container-low px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">Approved</button>
+<button class="bg-surface border border-outline text-text-secondary hover:bg-surface-container-low px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">Paid</button>
+<button class="bg-surface border border-outline text-text-secondary hover:bg-surface-container-low px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">Rejected</button>
+<button class="bg-surface border border-outline text-text-secondary hover:bg-surface-container-low px-sm py-1 rounded-full font-label-md text-label-md whitespace-nowrap shrink-0">Over Budget</button>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-xs">
+<button class="w-full bg-primary text-on-primary rounded-lg py-2 font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-surface-tint transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span> Add Expense
+            </button>
+<button class="w-full bg-transparent border border-primary text-primary rounded-lg py-2 font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">upload</span> Upload Receipt
+            </button>
+</div>
+<!-- Budget Warning Card -->
+<div class="bg-[#FFF1F1] border border-error rounded-lg p-sm flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-error">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-md text-label-md font-semibold">Maintenance budget 92% used</span>
+</div>
+<div class="h-1 bg-surface-dim rounded-full w-full overflow-hidden">
+<div class="h-full bg-error w-[92%]"></div>
+</div>
+</div>
+<!-- Expense List -->
+<div class="flex flex-col gap-sm">
+<!-- Item 1 -->
+<div class="bg-surface border border-outline rounded-lg p-sm flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-body-md font-semibold text-text-primary">Melcom Ghana</span>
+<span class="font-label-md text-label-md text-text-secondary">Office Supplies</span>
+<span class="font-label-sm text-label-sm text-text-secondary">12 Jul</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-body-md font-bold text-text-primary">GHS 1,200</span>
+<span class="bg-[#E8F5E9] text-success px-2 py-0.5 rounded-full font-label-sm text-label-sm border border-[#C8E6C9]">Approved</span>
+</div>
+</div>
+<!-- Item 2 (Expanded) -->
+<div class="bg-surface border border-outline rounded-lg p-sm flex flex-col gap-sm shadow-sm ring-1 ring-primary-container ring-opacity-20">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-body-md font-semibold text-text-primary">EPP Books</span>
+<span class="font-label-md text-label-md text-text-secondary">Textbook Stock</span>
+<span class="font-label-sm text-label-sm text-text-secondary">10 Jul</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-body-md font-bold text-text-primary">GHS 450</span>
+<span class="bg-[#FFF8E1] text-warning px-2 py-0.5 rounded-full font-label-sm text-label-sm border border-[#FFECB3]">Pending</span>
+</div>
+</div>
+<div class="border-t border-outline pt-sm flex gap-sm">
+<img class="w-12 h-16 object-cover border border-outline rounded-md" data-alt="A small, blurry, high-contrast black and white receipt paper on a dark surface, acting as a thumbnail. Close up macro shot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQyVqfA5bHan4LP_571-jVrfs7rLx2cr44Aq8FPniIl4EAfCcwgHE4n-B4r5HZc4-WCujKIkcHDxdxgXqelIxPomawFjenqoVoKoNUco423BzLdC-aQ9wpXRPDov-iVruH0-4Ew0yKevkoqPP0fzsNT0E739b8Kh1EBgfZbx1aP_dBk0C9bH4cNH1LTD771vv46pHhhgk5HuMmilIyWWiZWKghlO09SvedUh5o2TEYHWIv6urJsVOyQn6ArLtW-e1Zl-DGPaDtyA"/>
+<div class="flex-1 grid grid-cols-2 gap-xs">
+<button class="bg-[#E8F5E9] text-success border border-[#C8E6C9] rounded font-label-sm text-label-sm py-1 hover:bg-[#C8E6C9] transition-colors">Approve</button>
+<button class="bg-[#FFF1F1] text-error border border-[#FFCDD2] rounded font-label-sm text-label-sm py-1 hover:bg-[#FFCDD2] transition-colors">Reject</button>
+<button class="bg-surface border border-outline text-text-secondary rounded font-label-sm text-label-sm py-1 hover:bg-surface-container-low transition-colors">Req Info</button>
+<button class="bg-surface border border-outline text-text-secondary rounded font-label-sm text-label-sm py-1 hover:bg-surface-container-low transition-colors">View Receipt</button>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface border border-outline rounded-lg p-sm flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-body-md font-semibold text-text-primary">Ghana Water</span>
+<span class="font-label-md text-label-md text-text-secondary">Utilities</span>
+<span class="font-label-sm text-label-sm text-text-secondary">08 Jul</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-body-md font-bold text-text-primary">GHS 300</span>
+<span class="bg-[#E8F5E9] text-success px-2 py-0.5 rounded-full font-label-sm text-label-sm border border-[#C8E6C9]">Paid</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface border border-outline rounded-lg p-sm flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-body-md font-semibold text-text-primary">ECG</span>
+<span class="font-label-md text-label-md text-text-secondary">Power Bill</span>
+<span class="font-label-sm text-label-sm text-text-secondary">05 Jul</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-body-md font-bold text-text-primary">GHS 2,100</span>
+<span class="bg-[#FFF1F1] text-error px-2 py-0.5 rounded-full font-label-sm text-label-sm border border-[#FFCDD2]">Over Budget</span>
+</div>
+</div>
+<!-- Skeleton Loading -->
+<div class="bg-surface border border-outline rounded-lg p-sm flex justify-between items-start animate-pulse">
+<div class="flex flex-col gap-2 w-1/2">
+<div class="h-4 bg-surface-dim rounded w-3/4"></div>
+<div class="h-3 bg-surface-dim rounded w-1/2"></div>
+<div class="h-3 bg-surface-dim rounded w-1/4"></div>
+</div>
+<div class="flex flex-col items-end gap-2 w-1/4">
+<div class="h-4 bg-surface-dim rounded w-full"></div>
+<div class="h-4 bg-surface-dim rounded w-3/4 rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 bg-surface px-sm border-t border-outline">
+<a class="flex flex-col items-center justify-center text-on-surface-variant scale-95 transition-transform duration-150 hover:bg-surface-container-low w-16 h-full" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant scale-95 transition-transform duration-150 hover:bg-surface-container-low w-16 h-full" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant scale-95 transition-transform duration-150 hover:bg-surface-container-low w-16 h-full" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-label-sm text-label-sm">Attendance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant scale-95 transition-transform duration-150 hover:bg-surface-container-low w-16 h-full" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-sm text-label-sm">Fees</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-transform duration-150 hover:bg-surface-container-low w-16 h-full relative" href="#">
+<div class="absolute inset-0 bg-primary-fixed opacity-20 rounded-md"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="font-label-sm text-label-sm">More</span>
+</a>
+</nav>
+<!-- Toast Notification -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-on-tertiary px-md py-sm rounded-full font-label-md text-label-md flex items-center gap-xs shadow-md z-50 animate-fade-in-up">
+<span class="material-symbols-outlined text-success text-[18px]">check_circle</span>
+        Expense approved
+    </div>
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate(-50%, 10px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+    </style>
+</body></html>

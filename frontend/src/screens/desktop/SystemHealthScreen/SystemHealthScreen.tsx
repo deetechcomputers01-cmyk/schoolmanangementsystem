@@ -3,6 +3,7 @@ import path from "path";
 import { requireRole } from "@backend/auth/page-guard";
 import { prisma } from "@backend/prisma";
 import { SystemHealthContent } from "./SystemHealthContent";
+import { MobileSystemHealthContent } from "@/screens/mobile/MobileSystemHealthContent/MobileSystemHealthContent";
 
 export const dynamic = "force-dynamic";
 
@@ -101,5 +102,14 @@ export async function SystemHealthScreen() {
     checkedAt:   now.toISOString(),
   };
 
-  return <SystemHealthContent metrics={metrics} logs={logs} />;
+  return (
+    <>
+      <div className="mobileOnly">
+        <MobileSystemHealthContent metrics={metrics} logs={logs} />
+      </div>
+      <div className="desktopOnly">
+        <SystemHealthContent metrics={metrics} logs={logs} />
+      </div>
+    </>
+  );
 }

@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
         fileSize: fmtSize(saved.size),
         fileUrl: saved.url,
         isTemplate: formData.get("isTemplate") === "true",
+        needsSign:  formData.get("needsSign") === "true",
       });
       return ok(doc, 201);
     }

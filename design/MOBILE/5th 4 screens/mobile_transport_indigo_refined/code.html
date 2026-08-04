@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mobile Transport - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#c88c3d",
+                      "on-secondary-container": "#4d6c4d",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e0e9f2",
+                      "outline": "#71787c",
+                      "on-surface-variant": "#41484b",
+                      "inverse-primary": "#e0e0ff",
+                      "on-secondary-fixed-variant": "#304d31",
+                      "surface-container": "#e6eff8",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#aecfaa",
+                      "secondary": "#486647",
+                      "surface-container-low": "#ebf5fd",
+                      "primary-fixed-dim": "#babbff",
+                      "error": "#ba1a1a",
+                      "tertiary": "#2a1700",
+                      "on-primary-fixed": "#1a164d",
+                      "inverse-on-surface": "#e9f2fa",
+                      "outline-variant": "#c1c7cb",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#141d23",
+                      "on-background": "#141d23",
+                      "on-secondary-fixed": "#042109",
+                      "surface-variant": "#dae4ec",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#1a164d",
+                      "inverse-surface": "#293238",
+                      "surface-tint": "#5B50F5",
+                      "surface": "#f5faff",
+                      "primary-container": "#5B50F5",
+                      "secondary-container": "#c9ecc5",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#e0e0ff",
+                      "on-primary-container": "#ffffff",
+                      "tertiary-fixed": "#ffddb7",
+                      "surface-container-highest": "#dae4ec",
+                      "surface-bright": "#f5faff",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "tertiary-container": "#472a00",
+                      "background": "#f5faff",
+                      "tertiary-fixed-dim": "#fcba66",
+                      "secondary-fixed": "#c9ecc5",
+                      "surface-dim": "#d2dbe4",
+                      "primary": "#5B50F5",
+                      "on-tertiary-fixed": "#2a1700"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "base": "4px",
+                      "margin-mobile": "16px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #f5faff;
+            color: #141d23;
+        }
+        .card-shadow {
+            box-shadow: 0px 2px 4px rgba(20, 29, 35, 0.05);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md bg-background min-h-screen pb-32 overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-margin-mobile h-16 bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="flex items-center gap-sm">
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors duration-200 active:opacity-80">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">menu</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary">Transport Dashboard</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors duration-200 active:opacity-80">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors duration-200 active:opacity-80">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Live Status Strip -->
+<div class="bg-primary text-white py-2 px-margin-mobile flex items-center justify-center gap-2 font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Live tracking • 4 buses active • Synced 1m ago</span>
+</div>
+<main class="px-margin-mobile py-lg space-y-lg">
+<!-- KPI Cards Grid -->
+<section class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md card-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-md text-on-surface-variant">Active Buses</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">4</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md card-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-md text-on-surface-variant">Students</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">126</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md card-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-md text-on-surface-variant">Routes</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">map</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">6</div>
+</div>
+<div class="bg-surface-container-lowest border border-error-container rounded-xl p-md card-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-md text-on-surface-variant">Issues</span>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-error font-bold flex items-center gap-1">
+                2
+            </div>
+</div>
+</section>
+<!-- Main Content Area -->
+<section class="space-y-md">
+<div class="flex justify-between items-center">
+<h2 class="font-title-lg text-title-lg text-primary font-bold">Active Routes</h2>
+<button class="font-label-md text-label-md text-primary hover:underline font-semibold flex items-center gap-1">
+                 View All
+                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Route Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md card-shadow space-y-md">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-title-lg text-title-lg text-primary font-semibold">East Legon Morning</h3>
+<p class="font-body-md text-on-surface-variant">Trip: Morning Pickup</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-2 py-1 rounded-sm">On Time</span>
+</div>
+<!-- Progress Visual -->
+<div class="relative py-4">
+<div class="h-1 bg-surface-variant rounded-full w-full"></div>
+<div class="h-1 bg-primary rounded-full absolute top-4 left-0" style="width: 70%;"></div>
+<div class="absolute top-1 left-0 flex flex-col items-center -ml-2">
+<div class="w-3 h-3 rounded-full bg-primary border-2 border-surface"></div>
+<span class="font-label-md text-[10px] text-on-surface-variant mt-1">Legon</span>
+</div>
+<div class="absolute top-1 left-1/2 flex flex-col items-center -ml-2">
+<div class="w-3 h-3 rounded-full bg-primary border-2 border-surface"></div>
+<span class="font-label-md text-[10px] text-on-surface-variant mt-1">Madina</span>
+</div>
+<div class="absolute top-1 right-0 flex flex-col items-center -mr-2">
+<div class="w-3 h-3 rounded-full bg-surface-variant border-2 border-surface"></div>
+<span class="font-label-md text-[10px] text-on-surface-variant mt-1">Adenta</span>
+</div>
+<!-- Bus Icon moving -->
+<div class="absolute top-0 transform -translate-y-1/2 -ml-3 text-primary bg-surface p-1 rounded-full shadow-sm" style="left: 70%;">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-body-md border-t border-outline-variant pt-2 mt-2">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                     ETA: 07:45 AM
+                </div>
+<div class="bg-surface-container-low px-2 py-1 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">group</span>
+<span class="font-label-md text-label-md font-semibold text-primary">5/8 Picked • 1 Missing</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Vehicle Fleet Section -->
+<section class="space-y-md">
+<h2 class="font-title-lg text-title-lg text-primary font-bold">Vehicle Fleet</h2>
+<div class="space-y-sm">
+<!-- Vehicle Card 1 (Active) -->
+<div class="bg-surface-container-lowest border border-primary/20 rounded-xl p-md card-shadow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-title-lg text-title-lg text-primary font-semibold flex items-center gap-2">
+                            Bus A1 <span class="font-body-md text-on-surface-variant font-normal text-sm">(GS-202-23)</span>
+</h4>
+<p class="font-body-md text-on-surface-variant">Driver: Kwesi Mensah</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-2 py-1 rounded-sm">Active</span>
+</div>
+<div class="flex justify-between items-center mt-4">
+<p class="font-body-md text-on-surface-variant">Route: East Legon</p>
+<div class="flex items-center gap-1 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-sm">local_gas_station</span>
+                        85%
+                    </div>
+</div>
+<!-- Expanded Actions -->
+<div class="mt-4 pt-4 border-t border-outline-variant grid grid-cols-2 gap-2">
+<button class="bg-primary text-on-primary py-2 rounded-lg font-label-md font-semibold flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm">map</span> Route
+                    </button>
+<button class="border border-primary text-primary py-2 rounded-lg font-label-md font-semibold flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm">call</span> Call
+                    </button>
+</div>
+</div>
+<!-- Vehicle Card 2 (Delayed) -->
+<div class="bg-surface-container-lowest border border-tertiary-fixed-dim rounded-xl p-md card-shadow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-title-lg text-title-lg text-primary font-semibold flex items-center gap-2">
+                            Bus B2 <span class="font-body-md text-on-surface-variant font-normal text-sm">(GS-441-22)</span>
+</h4>
+<p class="font-body-md text-on-surface-variant">Driver: Ama Boateng</p>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md px-2 py-1 rounded-sm">Delayed</span>
+</div>
+<div class="bg-tertiary-fixed-dim bg-opacity-20 text-on-tertiary-container p-2 rounded mt-2 flex items-start gap-2 text-sm font-semibold">
+<span class="material-symbols-outlined text-sm mt-0.5">warning</span>
+                    Delayed 12 min near Madina
+                </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-2 border-t border-outline-variant bg-surface shadow-sm z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">how_to_reg</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-4 py-1 transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+<span class="font-label-md text-label-md">Fleet</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-xl shadow-lg flex items-center justify-center hover:bg-opacity-90 transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</body></html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payroll Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#5B50F5",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#5B50F5",
+                      "on-primary-container": "#edeaff",
+                      "secondary": "#1B5E20",
+                      "on-secondary": "#ffffff",
+                      "surface": "#FFFFFF",
+                      "background": "#fcf8ff",
+                      "on-surface": "#1b1b24",
+                      "on-background": "#1b1b24",
+                      "surface-variant": "#e4e1ee",
+                      "on-surface-variant": "#464555",
+                      "outline": "#E4E4EC",
+                      "outline-variant": "#c7c4d8",
+                      "surface-container": "#f0ecfa",
+                      "surface-container-low": "#f6f2ff",
+                      "surface-container-high": "#eae6f4",
+                      "surface-container-highest": "#e4e1ee",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dcd8e6",
+                      "surface-bright": "#fcf8ff",
+                      "error": "#C24747",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "warning": "#FF8F00",
+                      "tertiary": "#8c3900",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#b34b00",
+                      "on-tertiary-container": "#ffe8de",
+                      "inverse-surface": "#302f39",
+                      "inverse-on-surface": "#f3effd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "md": "16px",
+                      "base": "4px",
+                      "header-height": "56px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+            font-family: 'Inter', sans-serif;
+        }
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col overflow-x-hidden pt-16 pb-20">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center h-[56px] px-md w-full sticky top-0 z-50 bg-surface border-b border-outline">
+<div class="flex items-center gap-sm">
+<button class="p-2 -ml-2 text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-headline-md font-headline-md text-primary">Payroll</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lock</span>
+</button>
+<button class="p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar of a Ghanaian school administrator in professional attire, bright lighting, high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsr31xJQgA-qlFzXzunXJdLGlbbyBWzr1v8OU3tJkuY3uRGAKElWHZ1Ly5Dv1NTCFw79rCOji9TzqBPJ5OuhCgsQ5lIBaS8ma39EfdFKQyhyuBkbv5tlBBbo8XqxoFVDdWrCAUdn7Eu1kqOHqiJondc7q1N8vDljHj8dEUL40vkbiiIGHZRwntzTe6OpNKxasTfvcUuUCpq86M_pCfwztTSSTtSOsoQIClmdciny_z1J4rWwz1OOsOY4kVDllx0nnNeamxWMxgbQ"/>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col p-margin-mobile gap-md max-w-[600px] mx-auto w-full">
+<!-- Security Chip -->
+<div class="bg-surface-container-high rounded-full py-1 px-3 flex items-center justify-center gap-2 self-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">security</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Payroll access restricted</span>
+</div>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 shadow-sm flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">Total Payroll</span>
+<span class="font-title-lg text-title-lg text-primary">GHS 42,800</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 shadow-sm flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">Staff</span>
+<span class="font-title-lg text-title-lg text-primary">7</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 shadow-sm flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">Pending</span>
+<span class="font-title-lg text-title-lg text-warning">2</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 shadow-sm flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">Exceptions</span>
+<span class="font-title-lg text-title-lg text-error">1</span>
+</div>
+</div>
+<!-- Payroll Period Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Period</span>
+<span class="font-title-lg text-title-lg text-primary">July 2026</span>
+</div>
+<button class="p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors border border-outline-variant">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">domain</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Department: All</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Status: Draft</span>
+</div>
+</div>
+</div>
+<!-- Search Input -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2.5 pl-10 pr-4 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Search staff, role, or payslip" type="text"/>
+</div>
+<!-- Filter Chips (Horizontal Scroll) -->
+<div class="flex gap-2 overflow-x-auto pb-2 -mx-margin-mobile px-margin-mobile no-scrollbar">
+<button class="bg-primary text-on-primary rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap">All active</button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Draft</button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Approved</button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Paid</button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Pending</button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low">Exceptions</button>
+</div>
+<!-- Progress Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md font-medium text-primary">Approval Progress</span>
+<span class="font-label-md text-label-md text-on-surface-variant">5/7 payslips</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 71%"></div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-2 mt-2">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-body-md text-body-md font-medium hover:opacity-90 transition-colors shadow-sm">
+                Run Payroll
+            </button>
+<button class="w-full bg-transparent border-2 border-primary text-primary py-3 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-container-low transition-colors">
+                Export Payslips
+            </button>
+</div>
+<!-- Staff List Section Header -->
+<div class="flex justify-between items-center mt-4 border-b border-outline-variant pb-2">
+<h2 class="font-title-lg text-title-lg text-primary">Staff Payslips</h2>
+</div>
+<!-- Alert Card -->
+<div class="bg-error-container border border-error/20 rounded-xl p-3 flex gap-3 items-start shadow-sm">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-on-error-container">Missing bank details</span>
+<span class="font-label-md text-label-md text-on-error-container/80">Kofi Mensah's direct deposit information is incomplete.</span>
+</div>
+</div>
+<!-- Staff List Items -->
+<div class="flex flex-col gap-3">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-2 relative">
+<div class="absolute top-4 right-4 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-secondary">Approved</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-bold">
+                        KO
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-primary">Kwame Owusu</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Mathematics Teacher</span>
+</div>
+</div>
+<div class="flex justify-between items-end mt-1 pt-2 border-t border-outline-variant/50">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Gross</span>
+<span class="font-body-md text-body-md text-on-surface">GHS 5,200</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant">Net</span>
+<span class="font-body-md text-body-md font-bold text-primary">GHS 4,800</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-2 relative border-l-4 border-l-secondary">
+<div class="absolute top-4 right-4 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-secondary">Paid</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-bold">
+                        EB
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-primary">Efua Boateng</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Registrar</span>
+</div>
+</div>
+<div class="flex justify-between items-end mt-1 pt-2 border-t border-outline-variant/50">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Gross</span>
+<span class="font-body-md text-body-md text-on-surface">GHS 5,500</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant">Net</span>
+<span class="font-body-md text-body-md font-bold text-primary">GHS 5,100</span>
+</div>
+</div>
+</div>
+<!-- Item 3 Expanded -->
+<div class="bg-surface-container-lowest border border-primary/30 rounded-xl p-4 shadow-md flex flex-col gap-3 relative ring-1 ring-primary/10">
+<div class="absolute top-4 right-4 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-warning"></span>
+<span class="font-label-md text-label-md text-warning">Draft</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-bold">
+                        YA
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-primary">Yaw Adjei</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Bus Driver</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-2 mt-1">
+<div class="flex justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Basic Salary</span>
+<span class="font-body-md text-body-md text-on-surface">GHS 2,800</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Allowances</span>
+<span class="font-body-md text-body-md text-on-surface">GHS 400</span>
+</div>
+<div class="flex justify-between text-error">
+<span class="font-label-md text-label-md">SSNIT/PAYE</span>
+<span class="font-body-md text-body-md">-GHS 300</span>
+</div>
+<div class="border-t border-outline-variant/50 pt-2 flex justify-between font-bold">
+<span class="font-label-md text-label-md text-primary mt-1">Net Pay</span>
+<span class="font-body-md text-body-md text-primary">GHS 2,900</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-md text-label-md text-center hover:opacity-90 transition-colors shadow-sm">
+                        Approve
+                    </button>
+<button class="flex-1 bg-surface border border-outline text-primary py-2 rounded-lg font-label-md text-label-md text-center hover:bg-surface-container-low transition-colors">
+                        View Payslip
+                    </button>
+<button class="w-full bg-transparent border border-error/50 text-error py-2 rounded-lg font-label-md text-label-md text-center hover:bg-error-container/20 transition-colors mt-1">
+                        Hold Payment
+                    </button>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-2 relative border-l-4 border-l-warning">
+<div class="absolute top-4 right-4 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-warning"></span>
+<span class="font-label-md text-label-md text-warning">Pending</span>
+</div>
+<div class="flex gap-3 items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-bold">
+                        AF
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-primary">Akua Frimpong</span>
+<span class="font-label-md text-label-md text-on-surface-variant">School Nurse</span>
+</div>
+</div>
+<div class="flex justify-between items-end mt-1 pt-2 border-t border-outline-variant/50">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Gross</span>
+<span class="font-body-md text-body-md text-on-surface">GHS 4,200</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant">Net</span>
+<span class="font-body-md text-body-md font-bold text-primary">GHS 3,900</span>
+</div>
+</div>
+</div>
+<!-- Loading Skeleton -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-3 animate-pulse opacity-70">
+<div class="flex gap-3 items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest"></div>
+<div class="flex flex-col gap-2 w-full">
+<div class="h-4 bg-surface-container-highest rounded w-1/3"></div>
+<div class="h-3 bg-surface-container-highest rounded w-1/4"></div>
+</div>
+</div>
+<div class="flex justify-between items-end mt-1 pt-2 border-t border-outline-variant/50 gap-4">
+<div class="h-4 bg-surface-container-highest rounded w-1/4"></div>
+<div class="h-4 bg-surface-container-highest rounded w-1/4"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Toast Notification -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 animate-[slideUp_0.3s_ease-out]">
+<span class="material-symbols-outlined text-[20px] text-primary">check_circle</span>
+<span class="font-body-md text-body-md">Payslip approved</span>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 bg-surface px-sm border-t border-outline sm:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 p-2 rounded-lg w-16">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-sm text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 p-2 rounded-lg w-16">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-sm text-[10px]">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 p-2 rounded-lg w-16">
+<span class="material-symbols-outlined mb-1">how_to_reg</span>
+<span class="font-label-sm text-[10px]">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 p-2 rounded-lg w-16">
+<span class="material-symbols-outlined mb-1">payments</span>
+<span class="font-label-sm text-[10px]">Fees</span>
+</button>
+<!-- 'More' is active -->
+<button class="flex flex-col items-center justify-center flex-1 h-full px-2" href="#">
+<div class="bg-primary text-white flex flex-col items-center justify-center px-6 py-2 rounded-full">
+<span class="material-symbols-outlined mb-0.5" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="font-label-sm text-[10px] font-bold">More</span>
+</div>
+</button>
+</nav>
+</body></html>

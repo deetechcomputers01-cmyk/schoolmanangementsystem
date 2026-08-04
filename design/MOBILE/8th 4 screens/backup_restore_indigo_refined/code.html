@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Backup &amp; Restore | School Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#a5ccde",
+                    "on-secondary-fixed": "#042109",
+                    "outline": "#71787c",
+                    "tertiary": "#2a1700",
+                    "surface-variant": "#dae4ec",
+                    "surface-container-low": "#ebf5fd",
+                    "on-surface": "#141d23",
+                    "primary-fixed": "#c1e9fb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#293238",
+                    "on-secondary-fixed-variant": "#304d31",
+                    "secondary-fixed-dim": "#aecfaa",
+                    "surface-container": "#e6eff8",
+                    "on-tertiary-container": "#c88c3d",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d2dbe4",
+                    "tertiary-fixed": "#ffddb7",
+                    "surface-container-highest": "#dae4ec",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-background": "#141d23",
+                    "surface-tint": "#3d6473",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#244c5a",
+                    "surface-bright": "#f5faff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#fcba66",
+                    "secondary-fixed": "#c9ecc5",
+                    "tertiary-container": "#472a00",
+                    "on-primary-container": "#779eaf",
+                    "background": "#f5faff",
+                    "on-surface-variant": "#41484b",
+                    "inverse-primary": "#a5ccde",
+                    "secondary": "#486647",
+                    "surface-container-high": "#e0e9f2",
+                    "on-secondary-container": "#4d6c4d",
+                    "primary-container": "#073543",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-primary-fixed": "#001f29",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f5faff",
+                    "secondary-container": "#c9ecc5",
+                    "outline-variant": "#c1c7cb",
+                    "inverse-on-surface": "#e9f2fa",
+                    "primary": "#001f29",
+                    "brand-indigo": "#5B50F5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "4px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "margin-desktop": "40px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .bento-item-large {
+            grid-column: span 2;
+        }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-text-primary">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-text-primary">Backup &amp; Restore</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-text-primary">search</span>
+</button>
+</header>
+<main class="pt-20 px-margin-mobile space-y-6">
+<!-- Summary Card -->
+<section class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg shadow-[0px_2px_4px_rgba(20,29,35,0.05)] relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<div class="bg-brand-indigo text-white px-3 py-1 rounded-full flex items-center gap-1.5 animate-pulse">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md">Healthy</span>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Storage Usage</p>
+<div class="flex items-baseline gap-2 mt-1">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary-container">1.24 TB</h2>
+<span class="font-body-md text-body-md text-on-surface-variant">/ 2.0 TB Total</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-variant rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-brand-indigo w-[62%] rounded-full"></div>
+</div>
+</div>
+<div class="pt-2 flex items-center gap-4 border-t border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">history</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant leading-none">Last Backup</p>
+<p class="font-body-md text-body-md font-medium text-on-surface">2h ago</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions Bento -->
+<section class="bento-grid">
+<button class="bento-item-large bg-brand-indigo text-white p-6 rounded-lg flex flex-col justify-between h-40 active:scale-95 transition-transform relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">cloud_upload</span>
+</div>
+<span class="material-symbols-outlined text-[32px]">play_circle</span>
+<div class="text-left">
+<p class="font-title-lg text-title-lg">Run Backup</p>
+<p class="font-body-md text-body-md opacity-80">Immediate manual snapshot</p>
+</div>
+</button>
+<button class="bg-surface-container-high border border-outline-variant p-5 rounded-lg flex flex-col justify-between h-36 active:scale-95 transition-transform text-primary-container">
+<span class="material-symbols-outlined text-[28px]">settings_backup_restore</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-semibold">Restore</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Recover data</p>
+</div>
+</button>
+<button class="bg-surface-container-high border border-outline-variant p-5 rounded-lg flex flex-col justify-between h-36 active:scale-95 transition-transform text-primary-container">
+<span class="material-symbols-outlined text-[28px]">calendar_today</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-semibold">Schedule</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Automate</p>
+</div>
+</button>
+</section>
+<!-- Backup History -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg text-primary-container">Recent Backups</h3>
+<button class="text-brand-indigo font-label-md text-label-md">View All</button>
+</div>
+<div class="space-y-3">
+<!-- History Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">storage</span>
+</div>
+<div class="">
+<p class="font-body-lg text-body-lg font-medium text-on-surface">Nightly Full Backup</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 24, 02:00 AM • 142 GB</p>
+</div>
+</div>
+<div class="bg-brand-indigo text-white px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-tighter">Success</div>
+</div>
+<!-- History Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="">
+<p class="font-body-lg text-body-lg font-medium text-on-surface">Student Records Diff</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 23, 11:30 PM • 12 GB</p>
+</div>
+</div>
+<div class="bg-brand-indigo text-white px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-tighter">Success</div>
+</div>
+<!-- History Item 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">database</span>
+</div>
+<div class="">
+<p class="font-body-lg text-body-lg font-medium text-on-surface">Weekly Cloud Archive</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 20, 12:00 AM • 890 GB</p>
+</div>
+</div>
+<div class="bg-brand-indigo text-white px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-tighter">Success</div>
+</div>
+</div>
+</section>
+<!-- Illustration / Empty State Context -->
+<section class="py-8 opacity-40 text-center">
+<div class="w-24 h-24 bg-surface-variant rounded-full mx-auto flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant">security</span>
+</div>
+<p class="font-body-md text-body-md max-w-[200px] mx-auto">Your school data is encrypted and backed up to multiple regions.</p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 pb-safe bg-surface border-t border-outline-variant z-50 shadow-lg">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-transform scale-95 active:scale-90 duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-transform scale-95 active:scale-90 duration-150">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md mt-1">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-transform scale-95 active:scale-90 duration-150">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-md text-label-md mt-1">Staff</span>
+</button>
+<!-- Active Tab: Settings (Mapping Backup & Restore as a sub-setting) -->
+<button class="flex flex-col items-center justify-center bg-primary-container/10 text-primary-container rounded-full px-4 py-1 transition-transform scale-95 active:scale-90 duration-150"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span><span class="font-label-md text-label-md mt-1">Settings</span></button>
+</nav>
+<script>
+        // Micro-interaction: Ripple effect on buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+<style>
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body></html>

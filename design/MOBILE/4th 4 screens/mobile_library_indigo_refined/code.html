@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Library Management - SchoolPro Ghana</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#71787c",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#c9ecc5",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c9c5d0",
+                      "inverse-primary": "#e0e0ff",
+                      "background": "#f5faff",
+                      "surface-container": "#f1edf2",
+                      "surface-container-high": "#ebe7ed",
+                      "primary-container": "#5B50F5",
+                      "tertiary-container": "#472a00",
+                      "tertiary-fixed": "#ffddb7",
+                      "error": "#ba1a1a",
+                      "surface-container-low": "#f6f2f8",
+                      "surface-container-highest": "#e5e1e7",
+                      "on-surface": "#1c1b1f",
+                      "on-secondary-fixed-variant": "#304d31",
+                      "primary": "#5B50F5",
+                      "secondary-fixed-dim": "#aecfaa",
+                      "primary-fixed": "#e0e0ff",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#f4f0f4",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-secondary-container": "#4d6c4d",
+                      "secondary-fixed": "#c9ecc5",
+                      "on-primary-fixed": "#1a164d",
+                      "on-tertiary-container": "#c88c3d",
+                      "on-tertiary": "#ffffff",
+                      "surface": "#fbf8fe",
+                      "secondary": "#006c49",
+                      "on-error-container": "#93000a",
+                      "surface-bright": "#fbf8fe",
+                      "surface-variant": "#e5e1e7",
+                      "on-surface-variant": "#49454f",
+                      "tertiary": "#2a1700",
+                      "surface-tint": "#5B50F5",
+                      "on-background": "#141d23",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#ffffff",
+                      "primary-fixed-dim": "#babbff",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "inverse-surface": "#313033",
+                      "on-primary-fixed-variant": "#1a164d",
+                      "on-secondary-fixed": "#042109",
+                      "surface-dim": "#d2dbe4",
+                      "tertiary-fixed-dim": "#fcba66"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "xl": "32px",
+                      "base": "4px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "sm": "8px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "title-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface h-screen w-full md:hidden flex flex-col overflow-hidden relative">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16 w-full shrink-0 z-50 fixed top-0 left-0">
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg font-bold text-primary">Library</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+</button>
+<button class="hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant text-primary flex items-center justify-center font-bold font-body-md ml-2 border border-outline-variant overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtEdldq_0eT968LrsBU0gRZgU4U3uIb5TmOBVU-osJtcMZJW4QiMOHP350Te7RoAOoj7fOdeLZ0NoHvOK-VpP_Rp_OgxxUcprcKTojYSc3-P1HWf8Va4Bc1e4fhKpjkVtmVeuBFPJhUTau5a9zf6kZ18RJ8kkCKGhGfgcyw9y7tdspy5jzAIB5FooK9-pIuA-0k8qLYYqdbUbm8qCWtP94A9pHTJ1zIveaLAvJLQTymNkXQlI6TvRjqhBfSTQR0XrxHQc9tKeryA"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto w-full pt-16 pb-20 px-margin-mobile">
+<!-- KPI Statistics (Bento-style grid) -->
+<section class="mt-md grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-sm shadow-sm flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Books</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-primary mt-1">1,248</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-sm shadow-sm flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Borrowed</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-primary mt-1">86</p>
+</div>
+<div class="bg-surface-container-lowest border border-error-container bg-error-container/10 rounded-xl p-sm shadow-sm flex flex-col justify-center">
+<p class="font-label-md text-label-md text-error uppercase tracking-wider">Overdue</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-error mt-1">9</p>
+</div>
+<div class="bg-surface-container-lowest border border-tertiary-fixed-dim bg-tertiary-fixed-dim/10 rounded-xl p-sm shadow-sm flex flex-col justify-center">
+<p class="font-label-md text-label-md text-tertiary uppercase tracking-wider">Due Today</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary mt-1">12</p>
+</div>
+</section>
+<!-- Search & Filter -->
+<section class="mt-lg sticky top-16 bg-surface z-40 py-2 -mx-margin-mobile px-margin-mobile shadow-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-full py-2 pl-10 pr-4 font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-on-surface-variant" placeholder="Search books, ISBN, or student" type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar mt-md pb-1">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md">All</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container border border-outline-variant text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors">Available</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container border border-outline-variant text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors">Borrowed</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container border border-error-container text-error font-label-md text-label-md hover:bg-error-container/20 transition-colors">Overdue</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container border border-tertiary-fixed-dim text-tertiary font-label-md text-label-md hover:bg-tertiary-fixed-dim/20 transition-colors">Due Today</button>
+</div>
+</section>
+<!-- Primary Actions -->
+<section class="mt-md flex gap-sm">
+<button class="flex-1 bg-primary text-on-primary rounded-lg py-3 flex items-center justify-center gap-2 font-label-md text-label-md shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="library_add">library_add</span>
+            Issue Book
+        </button>
+<button class="flex-1 bg-transparent border border-primary text-primary rounded-lg py-3 flex items-center justify-center gap-2 font-label-md text-label-md active:scale-95 transition-transform hover:bg-primary/5">
+<span class="material-symbols-outlined text-[18px]" data-icon="barcode_scanner">barcode_scanner</span>
+            Scan Barcode
+        </button>
+</section>
+<!-- Book Catalog -->
+<section class="mt-lg flex flex-col gap-sm pb-8">
+<!-- Card 1 (Available) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-[16px] leading-tight text-primary">Integrated Science for Basic Schools</h3>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-md text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0 ml-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle" data-weight="fill">check_circle</span> Available
+                </span>
+</div>
+<p class="font-body-md text-label-md text-on-surface-variant">Author: Kwame Mensah</p>
+<div class="flex justify-between items-center mt-3 pt-3 border-t border-outline-variant/30">
+<p class="font-label-md text-label-md text-on-surface-variant">ISBN: 978-001</p>
+<p class="font-label-md text-label-md text-primary font-semibold">Shelf: A-102</p>
+</div>
+</div>
+<!-- Card 2 (Borrowed - Expanded) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm shadow-md ring-1 ring-primary/10">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-[16px] leading-tight text-primary">English Grammar Essentials</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-md text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0 ml-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="person">person</span> Borrowed
+                </span>
+</div>
+<p class="font-body-md text-label-md text-on-surface-variant mb-3">Author: Efua Boateng</p>
+<div class="bg-surface-container-low rounded p-2 mb-3 border border-outline-variant/50">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-label-md text-[10px]">AA</div>
+<div>
+<p class="font-label-md text-[12px] text-primary font-medium">Akosua Asare</p>
+<p class="font-label-md text-[10px] text-on-surface-variant">Basic 6</p>
+</div>
+</div>
+<div class="flex justify-between items-center border-t border-outline-variant/30 pt-2 mt-2">
+<p class="font-label-md text-[11px] text-on-surface-variant">Due: <span class="text-on-surface font-semibold">Oct 28</span></p>
+<p class="font-label-md text-[11px] text-on-surface-variant">Fine: <span class="text-on-surface font-semibold">GHS 0.00</span></p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary rounded py-1.5 font-label-md text-[11px] active:scale-95 transition-transform">Return</button>
+<button class="flex-1 bg-transparent border border-outline-variant text-primary rounded py-1.5 font-label-md text-[11px] active:scale-95 transition-transform hover:bg-surface-container">Renew</button>
+<button class="flex-[0.5] bg-transparent border border-outline-variant text-primary rounded py-1.5 flex items-center justify-center active:scale-95 transition-transform hover:bg-primary/5">
+<span class="material-symbols-outlined text-[16px]" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+<!-- Card 3 (Overdue) -->
+<div class="bg-surface-container-lowest border border-error-container rounded-lg p-sm shadow-sm relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="pl-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-[16px] leading-tight text-primary">Mathematics Workbook Basic 6</h3>
+<span class="px-2 py-0.5 rounded bg-error-container text-error font-label-md text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0 ml-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="warning" data-weight="fill">warning</span> Overdue
+                    </span>
+</div>
+<div class="flex items-center gap-2 mb-2 mt-3">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="person">person</span>
+<p class="font-label-md text-[12px] text-primary">Kofi Mensah</p>
+</div>
+<div class="flex justify-between items-center mt-2 pt-2 border-t border-outline-variant/30">
+<p class="font-label-md text-[11px] text-error font-semibold">Due: 2 days ago</p>
+<p class="font-label-md text-[11px] text-on-surface-variant">Fine: <span class="text-error font-bold">GHS 5.00</span></p>
+</div>
+</div>
+</div>
+<!-- Loading Skeleton Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-sm shadow-sm animate-pulse">
+<div class="flex justify-between items-start mb-3">
+<div class="h-4 bg-surface-container-high rounded w-3/4"></div>
+<div class="h-4 bg-surface-container-high rounded w-16"></div>
+</div>
+<div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+<div class="flex justify-between items-center mt-3 pt-3 border-t border-outline-variant/20">
+<div class="h-3 bg-surface-container-high rounded w-20"></div>
+<div class="h-3 bg-surface-container-high rounded w-16"></div>
+</div>
+</div>
+<!-- Empty State -->
+<div class="bg-surface-container border border-outline-variant border-dashed rounded-lg p-lg flex flex-col items-center justify-center text-center mt-md opacity-70">
+<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-[24px]" data-icon="search_off">search_off</span>
+</div>
+<h4 class="font-title-lg text-[16px] text-primary mb-1">No books match</h4>
+<p class="font-body-md text-label-md text-on-surface-variant">Try adjusting your search or filters.</p>
+</div>
+</section>
+</main>
+<!-- Floating Toast Notification -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-inverse-surface text-on-primary px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 animate-[slideUp_0.3s_ease-out]">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="check_circle">check_circle</span>
+<p class="font-label-md text-[14px]">Book issued successfully</p>
+</div>
+<!-- BottomNavBar -->
+<nav class="bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-20 w-full px-xs pb-safe fixed bottom-0 left-0 rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="event_available">event_available</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Fees</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-4 py-1 hover:bg-primary/90 transition-colors active:scale-95 duration-100 shadow-sm" href="#">
+<span class="material-symbols-outlined mb-1 fill-icon" data-icon="more_horiz">more_horiz</span>
+<span class="font-label-md text-label-md">More</span>
+</a>
+</nav>
+<style>
+    @keyframes slideUp {
+        from { transform: translate(-50%, 100%); opacity: 0; }
+        to { transform: translate(-50%, 0); opacity: 1; }
+    }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0; }
+    .material-symbols-outlined.fill-icon { font-variation-settings: 'FILL' 1; }
+</style>
+</body></html>

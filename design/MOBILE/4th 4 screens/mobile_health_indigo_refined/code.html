@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Mobile Health - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#fbf8fe",
+                      "secondary-fixed": "#c9ecc5",
+                      "on-surface": "#1c1b1f",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#aecfaa",
+                      "outline": "#71787c",
+                      "on-tertiary-container": "#c88c3d",
+                      "tertiary": "#2a1700",
+                      "surface-container-high": "#ebe7ed",
+                      "surface-variant": "#e5e1e7",
+                      "tertiary-container": "#472a00",
+                      "primary": "#5B50F5",
+                      "background": "#f5faff",
+                      "surface-container-highest": "#e5e1e7",
+                      "on-primary-fixed": "#1a164d",
+                      "inverse-surface": "#313033",
+                      "secondary-container": "#c9ecc5",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#e0e0ff",
+                      "primary-container": "#5B50F5",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#f1edf2",
+                      "on-secondary-container": "#4d6c4d",
+                      "tertiary-fixed-dim": "#fcba66",
+                      "surface": "#fbf8fe",
+                      "on-primary-fixed-variant": "#1a164d",
+                      "primary-fixed-dim": "#babbff",
+                      "on-secondary-fixed": "#042109",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c9c5d0",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#e0e0ff",
+                      "on-surface-variant": "#49454f",
+                      "surface-dim": "#d2dbe4",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-background": "#141d23",
+                      "secondary": "#006c49",
+                      "on-primary-container": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#5B50F5",
+                      "surface-container-low": "#f6f2f8",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "tertiary-fixed": "#ffddb7",
+                      "on-secondary-fixed-variant": "#304d31",
+                      "inverse-on-surface": "#f4f0f4",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "margin-desktop": "40px",
+                      "xs": "4px",
+                      "base": "4px",
+                      "xl": "32px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "safe": "env(safe-area-inset-bottom)"
+              },
+              "fontFamily": {
+                      "title-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base styles */
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Hide scrollbar for horizontal scroll areas */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Mobile container constraints */
+        .mobile-container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            background-color: theme('colors.surface');
+            min-height: 100vh;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface-dim">
+<div class="mobile-container overflow-hidden shadow-2xl">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 border-b border-outline-variant dark:border-outline shadow-sm bg-surface dark:bg-surface-dim max-w-[480px] mx-auto right-0 flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<button class="text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full -ml-2 flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-title-lg text-title-lg font-bold text-primary">Health</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="relative">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface"></span>
+</div>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant active:scale-95 duration-150">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A portrait of a professional Ghanaian school nurse in a clean, brightly lit modern clinic environment. She is wearing a neat uniform and has a warm, trustworthy expression. The lighting is soft and flattering, creating a calm and reassuring mood consistent with a high-end school health portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgyOiIhE_Ht9t5kTHcrQlnMN-z2O21XhIxM_H4LDQpsRk7Rn-8OFp57F-sFcB4-MyZsDfZW_xg4vTAGgVCXL9X2oY4MKhx_hYWzlYhVHiUTEFmkmezPdSM9ydQvRBKyDiARTYsTvWBBk0AGrgDQbGRvkSQdefswd-H2FrJUPIXkeM9jyWOi4xd2Aqvh65GGZzQUXVZaK3f94Lag6RifVWZ9aYaa0gbES3UESpOUpWLK0dtzwkpNf2wfOl4ToTZlSmEM8iEEVd97g"/>
+</button>
+</div>
+</header>
+<!-- Main Content Area (padding-top accounts for header) -->
+<main class="pt-16 px-margin-mobile flex flex-col gap-lg">
+<!-- Privacy Banner -->
+<div class="mt-md bg-surface-container-low border border-outline-variant/50 rounded-lg p-2.5 flex items-center gap-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)]">
+<span class="material-symbols-outlined text-primary icon-fill">lock</span>
+<p class="font-body-md text-body-md text-on-surface-variant flex-1">Restricted health records - access logged</p>
+</div>
+<!-- Stats Grid -->
+<section class="grid grid-cols-2 gap-sm">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Active Cases</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-error">3</span>
+<span class="material-symbols-outlined text-error opacity-50 mb-1">emergency</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Medication Due</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-on-tertiary-container">2</span>
+<span class="material-symbols-outlined text-on-tertiary-container opacity-50 mb-1">medication</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Allergies</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-primary">5</span>
+<span class="material-symbols-outlined text-primary opacity-50 mb-1">warning</span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Incidents Today</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-on-surface">1</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 mb-1">monitor_heart</span>
+</div>
+</div>
+</section>
+<!-- Search & Filter -->
+<section class="flex flex-col gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-shadow" placeholder="Search student or condition" type="text"/>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-2 pb-1 -mx-margin-mobile px-margin-mobile">
+<button class="shrink-0 bg-primary text-on-primary rounded-full px-4 py-1.5 font-label-md text-label-md border border-transparent">All active</button>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md border border-outline-variant hover:bg-surface-container-low transition-colors">Incidents</button>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md border border-outline-variant hover:bg-surface-container-low transition-colors">Medication</button>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md border border-outline-variant hover:bg-surface-container-low transition-colors">Allergies</button>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md border border-outline-variant hover:bg-surface-container-low transition-colors">Follow-up</button>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface-variant rounded-full px-4 py-1.5 font-label-md text-label-md border border-outline-variant hover:bg-surface-container-low transition-colors">Resolved</button>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="flex gap-3">
+<button class="flex-1 bg-primary text-on-primary rounded-lg py-2.5 px-4 font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">add_box</span>
+                    Log Incident
+                </button>
+<button class="flex-1 bg-transparent border border-primary text-primary rounded-lg py-2.5 px-4 font-label-md text-label-md flex items-center justify-center gap-2 active:scale-95 transition-transform hover:bg-primary/5">
+<span class="material-symbols-outlined text-[18px]">vaccines</span>
+                    Medication Round
+                </button>
+</section>
+<!-- Health Cards List -->
+<section class="flex flex-col gap-md pb-xl">
+<!-- 1. Expanded Incident Card (Rose/Error) -->
+<article class="bg-surface-container-lowest border border-error/30 rounded-lg p-4 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<div class="flex justify-between items-start pl-2">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">High Severity</span>
+<span class="text-on-surface-variant text-[10px]">08:30 AM Today</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Kofi Antwi</h3>
+<p class="font-body-sm text-on-surface-variant">JHS 1 • ID: SCH-8921</p>
+</div>
+<img alt="Kofi Antwi" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, clear headshot portrait of a young Ghanaian male student wearing a neat school uniform. He has a neutral expression. The lighting is soft and professional, set against a plain light background suitable for a school ID photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDobaoWBSm8wPiIebU3tuFqNUTZatB6FMb0Gp5fF_E0fl0GUB9DrzHb3nMopduYSakfJ1CyacbEKhVi4noZBQnsWMPH6uqIXVvnXi76wqouZrH4NJs1UoBwTYuAAV_bAIAsfmJFiUISxmvqlAvB6twxuA5kcpMSqSYqLrYKu1MfxufmWI1_Np6PiyFzcQ9PVK8JHxSRID6Cny6XS2l9BnXrjVwvYxNGGYvj99tFdggb8Ro6rOgyEyGFsmnF0WcAyfmxT1d2T6CL1w"/>
+</div>
+<div class="bg-surface-container p-3 rounded flex flex-col gap-2 pl-3 ml-2">
+<div class="flex justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Severe Headache &amp; Fever</span>
+<span class="font-label-md text-label-md text-error font-bold">Temp 38.5°C</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">"Arrived at 08:30. Administered Paracetamol. Rested in sick bay."</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">family_restroom</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Guardian: Daniel Mensah</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 pl-2">
+<button class="bg-surface-container-highest text-on-surface rounded px-3 py-1.5 font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform hover:bg-surface-dim">
+<span class="material-symbols-outlined text-[16px]">call</span>
+                            Call Guardian
+                        </button>
+<button class="bg-surface-container-highest text-on-surface rounded px-3 py-1.5 font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform hover:bg-surface-dim">
+<span class="material-symbols-outlined text-[16px]">note_add</span>
+                            Add Note
+                        </button>
+<button class="bg-error/10 text-error rounded px-3 py-1.5 font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform hover:bg-error/20 border border-error/20">
+<span class="material-symbols-outlined text-[16px]">local_hospital</span>
+                            Refer Clinic
+                        </button>
+<button class="bg-secondary/10 text-secondary rounded px-3 py-1.5 font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform hover:bg-secondary/20 ml-auto border border-secondary/20">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                            Resolved
+                        </button>
+</div>
+</article>
+<!-- 2. Allergy Card (Info/Navy -> Indigo) -->
+<article class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex items-start gap-3 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="pl-2 flex-1">
+<div class="flex justify-between items-start mb-1">
+<div>
+<h3 class="font-title-lg text-[16px] text-on-surface font-semibold">Akosua Asare</h3>
+<p class="font-body-sm text-on-surface-variant text-[12px]">Basic 6A</p>
+</div>
+<span class="material-symbols-outlined text-error opacity-80 text-[20px]">warning</span>
+</div>
+<div class="bg-surface-container p-2 rounded mt-2 border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="bg-primary text-on-primary px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Allergy</span>
+<span class="font-label-md text-label-md text-on-surface">Severe Nut Allergy - <strong class="text-error">EPI-PEN REQ</strong></span>
+</div>
+</div>
+</div>
+</article>
+<!-- 3. Medication Due (Warning/Amber) -->
+<article class="bg-surface-container-lowest border border-tertiary-fixed-dim/50 rounded-lg p-3 shadow-[0_2px_4px_rgba(20,29,35,0.05)] flex items-start gap-3 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary-fixed-dim"></div>
+<div class="pl-2 flex-1">
+<div class="flex justify-between items-start mb-1">
+<div>
+<h3 class="font-title-lg text-[16px] text-on-surface font-semibold">Abena Kyei</h3>
+<p class="font-body-sm text-on-surface-variant text-[12px]">Basic 6B</p>
+</div>
+<span class="bg-tertiary-fixed-dim/20 text-on-tertiary-container px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 border border-tertiary-fixed-dim/30">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                10:30 AM
+                            </span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-on-tertiary-container text-[18px]">medication_liquid</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Inhaler (Asthma)</span>
+</div>
+</div>
+</article>
+<!-- 4. Loading Skeleton -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-4 shadow-[0_2px_4px_rgba(20,29,35,0.05)] animate-pulse flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-2 w-2/3">
+<div class="h-4 bg-surface-dim rounded w-1/4"></div>
+<div class="h-5 bg-surface-dim rounded w-3/4"></div>
+<div class="h-3 bg-surface-dim rounded w-1/2"></div>
+</div>
+<div class="w-10 h-10 bg-surface-dim rounded-full"></div>
+</div>
+<div class="h-16 bg-surface-dim rounded w-full mt-1"></div>
+</article>
+</section></main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-xl border-t border-outline-variant dark:border-outline shadow-lg bg-surface dark:bg-surface-container-lowest max-w-[480px] mx-auto right-0 flex justify-around items-center h-20 px-xs pb-safe">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1">event_available</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-2 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-lg py-1">
+<span class="material-symbols-outlined mb-1">payments</span>
+<span class="font-label-md text-label-md">Fees</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-4 py-1 hover:opacity-90 transition-opacity active:opacity-80 duration-100">
+<span class="material-symbols-outlined mb-1 icon-fill">more_horiz</span>
+<span class="font-label-md text-label-md font-bold">More</span>
+</button>
+</nav>
+<!-- Toast Overlay -->
+<div class="fixed bottom-[100px] left-1/2 -translate-x-1/2 bg-primary text-on-primary px-4 py-3 rounded-lg shadow-xl flex items-center gap-2 z-50 animate-[slideUp_0.3s_ease-out_forwards]">
+<span class="material-symbols-outlined text-white icon-fill">check_circle</span>
+<span class="font-body-md text-body-md font-medium">Health incident logged</span>
+</div>
+</div>
+<style>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+    </style>
+</body></html>

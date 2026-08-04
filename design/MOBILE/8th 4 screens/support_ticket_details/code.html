@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ticket Details - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E4E4EC;
+            border-radius: 10px;
+        }
+
+        /* Micro-interaction for buttons */
+        .btn-active:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e2e2e7",
+                        "tertiary-container": "#b34b00",
+                        "secondary-container": "#e2e1ec",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "surface-tint": "#4e41e8",
+                        "on-tertiary-container": "#ffe8de",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-container": "#ededf2",
+                        "on-primary-container": "#edeaff",
+                        "on-background": "#1a1c1f",
+                        "inverse-on-surface": "#f0f0f5",
+                        "tertiary": "#8c3900",
+                        "on-secondary-fixed-variant": "#45464f",
+                        "error": "#ba1a1a",
+                        "surface": "#f9f9fe",
+                        "on-tertiary-fixed": "#341100",
+                        "on-surface": "#1a1c1f",
+                        "on-surface-variant": "#464555",
+                        "primary-container": "#5b50f5",
+                        "surface-container-highest": "#e2e2e7",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8ed",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#5d5e67",
+                        "outline-variant": "#c7c4d8",
+                        "tertiary-fixed": "#ffdbcb",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#341100",
+                        "on-secondary-container": "#63646d",
+                        "secondary-fixed": "#e2e1ec",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#c3c0ff",
+                        "primary": "#4131dc",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#777587",
+                        "surface-dim": "#d9dade",
+                        "surface-container-low": "#f3f3f8",
+                        "on-secondary-fixed": "#1a1b23",
+                        "surface-bright": "#f9f9fe",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e3034",
+                        "on-primary-fixed": "#100069",
+                        "secondary-fixed-dim": "#c6c5d0",
+                        "primary-fixed": "#e3dfff",
+                        "background": "#f9f9fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin": "20px",
+                        "sm": "8px",
+                        "base": "8px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "section-header": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "section-header": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 flex items-center h-14 px-margin bg-surface border-b border-surface-variant">
+<button aria-label="Go back" class="mr-4 text-primary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Ticket Details</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-14 pb-24 min-h-screen">
+<!-- Ticket Header Detail Section -->
+<section class="p-margin bg-surface-container-lowest border-b border-outline-variant shadow-[0px_2px_8px_rgba(91,80,245,0.05)]">
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-headline-lg text-headline-lg text-primary max-w-[70%]">Portal Access Error</h2>
+<span class="px-3 py-1 rounded-full bg-[#FFFBEB] text-[#B45309] font-label-caps text-label-caps flex items-center gap-1 border border-[#FDE68A]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#F59E0B]"></span>
+                    Open
+                </span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm mb-lg">
+                Oct 24, 2024 • 08:30 AM
+            </p>
+<!-- Metadata Grid (Bento style items) -->
+<div class="grid grid-cols-2 gap-sm mb-lg">
+<div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<span class="text-on-surface-variant font-label-caps text-[10px] uppercase block mb-1">Category</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">dns</span>
+<span class="font-body-md text-body-md">IT Support</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<span class="text-on-surface-variant font-label-caps text-[10px] uppercase block mb-1">Assigned Team</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">groups</span>
+<span class="font-body-md text-body-md">System Ops</span>
+</div>
+</div>
+</div>
+<!-- Description Block -->
+<div class="bg-surface-container rounded-xl p-md border border-outline-variant/50">
+<p class="text-on-surface leading-relaxed font-body-md text-body-md">
+                    Unable to sync attendance records for Basic 6A. Getting a network timeout error.
+                </p>
+</div>
+</section>
+<!-- Response History -->
+<section class="p-margin flex flex-col space-y-lg">
+<h3 class="font-section-header text-section-header text-on-surface-variant uppercase tracking-widest mb-xs">Activity History</h3>
+<!-- Message Bubble: Support -->
+<div class="flex flex-col items-start max-w-[85%]">
+<div class="flex items-center gap-2 mb-1 ml-1">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[14px]">support_agent</span>
+</div>
+<span class="text-on-surface-variant font-label-caps text-label-caps">Support Agent (Leo)</span>
+<span class="text-[10px] text-outline">09:15 AM</span>
+</div>
+<div class="bg-secondary-container text-on-secondary-container p-md rounded-2xl rounded-tl-none border border-outline-variant/20 shadow-sm">
+<p class="font-body-sm text-body-sm">Hello. We've received your report. Our system logs show a temporary synchronization lag on server SSA-04. We are investigating the database lock issue.</p>
+</div>
+</div>
+<!-- Message Bubble: Admin (User) -->
+<div class="flex flex-col items-end max-w-[85%] self-end">
+<div class="flex flex-row-reverse items-center gap-2 mb-1 mr-1">
+<div class="w-6 h-6 rounded-full bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a school administrator in a clean, modern office setting. High-key lighting, soft focus background, minimalist aesthetic with corporate professional attire. Sharp focus on eyes, representing authority and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8WvqX7dmtOZDFwK0VrknYHT1-MqDpBTjG6A2uKZWkoEePUcXDU4z-4NdyWm2Sh6yUVqfb12S8xogZZ4x_nDU0oHerLToFDbCWQJzvuVV2LiUsmXuNduWpiAnzyTDoOJeVZGt3YQFRgGW_Oo3OE8AOLaX3wIkJ-zxOrvJCZyzh2lbvd2WFw07IZoVvw8YFKu_D0qcoWjzhQDGGLyrXITWOmHwy_6u8OOkQRqRIVrzkwsBHIOdwS8Y"/>
+</div>
+<span class="text-on-surface-variant font-label-caps text-label-caps">Admin User</span>
+<span class="text-[10px] text-outline">09:45 AM</span>
+</div>
+<div class="bg-primary-container text-on-primary-container p-md rounded-2xl rounded-tr-none border border-primary shadow-sm">
+<p class="font-body-sm text-body-sm">Thank you for the update. We need this resolved before the 11:00 AM break period as staff need to finalize morning counts.</p>
+</div>
+</div>
+<!-- Message Bubble: Support -->
+<div class="flex flex-col items-start max-w-[85%]">
+<div class="flex items-center gap-2 mb-1 ml-1">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[14px]">engineering</span>
+</div>
+<span class="text-on-surface-variant font-label-caps text-label-caps">System Ops (Jasmine)</span>
+<span class="text-[10px] text-outline">10:05 AM</span>
+</div>
+<div class="bg-secondary-container text-on-secondary-container p-md rounded-2xl rounded-tl-none border border-outline-variant/20 shadow-sm">
+<p class="font-body-sm text-body-sm">We are performing a hotfix deployment on the attendance microservice. You might notice a 30-second disconnect. Please standby.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Actions Layer -->
+<footer class="fixed bottom-0 w-full z-50 bg-surface border-t border-surface-variant p-4 flex gap-4 items-center h-[80px] shadow-[0px_-4px_12px_rgba(0,0,0,0.03)]">
+<button class="flex-1 h-12 rounded-xl border border-primary text-primary font-body-md text-body-md btn-active transition-all flex items-center justify-center gap-2 hover:bg-primary/5">
+<span class="material-symbols-outlined text-[20px]">reply</span>
+            Reply
+        </button>
+<button class="flex-[1.5] h-12 rounded-xl bg-primary-container text-on-primary-container font-body-md text-body-md btn-active transition-all flex items-center justify-center gap-2 shadow-md">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+            Mark Resolved
+        </button>
+</footer>
+<!-- Atmosphere/Interaction Script -->
+<script>
+        // Simple micro-interaction for the "Mark Resolved" success state simulation
+        document.querySelector('button.bg-primary-container').addEventListener('click', () => {
+            const btn = document.querySelector('button.bg-primary-container');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = `
+                <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+                Processing...
+            `;
+            btn.classList.add('opacity-80');
+            
+            setTimeout(() => {
+                btn.innerHTML = `
+                    <span class="material-symbols-outlined text-[20px]">done_all</span>
+                    Resolved
+                `;
+                btn.classList.remove('bg-primary-container');
+                btn.classList.add('bg-green-600');
+                
+                // Show a small toast notification
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-6 py-3 rounded-full shadow-2xl z-[100] transition-all duration-500 transform translate-y-4 opacity-0 flex items-center gap-2';
+                toast.innerHTML = '<span class="material-symbols-outlined text-green-400">check_circle</span> Ticket status updated to Resolved';
+                document.body.appendChild(toast);
+                
+                requestAnimationFrame(() => {
+                    toast.classList.remove('opacity-0', 'translate-y-4');
+                });
+                
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+
+            }, 1200);
+        });
+
+        // Pull to refresh effect placeholder
+        let touchstartY = 0;
+        window.addEventListener('touchstart', e => touchstartY = e.touches[0].pageY);
+        window.addEventListener('touchmove', e => {
+            const touchY = e.touches[0].pageY;
+            const diff = touchY - touchstartY;
+            if (window.scrollY === 0 && diff > 50) {
+                // Potential Refresh animation logic here
+            }
+        });
+    </script>
+</body></html>

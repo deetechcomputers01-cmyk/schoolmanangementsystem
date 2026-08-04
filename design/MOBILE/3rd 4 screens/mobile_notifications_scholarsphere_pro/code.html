@@ -1,0 +1,308 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>School Management System - Notifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#c88c3d",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#41484b",
+                        "surface-dim": "#d2dbe4",
+                        "surface-bright": "#f5faff",
+                        "tertiary-fixed": "#ffddb7",
+                        "surface-container-low": "#ebf5fd",
+                        "primary": "#001f29",
+                        "surface-tint": "#3d6473",
+                        "surface-container-high": "#e0e9f2",
+                        "inverse-surface": "#293238",
+                        "surface-container-highest": "#dae4ec",
+                        "inverse-on-surface": "#e9f2fa",
+                        "tertiary-fixed-dim": "#fcba66",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#304d31",
+                        "secondary-fixed-dim": "#aecfaa",
+                        "error": "#ba1a1a",
+                        "surface": "#f5faff",
+                        "surface-container": "#e6eff8",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "background": "#f5faff",
+                        "inverse-primary": "#a5ccde",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#042109",
+                        "secondary-fixed": "#c9ecc5",
+                        "outline-variant": "#c1c7cb",
+                        "on-tertiary-fixed": "#2a1700",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#472a00",
+                        "outline": "#71787c",
+                        "on-primary-container": "#779eaf",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#486647",
+                        "secondary-container": "#c9ecc5",
+                        "on-secondary-container": "#4d6c4d",
+                        "primary-container": "#073543",
+                        "on-primary-fixed-variant": "#244c5a",
+                        "on-surface": "#141d23",
+                        "on-background": "#141d23",
+                        "tertiary": "#2a1700",
+                        "surface-variant": "#dae4ec",
+                        "primary-fixed": "#c1e9fb",
+                        "primary-fixed-dim": "#a5ccde",
+                        "on-primary-fixed": "#001f29",
+                        "brand-accent": "#5B50F5"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem",
+                        "card": "8px"
+                    },
+                    spacing: {
+                        "md": "16px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "margin-desktop": "40px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "lg": "24px"
+                    },
+                    fontFamily: {
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-surface dark:bg-surface-container-high shadow-sm flex items-center justify-between px-margin-mobile w-full py-4 z-50">
+<button class="text-on-surface-variant flex items-center justify-center p-2 rounded-full active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary dark:text-primary-fixed-dim">Notifications</h1>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant flex items-center justify-center p-2 rounded-full active:bg-surface-container-low transition-colors" onclick="showToast()">
+<span class="material-symbols-outlined">done_all</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional African school administrator in a bright office environment, sharp focus, modern educational setting, optimistic mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArXrElaO1MiCApQMARFYg4sUTXsFKhLxkSSXG0t_PkclJXUonTK73wHGVGJ_DHQkQFtu4rOQLg2ag0171H2Fw5_Ofnc6-O6bC2JFkw5efYiN7VLGxzdaMqy9b3gwV0MVYgLHalaAbaG3wKIkmRDGqhuz85J_EKrjbxe4LXNJUSNAKCgI2cV_33UPueaIGDl_n8rhTqECDIv3I0kTufuP9V6tkLcl43zfVoau-yF4gDaoJanilookEE5ovWEFaBhq-Mn945qqeyrg">
+</div>
+</div>
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-1 overflow-y-auto pb-[90px]">
+<!-- Summary Section -->
+<div class="px-margin-mobile py-md">
+<div class="flex gap-sm overflow-x-auto hide-scrollbar snap-x">
+<div class="snap-start shrink-0 bg-surface-container flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+<span class="font-label-md text-label-md text-on-surface">Unread <span class="font-bold">7</span></span>
+</div>
+<div class="snap-start shrink-0 bg-surface-container flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-md text-label-md text-on-surface">Alerts <span class="font-bold">2</span></span>
+</div>
+<div class="snap-start shrink-0 bg-surface-container flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-on-surface">Payments <span class="font-bold">3</span></span>
+</div>
+<div class="snap-start shrink-0 bg-surface-container flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container text-on-primary-container"></span>
+<span class="font-label-md text-label-md text-on-surface">Attendance <span class="font-bold">4</span></span>
+</div>
+</div>
+</div>
+<!-- Filter Section -->
+<div class="px-margin-mobile pb-md">
+<div class="relative w-full mb-sm">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-card py-2 pl-10 pr-3 font-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-brand-accent" placeholder="Search notifications" type="text">
+</div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar snap-x">
+<button class="snap-start shrink-0 bg-brand-accent text-white font-label-md text-label-md px-4 py-1.5 rounded-full">All</button>
+<button class="snap-start shrink-0 bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md px-4 py-1.5 rounded-full">Unread</button>
+<button class="snap-start shrink-0 bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md px-4 py-1.5 rounded-full">Attendance</button>
+<button class="snap-start shrink-0 bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md px-4 py-1.5 rounded-full">Fees</button>
+<button class="snap-start shrink-0 bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md px-4 py-1.5 rounded-full">Grades</button>
+<button class="snap-start shrink-0 bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-md text-label-md px-4 py-1.5 rounded-full">System</button>
+</div>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col">
+<!-- Today Section -->
+<div class="px-margin-mobile py-2 bg-surface-container-lowest sticky top-0 z-10 border-y border-outline-variant">
+<h2 class="font-label-md text-label-md text-on-surface-variant">TODAY</h2>
+</div>
+<!-- Item 1: Critical Alert (Expanded) -->
+<div class="px-margin-mobile py-md bg-error-container/20 border-b border-outline-variant/50 relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error rounded-r-full"></div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-title-lg text-[16px] leading-[22px] font-bold text-on-surface">Attendance Overdue - Basic 6A</h3>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap ml-2">10m ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mb-3">Attendance has not been submitted for today's morning session.</p>
+<div class="flex gap-2">
+<button class="bg-brand-accent text-white font-label-md text-label-md px-4 py-2 rounded-card shadow-[0px_2px_4px_rgba(20,29,35,0.05)] active:opacity-90 transition-colors">View details</button>
+<button class="bg-transparent border border-outline text-on-surface font-label-md text-label-md px-4 py-2 rounded-card active:bg-surface-container-low transition-colors">Mark read</button>
+<button class="bg-transparent text-on-surface-variant font-label-md text-label-md px-3 py-2 rounded-card active:bg-surface-container-low transition-colors ml-auto">Dismiss</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Success -->
+<div class="px-margin-mobile py-md bg-surface-container-lowest border-b border-outline-variant/50 relative">
+<div class="absolute left-2 top-md w-2 h-2 rounded-full bg-brand-accent"></div>
+<div class="flex gap-3 pl-2">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-title-lg text-[16px] leading-[22px] font-semibold text-on-surface">Payment Received - Akosua Asare</h3>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap ml-2">2h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Tuition fee GHS 1,200 recorded successfully.</p>
+</div>
+</div>
+</div>
+<!-- Item 3: Warning -->
+<div class="px-margin-mobile py-md bg-surface-container-lowest border-b border-outline-variant/50 relative">
+<div class="absolute left-2 top-md w-2 h-2 rounded-full bg-brand-accent"></div>
+<div class="flex gap-3 pl-2">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-title-lg text-[16px] leading-[22px] font-semibold text-on-surface">Gradebook Pending - Mathematics</h3>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap ml-2">4h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Term 2 final grades are awaiting validation.</p>
+</div>
+</div>
+</div>
+<!-- Earlier Section -->
+<div class="px-margin-mobile py-2 bg-surface-container-lowest sticky top-0 z-10 border-y border-outline-variant mt-2">
+<h2 class="font-label-md text-label-md text-on-surface-variant">EARLIER</h2>
+</div>
+<!-- Item 4: Info -->
+<div class="px-margin-mobile py-md bg-surface border-b border-outline-variant/50 opacity-80">
+<div class="flex gap-3 pl-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">sync</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-title-lg text-[16px] leading-[22px] font-medium text-on-surface">Offline Sync Completed</h3>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap ml-2">Yesterday</span>
+</div>
+<p class="font-body-md text-on-surface-variant">14 records successfully uploaded to server.</p>
+</div>
+</div>
+</div>
+<!-- Item 5: Info -->
+<div class="px-margin-mobile py-md bg-surface border-b border-outline-variant/50 opacity-80">
+<div class="flex gap-3 pl-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-title-lg text-[16px] leading-[22px] font-medium text-on-surface">New Student Added</h3>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap ml-2">2 days ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Kofi Mensah has been enrolled in JHS 1.</p>
+</div>
+</div>
+</div>
+<!-- Loading Skeleton -->
+<div class="px-margin-mobile py-md animate-pulse">
+<div class="flex gap-3 pl-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high shrink-0"></div>
+<div class="flex-1 space-y-2 py-1">
+<div class="h-4 bg-surface-container-high rounded w-3/4"></div>
+<div class="h-3 bg-surface-container-high rounded w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Toast Notification (Hidden by default) -->
+<div class="fixed bottom-[80px] left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-card shadow-[0px_8px_16px_rgba(20,29,35,0.1)] font-body-md z-[60] flex items-center gap-2 transition-all duration-300 translate-y-full opacity-0 pointer-events-none" id="toast">
+<span class="material-symbols-outlined text-brand-accent text-sm">check_circle</span>
+<span class="">All notifications marked as read</span>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-4 pt-2 bg-surface-container-lowest dark:bg-surface-container-low shadow-[0px_-2px_10px_rgba(20,29,35,0.05)] border-t border-outline-variant/30">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md mt-1">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-label-md text-label-md mt-1">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-brand-accent text-white rounded-full px-4 py-1 transition-transform duration-200 active:scale-90"><span class="material-symbols-outlined">more_horiz</span><span class="font-label-md text-label-md mt-1">More</span></button>
+</nav>
+<script>
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+
+
+</body></html>

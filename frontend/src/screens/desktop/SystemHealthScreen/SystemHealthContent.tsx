@@ -10,7 +10,7 @@ import { countSyncQueue } from "@/lib/offline/syncQueue";
 import styles from "./SystemHealthScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-interface Metrics {
+export interface Metrics {
   dbLatencyMs: number;
   dbStatus: "healthy" | "degraded" | "down";
   storageWritable: boolean;
@@ -31,7 +31,7 @@ interface Metrics {
   checkedAt: string;
 }
 
-interface AuditEntry {
+export interface AuditEntry {
   id: string;
   action: string;
   entity: string;
@@ -41,15 +41,15 @@ interface AuditEntry {
   createdAt: string;
 }
 
-interface Props {
+export interface SystemHealthContentProps {
   metrics: Metrics;
   logs: AuditEntry[];
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-type SvcStatus = "healthy" | "degraded" | "down" | "not_configured";
+export type SvcStatus = "healthy" | "degraded" | "down" | "not_configured";
 
-interface Service {
+export interface Service {
   name: string;
   description: string;
   status: SvcStatus;
@@ -57,7 +57,7 @@ interface Service {
   Icon: typeof Database;
 }
 
-function getServices(m: Metrics, syncQueueDepth: number | null): Service[] {
+export function getServices(m: Metrics, syncQueueDepth: number | null): Service[] {
   return [
     { name: "Database", description: "Primary data store",
       status: m.dbStatus, latencyMs: m.dbLatencyMs, Icon: Database },
@@ -77,29 +77,29 @@ function getServices(m: Metrics, syncQueueDepth: number | null): Service[] {
   ];
 }
 
-const STATUS_ICON: Record<SvcStatus, typeof CheckCircle2> = {
+export const STATUS_ICON: Record<SvcStatus, typeof CheckCircle2> = {
   healthy: CheckCircle2, degraded: AlertTriangle, down: XCircle, not_configured: AlertTriangle,
 };
-const STATUS_LABEL: Record<SvcStatus, string> = {
+export const STATUS_LABEL: Record<SvcStatus, string> = {
   healthy: "Healthy", degraded: "Degraded", down: "Down", not_configured: "Not Connected",
 };
-const STATUS_DOT: Record<SvcStatus, string> = {
+export const STATUS_DOT: Record<SvcStatus, string> = {
   healthy: "dotHealthy", degraded: "dotDegraded", down: "dotDown", not_configured: "dotDegraded",
 };
 
-function actionIsError(action: string) {
+export function actionIsError(action: string) {
   return /delete|fail|reverse/.test(action.toLowerCase());
 }
 
-function initials(name: string) {
+export function initials(name: string) {
   return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
 
-function fmtTime(iso: string) {
+export function fmtTime(iso: string) {
   return new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
 
-export function SystemHealthContent({ metrics, logs }: Props) {
+export function SystemHealthContent({ metrics, logs }: SystemHealthContentProps) {
   const [refreshing, setRefreshing] = useState(false);
   const [syncQueueDepth, setSyncQueueDepth] = useState<number | null>(null);
 

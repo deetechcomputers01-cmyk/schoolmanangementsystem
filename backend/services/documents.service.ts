@@ -80,6 +80,7 @@ export async function createDocument(actor: SessionUser, data: {
   visibility?: string;
   classDept?: string;
   isTemplate?: boolean;
+  needsSign?: boolean;
 }) {
   const doc = await prisma.schoolDocument.create({
     data: {
@@ -93,6 +94,7 @@ export async function createDocument(actor: SessionUser, data: {
       ownerId:    actor.id,
       classDept:  data.classDept  ?? null,
       isTemplate: data.isTemplate ?? false,
+      needsSign:  data.needsSign  ?? false,
     },
     include: includeOwner,
   });

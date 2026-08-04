@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Center - School Admin</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Premium Glass/SaaS blur for specific elements */
+    .glass-surface {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                "primary": "#4131dc",
+                "surface-container-low": "#FAFAFF",
+                "secondary": "#0061a7",
+                "surface-dim": "#dcd8e6",
+                "surface-container-highest": "#e4e1ee",
+                "text-primary": "#16161D",
+                "on-secondary-container": "#003b69",
+                "on-background": "#1b1b24",
+                "primary-fixed-dim": "#c3c0ff",
+                "inverse-on-surface": "#f3effd",
+                "secondary-container": "#55a7fe",
+                "surface-container": "#F7F7FC",
+                "on-secondary-fixed-variant": "#00487f",
+                "surface-container-lowest": "#ffffff",
+                "on-primary-fixed-variant": "#341dd1",
+                "on-primary-fixed": "#100069",
+                "tertiary-fixed-dim": "#ffb692",
+                "on-error": "#ffffff",
+                "secondary-fixed-dim": "#a1c9ff",
+                "on-secondary-fixed": "#001c37",
+                "on-tertiary-container": "#ffe8de",
+                "on-tertiary": "#ffffff",
+                "error-container": "#ffdad6",
+                "secondary-fixed": "#d2e4ff",
+                "error": "#C24747",
+                "surface-variant": "#e4e1ee",
+                "inverse-surface": "#302f39",
+                "success": "#1B5E20",
+                "inverse-primary": "#c3c0ff",
+                "primary-container": "#5b50f5",
+                "on-tertiary-fixed": "#341100",
+                "on-error-container": "#93000a",
+                "on-surface": "#1b1b24",
+                "surface": "#FFFFFF",
+                "on-tertiary-fixed-variant": "#793000",
+                "surface-bright": "#fcf8ff",
+                "surface-container-high": "#eae6f4",
+                "outline-variant": "#c7c4d8",
+                "tertiary-fixed": "#ffdbcb",
+                "surface-tint": "#4e41e8",
+                "on-primary": "#ffffff",
+                "tertiary": "#8c3900",
+                "outline": "#E4E4EC",
+                "on-surface-variant": "#464555",
+                "warning": "#FF8F00",
+                "background": "#fcf8ff",
+                "tertiary-container": "#b34b00",
+                "on-primary-container": "#edeaff",
+                "on-secondary": "#ffffff",
+                "primary-fixed": "#e3dfff",
+                "text-secondary": "#858791"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "xl": "32px",
+                  "sm": "8px",
+                  "margin-mobile": "16px",
+                  "gutter": "24px",
+                  "lg": "24px",
+                  "md": "16px",
+                  "margin-desktop": "40px",
+                  "base": "4px",
+                  "xs": "4px"
+          },
+          "fontFamily": {
+                  "body-md": ["Inter"],
+                  "label-md": ["Inter"],
+                  "headline-lg-mobile": ["Inter"],
+                  "display-lg": ["Inter"],
+                  "title-lg": ["Inter"],
+                  "headline-lg": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "headline-md": ["Inter"]
+          },
+          "fontSize": {
+                  "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 transition-colors duration-200 hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined text-text-primary">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-text-primary">Document Center</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 transition-colors duration-200 hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined text-text-primary">search</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="mt-20 px-margin-mobile space-y-6">
+<!-- Search Bar (Visible) -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded px-10 py-3 text-body-md focus:ring-2 focus:ring-primary-container focus:outline-none transition-all" placeholder="Search files, policies, reports..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer">tune</span>
+</div>
+<!-- Category Chips -->
+<div class="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary font-label-md whitespace-nowrap border border-transparent">All</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap border border-transparent hover:bg-surface-container-high transition-colors">Policies</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap border border-transparent hover:bg-surface-container-high transition-colors">Forms</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap border border-transparent hover:bg-surface-container-high transition-colors">Reports</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap border border-transparent hover:bg-surface-container-high transition-colors">Circulars</button>
+</div>
+<!-- Summary Bento Grid Section -->
+<section class="grid grid-cols-2 gap-4">
+<div class="col-span-2 bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider">Total Documents</p>
+<p class="font-headline-lg-mobile text-primary-container mt-1">1,248</p>
+</div>
+<div class="h-12 w-12 bg-primary-container/10 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary-container text-3xl">folder_open</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container text-sm">update</span>
+<p class="text-label-md text-on-surface-variant uppercase">Recent</p>
+</div>
+<p class="font-headline-md text-on-surface">12</p>
+<p class="text-xs text-on-surface-variant mt-1">Updates today</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container text-sm">share</span>
+<p class="text-label-md text-on-surface-variant uppercase">Shared</p>
+</div>
+<p class="font-headline-md text-on-surface">85%</p>
+<p class="text-xs text-on-surface-variant mt-1">With Parents</p>
+</div>
+</section>
+<!-- File List -->
+<section class="space-y-4">
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-title-lg text-primary-container">Recent Documents</h2>
+<button class="text-primary-container font-label-md flex items-center gap-1">View All <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+</div>
+<!-- File Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded shadow-sm hover:border-primary-container/50 transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="h-12 w-12 bg-error/10 text-error flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg font-semibold text-on-surface truncate pr-2">2024 Admission Policy.pdf</h3>
+<span class="bg-primary-container/10 text-primary-container px-2 py-0.5 rounded-full font-label-md text-[10px]">Public</span>
+</div>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">1.2MB</span>
+<span class="text-xs text-on-surface-variant">•</span>
+<span class="text-xs text-on-surface-variant">Oct 24, 2024</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="p-2 bg-surface-container hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined text-primary-container text-lg">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- File Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded shadow-sm hover:border-primary-container/50 transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="h-12 w-12 bg-primary-container/10 text-primary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg font-semibold text-on-surface truncate pr-2">Q3 Financial Report.pdf</h3>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full font-label-md text-[10px]">Internal</span>
+</div>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">4.8MB</span>
+<span class="text-xs text-on-surface-variant">•</span>
+<span class="text-xs text-on-surface-variant">Oct 22, 2024</span>
+</div>
+</div>
+<button class="p-2 bg-surface-container hover:bg-surface-container-high rounded transition-colors self-center">
+<span class="material-symbols-outlined text-primary-container text-lg">download</span>
+</button>
+</div>
+</div>
+<!-- File Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded shadow-sm hover:border-primary-container/50 transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="h-12 w-12 bg-primary-container/10 text-primary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-3xl">table_chart</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg font-semibold text-on-surface truncate pr-2">Student_Enrollment_List.xlsx</h3>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full font-label-md text-[10px]">Restricted</span>
+</div>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">856KB</span>
+<span class="text-xs text-on-surface-variant">•</span>
+<span class="text-xs text-on-surface-variant">Oct 21, 2024</span>
+</div>
+</div>
+<button class="p-2 bg-surface-container hover:bg-surface-container-high rounded transition-colors self-center">
+<span class="material-symbols-outlined text-primary-container text-lg">download</span>
+</button>
+</div>
+</div>
+<!-- File Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded shadow-sm hover:border-primary-container/50 transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="h-12 w-12 bg-primary-container/10 text-primary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-3xl">article</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg font-semibold text-on-surface truncate pr-2">Staff Circular 102.docx</h3>
+<span class="bg-primary-container/10 text-primary-container px-2 py-0.5 rounded-full font-label-md text-[10px]">Public</span>
+</div>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">240KB</span>
+<span class="text-xs text-on-surface-variant">•</span>
+<span class="text-xs text-on-surface-variant">Oct 20, 2024</span>
+</div>
+</div>
+<button class="p-2 bg-surface-container hover:bg-surface-container-high rounded transition-colors self-center">
+<span class="material-symbols-outlined text-primary-container text-lg">download</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Upload CTA (Floating Action Button) -->
+<div class="fixed bottom-24 right-4 z-40">
+<button class="bg-primary-container text-white flex items-center gap-2 px-6 py-4 rounded-full shadow-lg hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">upload</span>
+<span class="font-label-md uppercase tracking-widest font-bold">Upload Document</span>
+</button>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 pb-safe bg-surface border-t border-outline-variant z-50 shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-150 active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container/10 text-primary-container rounded-full px-4 py-1 transition-transform duration-150 active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span class="font-label-md text-label-md mt-1">Documents</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-150 active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md mt-1">Students</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-150 active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md mt-1">Settings</span>
+</div>
+</nav>
+<!-- Micro-interactions Script -->
+<script>
+    // Ripple effect simulation on buttons
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('mousedown', function(e) {
+        const x = e.clientX - e.target.offsetLeft;
+        const y = e.clientY - e.target.offsetTop;
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.width = '10px';
+        ripple.style.height = '10px';
+        ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.style.transform = 'translate(-50%, -50%) scale(20)';
+          ripple.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 500);
+      });
+    });
+
+    // Category Chip selection toggle
+    const chips = document.querySelectorAll('.hide-scrollbar button');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => {
+          c.classList.remove('bg-primary-container', 'text-on-primary');
+          c.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
+        });
+        chip.classList.add('bg-primary-container', 'text-on-primary');
+        chip.classList.remove('bg-surface-container-highest', 'text-on-surface-variant');
+      });
+    });
+  </script>
+</body></html>

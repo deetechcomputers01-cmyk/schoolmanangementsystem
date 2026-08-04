@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>System Health | School Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#a5ccde",
+            "on-secondary-fixed": "#042109",
+            "outline": "#71787c",
+            "tertiary": "#2a1700",
+            "surface-variant": "#dae4ec",
+            "surface-container-low": "#ebf5fd",
+            "on-surface": "#141d23",
+            "primary-fixed": "#c1e9fb",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#293238",
+            "on-secondary-fixed-variant": "#304d31",
+            "secondary-fixed-dim": "#aecfaa",
+            "surface-container": "#e6eff8",
+            "on-tertiary-container": "#c88c3d",
+            "error": "#ba1a1a",
+            "surface-dim": "#d2dbe4",
+            "tertiary-fixed": "#ffddb7",
+            "surface-container-highest": "#dae4ec",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-background": "#141d23",
+            "surface-tint": "#3d6473",
+            "on-error": "#ffffff",
+            "on-primary-fixed-variant": "#244c5a",
+            "surface-bright": "#f5faff",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#fcba66",
+            "secondary-fixed": "#c9ecc5",
+            "tertiary-container": "#472a00",
+            "on-primary-container": "#779eaf",
+            "background": "#f5faff",
+            "on-surface-variant": "#41484b",
+            "inverse-primary": "#a5ccde",
+            "secondary": "#486647",
+            "surface-container-high": "#e0e9f2",
+            "on-secondary-container": "#4d6c4d",
+            "primary-container": "#073543",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#2a1700",
+            "on-primary-fixed": "#001f29",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "surface": "#f5faff",
+            "secondary-container": "#c9ecc5",
+            "outline-variant": "#c1c7cb",
+            "inverse-on-surface": "#e9f2fa",
+            "primary": "#001f29",
+            "success": "#15803d",
+            "warning": "#d97706"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "xl": "32px",
+            "sm": "8px",
+            "margin-mobile": "16px",
+            "gutter": "24px",
+            "lg": "24px",
+            "md": "16px",
+            "margin-desktop": "40px",
+            "base": "4px",
+            "xs": "4px"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "display-lg": ["Inter"],
+            "title-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-md": ["Inter"]
+          },
+          "fontSize": {
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .pulse-green {
+      box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.7);
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(21, 128, 61, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(21, 128, 61, 0); }
+    }
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    body {
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: contain;
+    }
+  </style>
+</head>
+<body class="bg-surface-bright text-on-surface font-body-md text-body-md overflow-x-hidden">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-primary">System Health</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-high transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">refresh</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile max-w-lg mx-auto space-y-6">
+<!-- Overall Status Summary Card -->
+<section class="bg-primary-container text-on-primary-container p-6 rounded-lg shadow-sm border border-outline-variant relative overflow-hidden" style="background-color: #5B50F5;"><div class="absolute top-0 right-0 p-4 opacity-10"><span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">analytics</span></div><div class="flex items-center gap-3 mb-6"><div class="w-3 h-3 bg-white rounded-full pulse-green"></div><h2 class="font-headline-md-mobile text-headline-md-mobile font-bold text-white">Online</h2></div><div class="grid grid-cols-2 gap-4"><div><p class="font-label-md text-label-md opacity-70 uppercase tracking-wider">Uptime</p><p class="font-headline-md text-headline-md text-white">99.8%</p></div><div><p class="font-label-md text-label-md opacity-70 uppercase tracking-wider">Active Alerts</p><p class="font-headline-md text-headline-md text-warning">3</p></div></div><div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center"><span class="text-xs opacity-70">Last check: Just now</span><span class="text-xs font-bold text-white">VIEW DETAILS</span></div></section>
+<!-- Component Health Grid -->
+<section>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-4">Infrastructure Health</h3>
+<div class="grid grid-cols-1 gap-4">
+<!-- Server Card -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-surface-container rounded">
+<span class="material-symbols-outlined text-primary">dns</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">Server</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-success rounded-full" style="background-color: #5B50F5;"></span>
+<span class="text-xs text-on-surface-variant">Healthy</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-label-md text-on-surface-variant mb-1">Load: 85%</p>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 85%"></div>
+</div>
+</div>
+</div>
+<!-- Database Card -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-surface-container rounded">
+<span class="material-symbols-outlined text-primary">database</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">Database</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-success rounded-full" style="background-color: #5B50F5;"></span>
+<span class="text-xs text-on-surface-variant">Healthy</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-label-md text-on-surface-variant mb-1">Disk: 42%</p>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 42%; background-color: #5B50F5;"></div>
+</div>
+</div>
+</div>
+<!-- API Card (Warning State) -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-warning/30 flex items-center justify-between shadow-sm ring-1 ring-warning/10">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-warning/10 rounded">
+<span class="material-symbols-outlined text-warning">api</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">API Gateway</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-warning rounded-full"></span>
+<span class="text-xs text-warning font-medium">Degraded</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-label-md text-on-surface-variant mb-1">Latency: 240ms</p>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-warning" style="width: 90%"></div>
+</div>
+</div>
+</div>
+<!-- Storage Card -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-surface-container rounded">
+<span class="material-symbols-outlined text-primary">cloud_done</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">Cloud Storage</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-success rounded-full" style="background-color: #5B50F5;"></span>
+<span class="text-xs text-on-surface-variant">Healthy</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-label-md text-on-surface-variant mb-1">Space: 12%</p>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 12%; background-color: #5B50F5;"></div>
+</div>
+</div>
+</div>
+<!-- Sync Queue Card -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-surface-container rounded">
+<span class="material-symbols-outlined text-primary">sync</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">Sync Queue</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-success rounded-full" style="background-color: #5B50F5;"></span>
+<span class="text-xs text-on-surface-variant">Idle</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-label-md text-on-surface-variant mb-1">Pending: 0</p>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant" style="width: 5%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Incidents Section -->
+<section class="space-y-4 pb-12">
+<div class="flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg text-on-surface">Recent Incidents</h3>
+<button class="text-primary font-label-md text-label-md hover:underline" style="color: #5B50F5;">View History</button>
+</div>
+<!-- Incident Card -->
+<div class="bg-surface-container-lowest border-l-4 border-l-warning rounded-lg border-y border-r border-outline-variant p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="inline-block px-2 py-0.5 bg-warning/10 text-warning text-[10px] font-bold rounded uppercase tracking-tighter mb-1">Warning</span>
+<h4 class="font-body-lg text-body-lg font-bold">API Latency Spike</h4>
+</div>
+<span class="text-xs text-on-surface-variant">10m ago</span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-3 leading-relaxed">
+          Increased response times detected in regional nodes affecting the student enrollment gateway.
+        </p>
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up professional headshot of a female IT specialist with glasses, minimalist workspace background, soft indigo corporate lighting, high detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnQdYurkAaLNLGCL-HRrrhriTZQuRK2L0W5R-QRXbZOreD8EOT-usouY692dZlIHk5m8zuS0MYRGeSHkcL4zYNPAzJ1S5Aud3dbyhD12xEwxuawJ3B1Yne4TrzvMHOLCbZwMl2qW2RltRv-9bCEuttfvh4b5Rb5EXbs8NzDOrdBKdobC4BFlx1GpwWqwvNGuocDWX4CiYdhRPCmDv8GAtuW04PgKfES8yX7s36llK3qasQ9w27Qds"/>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-primary text-[8px] text-white flex items-center justify-center">
+               +2
+             </div>
+</div>
+<span class="text-[10px] text-on-surface-variant font-medium">Ops Team Investigating</span>
+</div>
+</div>
+<!-- Resolved Incident -->
+<div class="bg-surface-container-low opacity-60 rounded-lg border border-outline-variant p-4 grayscale transition-all hover:grayscale-0 hover:opacity-100">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="inline-block px-2 py-0.5 bg-success/10 text-success text-[10px] font-bold rounded uppercase tracking-tighter mb-1" style="background-color: rgba(91, 80, 245, 0.1); color: #5B50F5;">Resolved</span>
+<h4 class="font-body-lg text-body-lg font-bold">Scheduled DB Backup</h4>
+</div>
+<span class="text-xs text-on-surface-variant">2h ago</span>
+</div>
+<p class="text-on-surface-variant text-body-md">
+          Nightly database synchronization completed successfully with zero packet loss.
+        </p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 pb-safe bg-surface border-t border-outline-variant shadow-lg z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-colors duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-colors duration-150">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md mt-1">Students</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-colors duration-150">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-md text-label-md mt-1">Staff</span>
+</div>
+<!-- Settings is active as System Health is a sub-settings/admin tool -->
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-95 transition-transform duration-150" style="background-color: #5B50F5; color: white;">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-md text-label-md mt-1">Settings</span>
+</div>
+</nav>
+<script>
+    // Simple pulse and refresh interactions
+    document.querySelector('.material-symbols-outlined[innerText="refresh"]')?.parentElement?.addEventListener('click', function() {
+      this.classList.add('animate-spin');
+      setTimeout(() => {
+        this.classList.remove('animate-spin');
+      }, 1000);
+    });
+
+    // Touch feedback for health cards
+    const cards = document.querySelectorAll('.bg-surface-container-lowest');
+    cards.forEach(card => {
+      card.addEventListener('touchstart', () => card.classList.add('scale-[0.98]', 'transition-transform'));
+      card.addEventListener('touchend', () => card.classList.remove('scale-[0.98]'));
+    });
+  </script>
+</body></html>

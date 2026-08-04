@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parent Broadcasts - School Admin</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#a5ccde",
+                        "on-secondary-fixed": "#042109",
+                        "outline": "#71787c",
+                        "tertiary": "#2a1700",
+                        "surface-variant": "#dae4ec",
+                        "surface-container-low": "#ebf5fd",
+                        "on-surface": "#141d23",
+                        "primary-fixed": "#c1e9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#293238",
+                        "on-secondary-fixed-variant": "#304d31",
+                        "secondary-fixed-dim": "#aecfaa",
+                        "surface-container": "#e6eff8",
+                        "on-tertiary-container": "#c88c3d",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d2dbe4",
+                        "tertiary-fixed": "#ffddb7",
+                        "surface-container-highest": "#dae4ec",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-background": "#141d23",
+                        "surface-tint": "#3d6473",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#244c5a",
+                        "surface-bright": "#f5faff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#fcba66",
+                        "secondary-fixed": "#c9ecc5",
+                        "tertiary-container": "#472a00",
+                        "on-primary-container": "#779eaf",
+                        "background": "#f5faff",
+                        "on-surface-variant": "#41484b",
+                        "inverse-primary": "#a5ccde",
+                        "secondary": "#486647",
+                        "surface-container-high": "#e0e9f2",
+                        "on-secondary-container": "#4d6c4d",
+                        "primary-container": "#073543",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-primary-fixed": "#001f29",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f5faff",
+                        "secondary-container": "#c9ecc5",
+                        "outline-variant": "#c1c7cb",
+                        "inverse-on-surface": "#e9f2fa",
+                        "primary": "#5B50F5" // Overriding primary with user's indigo preference for this screen
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "8px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "margin-desktop": "40px",
+                        "base": "4px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); border: 1px solid #D8DDD8; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F7F8F6] text-on-surface pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface shadow-sm border-b border-outline-variant flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-primary font-bold">Parent Broadcasts</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">filter_list</span>
+</button>
+</div>
+</header>
+<main class="mt-16 px-margin-mobile pt-4 space-y-6">
+<!-- Search Bar -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface border border-outline-variant rounded-lg pl-10 pr-4 py-3 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Search broadcasts..." type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 overflow-x-auto scrollbar-hide -mx-margin-mobile px-margin-mobile pb-1">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-transform active:scale-95">All</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-all">Drafts</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-all">Scheduled</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-all">Sent</button>
+</div>
+<!-- Summary Metrics (Bento-lite) -->
+<div class="grid grid-cols-2 gap-3">
+<div class="col-span-2 bg-white p-4 border border-outline-variant shadow-sm rounded-xl flex items-center justify-between">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Total Broadcasts</p>
+<p class="text-headline-lg font-headline-lg text-primary">142</p>
+</div>
+<div class="h-12 w-12 bg-primary-container/20 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl">campaign</span>
+</div>
+</div>
+<div class="bg-white p-4 border border-outline-variant shadow-sm rounded-xl">
+<p class="text-label-md font-label-md text-on-surface-variant">Sent Today</p>
+<p class="text-title-lg font-title-lg text-secondary">5</p>
+</div>
+<div class="bg-white p-4 border border-outline-variant shadow-sm rounded-xl">
+<p class="text-label-md font-label-md text-on-surface-variant">Pending</p>
+<p class="text-title-lg font-title-lg text-on-tertiary-container">2</p>
+</div>
+</div>
+<!-- Broadcast List -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="font-title-lg text-title-lg text-on-surface">Recent Activity</h2>
+<button class="text-primary font-label-md text-label-md flex items-center">View History <span class="material-symbols-outlined text-[18px] ml-1">chevron_right</span></button>
+</div>
+<!-- Card 1 -->
+<div class="bg-white border border-outline-variant shadow-sm rounded-xl p-4 transition-transform active:scale-[0.98]">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface">Term 2 Fee Reminder</h3>
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[14px] mr-1">group</span> Audience: All Parents
+                        </span>
+</div>
+<span class="bg-surface-container-low text-primary px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-primary/20">Scheduled</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2 mb-4">
+                    Dear parents, this is a reminder regarding the outstanding balance for Term 2. Please ensure payments are cleared by the deadline to avoid any administrative...
+                </p>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant">
+<div class="flex items-center text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] mr-1">schedule</span> Oct 25, 08:00 AM
+                    </div>
+<button class="text-primary p-1">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-outline-variant shadow-sm rounded-xl p-4 transition-transform active:scale-[0.98]">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface">Emergency: Water Works</h3>
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[14px] mr-1">group</span> Audience: Primary School
+                        </span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-secondary/20">Sent</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2 mb-4">
+                    Due to unexpected maintenance on the main water line, the Primary block will be closed for the next 2 hours. Students will be supervised in the assembly hall...
+                </p>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant">
+<div class="flex items-center text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] mr-1">check_circle</span> Oct 24, 02:30 PM
+                    </div>
+<button class="text-primary p-1">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-outline-variant shadow-sm rounded-xl p-4 transition-transform active:scale-[0.98]">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface">Staff Meeting Notes</h3>
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[14px] mr-1">group</span> Audience: Staff Only
+                        </span>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-outline-variant">Draft</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2 mb-4">
+                    Following today's curriculum review session, please find the updated schedule for the inter-school debate competition attached...
+                </p>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant">
+<div class="flex items-center text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] mr-1">edit_note</span> Last edited 1h ago
+                    </div>
+<button class="text-primary p-1">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full p-4 bg-surface/90 backdrop-blur-md border-t border-outline-variant flex justify-center z-50">
+<button class="w-full bg-primary text-white h-14 flex items-center justify-center gap-2 rounded-xl font-title-lg text-title-lg shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_comment</span>
+            Create Broadcast
+        </button>
+</div>
+<!-- Hidden Navigation Shell Logic from JSON Requirements -->
+<nav class="fixed bottom-20 left-0 w-full md:hidden flex justify-around items-center py-2 px-4 bg-surface/50 backdrop-blur-sm pointer-events-none opacity-0">
+<!-- Structural placeholder for BottomNavBar requirement -->
+</nav>
+<script>
+        // Simple Interaction logic for chips
+        const chips = document.querySelectorAll('.overflow-x-auto button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary');
+                    c.classList.add('bg-surface', 'border', 'border-outline-variant', 'text-on-surface-variant');
+                });
+                chip.classList.remove('bg-surface', 'border', 'border-outline-variant', 'text-on-surface-variant');
+                chip.classList.add('bg-primary', 'text-on-primary');
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.02]');
+            searchInput.parentElement.style.transition = 'transform 0.2s ease-out';
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+    </script>
+</body></html>

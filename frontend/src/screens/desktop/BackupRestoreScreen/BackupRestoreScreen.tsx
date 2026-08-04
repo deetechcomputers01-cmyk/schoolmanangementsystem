@@ -8,15 +8,13 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./BackupRestoreScreen.module.css";
 
-type BackupStatus = "running" | "healthy" | "failed" | "pending" | "expired";
-type BackupType   = "full" | "incremental" | "differential" | "schema_only";
-type Target       = "local";
+export type BackupStatus = "running" | "healthy" | "failed" | "pending" | "expired";
+export type BackupType   = "full" | "incremental" | "differential" | "schema_only";
+export type Target       = "local";
 
-interface BackupRecord {
+export interface BackupRecord {
   id: string;
   name: string;
   backupType: BackupType;
@@ -31,18 +29,19 @@ interface BackupRecord {
   initiator: { id: string; name: string; role: string } | null;
 }
 
-interface BackupStats {
+export interface BackupStats {
   total: number;
   byStatus: { status: string; _count: { _all: number } }[];
   latest?: BackupRecord | null;
 }
 
-interface Props {
+export interface BackupRestoreContentProps {
   initialBackups: BackupRecord[];
   initialStats:   BackupStats;
 }
+type Props = BackupRestoreContentProps;
 
-const STATUS_META: Record<BackupStatus, { label: string; badgeClass: string; icon: React.ReactNode }> = {
+export const STATUS_META: Record<BackupStatus, { label: string; badgeClass: string; icon: React.ReactNode }> = {
   running:  { label: "Running",  badgeClass: "badgeRunning", icon: <Loader  size={11} /> },
   healthy:  { label: "Healthy",  badgeClass: "badgeHealthy", icon: <CheckCircle size={11} /> },
   failed:   { label: "Failed",   badgeClass: "badgeFailed",  icon: <AlertTriangle size={11} /> },
@@ -50,34 +49,34 @@ const STATUS_META: Record<BackupStatus, { label: string; badgeClass: string; ico
   expired:  { label: "Expired",  badgeClass: "badgeExpired", icon: <AlertTriangle size={11} /> },
 };
 
-const TARGET_LABEL: Record<Target, { label: string; icon: React.ReactNode }> = {
+export const TARGET_LABEL: Record<Target, { label: string; icon: React.ReactNode }> = {
   local: { label: "Local Disk", icon: <Server size={13} /> },
 };
 
-const TYPE_LABEL: Record<BackupType, string> = {
+export const TYPE_LABEL: Record<BackupType, string> = {
   full:          "Full",
   incremental:   "Incremental",
   differential:  "Differential",
   schema_only:   "Schema Only",
 };
 
-function bytesToNum(bytes: string | number): number {
+export function bytesToNum(bytes: string | number): number {
   const n = typeof bytes === "string" ? parseInt(bytes, 10) : Number(bytes);
   return isNaN(n) ? 0 : n;
 }
 
-function fmt(bytes: string | number): string {
+export function fmt(bytes: string | number): string {
   const n = bytesToNum(bytes);
   if (n === 0) return "—";
   if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(1)} MB`;
   return `${(n / 1024 ** 3).toFixed(2)} GB`;
 }
 
-function fmtDate(d: string) {
+export function fmtDate(d: string) {
   return new Date(d).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
-function fmtRelative(d: string) {
+export function fmtRelative(d: string) {
   const diffMs = Date.now() - new Date(d).getTime();
   const h = Math.floor(diffMs / 3600000);
   if (h < 1) return "Just now";
@@ -85,13 +84,13 @@ function fmtRelative(d: string) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-function fmtDuration(sec?: number | null) {
+export function fmtDuration(sec?: number | null) {
   if (!sec) return "—";
   if (sec < 60) return `${sec}s`;
   return `${Math.floor(sec / 60)}m ${sec % 60}s`;
 }
 
-function StatusBadge({ s }: { s: BackupStatus }) {
+export function StatusBadge({ s }: { s: BackupStatus }) {
   const m = STATUS_META[s];
   return (
     <span className={`${styles.badge} ${styles[m.badgeClass]}`}>
@@ -474,7 +473,7 @@ export function BackupRestoreScreen({ initialBackups, initialStats }: Props) {
 
       {/* New backup modal */}
       {showNew && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowNew(false)}>
+        <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}><HardDrive size={16} />New Backup</h3>
@@ -507,36 +506,6 @@ export function BackupRestoreScreen({ initialBackups, initialStats }: Props) {
           </div>
         </div>
       )}
-
-      {/* New Backup sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showNew}
-          onClose={() => setShowNew(false)}
-          title="New Backup"
-          compact
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowNew(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={handleCreate} disabled={loading}>
-              {loading ? "Backing up…" : "Run Backup"}
-            </button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Backup Name *</label>
-            <input className={kit.input} value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. Pre-migration Full Backup" />
-          </div>
-          <div className={kit.field}>
-            <label>Type</label>
-            <select className={kit.select} value={newType} onChange={e => setNewType(e.target.value as BackupType)}>
-              <option value="full">Full Backup</option>
-              <option value="incremental">Incremental</option>
-              <option value="differential">Differential</option>
-              <option value="schema_only">Schema Only</option>
-            </select>
-          </div>
-        </MobileSheet>
-      </div>
 
       {/* Delete confirm */}
       {delConfirm && (

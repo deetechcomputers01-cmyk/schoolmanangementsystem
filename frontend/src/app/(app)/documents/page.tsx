@@ -2,6 +2,7 @@ import { getCurrentUser } from "@backend/auth/cookies";
 import { listDocuments, getDocumentStats, getFolderCounts } from "@backend/services/documents.service";
 import { redirect } from "next/navigation";
 import { DocumentCenterScreen } from "@/screens/desktop/DocumentCenterScreen/DocumentCenterScreen";
+import { MobileDocumentCenterContent } from "@/screens/mobile/MobileDocumentCenterContent/MobileDocumentCenterContent";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Document Center – ScholarSphere" };
@@ -17,5 +18,14 @@ export default async function DocumentsPage() {
     getFolderCounts(),
   ]);
 
-  return <DocumentCenterScreen initialDocs={docs as any} initialStats={stats} initialFolders={folders} />;
+  return (
+    <>
+      <div className="mobileOnly">
+        <MobileDocumentCenterContent initialDocs={docs as any} initialStats={stats} initialFolders={folders} />
+      </div>
+      <div className="desktopOnly">
+        <DocumentCenterScreen initialDocs={docs as any} initialStats={stats} initialFolders={folders} />
+      </div>
+    </>
+  );
 }

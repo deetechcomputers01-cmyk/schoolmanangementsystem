@@ -8,12 +8,12 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 
-type TicketStatus   = "open" | "in_progress" | "resolved" | "closed" | "escalated";
-type TicketPriority = "urgent" | "high" | "medium" | "low";
-type Queue          = "parent" | "teacher" | "it" | "finance" | "maintenance" | "general";
+export type TicketStatus   = "open" | "in_progress" | "resolved" | "closed" | "escalated";
+export type TicketPriority = "urgent" | "high" | "medium" | "low";
+export type Queue          = "parent" | "teacher" | "it" | "finance" | "maintenance" | "general";
 type ActiveTab      = "timeline" | "internal" | "files";
 
-interface TicketMessage {
+export interface TicketMessage {
   id: string;
   body: string;
   isInternal: boolean;
@@ -21,7 +21,7 @@ interface TicketMessage {
   from: { id: string; name: string; role: string };
 }
 
-interface Ticket {
+export interface Ticket {
   id: string;
   ticketNo: string;
   subject: string;
@@ -37,26 +37,26 @@ interface Ticket {
   _count?: { messages: number };
 }
 
-interface Stats {
+export interface Stats {
   total: number;
   byStatus: { status: string; _count: { _all: number } }[];
   byPriority: { priority: string; _count: { _all: number } }[];
   byQueue: { queue: string; _count: { _all: number } }[];
 }
 
-interface Props {
+export interface HelpdeskContentProps {
   initialTickets: Ticket[];
   initialStats:   Stats;
 }
 
-const PRIORITY_COLOR: Record<TicketPriority, { bg: string; text: string; label: string }> = {
+export const PRIORITY_COLOR: Record<TicketPriority, { bg: string; text: string; label: string }> = {
   urgent: { bg: "#ffdad6", text: "#93000a",  label: "Urgent"  },
   high:   { bg: "#ffddb7", text: "#653e00",  label: "High"    },
   medium: { bg: "#c1e9fb", text: "#244c5a",  label: "Medium"  },
   low:    { bg: "#c9ecc4", text: "#314d31",  label: "Low"     },
 };
 
-const STATUS_COLOR: Record<TicketStatus, { bg: string; text: string; label: string }> = {
+export const STATUS_COLOR: Record<TicketStatus, { bg: string; text: string; label: string }> = {
   open:        { bg: "#c1e9fb", text: "#244c5a", label: "Open"        },
   in_progress: { bg: "#ffddb7", text: "#653e00", label: "In Progress" },
   resolved:    { bg: "#c9ecc4", text: "#314d31", label: "Resolved"    },
@@ -64,7 +64,7 @@ const STATUS_COLOR: Record<TicketStatus, { bg: string; text: string; label: stri
   escalated:   { bg: "#ffdad6", text: "#93000a", label: "Escalated"   },
 };
 
-const QUEUE_COLOR: Record<Queue, string> = {
+export const QUEUE_COLOR: Record<Queue, string> = {
   parent:      "#244c5a",
   teacher:     "#314d31",
   it:          "#653e00",
@@ -73,7 +73,7 @@ const QUEUE_COLOR: Record<Queue, string> = {
   general:     "#71787c",
 };
 
-const KB_TEMPLATES = [
+export const KB_TEMPLATES = [
   "Thank you for contacting ScholarSphere support. We have received your request (#TICKET_NO) and will respond within 24 hours.",
   "This issue has been escalated to the relevant department. You will receive an update within 2 business days.",
   "Your issue has been resolved. Please let us know if you need further assistance. Reply to this message to reopen.",
@@ -81,17 +81,17 @@ const KB_TEMPLATES = [
   "Your request has been forwarded to the Finance department. They will contact you within 1 business day.",
 ];
 
-function PriorityBadge({ p }: { p: TicketPriority }) {
+export function PriorityBadge({ p }: { p: TicketPriority }) {
   const c = PRIORITY_COLOR[p];
   return <span style={{ background: c.bg, color: c.text, padding: "2px 8px", borderRadius: 999, fontSize: "var(--text-xs)", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 3 }}>{c.label}</span>;
 }
 
-function StatusBadge({ s }: { s: TicketStatus }) {
+export function StatusBadge({ s }: { s: TicketStatus }) {
   const c = STATUS_COLOR[s];
   return <span style={{ background: c.bg, color: c.text, padding: "2px 8px", borderRadius: 999, fontSize: "var(--text-xs)", fontWeight: 700 }}>{c.label}</span>;
 }
 
-function Avatar({ name, size = 32 }: { name: string; size?: number }) {
+export function Avatar({ name, size = 32 }: { name: string; size?: number }) {
   const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", background: "#244c5a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.35, fontWeight: 700, flexShrink: 0 }}>
@@ -100,11 +100,11 @@ function Avatar({ name, size = 32 }: { name: string; size?: number }) {
   );
 }
 
-function fmtDate(d: string) {
+export function fmtDate(d: string) {
   return new Date(d).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 }
 
-export function HelpdeskScreen({ initialTickets, initialStats }: Props) {
+export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContentProps) {
   const [tickets, setTickets]         = useState<Ticket[]>(initialTickets);
   const [stats, setStats]             = useState<Stats>(initialStats);
   const [selectedId, setSelectedId]   = useState<string>(initialTickets[0]?.id ?? "");

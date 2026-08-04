@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Compliance Logs | ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#1b1b24",
+                    "secondary-container": "#55a7fe",
+                    "on-primary-container": "#edeaff",
+                    "text-primary": "#16161D",
+                    "success": "#1B5E20",
+                    "surface-container-low": "#FAFAFF",
+                    "inverse-surface": "#302f39",
+                    "error": "#C24747",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-container": "#ffe8de",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#E4E4EC",
+                    "outline": "#E4E4EC",
+                    "text-secondary": "#858791",
+                    "on-tertiary-fixed-variant": "#793000",
+                    "tertiary-container": "#b34b00",
+                    "surface-container": "#f0ecfa",
+                    "inverse-primary": "#c3c0ff",
+                    "on-surface-variant": "#464555",
+                    "on-secondary-fixed": "#001c37",
+                    "secondary-fixed": "#d2e4ff",
+                    "secondary": "#0061a7",
+                    "on-secondary-container": "#003b69",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdbcb",
+                    "surface-dim": "#dcd8e6",
+                    "surface-bright": "#fcf8ff",
+                    "surface-container-high": "#eae6f4",
+                    "surface-variant": "#e4e1ee",
+                    "on-primary-fixed": "#100069",
+                    "secondary-fixed-dim": "#a1c9ff",
+                    "primary-fixed": "#e3dfff",
+                    "on-secondary-fixed-variant": "#00487f",
+                    "inverse-on-surface": "#f3effd",
+                    "surface-container-highest": "#e4e1ee",
+                    "surface-tint": "#5B50F5",
+                    "on-tertiary-fixed": "#341100",
+                    "primary-container": "#5b50f5",
+                    "warning": "#FF8F00",
+                    "error-container": "#ffdad6",
+                    "background": "#FAFAFF",
+                    "tertiary": "#8c3900",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "on-secondary": "#ffffff",
+                    "surface": "#FFFFFF",
+                    "on-primary-fixed-variant": "#341dd1",
+                    "on-error-container": "#93000a",
+                    "on-background": "#1b1b24",
+                    "primary": "#5B50F5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "8px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "260px",
+                    "margin-desktop": "24px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "header-height": "56px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAFAFF;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -16px;
+            width: 2px;
+            background-color: #E4E4EC;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant sticky top-0 z-40 flex justify-between items-center w-full px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-100">arrow_back</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Compliance Logs</h1>
+</div>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-100">more_vert</button>
+</div>
+</header>
+<main class="max-w-3xl mx-auto px-4 pt-6 pb-28">
+<!-- Search & Filters -->
+<section class="space-y-4 mb-8">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full h-[48px] pl-12 pr-4 bg-surface border border-outline rounded-DEFAULT focus:ring-1 focus:ring-primary focus:border-primary transition-all shadow-[0px_2px_4px_rgba(27,27,36,0.05)] outline-none font-body-md" placeholder="Search logs by actor, action or ID..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="px-4 py-1.5 rounded-full bg-primary text-on-primary text-label-md font-bold shadow-sm active:scale-95 transition-transform">All</button>
+<button class="px-4 py-1.5 rounded-full bg-surface border border-outline text-on-surface-variant text-label-md font-medium hover:bg-surface-container-low active:scale-95 transition-transform">Security</button>
+<button class="px-4 py-1.5 rounded-full bg-surface border border-outline text-on-surface-variant text-label-md font-medium hover:bg-surface-container-low active:scale-95 transition-transform">Access</button>
+<button class="px-4 py-1.5 rounded-full bg-surface border border-outline text-on-surface-variant text-label-md font-medium hover:bg-surface-container-low active:scale-95 transition-transform">Audit</button>
+</div>
+</section>
+<!-- Summary Card -->
+<section class="grid grid-cols-2 gap-3 mb-8">
+<div class="bg-surface p-4 rounded-DEFAULT shadow-[0px_2px_4px_rgba(27,27,36,0.05)] border border-outline flex flex-col justify-between">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Total Logs</span>
+</div>
+<div class="flex items-baseline gap-2">
+<h2 class="text-headline-lg font-bold text-primary">142</h2>
+<span class="text-label-md font-bold text-success">+12%</span>
+</div>
+<p class="text-label-sm font-medium text-on-surface-variant mt-1">Logged today</p>
+</div>
+<div class="bg-surface p-4 rounded-DEFAULT shadow-[0px_2px_4px_rgba(27,27,36,0.05)] border border-outline border-l-4 border-l-error flex flex-col justify-between">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-error text-[20px]" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+<span class="text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Critical</span>
+</div>
+<div class="flex items-baseline gap-2">
+<h2 class="text-headline-lg font-bold text-error">4</h2>
+<span class="material-symbols-outlined text-error text-sm" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<p class="text-label-sm font-medium text-on-surface-variant mt-1">Requires attention</p>
+</div>
+</section>
+<!-- Timeline Title -->
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-primary font-bold">Activity Stream</h3>
+<button class="flex items-center gap-1 text-primary text-label-md font-bold px-3 py-1 hover:bg-primary/5 rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                Export CSV
+            </button>
+</div>
+<!-- Timeline List -->
+<div class="space-y-4">
+<!-- Log Entry 1: Critical -->
+<div class="timeline-item relative pl-12 timeline-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-error-container flex items-center justify-center z-10 border-4 border-background">
+<span class="material-symbols-outlined text-on-error-container text-[20px]" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div class="bg-surface p-4 rounded-DEFAULT border border-outline shadow-[0px_2px_4px_rgba(27,27,36,0.05)]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-base text-on-surface">Failed SSH Login Attempt</h4>
+<p class="text-body-md text-on-surface-variant">Actor: <span class="font-semibold">System_Kernel</span> (IP: 192.168.1.45)</p>
+</div>
+<span class="bg-error/10 text-error px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter border border-error/20">Critical</span>
+</div>
+<div class="flex items-center gap-3 mt-4 pt-3 border-t border-outline-variant">
+<div class="flex items-center gap-1 text-label-sm font-medium text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            10:24 AM
+                        </div>
+<div class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-bold uppercase tracking-wider">
+                            #Security
+                        </div>
+</div>
+</div>
+</div>
+<!-- Log Entry 2: Info -->
+<div class="timeline-item relative pl-12 timeline-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center z-10 border-4 border-background">
+<span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings: 'FILL' 1;">manage_accounts</span>
+</div>
+<div class="bg-surface p-4 rounded-DEFAULT border border-outline shadow-[0px_2px_4px_rgba(27,27,36,0.05)]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-base text-on-surface">Password Reset Successful</h4>
+<p class="text-body-md text-on-surface-variant">Actor: <span class="font-semibold">Sarah Jenkins</span> (Admin)</p>
+</div>
+<span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter border border-secondary/20">Info</span>
+</div>
+<div class="flex items-center gap-3 mt-4 pt-3 border-t border-outline-variant">
+<div class="flex items-center gap-1 text-label-sm font-medium text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            09:15 AM
+                        </div>
+<div class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-bold uppercase tracking-wider">
+                            #Access
+                        </div>
+</div>
+</div>
+</div>
+<!-- Log Entry 3: Warning -->
+<div class="timeline-item relative pl-12 timeline-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center z-10 border-4 border-background">
+<span class="material-symbols-outlined text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">data_info_alert</span>
+</div>
+<div class="bg-surface p-4 rounded-DEFAULT border border-outline shadow-[0px_2px_4px_rgba(27,27,36,0.05)]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-base text-on-surface">Bulk Student Data Export</h4>
+<p class="text-body-md text-on-surface-variant">Actor: <span class="font-semibold">Michael Chen</span> (Registrar)</p>
+</div>
+<span class="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter border border-tertiary/20">Warning</span>
+</div>
+<div class="flex items-center gap-3 mt-4 pt-3 border-t border-outline-variant">
+<div class="flex items-center gap-1 text-label-sm font-medium text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            08:42 AM
+                        </div>
+<div class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-bold uppercase tracking-wider">
+                            #Audit
+                        </div>
+</div>
+</div>
+</div>
+<!-- Log Entry 4: Info -->
+<div class="timeline-item relative pl-12 timeline-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center z-10 border-4 border-background">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="bg-surface p-4 rounded-DEFAULT border border-outline shadow-[0px_2px_4px_rgba(27,27,36,0.05)]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-base text-on-surface">Compliance Policy Update</h4>
+<p class="text-body-md text-on-surface-variant">Actor: <span class="font-semibold">System_Automate</span></p>
+</div>
+<span class="bg-outline text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">Info</span>
+</div>
+<div class="flex items-center gap-3 mt-4 pt-3 border-t border-outline-variant">
+<div class="flex items-center gap-1 text-label-sm font-medium text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            07:50 AM
+                        </div>
+<div class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-bold uppercase tracking-wider">
+                            #Policy
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination / Load More -->
+<button class="w-full mt-8 py-4 bg-surface border border-outline rounded-DEFAULT text-primary font-bold text-label-md hover:bg-surface-container-low transition-colors shadow-sm active:scale-[0.99]">
+            Load Older Entries
+        </button>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-safe border-t border-outline-variant bg-surface shadow-[0px_-2px_4px_rgba(27,27,36,0.05)] z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95 flex-1" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95 flex-1" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-md text-label-md">Users</span>
+</a>
+<a class="flex flex-col items-center justify-center flex-1" href="#">
+<div class="bg-primary text-on-primary rounded-full px-4 py-1.5 flex flex-col items-center justify-center transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined mb-0.5" style="font-variation-settings: 'FILL' 1;">rule</span>
+<span class="font-label-md text-label-md font-bold">Approvals</span>
+</div>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95 flex-1" href="#">
+<span class="material-symbols-outlined mb-1">menu</span>
+<span class="font-label-md text-label-md">More</span>
+</a>
+</nav>
+<script>
+        // Simple filter chip interaction
+        const chips = document.querySelectorAll('.overflow-x-auto button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+                    c.classList.add('bg-surface', 'text-on-surface-variant', 'font-medium', 'border', 'border-outline');
+                });
+                chip.classList.add('bg-primary', 'text-on-primary', 'font-bold');
+                chip.classList.remove('bg-surface', 'text-on-surface-variant', 'font-medium', 'border', 'border-outline');
+            });
+        });
+
+        // Micro-interaction for log rows
+        const logEntries = document.querySelectorAll('.timeline-item > div:last-child');
+        logEntries.forEach(entry => {
+            entry.addEventListener('click', () => {
+                entry.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    entry.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,131 @@
+.root { display: flex; flex-direction: column; gap: 18px; }
+
+.actionRow { display: flex; justify-content: flex-end; }
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.spinning { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.hero {
+  padding: 18px;
+  border-radius: var(--radius-md, 12px);
+  background: var(--clr-app-accent);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+.hero_degraded { background: var(--clr-warning); }
+.hero_down { background: var(--clr-error); }
+
+.heroTop { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.heroDot { width: 11px; height: 11px; border-radius: 50%; background: #ffffff; flex-shrink: 0; }
+.heroDotPulse { animation: pulse 2s infinite; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+.heroTitle { font-size: var(--text-lg); font-weight: 800; color: #ffffff; }
+
+.heroStatsRow { display: flex; gap: 28px; }
+.heroStatLabel { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.75; margin-bottom: 2px; }
+.heroStatValue { font-size: var(--text-xl, 22px); font-weight: 800; }
+
+.heroFooter { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.25); font-size: 11px; opacity: 0.85; }
+
+.sectionTitle { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; margin-bottom: 10px; }
+
+.serviceList { display: flex; flex-direction: column; gap: 8px; }
+.serviceCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  box-shadow: var(--shadow-xs);
+}
+.serviceCardWarn { border-color: var(--clr-warning-border); background: var(--clr-warning-bg); }
+.serviceCardDown { border-color: var(--clr-error-border); background: var(--clr-error-bg); }
+
+.serviceLeft { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.serviceIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+}
+.serviceIconWrapWarn { background: rgba(198, 139, 60, 0.15); color: var(--clr-warning); }
+.serviceIconWrapDown { background: rgba(182, 75, 75, 0.15); color: var(--clr-error); }
+
+.serviceName { color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 700; }
+.serviceStatusRow { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.statusIconOk { color: var(--clr-success); }
+.statusIconWarn { color: var(--clr-warning); }
+.statusIconDown { color: var(--clr-error); }
+.statusTextOk { color: var(--clr-app-muted); font-size: 11px; }
+.statusTextWarn { color: var(--clr-warning); font-size: 11px; font-weight: 600; }
+.statusTextDown { color: var(--clr-error); font-size: 11px; font-weight: 600; }
+
+.serviceRight { flex-shrink: 0; text-align: right; }
+.serviceMetric { color: var(--clr-app-text); font-size: var(--text-xs); font-weight: 700; }
+.serviceDesc { color: var(--clr-app-muted); font-size: 10px; max-width: 120px; display: block; }
+
+.emptyState { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 16px; color: var(--clr-app-muted); font-size: var(--text-sm); text-align: center; }
+
+.activityList { display: flex; flex-direction: column; gap: 6px; }
+.activityRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+}
+.activityAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+.activityBody { flex: 1; min-width: 0; }
+.activityTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.activityUser { color: var(--clr-app-text); font-size: var(--text-xs); font-weight: 700; }
+.activityTime { color: var(--clr-app-muted); font-size: 10px; font-family: var(--font-mono); flex-shrink: 0; }
+.activityBottom { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+.actionPill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+.actionPillError { background: var(--clr-error-bg); color: var(--clr-error); }
+.activityEntity { color: var(--clr-app-muted); font-size: 10px; font-family: var(--font-mono); }

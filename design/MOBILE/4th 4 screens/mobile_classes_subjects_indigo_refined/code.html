@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SchoolPro Ghana - Classes &amp; Subjects</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#5B50F5",
+                        "primary-container": "#5B50F5",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-highest": "#e5e1e7",
+                        "surface-container-high": "#ebe7ed",
+                        "surface-container": "#f1edf2",
+                        "surface-container-low": "#f6f2f8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbf8fe",
+                        "on-surface": "#1c1b1f",
+                        "on-surface-variant": "#49454f",
+                        "outline": "#71787c",
+                        "outline-variant": "#c9c5d0",
+                        "secondary": "#006c49",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#c9ecc5",
+                        "on-secondary-container": "#4d6c4d",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#2a1700",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f9f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            min-height: max(884px, 100dvh);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0; }
+        .material-symbols-outlined.fill-icon { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="bg-surface fixed top-0 left-0 w-full z-50 border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-md">
+<button class="text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 -ml-2 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-title-lg text-title-lg font-bold text-primary">Classes &amp; Subjects</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined">add</span>
+</button>
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover ml-1" data-alt="A small circular avatar placeholder showing a professional African male administrator smiling subtly. The background is a clean, modern off-white color typical of an educational administrative application. The lighting is soft and even." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcZlVWb7B63Bz3Z5WBK39BkdZLQvtKgIh0vRNEFweE2QK191XfO_M8hbNVDnk9qDlz5AVPfYxKm06zebJ-7wjFWOaULr9la6BSZxXjPyz6JaTBr2zKL0lo6PMTPlFxhl6VdsYOOoaZHNGN9uqQ64SgMAyRW8BouGyFy_aGpyrDJfyQh_P6laYs1oK5pzA2Drgq8CobUBIIy71vKfrAhLctYKQD3CG8v_LJK99qWswgG8unBvX1xRNHjy2e2-5mqhSPN8bqfCYHXQ"/>
+</div>
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-1 overflow-y-auto mt-16 mb-20 px-margin-mobile py-lg pb-xl hide-scrollbar">
+<!-- KPI Section Bento Grid -->
+<section class="grid grid-cols-2 gap-sm mb-lg">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between h-24">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Classes</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">2</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between h-24">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Subjects</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">6</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between h-24">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider leading-tight">Teachers<br/>Assigned</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">2</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between h-24">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Unassigned</span>
+<div class="flex items-center gap-xs text-error">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile">1</span>
+</div>
+</div>
+</section>
+<!-- Segmented Control -->
+<div class="bg-surface-container-high rounded-lg p-xs flex mb-lg">
+<button class="flex-1 bg-primary text-on-primary rounded-md py-sm font-label-md text-label-md shadow-sm text-center transition-all">Classes</button>
+<button class="flex-1 text-on-surface-variant rounded-md py-sm font-label-md text-label-md text-center transition-all hover:bg-surface-container-low">Subjects</button>
+<button class="flex-1 text-on-surface-variant rounded-md py-sm font-label-md text-label-md text-center transition-all hover:bg-surface-container-low">Assignments</button>
+</div>
+<!-- Search & Filter -->
+<div class="mb-lg">
+<div class="relative mb-md">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md text-body-md transition-shadow" placeholder="Search class, subject, or teacher" type="text"/>
+</div>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-xs">
+<button class="flex-shrink-0 px-md py-1.5 rounded-full border border-primary bg-primary text-on-primary font-label-md text-label-md">All</button>
+<button class="flex-shrink-0 px-md py-1.5 rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container-low font-label-md text-label-md transition-colors">Basic</button>
+<button class="flex-shrink-0 px-md py-1.5 rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container-low font-label-md text-label-md transition-colors">JHS</button>
+<button class="flex-shrink-0 px-md py-1.5 rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container-low font-label-md text-label-md transition-colors">Assigned</button>
+<button class="flex-shrink-0 px-md py-1.5 rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container-low font-label-md text-label-md transition-colors">Unassigned</button>
+</div>
+</div>
+<!-- Content: Stacked Cards -->
+<div class="flex flex-col gap-md">
+<!-- Card 1 (Collapsed) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<h2 class="font-title-lg text-title-lg text-primary">Basic 6A</h2>
+<span class="px-2 py-0.5 rounded-sm bg-secondary-container text-on-secondary-container font-label-md text-label-md uppercase tracking-wider text-[10px]">Active</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">person</span> Teacher: Kwame Mensah
+                    </p>
+</div>
+<button class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex items-center gap-lg mt-md pt-md border-t border-outline-variant/50">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                    38 Students
+                </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">book</span>
+                    10 Subjects
+                </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">door_open</span>
+                    Room 101
+                </div>
+</div>
+</article>
+<!-- Card 2 (Expanded) -->
+<article class="bg-surface-container-lowest border-2 border-primary/20 rounded-xl p-md shadow-md ring-4 ring-primary/10 transition-all">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<h2 class="font-title-lg text-title-lg text-primary">JHS 1A</h2>
+<span class="px-2 py-0.5 rounded-sm bg-secondary-container text-on-secondary-container font-label-md text-label-md uppercase tracking-wider text-[10px]">Active</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">person</span> Form Master Pending
+                    </p>
+</div>
+<button class="text-primary p-1 rounded-full bg-surface-container-low">
+<span class="material-symbols-outlined fill-icon">expand_less</span>
+</button>
+</div>
+<div class="flex items-center gap-lg mt-md pt-md border-t border-outline-variant/50 mb-md">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                    42 Students
+                </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">book</span>
+                    12 Subjects
+                </div>
+</div>
+<!-- Subject Assignment List -->
+<div class="bg-surface-container-low rounded-lg p-sm mb-md border border-outline-variant/30">
+<h3 class="font-label-md text-label-md text-primary mb-sm uppercase tracking-wider px-1">Subject Assignments</h3>
+<ul class="flex flex-col gap-xs">
+<li class="flex items-center justify-between bg-surface-container-lowest p-2 rounded border border-outline-variant/30">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">calculate</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface leading-tight">Mathematics</p>
+<p class="font-label-md text-label-md text-on-surface-variant leading-tight">Kwame Owusu</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+</li>
+<li class="flex items-center justify-between bg-surface-container-lowest p-2 rounded border border-outline-variant/30">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">history_edu</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface leading-tight">English</p>
+<p class="font-label-md text-label-md text-on-surface-variant leading-tight">Efua Boateng</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+</li>
+<li class="flex items-center justify-between bg-error-container/20 p-2 rounded border border-error/30">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-error-container/50 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[16px]">science</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface leading-tight">Integrated Science</p>
+<p class="font-label-md text-label-md text-error leading-tight font-medium">Unassigned</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-error text-[20px] fill-icon">warning</span>
+</li>
+</ul>
+</div>
+<!-- Action Grid -->
+<div class="grid grid-cols-2 gap-sm">
+<button class="flex items-center justify-center gap-xs py-2 px-3 border border-outline-variant rounded-md text-primary font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">group</span> View Students
+                </button>
+<button class="flex items-center justify-center gap-xs py-2 px-3 border border-outline-variant rounded-md text-primary font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">person_add</span> Assign Teacher
+                </button>
+<button class="flex items-center justify-center gap-xs py-2 px-3 border border-outline-variant rounded-md text-primary font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">post_add</span> Add Subject
+                </button>
+<button class="flex items-center justify-center gap-xs py-2 px-3 bg-primary text-on-primary rounded-md font-label-md text-label-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit Class
+                </button>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface fixed bottom-0 left-0 w-full z-50 rounded-t-xl border-t border-outline-variant shadow-lg flex justify-around items-center h-20 w-full px-xs pb-safe">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-xl">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-xl">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md mt-1">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-xl">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-label-md text-label-md mt-1">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-colors active:opacity-80 duration-100 rounded-xl">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md mt-1">Fees</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-4 py-1 hover:opacity-90 transition-all active:scale-95 duration-100">
+<span class="material-symbols-outlined fill-icon">more_horiz</span>
+<span class="font-label-md text-label-md mt-1">More</span>
+</button>
+</nav>
+</body></html>

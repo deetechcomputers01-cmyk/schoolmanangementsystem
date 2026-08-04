@@ -10,14 +10,14 @@ import type { SyncJob } from "@/lib/offline/db";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./OfflineSyncScreen.module.css";
 
-function moduleLabel(url: string): string {
+export function moduleLabel(url: string): string {
   const match = url.match(/\/api\/([a-z-]+)/i);
   if (!match) return "Unknown";
   const seg = match[1];
   return seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, " ");
 }
 
-function fmtCreated(ts: number): string {
+export function fmtCreated(ts: number): string {
   const diff = Date.now() - ts;
   const m = Math.floor(diff / 60000);
   if (m < 1) return "just now";

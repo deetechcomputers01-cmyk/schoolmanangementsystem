@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   FolderOpen, Plus, Search, Trash2,
   FileText, AlertTriangle, X, Lock, Globe,
@@ -8,16 +8,14 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./DocumentCenterScreen.module.css";
 
-type DocStatus     = "active" | "pending_review" | "archived" | "restricted";
-type Visibility    = "public" | "internal" | "restricted" | "class_only";
-type Category      = "academic" | "administrative" | "financial" | "template" | "policy" | "hr" | "forms" | "reports";
+export type DocStatus     = "active" | "pending_review" | "archived" | "restricted";
+export type Visibility    = "public" | "internal" | "restricted" | "class_only";
+export type Category      = "academic" | "administrative" | "financial" | "template" | "policy" | "hr" | "forms" | "reports";
 type TabFilter      = "all" | "templates";
 
-interface SchoolDocument {
+export interface SchoolDocument {
   id: string;
   name: string;
   category: Category;
@@ -35,7 +33,7 @@ interface SchoolDocument {
   owner: { id: string; name: string; role: string };
 }
 
-interface DocStats {
+export interface DocStats {
   total: number;
   pendingReview: number;
   needsSign: number;
@@ -45,27 +43,27 @@ interface DocStats {
 
 interface FolderCounts { [k: string]: number }
 
-interface Props {
+export interface DocumentCenterContentProps {
   initialDocs:    SchoolDocument[];
   initialStats:   DocStats;
   initialFolders: FolderCounts;
 }
 
-const STATUS_META: Record<DocStatus, { label: string; pillClass: string }> = {
+export const STATUS_META: Record<DocStatus, { label: string; pillClass: string }> = {
   active:         { label: "Active",         pillClass: "pillActive" },
   pending_review: { label: "Pending Review", pillClass: "pillPending" },
   archived:       { label: "Archived",       pillClass: "pillArchived" },
   restricted:     { label: "Restricted",     pillClass: "pillRestricted" },
 };
 
-const VIS_META: Record<Visibility, { label: string; icon: React.ReactNode }> = {
+export const VIS_META: Record<Visibility, { label: string; icon: React.ReactNode }> = {
   public:     { label: "Public",      icon: <Globe size={12} /> },
   internal:   { label: "Internal",    icon: <Users size={12} /> },
   restricted: { label: "Restricted",  icon: <Lock size={12} /> },
   class_only: { label: "Class Only",  icon: <Users size={12} /> },
 };
 
-const CATEGORY_COLOR: Record<Category, string> = {
+export const CATEGORY_COLOR: Record<Category, string> = {
   academic:       "var(--clr-app-info)",
   administrative: "var(--clr-app-muted)",
   financial:      "var(--clr-warning)",
@@ -76,11 +74,11 @@ const CATEGORY_COLOR: Record<Category, string> = {
   reports:        "var(--clr-app-muted)",
 };
 
-function fmtDate(d: string) {
+export function fmtDate(d: string) {
   return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
+export function DocumentCenterScreen({ initialDocs, initialStats }: DocumentCenterContentProps) {
   const [docs, setDocs]             = useState<SchoolDocument[]>(initialDocs);
   const [stats, setStats]           = useState<DocStats>(initialStats);
   const [tab, setTab]               = useState<TabFilter>("all");
@@ -104,7 +102,6 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
   const [newTemplate, setNewTemplate] = useState(false);
   const [newNeedsSign, setNewNeedsSign] = useState(false);
   const [newFile, setNewFile] = useState<File | null>(null);
-  const mobileFileRef = useRef<HTMLInputElement>(null);
 
   const selected = docs.find(d => d.id === selectedId);
 
@@ -136,6 +133,7 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
       fd.append("visibility", newVis);
       if (newDept) fd.append("classDept", newDept);
       fd.append("isTemplate", String(newTemplate));
+      fd.append("needsSign", String(newNeedsSign));
 
       const res = await fetch("/api/documents", { method: "POST", body: fd });
       if (res.ok) {
@@ -403,7 +401,7 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
                     <td className={`${styles.td} ${styles.tdMuted}`}>{fmtDate(d.updatedAt)}</td>
                     <td className={styles.td}>
                       <div className={styles.rowActions}>
-                        <button className={`${styles.iconBtn} ${styles.iconBtnAccent}`} onClick={e => { e.stopPropagation(); showMsg("Download coming soon."); }} title="Download"><Download size={14} /></button>
+                        <a className={`${styles.iconBtn} ${styles.iconBtnAccent}`} href={d.fileUrl} download onClick={e => e.stopPropagation()} title="Download"><Download size={14} /></a>
                         <button className={`${styles.iconBtn} ${styles.iconBtnWarn}`} onClick={e => { e.stopPropagation(); handleStatusChange(d.id, d.status === "archived" ? "active" : "archived"); }} title={d.status === "archived" ? "Restore" : "Archive"}><Archive size={14} /></button>
                         <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={e => { e.stopPropagation(); setDelConfirm(d.id); }} title="Delete"><Trash2 size={14} /></button>
                       </div>
@@ -463,7 +461,7 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
 
       {/* New document modal */}
       {showNew && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowNew(false)}>
+        <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}><Plus size={16} />Register Document</h3>
@@ -531,71 +529,6 @@ export function DocumentCenterScreen({ initialDocs, initialStats }: Props) {
           </div>
         </div>
       )}
-
-      {/* Register Document sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showNew}
-          onClose={() => setShowNew(false)}
-          title="Register Document"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowNew(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={handleCreate} disabled={loading}>
-              {loading ? "Uploading…" : "Upload Document"}
-            </button>
-          </>}
-        >
-          <input
-            ref={mobileFileRef}
-            type="file"
-            accept=".pdf,.doc,.docx,.xlsx,.jpg,.jpeg,.png"
-            style={{ display: "none" }}
-            onChange={e => {
-              const f = e.target.files?.[0] ?? null;
-              setNewFile(f);
-              if (f && !newName.trim()) setNewName(f.name.replace(/\.[^.]+$/, ""));
-            }}
-          />
-          <div className={kit.dropzone} onClick={() => mobileFileRef.current?.click()}>
-            <p className={kit.dropzoneText}>
-              {newFile ? newFile.name : <>Click to upload — <span className={kit.dropzoneLink}>PDF, DOC, XLSX, JPG, PNG</span></>}
-            </p>
-          </div>
-          <div className={kit.field}>
-            <label>Document Name *</label>
-            <input className={kit.input} value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. School Fee Schedule 2026" />
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Category</label>
-              <select className={kit.select} value={newCat} onChange={e => setNewCat(e.target.value as Category)}>
-                {categories.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
-              </select>
-            </div>
-            <div className={kit.field}>
-              <label>Visibility</label>
-              <select className={kit.select} value={newVis} onChange={e => setNewVis(e.target.value as Visibility)}>
-                <option value="internal">Internal</option>
-                <option value="public">Public</option>
-                <option value="restricted">Restricted</option>
-                <option value="class_only">Class Only</option>
-              </select>
-            </div>
-          </div>
-          <div className={kit.field}>
-            <label>Class / Department (optional)</label>
-            <input className={kit.input} value={newDept} onChange={e => setNewDept(e.target.value)} placeholder="e.g. Form 3A, Finance Dept" />
-          </div>
-          <div className={kit.checkboxRow}>
-            <input type="checkbox" checked={newTemplate} onChange={e => setNewTemplate(e.target.checked)} />
-            <label className={kit.checkboxLabel}>Mark as template</label>
-          </div>
-          <div className={kit.checkboxRow}>
-            <input type="checkbox" checked={newNeedsSign} onChange={e => setNewNeedsSign(e.target.checked)} />
-            <label className={kit.checkboxLabel}>Requires signature</label>
-          </div>
-        </MobileSheet>
-      </div>
 
       {/* Delete confirm */}
       {delConfirm && (

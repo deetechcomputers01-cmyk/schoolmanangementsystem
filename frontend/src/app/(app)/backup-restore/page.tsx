@@ -2,6 +2,7 @@ import { getCurrentUser } from "@backend/auth/cookies";
 import { listBackups, getBackupStats } from "@backend/services/backup.service";
 import { redirect } from "next/navigation";
 import { BackupRestoreScreen } from "@/screens/desktop/BackupRestoreScreen/BackupRestoreScreen";
+import { MobileBackupRestoreContent } from "@/screens/mobile/MobileBackupRestoreContent/MobileBackupRestoreContent";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Backup & Restore – ScholarSphere" };
@@ -16,5 +17,14 @@ export default async function BackupRestorePage() {
     getBackupStats(),
   ]);
 
-  return <BackupRestoreScreen initialBackups={backups as any} initialStats={stats as any} />;
+  return (
+    <>
+      <div className="mobileOnly">
+        <MobileBackupRestoreContent initialBackups={backups as any} initialStats={stats as any} />
+      </div>
+      <div className="desktopOnly">
+        <BackupRestoreScreen initialBackups={backups as any} initialStats={stats as any} />
+      </div>
+    </>
+  );
 }

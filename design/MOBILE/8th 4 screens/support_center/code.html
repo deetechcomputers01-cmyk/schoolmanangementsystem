@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support Center - ScholarSphere Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e2e2e7",
+                    "tertiary-container": "#b34b00",
+                    "secondary-container": "#e2e1ec",
+                    "on-tertiary-fixed-variant": "#793000",
+                    "surface-tint": "#4e41e8",
+                    "on-tertiary-container": "#ffe8de",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "surface-container": "#ededf2",
+                    "on-primary-container": "#edeaff",
+                    "on-background": "#1a1c1f",
+                    "inverse-on-surface": "#f0f0f5",
+                    "tertiary": "#8c3900",
+                    "on-secondary-fixed-variant": "#45464f",
+                    "error": "#ba1a1a",
+                    "surface": "#f9f9fe",
+                    "on-tertiary-fixed": "#341100",
+                    "on-surface": "#1a1c1f",
+                    "on-surface-variant": "#464555",
+                    "primary-container": "#5b50f5",
+                    "surface-container-highest": "#e2e2e7",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e7e8ed",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#5d5e67",
+                    "outline-variant": "#c7c4d8",
+                    "tertiary-fixed": "#ffdbcb",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#341dd1",
+                    "on-secondary-container": "#63646d",
+                    "secondary-fixed": "#e2e1ec",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#c3c0ff",
+                    "primary": "#4131dc",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#777587",
+                    "surface-dim": "#d9dade",
+                    "surface-container-low": "#f3f3f8",
+                    "on-secondary-fixed": "#1a1b23",
+                    "surface-bright": "#f9f9fe",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#2e3034",
+                    "on-primary-fixed": "#100069",
+                    "secondary-fixed-dim": "#c6c5d0",
+                    "primary-fixed": "#e3dfff",
+                    "background": "#f9f9fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "margin": "20px",
+                    "sm": "8px",
+                    "base": "8px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "section-header": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "section-header": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-press:active { opacity: 0.7; transform: scale(0.98); transition: all 150ms; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center h-14 px-margin bg-surface border-b border-surface-variant">
+<button class="mr-4 active-press">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Support</h1>
+</header>
+<main class="mt-14 px-margin">
+<!-- Search Section -->
+<section class="mt-lg">
+<div class="relative flex items-center group">
+<span class="material-symbols-outlined absolute left-4 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-surface-container-lowest border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-sm text-body-sm" placeholder="Search help articles..." type="text"/>
+</div>
+</section>
+<!-- Quick Actions Bento Grid -->
+<section class="mt-xl grid grid-cols-2 gap-sm">
+<!-- Contact Support Card (Large) -->
+<button class="col-span-2 bg-primary-container text-on-primary-container p-lg rounded-xl flex flex-col justify-between items-start h-40 active-press shadow-[0px_2px_8px_rgba(91,80,245,0.05)]">
+<div class="bg-white/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">contact_support</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-white">Contact Support</h3>
+<p class="text-white/80 font-body-sm text-body-sm mt-1">Get live assistance from our team.</p>
+</div>
+</button>
+<!-- Report an Issue -->
+<button class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col items-center justify-center text-center h-32 active-press shadow-[0px_2px_8px_rgba(91,80,245,0.05)]">
+<span class="material-symbols-outlined text-primary mb-2">report_problem</span>
+<span class="font-section-header text-section-header">Report an Issue</span>
+</button>
+<!-- Help Center -->
+<button class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col items-center justify-center text-center h-32 active-press shadow-[0px_2px_8px_rgba(91,80,245,0.05)]">
+<span class="material-symbols-outlined text-primary mb-2">menu_book</span>
+<span class="font-section-header text-section-header">Help Center</span>
+</button>
+</section>
+<!-- Recent Tickets Section -->
+<section class="mt-xl">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent Tickets</h2>
+<button class="text-primary font-section-header text-section-header active-press">View All</button>
+</div>
+<div class="space-y-sm">
+<!-- Ticket 1: Portal Access Error -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md shadow-[0px_2px_8px_rgba(91,80,245,0.05)] active-press">
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-secondary mb-1">IT Support</span>
+<span class="text-secondary font-body-sm text-[12px]">2h ago</span>
+</div>
+<h4 class="font-body-md text-body-md text-on-surface mb-2">Portal Access Error</h4>
+<div class="flex items-center gap-sm">
+<span class="px-2 py-0.5 bg-[#f59e0b1a] text-[#b45309] rounded-full text-[11px] font-bold uppercase tracking-wider">Open</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Ticket 2: New Student Enrollment -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md shadow-[0px_2px_8px_rgba(91,80,245,0.05)] active-press">
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-secondary mb-1">Admissions</span>
+<span class="text-secondary font-body-sm text-[12px]">Yesterday</span>
+</div>
+<h4 class="font-body-md text-body-md text-on-surface mb-2">New Student Enrollment</h4>
+<div class="flex items-center gap-sm">
+<span class="px-2 py-0.5 bg-[#10b9811a] text-[#047857] rounded-full text-[11px] font-bold uppercase tracking-wider">Resolved</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Help Documentation Teaser -->
+<section class="mt-xl pb-base">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md">Popular Articles</h2>
+<div class="flex gap-md overflow-x-auto no-scrollbar pb-4">
+<div class="min-w-[200px] bg-surface-container-low rounded-xl p-md active-press">
+<span class="material-symbols-outlined text-primary mb-2">key</span>
+<p class="font-section-header text-section-header leading-snug">Resetting School MFA Tokens</p>
+</div>
+<div class="min-w-[200px] bg-surface-container-low rounded-xl p-md active-press">
+<span class="material-symbols-outlined text-primary mb-2">cloud_upload</span>
+<p class="font-section-header text-section-header leading-snug">Bulk Student Data Upload</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-[56px] px-2 bg-surface border-t border-surface-variant shadow-[0px_-2px_8px_rgba(91,80,245,0.05)]">
+<div class="flex flex-col items-center justify-center text-secondary active-press">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary active-press">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-caps text-label-caps">Schedule</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary active-press">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-semibold active-press">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for ticket cards
+        document.querySelectorAll('.active-press').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.classList.add('opacity-70');
+            });
+            item.addEventListener('touchend', function() {
+                this.classList.remove('opacity-70');
+            });
+        });
+    </script>
+</body></html>

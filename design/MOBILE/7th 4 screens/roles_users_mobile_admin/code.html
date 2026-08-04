@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSphere Pro - Roles &amp; Users</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config Execution -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-surface": "#1b1b24",
+                "secondary-container": "#55a7fe",
+                "on-primary-container": "#edeaff",
+                "text-primary": "#16161D",
+                "success": "#1B5E20",
+                "surface-container-low": "#FAFAFF",
+                "inverse-surface": "#302f39",
+                "error": "#C24747",
+                "primary-fixed-dim": "#c3c0ff",
+                "on-tertiary-container": "#ffe8de",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "on-primary": "#ffffff",
+                "outline-variant": "#E4E4EC",
+                "outline": "#E4E4EC",
+                "text-secondary": "#858791",
+                "on-tertiary-fixed-variant": "#793000",
+                "tertiary-container": "#b34b00",
+                "surface-container": "#f0ecfa",
+                "inverse-primary": "#c3c0ff",
+                "on-surface-variant": "#464555",
+                "on-secondary-fixed": "#001c37",
+                "secondary-fixed": "#d2e4ff",
+                "secondary": "#0061a7",
+                "on-secondary-container": "#003b69",
+                "on-error": "#ffffff",
+                "tertiary-fixed": "#ffdbcb",
+                "surface-dim": "#dcd8e6",
+                "surface-bright": "#fcf8ff",
+                "surface-container-high": "#eae6f4",
+                "surface-variant": "#e4e1ee",
+                "on-primary-fixed": "#100069",
+                "secondary-fixed-dim": "#a1c9ff",
+                "primary-fixed": "#e3dfff",
+                "on-secondary-fixed-variant": "#00487f",
+                "inverse-on-surface": "#f3effd",
+                "surface-container-highest": "#e4e1ee",
+                "surface-tint": "#5B50F5",
+                "on-tertiary-fixed": "#341100",
+                "primary-container": "#5b50f5",
+                "warning": "#FF8F00",
+                "error-container": "#ffdad6",
+                "background": "#FAFAFF",
+                "tertiary": "#8c3900",
+                "tertiary-fixed-dim": "#ffb692",
+                "on-secondary": "#ffffff",
+                "surface": "#FFFFFF",
+                "on-primary-fixed-variant": "#341dd1",
+                "on-error-container": "#93000a",
+                "on-background": "#1b1b24",
+                "primary": "#5B50F5"
+            },
+            "borderRadius": {
+                "DEFAULT": "4px",
+                "lg": "4px",
+                "xl": "8px",
+                "full": "9999px"
+            },
+            "spacing": {
+                "sm": "8px",
+                "lg": "24px",
+                "base": "4px",
+                "md": "16px",
+                "margin-mobile": "16px",
+                "xs": "4px",
+                "xl": "32px"
+            },
+            "fontFamily": {
+                "headline-md": ["Inter"],
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "body-sm": ["Inter"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            },
+            "boxShadow": {
+                "card-level-1": "0px 2px 4px rgba(27, 27, 36, 0.05)"
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #FAFAFF;
+        -webkit-font-smoothing: antialiased;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .active-chip {
+        background-color: #5B50F5;
+        color: white;
+      }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopAppBar Section -->
+<header class="bg-surface sticky top-0 z-40 w-full border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary active:scale-95 duration-100 p-2 hover:bg-surface-container-low rounded-full transition-colors">
+                arrow_back
+            </button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Roles &amp; Users</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-primary active:scale-95 duration-100 p-2 hover:bg-surface-container-low rounded-full transition-colors">
+                search
+            </button>
+<button class="material-symbols-outlined text-primary active:scale-95 duration-100 p-2 hover:bg-surface-container-low rounded-full transition-colors">
+                more_vert
+            </button>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-margin-mobile pb-32">
+<!-- Search & Filter Bar -->
+<section class="mt-lg">
+<div class="relative flex items-center mb-md">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-surface border border-outline-variant rounded-[4px] focus:ring-1 focus:ring-primary focus:border-primary outline-none text-body-md shadow-card-level-1 transition-all" placeholder="Search by name, role, or ID..." type="text"/>
+</div>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-xs">
+<button class="active-chip px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap shadow-sm">All</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low transition-colors">Admin</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low transition-colors">Teacher</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low transition-colors">Parent</button>
+<button class="bg-surface border border-outline-variant text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-low transition-colors">Student</button>
+</div>
+</section>
+<!-- Summary Statistics Card -->
+<section class="mt-lg">
+<div class="bg-surface border border-outline-variant rounded-[4px] p-md shadow-card-level-1 grid grid-cols-3 divide-x divide-outline-variant">
+<div class="flex flex-col items-center px-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Total Users</span>
+<span class="font-bold text-xl text-primary">1,242</span>
+</div>
+<div class="flex flex-col items-center px-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Roles</span>
+<span class="font-bold text-xl text-secondary">8</span>
+</div>
+<div class="flex flex-col items-center px-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Pending</span>
+<span class="font-bold text-xl text-tertiary">24</span>
+</div>
+</div>
+</section>
+<!-- Segmented Tabs -->
+<section class="mt-lg">
+<div class="flex p-1 bg-surface-container-high rounded-[4px]">
+<button class="flex-1 py-2 text-center rounded-[4px] font-label-md text-label-md bg-primary text-white shadow-sm transition-all duration-200" id="roles-tab-btn" onclick="switchTab('roles')">Roles</button>
+<button class="flex-1 py-2 text-center rounded-[4px] font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all duration-200" id="users-tab-btn" onclick="switchTab('users')">Users</button>
+</div>
+</section>
+<!-- Content Area: Roles (Active) -->
+<div class="mt-lg grid grid-cols-1 gap-md" id="roles-content">
+<!-- Administrator Card -->
+<div class="bg-surface rounded-[4px] p-md shadow-card-level-1 flex items-center justify-between border-l-4 border-primary">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Administrator</h3>
+<p class="font-body-sm text-on-surface-variant">42 Permissions • 12 Users</p>
+</div>
+</div>
+<div class="bg-success/10 text-success border border-success/20 px-3 py-1 rounded-full font-label-sm text-label-sm font-bold uppercase tracking-wider">Active</div>
+</div>
+<!-- Teacher Card -->
+<div class="bg-surface rounded-[4px] p-md shadow-card-level-1 flex items-center justify-between border-l-4 border-secondary">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Teacher</h3>
+<p class="font-body-sm text-on-surface-variant">28 Permissions • 145 Users</p>
+</div>
+</div>
+<div class="bg-success/10 text-success border border-success/20 px-3 py-1 rounded-full font-label-sm text-label-sm font-bold uppercase tracking-wider">Active</div>
+</div>
+<!-- Parent Card -->
+<div class="bg-surface rounded-[4px] p-md shadow-card-level-1 flex items-center justify-between border-l-4 border-tertiary">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">family_restroom</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Parent</h3>
+<p class="font-body-sm text-on-surface-variant">12 Permissions • 840 Users</p>
+</div>
+</div>
+<div class="bg-success/10 text-success border border-success/20 px-3 py-1 rounded-full font-label-sm text-label-sm font-bold uppercase tracking-wider">Active</div>
+</div>
+<!-- Finance Card -->
+<div class="bg-surface rounded-[4px] p-md shadow-card-level-1 flex items-center justify-between border-l-4 border-outline">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Finance</h3>
+<p class="font-body-sm text-on-surface-variant">18 Permissions • 5 Users</p>
+</div>
+</div>
+<div class="bg-success/10 text-success border border-success/20 px-3 py-1 rounded-full font-label-sm text-label-sm font-bold uppercase tracking-wider">Active</div>
+</div>
+<!-- Student Card -->
+<div class="bg-surface rounded-[4px] p-md shadow-card-level-1 flex items-center justify-between border-l-4 border-primary">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Student</h3>
+<p class="font-body-sm text-on-surface-variant">6 Permissions • 240 Users</p>
+</div>
+</div>
+<div class="bg-success/10 text-success border border-success/20 px-3 py-1 rounded-full font-label-sm text-label-sm font-bold uppercase tracking-wider">Active</div>
+</div>
+</div>
+<!-- Content Area: Users (Hidden by default) -->
+<div class="mt-lg hidden flex flex-col gap-sm" id="users-content">
+<div class="bg-surface rounded-[4px] border border-outline-variant shadow-card-level-1 overflow-hidden">
+<!-- User Row 1 -->
+<div class="flex items-center gap-4 p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX82zt3Do73Q28kVtHjiSOrcwca1JxjKE9Itoor5V4uxuPy3TNsL7BjLdhnHj0fnfbtMtIo3phEY1eI0so5XwqsmeOAm1oBJpbx34LgPjF-FjUqEUQm21xQd-XoPFQZA85QcwkMC84NnCrqO_X9Nc42izTcCvh6lzgV2g-ydI7IFBzfQ8S5iUOko4EgJDtX26nj9ObajSw9gqFNSMJpYqwU0D6cEKQO4UIpz2Hx0WDfpMBDCR2Yiw"/>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-surface">Sarah Jenkins</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Administrator • Active 2m ago</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-success"></div>
+</div>
+<!-- User Row 2 -->
+<div class="flex items-center gap-4 p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-bold">MK</div>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-surface">Marcus Kane</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Teacher • Active 1h ago</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-success"></div>
+</div>
+<!-- User Row 3 -->
+<div class="flex items-center gap-4 p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA83w1NM57v_kv1LDOgVnT4qWNdKFviUNYoVFrw_xKJFuNeyaJoVh5ynXQLhaYOiKcPNaJIxcY-O2aafhViSR2THw2qd3SxVntqXBv8uW_e4WKMZa1oOFweD5nqhsHh9kXsQnvdfo3bvzSORELlbaN_AY5ZinyYtHhFRdsqe5ojhAkgDZjAD0RqVXP4UOUBLEWxLmCzw8PlZ3EuCKNK_Kbnp_lmRJBXpyMZliA352_yYGYKrWhNsVU"/>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-surface">David Chen</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Parent • Active yesterday</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<!-- User Row 4 -->
+<div class="flex items-center gap-4 p-md hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary font-bold">EL</div>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-surface">Elena Rodriguez</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Finance • Active 3 days ago</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB: Add User -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-white rounded-[8px] flex items-center justify-center shadow-lg active:scale-90 transition-transform z-50">
+<span class="material-symbols-outlined text-[28px]">person_add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-2 border-t border-outline-variant bg-surface shadow-sm z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-6 py-2 transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-0.5" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md font-bold">Users</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">rule</span>
+<span class="font-label-md text-label-md">Approvals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">menu</span>
+<span class="font-label-md text-label-md">More</span>
+</a>
+</nav>
+<script>
+        function switchTab(tab) {
+            const rolesBtn = document.getElementById('roles-tab-btn');
+            const usersBtn = document.getElementById('users-tab-btn');
+            const rolesContent = document.getElementById('roles-content');
+            const usersContent = document.getElementById('users-content');
+
+            if (tab === 'roles') {
+                // Style adjustment
+                rolesBtn.classList.add('bg-primary', 'text-white', 'shadow-sm');
+                rolesBtn.classList.remove('text-on-surface-variant');
+                usersBtn.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+                usersBtn.classList.add('text-on-surface-variant');
+                // Content switch
+                rolesContent.classList.remove('hidden');
+                usersContent.classList.add('hidden');
+            } else {
+                // Style adjustment
+                usersBtn.classList.add('bg-primary', 'text-white', 'shadow-sm');
+                usersBtn.classList.remove('text-on-surface-variant');
+                rolesBtn.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+                rolesBtn.classList.add('text-on-surface-variant');
+                // Content switch
+                usersContent.classList.remove('hidden');
+                rolesContent.classList.add('hidden');
+            }
+        }
+    </script>
+</body></html>

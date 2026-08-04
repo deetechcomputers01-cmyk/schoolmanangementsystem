@@ -1,0 +1,296 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>ScholarSphere Pro - Approvals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#ededf9",
+                    "secondary-container": "#6df5e1",
+                    "secondary": "#006b5f",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary": "#0037b0",
+                    "tertiary-container": "#a73400",
+                    "on-tertiary-fixed": "#390c00",
+                    "surface-container-highest": "#e2e1ed",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "tertiary-fixed": "#ffdbcf",
+                    "tertiary": "#7f2500",
+                    "primary-container": "#1d4ed8",
+                    "inverse-primary": "#b7c4ff",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#71f8e4",
+                    "inverse-surface": "#2e3039",
+                    "on-secondary-fixed": "#00201c",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "on-secondary-fixed-variant": "#005048",
+                    "background": "#faf8ff",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#2151da",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#faf8ff",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#006f64",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#faf8ff",
+                    "outline": "#747686",
+                    "outline-variant": "#c4c5d7",
+                    "surface-dim": "#d9d9e5",
+                    "surface-container-high": "#e8e7f3",
+                    "on-background": "#1a1b23",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#ffc9b7",
+                    "on-surface": "#1a1b23",
+                    "primary-fixed": "#dce1ff",
+                    "surface-variant": "#e2e1ed",
+                    "on-primary-container": "#cad3ff",
+                    "on-primary-fixed": "#001551",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "secondary-fixed-dim": "#4fdbc8",
+                    "on-surface-variant": "#434655",
+                    "surface-container-low": "#f3f2fe",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "12px",
+                    "2xl": "16px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "lg": "24px",
+                    "base": "8px",
+                    "md": "16px",
+                    "margin-mobile": "16px",
+                    "xs": "4px",
+                    "gutter-mobile": "12px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface" style="background-color: rgb(250, 250, 255);">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full h-14 flex justify-between items-center px-margin-mobile bg-surface shadow-sm border-b border-outline-variant transition-all duration-300">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary active:scale-95 duration-100 p-2 hover:bg-surface-container-high rounded-full">arrow_back</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Approvals</h1>
+</div>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-primary active:scale-95 duration-100 p-2 hover:bg-surface-container-high rounded-full">more_vert</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile max-w-lg mx-auto">
+<!-- Summary Card: Bento Style -->
+<section class="grid grid-cols-2 gap-sm mb-lg">
+<div class="col-span-2 p-md bg-primary-container text-white rounded-2xl shadow-[0px_2px_4px_rgba(15,23,42,0.05)] flex items-center justify-between" style="background-color: rgb(91, 80, 245); border-radius: 4px;">
+<div>
+<p class="font-label-md text-label-md opacity-90">Pending Actions</p>
+<p class="font-headline-lg text-headline-lg">18 Requests</p>
+</div>
+<span class="material-symbols-outlined text-[40px] opacity-30" style="font-variation-settings: 'FILL' 1;">rule</span>
+</div>
+<div class="p-md bg-white border border-outline-variant rounded-2xl shadow-[0px_2px_4px_rgba(15,23,42,0.05)] rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant">Approved Today</p>
+<div class="flex items-center gap-2 mt-xs">
+<p class="font-headline-md text-headline-md text-secondary">6</p>
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant rounded-2xl shadow-[0px_2px_4px_rgba(15,23,42,0.05)] rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant">Rejected</p>
+<div class="flex items-center gap-2 mt-xs">
+<p class="font-headline-md text-headline-md text-error">2</p>
+<span class="material-symbols-outlined text-error text-sm">cancel</span>
+</div>
+</div>
+</section>
+<!-- Filter Chips -->
+<section class="flex gap-sm mb-lg overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-md py-sm bg-primary text-on-primary rounded-full font-label-md text-label-md transition-all active:scale-95" style="background-color: rgb(91, 80, 245);">Pending</button>
+<button class="px-md py-sm bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-variant transition-all active:scale-95">Approved</button>
+<button class="px-md py-sm bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-variant transition-all active:scale-95">Rejected</button>
+</section>
+<!-- Vertical List of Approval Cards -->
+<section class="space-y-md">
+<!-- Card 1 -->
+<div class="bg-white rounded-2xl p-md border border-outline-variant shadow-[0px_2px_4px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Teacher Transfer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Faculty Relocation Request</p>
+</div>
+<span class="px-sm py-xs bg-error-container text-on-error-container rounded-lg font-label-sm text-label-sm">High Priority</span>
+</div>
+<div class="flex items-center gap-md mb-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female educator with a warm, confident expression. She is wearing a modern corporate blazer, set against a blurred academic background with soft, natural lighting that emphasizes a trustworthy and authoritative administrative persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByiqE4cy-55ULv-24ePXNX0NSZdNR1tUbF3zx_I7fdSLbkSYi3Ko1G6_DbS1WgR2sxxGRH0fR8aLMegPNiDKF01YgSNVtc0PsH8m58FPCSVsabftIK0lNXhv3Y5a5-PS9CE6pmR4uAe0t85FFpmCVXzX2MX9L5E9z2No0FH3qMNzLNUSn4JL3jGO0vS1OlYE6Coqeo6jF8zxZDfndq0EOJEgAIWb9W0EXsMYHVOwT0-6Ob8ePwWK4">
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Sarah Jenkins</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Today • 10:45 AM</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm border-t border-outline-variant pt-md">
+<button class="flex items-center justify-center gap-2 py-sm bg-secondary-container text-on-secondary-container rounded-xl font-label-md text-label-md active:scale-95 transition-transform" style="background-color: rgb(91, 80, 245); color: white; border-radius: 4px;">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                        Approve
+                    </button>
+<button class="flex items-center justify-center gap-2 py-sm bg-surface-container-low border border-outline-variant text-error rounded-xl font-label-md text-label-md active:scale-95 transition-transform rounded-lg">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Reject
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white rounded-2xl p-md border border-outline-variant shadow-[0px_2px_4px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Budget Overrun</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Science Lab Equipment</p>
+</div>
+<span class="px-sm py-xs bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-lg font-label-sm text-label-sm">Medium</span>
+</div>
+<div class="flex items-center gap-md mb-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A studio portrait of a male school administrator in business casual attire. He has a clean-cut, professional appearance with a subtle smile. The lighting is crisp and even, reflecting a modern corporate aesthetic with a palette of deep blues and grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdyNLegkI1VIbw1PiGVv569fxZRW3DsghCjtpuuvrpVQnxHoG6QaQqP2XBGfZGHRffpYoiNtYuyI_9OROgBiLQrib7syt6iZnUMAef-7WYYjsmOgROM0I9lvjR43mYp6zXgRQ6mkdGHQ42Kdo6ADU5MXmjKVfase47GuBZR6y6EjRJdzNO2Jv_QbMc85uD4TGiT0EOVDiqxPUMvslNHCPZSXbWqJujP57mLwnDN0_I62HHU9NrA8Q">
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Marcus Thorne</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Yesterday • 4:20 PM</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm border-t border-outline-variant pt-md">
+<button class="flex items-center justify-center gap-2 py-sm bg-secondary-container text-on-secondary-container rounded-xl font-label-md text-label-md active:scale-95 transition-transform" style="background-color: rgb(91, 80, 245); color: white; border-radius: 4px;">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                        Approve
+                    </button>
+<button class="flex items-center justify-center gap-2 py-sm bg-surface-container-low border border-outline-variant text-error rounded-xl font-label-md text-label-md active:scale-95 transition-transform rounded-lg">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Reject
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white rounded-2xl p-md border border-outline-variant shadow-[0px_2px_4px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Curriculum Change</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Grade 11 Mathematics</p>
+</div>
+<span class="px-sm py-xs bg-surface-container-highest text-on-surface-variant rounded-lg font-label-sm text-label-sm">Low Priority</span>
+</div>
+<div class="flex items-center gap-md mb-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of an experienced educator with glasses and a friendly, wise expression. She is in a bright, modern office with books in the background. The lighting is high-key and airy, contributing to a professional yet accessible atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaTApT9d--5Dy5rAXNQ-J0yoHf4oLEj3WM71HZO4iYBTYaPTX5Oq_TKNRcqQyQZ0NtMWcdoffgFqZ5jFaill688PnwZkgHnm6APXKAPoQLv4xKMBKdgCFVQIkilX2Y9YeiSzdhGmw9h39BMbvJ1HhSgHaQ-Uyzc9W_R8igxlF9CjWTqRflvLD0HMmyEP0ir9ZFLj-ZKpZmJjTHesmXIiwjtQoHYYex1ufzXZKbFOeUdIRHDya9ZSY">
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Dr. Elena Rodriguez</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Oct 24 • 9:15 AM</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm border-t border-outline-variant pt-md">
+<button class="flex items-center justify-center gap-2 py-sm bg-secondary-container text-on-secondary-container rounded-xl font-label-md text-label-md active:scale-95 transition-transform" style="background-color: rgb(91, 80, 245); color: white; border-radius: 4px;">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                        Approve
+                    </button>
+<button class="flex items-center justify-center gap-2 py-sm bg-surface-container-low border border-outline-variant text-error rounded-xl font-label-md text-label-md active:scale-95 transition-transform rounded-lg">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Reject
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16 bg-surface-container shadow-lg rounded-t-xl transition-all" style="background-color: rgb(255, 255, 255); border-top: 1px solid rgb(228, 228, 236);">
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Users</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform" style="background-color: rgb(91, 80, 245); color: rgb(255, 255, 255);">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rule</span>
+<span class="font-label-md text-label-md">Approvals</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-md text-label-md">More</span>
+</button>
+</nav>
+<script>
+        // Simple Micro-interaction for filter chips
+        const filterChips = document.querySelectorAll('section:nth-of-type(2) button');
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary');
+                    c.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                });
+                chip.classList.add('bg-primary', 'text-on-primary');
+                chip.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+            });
+        });
+
+        // Floating Action Interaction
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.classList.add('scale-95');
+            });
+            btn.addEventListener('touchend', function() {
+                this.classList.remove('scale-95');
+            });
+        });
+    </script>
+
+
+</body></html>
