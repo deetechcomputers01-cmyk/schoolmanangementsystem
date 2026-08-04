@@ -252,22 +252,6 @@
   font-weight: 600;
 }
 
-.toggleActive_present {
-  color: #39a66a;
-}
-
-.toggleActive_absent {
-  color: #df5750;
-}
-
-.toggleActive_late {
-  color: #cf7d2d;
-}
-
-.toggleActive_excused {
-  color: #6a6f82;
-}
-
 .workspace {
   overflow: hidden;
 }
@@ -436,44 +420,33 @@
   font-size: var(--text-xs);
 }
 
-.toggleGroup {
-  display: inline-flex;
+.rateStat {
+  display: flex;
   align-items: center;
-  gap: 4px;
-  flex-wrap: nowrap;
+  gap: 8px;
 }
 
-.toggleBtn {
-  min-width: 62px;
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid var(--clr-app-border);
-  border-radius: 4px;
-  background: var(--clr-app-surface);
+.ratePill {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.rate_good { background: var(--clr-success-bg); color: var(--clr-success); }
+.rate_mid  { background: var(--clr-warning-bg); color: var(--clr-warning); }
+.rate_bad  { background: var(--clr-error-bg); color: var(--clr-error); }
+
+.rateSub {
   color: var(--clr-app-muted);
   font-size: var(--text-xs);
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  white-space: nowrap;
 }
 
-.toggleBtn:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.toggleInactive:hover:not(:disabled) {
-  border-color: #cfd3e6;
-  background: var(--clr-app-surface-alt);
-}
-
-.toggleActive_present,
-.toggleActive_absent,
-.toggleActive_late,
-.toggleActive_excused {
-  border-color: currentColor;
-  background: var(--clr-app-surface-alt);
+.rateEmpty {
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-style: italic;
 }
 
 .noteInput,

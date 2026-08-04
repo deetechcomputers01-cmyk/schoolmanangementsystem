@@ -9,7 +9,6 @@ import {
   X,
   AlertTriangle,
   Check,
-  Clock,
   BarChart2,
   CalendarPlus,
 } from "lucide-react";
@@ -45,12 +44,6 @@ export interface AttendanceMarkingProps {
 }
 
 type Mark = { status: AttendanceStatus | null; note: string };
-const STATUS_LABELS: Record<AttendanceStatus, string> = {
-  present: "Present",
-  absent: "Absent",
-  late: "Late",
-  excused: "Excused",
-};
 
 function formatLastSeen(iso: string | null): string {
   if (!iso) return "—";
@@ -105,6 +98,21 @@ export function AttendanceMarkingContent(props: AttendanceMarkingProps) {
     [selectedClassId, subjects],
   );
 
+  // Real historical rate per student — (present + late) / total recorded
+  // days, same formula the report card uses — not another marking action,
+  // just an at-a-glance stat now that per-row marking lives in the Record
+  // Attendance modal instead of duplicated here.
+  const attendanceRates = useMemo(() => {
+    const map: Record<string, { rate: number; total: number } | null> = {};
+    students.forEach((student) => {
+      const records = existingAttendance.filter((attendance) => attendance.studentId === student.id);
+      if (records.length === 0) { map[student.id] = null; return; }
+      const attended = records.filter((attendance) => attendance.status === "present" || attendance.status === "late").length;
+      map[student.id] = { rate: Math.round((attended / records.length) * 100), total: records.length };
+    });
+    return map;
+  }, [students, existingAttendance]);
+
   const counts = useMemo(() => {
     let present = 0;
     let absent = 0;
@@ -143,16 +151,6 @@ export function AttendanceMarkingContent(props: AttendanceMarkingProps) {
     setSelectedDate(date);
     hydrateMarks(selectedClassId, date);
   }, [hydrateMarks, selectedClassId]);
-
-  const setStatus = useCallback((studentId: string, status: AttendanceStatus) => {
-    setMarks((current) => ({
-      ...current,
-      [studentId]: {
-        status: current[studentId]?.status === status ? null : status,
-        note: current[studentId]?.note ?? "",
-      },
-    }));
-  }, []);
 
   const setNote = useCallback((studentId: string, note: string) => {
     setMarks((current) => ({
@@ -416,7 +414,7 @@ export function AttendanceMarkingContent(props: AttendanceMarkingProps) {
                 <th className={styles.thIndex}>#</th>
                 <th className={styles.thStudent}>Student</th>
                 <th className={styles.thAdm}>Admission No.</th>
-                <th className={styles.thStatus}>Status</th>
+                <th className={styles.thStatus}>Attendance Rate</th>
                 <th className={styles.thNote}>Note</th>
               </tr>
             </thead>
@@ -475,32 +473,17 @@ export function AttendanceMarkingContent(props: AttendanceMarkingProps) {
                     </td>
 
                     <td className={styles.tdStatus}>
-                      <div className={`${styles.toggleGroup} ${status === "absent" ? styles.toggleGroupAbsent : status === "late" ? styles.toggleGroupLate : ""}`}>
-                        {(["present", "absent", "late", "excused"] as AttendanceStatus[]).map((itemStatus) => {
-                          const isActive = status === itemStatus;
-                          return (
-                            <button
-                              key={itemStatus}
-                              disabled={!canEdit}
-                              className={[
-                                styles.toggleBtn,
-                                isActive ? styles[`toggleActive_${itemStatus}`] : styles.toggleInactive,
-                              ].join(" ")}
-                              onClick={() => {
-                                const nextStatus = status === itemStatus ? null : itemStatus;
-                                setStatus(student.id, itemStatus);
-                                void saveStudentAttendance(student.id, nextStatus, mark?.note ?? "");
-                              }}
-                              type="button"
-                            >
-                              {itemStatus === "present" && isActive && <Check size={13} />}
-                              {itemStatus === "absent" && isActive && <X size={13} />}
-                              {itemStatus === "late" && isActive && <Clock size={13} />}
-                              {STATUS_LABELS[itemStatus]}
-                            </button>
-                          );
-                        })}
-                      </div>
+                      {(() => {
+                        const stat = attendanceRates[student.id];
+                        if (!stat) return <span className={styles.rateEmpty}>No record yet</span>;
+                        const tone = stat.rate >= 90 ? "good" : stat.rate >= 75 ? "mid" : "bad";
+                        return (
+                          <div className={styles.rateStat}>
+                            <span className={`${styles.ratePill} ${styles[`rate_${tone}`]}`}>{stat.rate}%</span>
+                            <span className={styles.rateSub}>{stat.total} day{stat.total === 1 ? "" : "s"} recorded</span>
+                          </div>
+                        );
+                      })()}
                     </td>
 
                     <td className={styles.tdNote}>
