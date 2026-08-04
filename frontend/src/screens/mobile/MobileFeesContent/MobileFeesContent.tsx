@@ -90,11 +90,17 @@ export function MobileFeesContent({
   // Arriving here from another screen's "Record Payment" link (Students
   // list, Student Detail, Dashboard) via ?studentId=&recordPayment=1 should
   // open straight into that student's payment sheet, not just land on the
-  // plain list — same behaviour as the desktop Fees screen.
-  const initialActionHandled = useRef(false);
+  // plain list — same behaviour as the desktop Fees screen. Keyed on the
+  // specific request (not just "has any auto-open ever fired") — this
+  // component stays mounted across client-side navigations within /fees
+  // (only these props change), so a plain one-shot boolean would open the
+  // sheet for the first link clicked and silently ignore every later one
+  // for a different student/invoice.
+  const initialActionHandled = useRef<string | null>(null);
   useEffect(() => {
-    if (initialActionHandled.current) return;
     if (!recordPaymentOnLoad) return;
+    const key = `${initialStudentId ?? ""}|${initialFeeRecordId ?? ""}`;
+    if (initialActionHandled.current === key) return;
 
     const targetRow =
       (initialFeeRecordId ? rows.find((row) => row.id === initialFeeRecordId) : null) ??
@@ -103,7 +109,7 @@ export function MobileFeesContent({
         : rows.find((row) => row.balance > 0));
 
     if (!targetRow) return;
-    initialActionHandled.current = true;
+    initialActionHandled.current = key;
     openPaySheet(targetRow);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);

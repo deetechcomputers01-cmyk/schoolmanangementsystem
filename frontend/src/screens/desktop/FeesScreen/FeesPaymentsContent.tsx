@@ -113,7 +113,7 @@ export function FeesPaymentsContent({
   const [recordingPayment, setRecordingPayment] = useState(false);
 
   const { showToast: showToastFn } = useToast();
-  const initialActionHandled = useRef(false);
+  const initialActionHandled = useRef<string | null>(null);
 
   function toast(message: string) {
     showToastFn(message);
@@ -149,8 +149,14 @@ export function FeesPaymentsContent({
   }
 
   useEffect(() => {
-    if (initialActionHandled.current) return;
     if (!recordPaymentOnLoad) return;
+    // Keyed on the specific request, not just "has any auto-open ever
+    // fired" — this component stays mounted across client-side navigations
+    // within /fees (only these props change), so a plain one-shot boolean
+    // would open the modal for the first ?recordPayment=1 link clicked and
+    // then silently ignore every later one for a different student/invoice.
+    const key = `${initialStudentId ?? ""}|${initialFeeRecordId ?? ""}`;
+    if (initialActionHandled.current === key) return;
 
     const targetRow =
       (initialFeeRecordId ? rows.find((row) => row.id === initialFeeRecordId) : null) ??
@@ -159,7 +165,7 @@ export function FeesPaymentsContent({
         : rows.find((row) => row.balance > 0));
 
     if (!targetRow) return;
-    initialActionHandled.current = true;
+    initialActionHandled.current = key;
     openPaymentModal(targetRow);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);
