@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { prisma, readFromDatabase } from "@backend/prisma";
+import { readFromDatabase } from "@backend/prisma";
+import { getStaffCategoryByUserId } from "@backend/services/staff.service";
 import { DashboardScreen } from "@/screens/desktop/DashboardScreen/DashboardScreen";
 
 export const dynamic = "force-dynamic";
@@ -18,14 +19,7 @@ export default async function DashboardPage() {
   const userId = hdrs.get("x-user-id");
 
   if (dbRole === "staff" && userId) {
-    const staffRecord = await readFromDatabase(
-      () => prisma.staff.findFirst({
-        where: { userId },
-        select: { staffCategory: true }
-      }),
-      null,
-    );
-    const cat = staffRecord?.staffCategory ?? "accounts";
+    const cat = await readFromDatabase(() => getStaffCategoryByUserId(userId), null) ?? "accounts";
     const portalPath = STAFF_CATEGORY_PORTALS[cat];
     if (portalPath) redirect(portalPath);
   }

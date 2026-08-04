@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { SessionUser } from "@/types/auth";
 import { assertCan } from "../auth/rbac";
 import { prisma } from "../prisma";
@@ -6,6 +7,16 @@ import { audit } from "./audit.service";
 export function listStaff() {
   return prisma.staff.findMany({ orderBy: { lastName: "asc" }, include: { user: true, subjects: true } });
 }
+
+// Both the (app) layout (every navigation, to route staff sub-roles to the
+// right nav) and the dashboard page (to redirect driver/caterer/nurse/
+// security staff to their own portal) need this same lookup for the same
+// request — React's cache() dedupes them into a single query per request
+// instead of two.
+export const getStaffCategoryByUserId = cache(async (userId: string) => {
+  const staff = await prisma.staff.findFirst({ where: { userId }, select: { staffCategory: true } });
+  return staff?.staffCategory ?? null;
+});
 
 export function getStaff(id: string) {
   return prisma.staff.findUnique({ where: { id }, include: { user: true, subjects: true } });
