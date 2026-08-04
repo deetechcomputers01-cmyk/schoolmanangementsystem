@@ -1,6 +1,7 @@
 import { getSettings } from "@backend/services/settings.service";
 import { listAcademicYears } from "@backend/services/academic.service";
 import { SettingsScreen } from "@/screens/desktop/SettingsScreen/SettingsScreen";
+import { MobileSettingsContent } from "@/screens/mobile/MobileSettingsContent/MobileSettingsContent";
 
 export default async function Page() {
   const [s, years] = await Promise.all([getSettings(), listAcademicYears()]);
@@ -20,23 +21,29 @@ export default async function Page() {
     })),
   }));
 
+  const initialSettings = {
+    name:         s.name,
+    address:      s.address,
+    motto:        s.motto,
+    phone:        s.phone,
+    email:        s.email,
+    logoUrl:      s.logoUrl ?? null,
+    letterheadUrl: s.letterheadUrl ?? null,
+    reportFooter: s.reportFooter,
+    timezone:     s.timezone,
+    extra:        (s.extra ?? null) as Record<string, unknown> | null,
+    gradingScale: s.gradingScale as { grade: string; min: number; max: number; remark?: string }[],
+    updatedAt:    s.updatedAt.toISOString(),
+  };
+
   return (
-    <SettingsScreen
-      initialSettings={{
-        name:         s.name,
-        address:      s.address,
-        motto:        s.motto,
-        phone:        s.phone,
-        email:        s.email,
-        logoUrl:      s.logoUrl ?? null,
-        letterheadUrl: s.letterheadUrl ?? null,
-        reportFooter: s.reportFooter,
-        timezone:     s.timezone,
-        extra:        (s.extra ?? null) as Record<string, unknown> | null,
-        gradingScale: s.gradingScale as { grade: string; min: number; max: number; remark?: string }[],
-        updatedAt:    s.updatedAt.toISOString(),
-      }}
-      academicYears={academicYears}
-    />
+    <>
+      <div className="mobileOnly">
+        <MobileSettingsContent initialSettings={initialSettings} academicYears={academicYears} />
+      </div>
+      <div className="desktopOnly">
+        <SettingsScreen initialSettings={initialSettings} academicYears={academicYears} />
+      </div>
+    </>
   );
 }

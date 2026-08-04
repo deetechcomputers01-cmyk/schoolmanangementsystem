@@ -95,7 +95,7 @@ function ClassSection({ cls, term }: { cls: ClassData; term: string | null }) {
                       <td className={`${styles.td} ${styles.tdRight}`}>
                         <div className={styles.actionsCell}>
                           <Link href={`/report-cards/${student.id}`} className={styles.viewBtn}>View</Link>
-                          <Link href={`/report-cards/${student.id}`} target="_blank" className={styles.printBtn} title="Print">
+                          <Link href={`/report-cards/${student.id}`} className={styles.printBtn} title="Print">
                             <Printer size={15} />
                           </Link>
                         </div>

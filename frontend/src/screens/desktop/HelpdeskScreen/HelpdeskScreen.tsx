@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   LifeBuoy, Plus, AlertTriangle, Clock, CheckCircle, Users, MessageSquare,
-  Filter, ChevronDown, X, Send, Paperclip, Lock, ExternalLink, RefreshCw,
-  Tag, UserCog, ArrowUpRight, BookOpen, ChevronRight, Inbox, BarChart2,
+  X, Send, Paperclip, Lock, RefreshCw,
+  UserCog, ArrowUpRight, BookOpen, Inbox,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import styles from "./HelpdeskScreen.module.css";
 
 export type TicketStatus   = "open" | "in_progress" | "resolved" | "closed" | "escalated";
 export type TicketPriority = "urgent" | "high" | "medium" | "low";
@@ -83,18 +84,18 @@ export const KB_TEMPLATES = [
 
 export function PriorityBadge({ p }: { p: TicketPriority }) {
   const c = PRIORITY_COLOR[p];
-  return <span style={{ background: c.bg, color: c.text, padding: "2px 8px", borderRadius: 999, fontSize: "var(--text-xs)", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 3 }}>{c.label}</span>;
+  return <span className={styles.priorityPill} style={{ background: c.bg, color: c.text }}>{c.label}</span>;
 }
 
 export function StatusBadge({ s }: { s: TicketStatus }) {
   const c = STATUS_COLOR[s];
-  return <span style={{ background: c.bg, color: c.text, padding: "2px 8px", borderRadius: 999, fontSize: "var(--text-xs)", fontWeight: 700 }}>{c.label}</span>;
+  return <span className={styles.statusPill} style={{ background: c.bg, color: c.text }}>{c.label}</span>;
 }
 
 export function Avatar({ name, size = 32 }: { name: string; size?: number }) {
   const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div style={{ width: size, height: size, borderRadius: "50%", background: "#244c5a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.35, fontWeight: 700, flexShrink: 0 }}>
+    <div className={styles.msgAvatar} style={{ width: size, height: size, fontSize: size * 0.32 }}>
       {initials}
     </div>
   );
@@ -104,6 +105,12 @@ export function fmtDate(d: string) {
   return new Date(d).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 }
 
+/** Ticket assignment (assigneeId) is a real, working field on
+ *  PATCH /api/helpdesk/tickets/:id — but there is still no picker UI to
+ *  drive it (would need a properly-scoped "assignable staff" list endpoint,
+ *  since /api/admin/users is super_admin-only and Helpdesk also allows
+ *  principal). Shown read-only here; wiring a picker is a follow-up, not
+ *  part of this visual refresh. */
 export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContentProps) {
   const [tickets, setTickets]         = useState<Ticket[]>(initialTickets);
   const [stats, setStats]             = useState<Stats>(initialStats);
@@ -133,11 +140,11 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
 
   const selected = tickets.find(t => t.id === selectedId) ?? tickets[0];
 
-  const countBy = (key: string, val: string) => stats.byStatus?.find((s: any) => s[key] === val)?._count._all ?? stats.byStatus?.find((s: any) => s.status === val)?._count._all ?? 0;
-
   const openCount    = (stats.byStatus ?? []).find(s => s.status === "open")?._count._all ?? 0;
   const urgentCount  = (stats.byPriority ?? []).find(p => p.priority === "urgent")?._count._all ?? 0;
   const resolvedCount= (stats.byStatus ?? []).find(s => s.status === "resolved")?._count._all ?? 0;
+  const escalatedCount = (stats.byStatus ?? []).find(s => s.status === "escalated")?._count._all ?? 0;
+  const inProgressCount = (stats.byStatus ?? []).find(s => s.status === "in_progress")?._count._all ?? 0;
 
   const getQueueCount = (q: string) => (stats.byQueue ?? []).find(b => b.queue === q)?._count._all ?? 0;
 
@@ -232,74 +239,47 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
     }
   }
 
-  const border = "1px solid #D8DDD8";
-  const cardBg = "#ffffff";
-  const text   = "#141d23";
-  const muted  = "#41484b";
-  const panelBg = "#f5faff";
-
   const queues: Queue[] = ["parent", "teacher", "it", "finance", "maintenance", "general"];
 
   return (
-    <div style={{ display: "flex", height: "100%", fontFamily: "Inter, sans-serif", fontSize: "var(--text-sm)" }}>
+    <div className={styles.page}>
 
-      {/* ── Left panel ─────────────────────────────────────────────────────── */}
-      <aside style={{ width: 210, flexShrink: 0, background: "#e6eff8", borderRight: border, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-
-        <div style={{ padding: "12px 10px 8px" }}>
-          <p style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>VIEWS</p>
-          {([
-            { id: "all",    label: "All Tickets", count: tickets.length },
-            { id: "urgent", label: "Urgent",       count: urgentCount },
-          ] as const).map(v => (
-            <button key={v.id} onClick={() => setView(v.id)} style={{
-              display: "flex", justifyContent: "space-between", width: "100%", padding: "7px 10px", borderRadius: 6,
-              border: "none", cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: view === v.id ? 700 : 500, marginBottom: 2,
-              background: view === v.id ? "#c9ecc4" : "transparent",
-              color: view === v.id ? "#314d31" : muted,
-            }}>
-              <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                {v.id === "urgent" ? <AlertTriangle size={13} /> : <Inbox size={13} />}
-                {v.label}
-              </span>
-              <span style={{ fontSize: "var(--text-xs)" }}>{v.count}</span>
-            </button>
-          ))}
+      {/* ── Left panel ─────────────────────────────────────────────────── */}
+      <aside className={styles.leftPane}>
+        <div className={styles.paneSection}>
+          <p className={styles.paneLabel}>Views</p>
+          <button className={`${styles.viewBtn} ${view === "all" ? styles.viewBtnActive : ""}`} onClick={() => setView("all")}>
+            <span className={styles.viewLabel}><Inbox size={13} /> All Tickets</span>
+            <span className={styles.viewCount}>{tickets.length}</span>
+          </button>
+          <button className={`${styles.viewBtn} ${view === "urgent" ? styles.viewBtnActive : ""}`} onClick={() => setView("urgent")}>
+            <span className={styles.viewLabel}><AlertTriangle size={13} /> Urgent</span>
+            <span className={styles.urgentCount}>{urgentCount}</span>
+          </button>
         </div>
 
-        <div style={{ padding: "8px 10px", borderTop: border }}>
-          <p style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>QUEUES</p>
-          <button onClick={() => setQueueFilter("")} style={{
-            display: "flex", justifyContent: "space-between", width: "100%", padding: "7px 10px", borderRadius: 6,
-            border: "none", cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: queueFilter === "" ? 700 : 400, marginBottom: 2,
-            background: queueFilter === "" ? "#c9ecc4" : "transparent",
-            color: queueFilter === "" ? "#314d31" : muted,
-          }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 6 }}><Users size={12} />All Queues</span>
-            <span>{tickets.length}</span>
+        <div className={styles.paneSection}>
+          <p className={styles.paneLabel}>Queues</p>
+          <button className={`${styles.queueBtn} ${queueFilter === "" ? styles.queueBtnActive : ""}`} onClick={() => setQueueFilter("")}>
+            <span className={styles.viewLabel}><Users size={12} /> All Queues</span>
+            <span className={styles.queueCount}>{tickets.length}</span>
           </button>
           {queues.map(q => (
-            <button key={q} onClick={() => setQueueFilter(q === queueFilter ? "" : q)} style={{
-              display: "flex", justifyContent: "space-between", width: "100%", padding: "6px 10px", borderRadius: 6,
-              border: "none", cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: queueFilter === q ? 700 : 400, marginBottom: 2,
-              background: queueFilter === q ? "#c9ecc4" : "transparent",
-              color: queueFilter === q ? "#314d31" : muted,
-            }}>
-              <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: QUEUE_COLOR[q], display: "inline-block" }} />
+            <button key={q} className={`${styles.queueBtn} ${queueFilter === q ? styles.queueBtnActive : ""}`} onClick={() => setQueueFilter(q === queueFilter ? "" : q)}>
+              <span className={styles.viewLabel}>
+                <span className={styles.queueDot} style={{ background: QUEUE_COLOR[q] }} />
                 {q.charAt(0).toUpperCase() + q.slice(1)}
               </span>
-              <span>{getQueueCount(q)}</span>
+              <span className={styles.queueCount}>{getQueueCount(q)}</span>
             </button>
           ))}
         </div>
 
-        <div style={{ padding: "8px 10px", borderTop: border, marginTop: "auto" }}>
-          <p style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: muted, textTransform: "uppercase", marginBottom: 6 }}>FILTERS</p>
-          <div style={{ marginBottom: 6 }}>
-            <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: text, display: "block", marginBottom: 2 }}>Priority</label>
-            <select value={prioFilter} onChange={e => setPrioFilter(e.target.value as TicketPriority | "")}
-              style={{ width: "100%", padding: "4px 6px", border, borderRadius: 4, fontSize: "var(--text-xs)", background: panelBg }}>
+        <div className={styles.paneSection}>
+          <p className={styles.paneLabel}>Filters</p>
+          <div className={styles.filterField}>
+            <label>Priority</label>
+            <select className={styles.filterSelect} value={prioFilter} onChange={e => setPrioFilter(e.target.value as TicketPriority | "")}>
               <option value="">All</option>
               <option value="urgent">Urgent</option>
               <option value="high">High</option>
@@ -307,10 +287,9 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
               <option value="low">Low</option>
             </select>
           </div>
-          <div>
-            <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: text, display: "block", marginBottom: 2 }}>Status</label>
-            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value as TicketStatus | "")}
-              style={{ width: "100%", padding: "4px 6px", border, borderRadius: 4, fontSize: "var(--text-xs)", background: panelBg }}>
+          <div className={styles.filterField}>
+            <label>Status</label>
+            <select className={styles.filterSelect} value={statusFilter} onChange={e => setStatusFilter(e.target.value as TicketStatus | "")}>
               <option value="">All</option>
               <option value="open">Open</option>
               <option value="in_progress">In Progress</option>
@@ -322,184 +301,144 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
         </div>
       </aside>
 
-      {/* ── Main content ───────────────────────────────────────────────────── */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      {/* ── Main content ───────────────────────────────────────────────── */}
+      <div className={styles.main}>
 
-        {/* Header */}
-        <div style={{ padding: "16px 20px 0", flexShrink: 0 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+        <div className={styles.mainHeader}>
+          <div className={styles.headerTop}>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <LifeBuoy size={22} color="#073543" />
-                <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 700, color: text, margin: 0 }}>Support Tickets</h1>
+              <div className={styles.headerTitleWrap}>
+                <LifeBuoy size={20} color="var(--clr-app-accent)" />
+                <h1 className={styles.headerTitle}>Support Tickets</h1>
               </div>
-              <p style={{ color: muted, marginTop: 3, fontSize: "var(--text-xs)" }}>Track and resolve individual issues raised by staff and guardians — each ticket is a two-way conversation through to resolution.</p>
+              <p className={styles.headerSubtitle}>Track and resolve individual issues raised by staff and guardians.</p>
             </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={refreshTickets} title="Refresh" style={{ padding: "7px 10px", background: "transparent", border, borderRadius: 4, cursor: "pointer", color: muted, display: "flex", alignItems: "center" }}>
-                <RefreshCw size={14} />
-              </button>
-              <button onClick={() => setShowNewModal(true)} style={{ padding: "8px 16px", background: "#073543", color: "#fff", border: "none", borderRadius: 4, cursor: "pointer", fontWeight: 600, fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 6 }}>
-                <Plus size={15} /> New Ticket
-              </button>
+            <div className={styles.headerActions}>
+              <button className={styles.refreshBtn} onClick={refreshTickets} title="Refresh"><RefreshCw size={14} /></button>
+              <button className={styles.newTicketBtn} onClick={() => setShowNewModal(true)}><Plus size={14} /> New Ticket</button>
             </div>
           </div>
 
-          {/* Stats strip */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(8,1fr)", gap: 8, marginBottom: 12 }}>
+          <div className={styles.statGrid}>
             {[
-              { icon: <Inbox size={14} />,          label: "Open",           value: openCount,     color: "#244c5a" },
-              { icon: <AlertTriangle size={14} />,   label: "Urgent",         value: urgentCount,   color: "#93000a" },
-              { icon: <ArrowUpRight size={14} />,    label: "Escalated",      value: (stats.byStatus ?? []).find(s => s.status === "escalated")?._count._all ?? 0, color: "#B64B4B" },
-              { icon: <CheckCircle size={14} />,     label: "Resolved Today", value: resolvedCount, color: "#486647" },
-              { icon: <Users size={14} />,           label: "Parent Queue",   value: getQueueCount("parent") },
-              { icon: <Users size={14} />,           label: "Teacher Queue",  value: getQueueCount("teacher") },
-              { icon: <Tag size={14} />,             label: "IT Queue",       value: getQueueCount("it") },
-              { icon: <BarChart2 size={14} />,       label: "In Progress",    value: (stats.byStatus ?? []).find(s => s.status === "in_progress")?._count._all ?? 0 },
+              { icon: <Inbox size={13} />,        label: "Open",           value: openCount },
+              { icon: <AlertTriangle size={13} />, label: "Urgent",         value: urgentCount, tone: styles.statTileUrgent },
+              { icon: <ArrowUpRight size={13} />,  label: "Escalated",      value: escalatedCount, tone: styles.statTileEscalated },
+              { icon: <CheckCircle size={13} />,   label: "Resolved",       value: resolvedCount, tone: styles.statTileResolved },
+              { icon: <Users size={13} />,         label: "Parent Queue",   value: getQueueCount("parent") },
+              { icon: <Users size={13} />,         label: "Teacher Queue",  value: getQueueCount("teacher") },
+              { icon: <Users size={13} />,         label: "IT Queue",       value: getQueueCount("it") },
+              { icon: <MessageSquare size={13} />, label: "In Progress",    value: inProgressCount },
             ].map((s, i) => (
-              <div key={i} style={{ background: cardBg, border, borderRadius: 6, padding: "8px 10px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 4, color: s.color ?? muted }}>{s.icon}</div>
-                <div style={{ fontSize: "var(--text-xl)", fontWeight: 700, color: s.color ?? text }}>{s.value}</div>
-                <div style={{ fontSize: "var(--text-xs)", color: muted, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>{s.label}</div>
+              <div key={i} className={`${styles.statTile} ${s.tone ?? ""}`}>
+                <div className={styles.statTileLabel}>{s.label}</div>
+                <div className={styles.statTileValue}>{s.value}</div>
               </div>
             ))}
           </div>
 
-          {/* SLA breach warning */}
           {tickets.some(t => t.priority === "urgent" && t.status === "open") && (
-            <div style={{ background: "#ffdad6", border: "1px solid #B64B4B", borderRadius: 6, padding: "8px 14px", marginBottom: 8, fontSize: "var(--text-xs)", color: "#93000a", display: "flex", alignItems: "center", gap: 8 }}>
+            <div className={styles.warnBanner}>
               <AlertTriangle size={14} />
-              <strong>{tickets.filter(t => t.priority === "urgent" && t.status === "open").length} urgent ticket(s)</strong> are open and require immediate attention.
+              <span><strong>{tickets.filter(t => t.priority === "urgent" && t.status === "open").length} urgent ticket(s)</strong> are open and require immediate attention.</span>
             </div>
           )}
         </div>
 
-        {/* Body: ticket list + detail */}
-        <div style={{ flex: 1, overflow: "hidden", display: "flex" }}>
+        <div className={styles.body}>
 
-          {/* Ticket list */}
-          <div style={{ width: 380, flexShrink: 0, borderRight: border, overflowY: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "var(--text-xs)" }}>
-              <thead style={{ position: "sticky", top: 0, background: panelBg, zIndex: 1 }}>
-                <tr>
-                  {["ID", "Subject / Requester", "Status", "Priority"].map(h => (
-                    <th key={h} style={{ padding: "9px 12px", textAlign: "left", fontSize: "var(--text-xs)", fontWeight: 600, color: muted, borderBottom: border }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.length === 0 && (
-                  <tr><td colSpan={4} style={{ padding: 32, textAlign: "center", color: muted }}>
-                    <LifeBuoy size={28} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
-                    No tickets match the current filter.
-                  </td></tr>
-                )}
-                {filtered.map(t => (
-                  <tr key={t.id} onClick={() => setSelectedId(t.id)} style={{
-                    borderBottom: border, cursor: "pointer",
-                    background: selectedId === t.id ? "#e6eff8" : "transparent",
-                  }}>
-                    <td style={{ padding: "9px 12px", fontFamily: "monospace", fontSize: "var(--text-xs)", fontWeight: 700, color: "#073543", whiteSpace: "nowrap" }}>{t.ticketNo}</td>
-                    <td style={{ padding: "9px 12px", maxWidth: 160 }}>
-                      <div style={{ fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "var(--text-xs)" }}>{t.subject}</div>
-                      <div style={{ fontSize: "var(--text-xs)", color: muted }}>{t.requester.name} · <span style={{ textTransform: "capitalize" }}>{t.queue}</span></div>
-                    </td>
-                    <td style={{ padding: "9px 12px" }}><StatusBadge s={t.status} /></td>
-                    <td style={{ padding: "9px 12px" }}><PriorityBadge p={t.priority} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className={styles.listPane}>
+            <div className={styles.listHeaderRow}>
+              <span className={styles.listHeaderId}>ID</span>
+              <span className={styles.listHeaderSubject}>Subject / Requester</span>
+              <span className={styles.listHeaderStatus}>Status</span>
+            </div>
+            {filtered.length === 0 && (
+              <div className={styles.emptyList}>
+                <LifeBuoy size={26} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
+                No tickets match the current filter.
+              </div>
+            )}
+            {filtered.map(t => (
+              <button key={t.id} onClick={() => setSelectedId(t.id)} className={`${styles.listRow} ${selectedId === t.id ? styles.listRowActive : ""}`}>
+                <span className={styles.rowId}>{t.ticketNo}</span>
+                <span className={styles.rowMain}>
+                  <div className={styles.rowSubject}>{t.subject}</div>
+                  <div className={styles.rowMeta}>{t.requester.name} • {t.queue}</div>
+                </span>
+                <span className={styles.rowBadges}>
+                  <StatusBadge s={t.status} />
+                  <PriorityBadge p={t.priority} />
+                </span>
+              </button>
+            ))}
           </div>
 
-          {/* Ticket detail pane */}
           {selected ? (
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-
-              {/* Ticket header */}
-              <div style={{ padding: "12px 20px", borderBottom: border, flexShrink: 0, background: panelBg }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", marginBottom: 5 }}>
-                      <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#073543", fontSize: "var(--text-xs)" }}>{selected.ticketNo}</span>
-                      <StatusBadge s={selected.status} />
-                      <PriorityBadge p={selected.priority} />
-                      <span style={{ fontSize: "var(--text-xs)", background: "#e6eff8", color: muted, padding: "2px 7px", borderRadius: 999, textTransform: "capitalize" }}>{selected.queue} queue</span>
-                    </div>
-                    <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: text, margin: "0 0 4px" }}>{selected.subject}</h3>
-                    <div style={{ fontSize: "var(--text-xs)", color: muted }}>
-                      <span style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                        <Users size={12} />
-                        {selected.requester.name}
-                        <span style={{ color: "#D8DDD8" }}>|</span>
-                        <Clock size={12} />
-                        {fmtDate(selected.createdAt)}
-                        {selected.assignee && <><span style={{ color: "#D8DDD8" }}>|</span><UserCog size={12} />Assigned: {selected.assignee.name}</>}
-                      </span>
-                    </div>
+            <div className={styles.detailPane}>
+              <div className={styles.detailHeader}>
+                <div className={styles.detailTopRow}>
+                  <div className={styles.badgeRow}>
+                    <span className={styles.ticketNoChip}>{selected.ticketNo}</span>
+                    <StatusBadge s={selected.status} />
+                    <PriorityBadge p={selected.priority} />
+                    <span className={styles.queueChip}>
+                      <span className={styles.queueDot} style={{ background: QUEUE_COLOR[selected.queue] }} />
+                      {selected.queue} queue
+                    </span>
                   </div>
-                  <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                    <button onClick={() => handleStatusChange(selected.id, "escalated")}
-                      style={{ padding: "5px 12px", border: "1px solid #B64B4B", color: "#B64B4B", background: "transparent", borderRadius: 4, cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                  <div className={styles.detailActions}>
+                    <button className={styles.escalateBtn} onClick={() => handleStatusChange(selected.id, "escalated")}>
                       <ArrowUpRight size={12} />Escalate
                     </button>
-                    <button onClick={() => handleStatusChange(selected.id, "resolved")}
-                      style={{ padding: "5px 12px", background: "#073543", color: "#fff", border: "none", borderRadius: 4, cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                    <button className={styles.resolveBtn} onClick={() => handleStatusChange(selected.id, "resolved")}>
                       <CheckCircle size={12} />Resolve
                     </button>
-                    <button onClick={() => handleStatusChange(selected.id, "closed")}
-                      style={{ padding: "5px 12px", background: "transparent", color: muted, border, borderRadius: 4, cursor: "pointer", fontSize: "var(--text-xs)" }}>
-                      <X size={12} style={{ display: "inline" }} />
+                    <button className={styles.closeBtn} onClick={() => handleStatusChange(selected.id, "closed")} title="Close Ticket">
+                      <X size={14} />
                     </button>
                   </div>
                 </div>
 
-                {/* Description (if any) */}
-                {selected.description && (
-                  <div style={{ marginTop: 8, padding: "8px 12px", background: "#e6eff8", borderRadius: 6, fontSize: "var(--text-xs)", color: text, borderLeft: "3px solid #073543" }}>
-                    {selected.description}
-                  </div>
-                )}
+                <h3 className={styles.detailTitle}>{selected.subject}</h3>
+                <div className={styles.detailMetaRow}>
+                  <span className={styles.detailMetaItem}><Users size={12} /> Requester: <strong>{selected.requester.name}</strong></span>
+                  <span className={styles.detailMetaItem}><Clock size={12} /> {fmtDate(selected.createdAt)}</span>
+                  {selected.assignee && <span className={styles.detailMetaItem}><UserCog size={12} /> Assignee: <strong>{selected.assignee.name}</strong></span>}
+                </div>
+
+                {selected.description && <div className={styles.descBlock}>{selected.description}</div>}
               </div>
 
-              {/* Sub-tabs */}
-              <div style={{ display: "flex", borderBottom: border, padding: "0 20px", flexShrink: 0 }}>
+              <div className={styles.tabs}>
                 {(["timeline", "internal", "files"] as ActiveTab[]).map(t => (
-                  <button key={t} onClick={() => setActiveTab(t)} style={{
-                    padding: "8px 14px", border: "none", background: "transparent", cursor: "pointer", fontSize: "var(--text-xs)", fontWeight: 600, textTransform: "capitalize",
-                    color: activeTab === t ? "#073543" : muted,
-                    borderBottom: activeTab === t ? "2px solid #073543" : "2px solid transparent",
-                    display: "flex", alignItems: "center", gap: 5,
-                  }}>
+                  <button key={t} onClick={() => setActiveTab(t)} className={`${styles.tabBtn} ${activeTab === t ? styles.tabBtnActive : ""}`}>
                     {t === "timeline" ? <MessageSquare size={12} /> : t === "internal" ? <Lock size={12} /> : <Paperclip size={12} />}
                     {t.charAt(0).toUpperCase() + t.slice(1)}
                     {t === "internal" && selected.messages.filter(m => m.isInternal).length > 0 &&
-                      <span style={{ background: "#ffddb7", color: "#653e00", borderRadius: 999, padding: "0 5px", fontSize: "var(--text-xs)" }}>{selected.messages.filter(m => m.isInternal).length}</span>}
+                      <span className={styles.tabBadge}>{selected.messages.filter(m => m.isInternal).length}</span>}
                   </button>
                 ))}
               </div>
 
-              {/* Messages */}
-              <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px", display: "flex", flexDirection: "column", gap: 14 }}>
+              <div className={styles.messages}>
                 {activeTab === "timeline" && (
                   selected.messages.filter(m => !m.isInternal).length === 0
-                    ? <div style={{ textAlign: "center", color: muted, paddingTop: 32 }}>
-                        <MessageSquare size={28} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
+                    ? <div className={styles.emptyMsg}>
+                        <MessageSquare size={26} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
                         No messages yet. Send the first reply below.
                       </div>
                     : selected.messages.filter(m => !m.isInternal).map((m) => {
                       const isStaff = m.from.role === "super_admin" || m.from.role === "principal" || m.from.role === "staff";
                       return (
-                        <div key={m.id} style={{ display: "flex", gap: 10, flexDirection: isStaff ? "row-reverse" : "row" }}>
+                        <div key={m.id} className={`${styles.msgRow} ${isStaff ? styles.msgRowStaff : ""}`}>
                           <Avatar name={m.from.name} />
-                          <div style={{ maxWidth: "68%" }}>
-                            <div style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: 4, flexDirection: isStaff ? "row-reverse" : "row" }}>
-                              <span style={{ fontWeight: 600, fontSize: "var(--text-xs)" }}>{m.from.name}</span>
-                              <span style={{ fontSize: "var(--text-xs)", color: muted }}>{fmtDate(m.createdAt)}</span>
+                          <div className={styles.msgBubbleWrap}>
+                            <div className={styles.msgHead}>
+                              <span className={styles.msgAuthor}>{m.from.name}</span>
+                              <span className={styles.msgTime}>{fmtDate(m.createdAt)}</span>
                             </div>
-                            <div style={{ background: isStaff ? "#073543" : "#f0f4f8", color: isStaff ? "#fff" : text, padding: "10px 14px", borderRadius: 8, fontSize: "var(--text-xs)", lineHeight: 1.6 }}>
-                              {m.body}
-                            </div>
+                            <div className={`${styles.msgBubble} ${isStaff ? styles.msgBubbleStaff : ""}`}>{m.body}</div>
                           </div>
                         </div>
                       );
@@ -508,74 +447,60 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
 
                 {activeTab === "internal" && (
                   selected.messages.filter(m => m.isInternal).length === 0
-                    ? <div style={{ padding: 16, background: "#fffde7", borderRadius: 6, border: "1px solid #E8A957", color: "#653e00", fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 8 }}>
-                        <Lock size={14} /> Internal notes are visible only to staff. None added yet.
-                      </div>
+                    ? <div className={styles.internalEmpty}><Lock size={14} /> Internal notes are visible only to staff. None added yet.</div>
                     : selected.messages.filter(m => m.isInternal).map(m => (
-                      <div key={m.id} style={{ padding: 12, background: "#fffde7", borderRadius: 6, border: "1px solid #E8A957" }}>
-                        <div style={{ fontSize: "var(--text-xs)", color: "#653e00", marginBottom: 4 }}><Lock size={11} style={{ display: "inline", marginRight: 4 }} />{m.from.name} · {fmtDate(m.createdAt)}</div>
-                        <div style={{ fontSize: "var(--text-xs)", color: text }}>{m.body}</div>
+                      <div key={m.id} className={styles.internalNote}>
+                        <div className={styles.internalNoteHead}><Lock size={11} />{m.from.name} · {fmtDate(m.createdAt)}</div>
+                        <div className={styles.internalNoteBody}>{m.body}</div>
                       </div>
                     ))
                 )}
 
                 {activeTab === "files" && (
-                  <div style={{ color: muted, fontSize: "var(--text-xs)", textAlign: "center", paddingTop: 32 }}>
-                    <Paperclip size={28} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
+                  <div className={styles.filesEmpty}>
+                    <Paperclip size={26} style={{ opacity: 0.3, display: "block", margin: "0 auto 8px" }} />
                     No files attached to this ticket.
                     <br />
-                    <button onClick={() => showMsg("File upload coming soon.")} style={{ marginTop: 10, padding: "6px 14px", border, borderRadius: 4, cursor: "pointer", fontSize: "var(--text-xs)" }}>
-                      Attach File
-                    </button>
+                    <button onClick={() => showMsg("File upload coming soon.")}>Attach File</button>
                   </div>
                 )}
               </div>
 
-              {/* Reply composer */}
-              <div style={{ borderTop: border, padding: "12px 20px", flexShrink: 0, background: panelBg }}>
-                <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "var(--text-xs)", cursor: "pointer", color: isInternal ? "#653e00" : muted }}>
-                    <input type="checkbox" checked={isInternal} onChange={e => setIsInternal(e.target.checked)} />
-                    <Lock size={12} />Internal note (staff only)
-                  </label>
-                </div>
-                <textarea
-                  value={replyText}
-                  onChange={e => setReplyText(e.target.value)}
-                  placeholder={isInternal ? "Add an internal note..." : "Type your reply to the requester..."}
-                  style={{
-                    width: "100%", padding: "10px 12px", border: isInternal ? "1px solid #E8A957" : border,
-                    borderRadius: 6, fontSize: "var(--text-xs)", resize: "none", minHeight: 76, fontFamily: "Inter, sans-serif",
-                    boxSizing: "border-box", background: isInternal ? "#fffde7" : "#fff",
-                  }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
-                  <div style={{ display: "flex", gap: 6 }}>
-                    <button onClick={() => setShowKb(true)} style={{ padding: "5px 10px", border, borderRadius: 4, background: "transparent", color: muted, cursor: "pointer", fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 4 }}>
-                      <BookOpen size={12} />KB Template
-                    </button>
-                    <button onClick={() => showMsg("File attach coming soon.")} style={{ padding: "5px 10px", border, borderRadius: 4, background: "transparent", color: muted, cursor: "pointer", fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 4 }}>
-                      <Paperclip size={12} />Attach
-                    </button>
-                  </div>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <select value={nextStatus} onChange={e => setNextStatus(e.target.value as TicketStatus)}
-                      style={{ padding: "5px 8px", border, borderRadius: 4, fontSize: "var(--text-xs)", background: "#f0f4f8" }}>
-                      <option value="open">Keep Open</option>
-                      <option value="in_progress">Mark In Progress</option>
-                      <option value="resolved">Mark Resolved</option>
-                      <option value="closed">Close</option>
-                    </select>
-                    <button onClick={handleSendReply} disabled={loading || !replyText.trim()}
-                      style={{ padding: "7px 20px", background: loading ? "#ccc" : "#073543", color: "#fff", border: "none", borderRadius: 4, cursor: loading ? "not-allowed" : "pointer", fontWeight: 600, fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 6 }}>
-                      <Send size={13} />{loading ? "Sending…" : "Send Reply"}
-                    </button>
+              <div className={styles.composerWrap}>
+                <div className={`${styles.composerBox} ${isInternal ? styles.composerBoxInternal : ""}`}>
+                  <textarea
+                    className={styles.composerTextarea}
+                    value={replyText}
+                    onChange={e => setReplyText(e.target.value)}
+                    placeholder={isInternal ? "Add an internal note..." : "Type your reply to the requester..."}
+                  />
+                  <div className={styles.composerFooter}>
+                    <div className={styles.composerLeft}>
+                      <label className={`${styles.internalToggle} ${isInternal ? styles.internalToggleActive : ""}`}>
+                        <input type="checkbox" checked={isInternal} onChange={e => setIsInternal(e.target.checked)} />
+                        <Lock size={12} />Internal note
+                      </label>
+                      <span className={styles.composerDivider} />
+                      <button className={styles.composerIconBtn} onClick={() => setShowKb(true)}><BookOpen size={12} />KB Template</button>
+                      <button className={styles.composerIconBtn} onClick={() => showMsg("File attach coming soon.")}><Paperclip size={12} />Attach</button>
+                    </div>
+                    <div className={styles.composerRight}>
+                      <select className={styles.statusSelect} value={nextStatus} onChange={e => setNextStatus(e.target.value as TicketStatus)}>
+                        <option value="open">Keep Open</option>
+                        <option value="in_progress">Mark In Progress</option>
+                        <option value="resolved">Mark Resolved</option>
+                        <option value="closed">Close</option>
+                      </select>
+                      <button className={styles.sendBtn} onClick={handleSendReply} disabled={loading || !replyText.trim()}>
+                        <Send size={13} />{loading ? "Sending…" : "Send Reply"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: muted, flexDirection: "column", gap: 8 }}>
+            <div className={styles.emptyDetail}>
               <LifeBuoy size={40} style={{ opacity: 0.2 }} />
               <p>Select a ticket to view its details</p>
             </div>
@@ -583,19 +508,16 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
         </div>
       </div>
 
-      {/* ── KB Templates Modal ──────────────────────────────────────────────── */}
+      {/* ── KB Templates Modal ──────────────────────────────────────────── */}
       {showKb && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(23,32,38,0.4)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: cardBg, borderRadius: 8, padding: 24, width: 500, maxWidth: "90vw" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: text, margin: 0, display: "flex", alignItems: "center", gap: 7 }}><BookOpen size={16} />Knowledge Base Templates</h3>
-              <button onClick={() => setShowKb(false)} style={{ background: "none", border: "none", cursor: "pointer", color: muted }}><X size={18} /></button>
+        <div className={styles.modalBackdrop} onClick={() => setShowKb(false)}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle}><BookOpen size={16} />Knowledge Base Templates</h3>
+              <button className={styles.modalCloseBtn} onClick={() => setShowKb(false)}><X size={18} /></button>
             </div>
             {KB_TEMPLATES.map((t, i) => (
-              <div key={i} onClick={() => { setReplyText(t.replace("#TICKET_NO", selected?.ticketNo ?? "")); setShowKb(false); }}
-                style={{ padding: "10px 12px", border, borderRadius: 6, marginBottom: 8, cursor: "pointer", fontSize: "var(--text-xs)", background: "#f5faff", transition: "background 0.15s" }}
-                onMouseEnter={e => (e.currentTarget.style.background = "#e6eff8")}
-                onMouseLeave={e => (e.currentTarget.style.background = "#f5faff")}>
+              <div key={i} className={styles.kbItem} onClick={() => { setReplyText(t.replace("#TICKET_NO", selected?.ticketNo ?? "")); setShowKb(false); }}>
                 {t}
               </div>
             ))}
@@ -603,57 +525,44 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
         </div>
       )}
 
-      {/* ── New Ticket Modal ────────────────────────────────────────────────── */}
+      {/* ── New Ticket Modal ────────────────────────────────────────────── */}
       {showNewModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(23,32,38,0.4)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: cardBg, borderRadius: 8, padding: 28, width: 480, maxWidth: "90vw" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: text, margin: 0, display: "flex", alignItems: "center", gap: 7 }}><Plus size={16} />New Support Ticket</h3>
-              <button onClick={() => setShowNewModal(false)} style={{ background: "none", border: "none", cursor: "pointer", color: muted }}><X size={18} /></button>
+        <div className={styles.modalBackdrop} onClick={() => setShowNewModal(false)}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle}><Plus size={16} />New Support Ticket</h3>
+              <button className={styles.modalCloseBtn} onClick={() => setShowNewModal(false)}><X size={18} /></button>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <div>
-                <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, display: "block", marginBottom: 4 }}>Subject *</label>
-                <input value={nSubject} onChange={e => setNSubject(e.target.value)} placeholder="Brief description of the issue"
-                  style={{ width: "100%", padding: "8px 10px", border, borderRadius: 4, fontSize: "var(--text-xs)", boxSizing: "border-box" }} />
+            <div className={styles.formField}>
+              <label>Subject *</label>
+              <input className={styles.formInput} value={nSubject} onChange={e => setNSubject(e.target.value)} placeholder="Brief description of the issue" />
+            </div>
+            <div className={styles.formField}>
+              <label>Description</label>
+              <textarea className={styles.formTextarea} value={nDesc} onChange={e => setNDesc(e.target.value)} placeholder="Provide more details..." />
+            </div>
+            <div className={styles.formRow}>
+              <div className={styles.formField} style={{ flex: 1 }}>
+                <label>Queue</label>
+                <select className={styles.formSelect} value={nQueue} onChange={e => setNQueue(e.target.value as Queue)}>
+                  {queues.map(q => <option key={q} value={q}>{q.charAt(0).toUpperCase() + q.slice(1)}</option>)}
+                </select>
               </div>
-              <div>
-                <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, display: "block", marginBottom: 4 }}>Description</label>
-                <textarea value={nDesc} onChange={e => setNDesc(e.target.value)} placeholder="Provide more details..."
-                  style={{ width: "100%", padding: "8px 10px", border, borderRadius: 4, fontSize: "var(--text-xs)", resize: "vertical", minHeight: 72, fontFamily: "Inter", boxSizing: "border-box" }} />
-              </div>
-              <div style={{ display: "flex", gap: 10 }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, display: "block", marginBottom: 4 }}>Queue</label>
-                  <select value={nQueue} onChange={e => setNQueue(e.target.value as Queue)}
-                    style={{ width: "100%", padding: "8px 10px", border, borderRadius: 4, fontSize: "var(--text-xs)" }}>
-                    <option value="parent">Parent</option>
-                    <option value="teacher">Teacher</option>
-                    <option value="it">IT</option>
-                    <option value="finance">Finance</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="general">General</option>
-                  </select>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: "var(--text-xs)", fontWeight: 600, display: "block", marginBottom: 4 }}>Priority</label>
-                  <select value={nPriority} onChange={e => setNPriority(e.target.value as TicketPriority)}
-                    style={{ width: "100%", padding: "8px 10px", border, borderRadius: 4, fontSize: "var(--text-xs)" }}>
-                    <option value="urgent">Urgent</option>
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                  </select>
-                </div>
+              <div className={styles.formField} style={{ flex: 1 }}>
+                <label>Priority</label>
+                <select className={styles.formSelect} value={nPriority} onChange={e => setNPriority(e.target.value as TicketPriority)}>
+                  <option value="urgent">Urgent</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
               </div>
             </div>
-            <div style={{ display: "flex", gap: 8, marginTop: 20 }}>
-              <button onClick={handleCreateTicket} disabled={loading}
-                style={{ flex: 1, padding: "10px 0", background: loading ? "#ccc" : "#073543", color: "#fff", border: "none", borderRadius: 4, cursor: loading ? "not-allowed" : "pointer", fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <div className={styles.modalFooter}>
+              <button className={styles.modalBtnPrimary} onClick={handleCreateTicket} disabled={loading}>
                 <Plus size={14} />{loading ? "Creating…" : "Create Ticket"}
               </button>
-              <button onClick={() => setShowNewModal(false)}
-                style={{ flex: 1, padding: "10px 0", background: "transparent", color: text, border, borderRadius: 4, cursor: "pointer", fontWeight: 600 }}>Cancel</button>
+              <button className={styles.modalBtnCancel} onClick={() => setShowNewModal(false)}>Cancel</button>
             </div>
           </div>
         </div>

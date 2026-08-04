@@ -186,7 +186,7 @@ export function MobileReportCardsContent({ classes, years, currentYearId, curren
                         </div>
                         <div className={styles.studentActions}>
                           <Link href={`/report-cards/${s.id}`} className={styles.viewBtn}><Eye size={14} /> View</Link>
-                          <Link href={`/report-cards/${s.id}`} target="_blank" className={styles.printIconBtn} aria-label="Print"><Printer size={14} /></Link>
+                          <Link href={`/report-cards/${s.id}`} className={styles.printIconBtn} aria-label="Print"><Printer size={14} /></Link>
                         </div>
                       </div>
                     );

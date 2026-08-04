@@ -66,6 +66,7 @@ export function OfflineSyncContent() {
     } finally {
       setSyncing(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [online, refresh]);
 
   const failedCount = queue.filter((j) => (j.attempts ?? 0) > 0).length;
@@ -73,102 +74,97 @@ export function OfflineSyncContent() {
 
   return (
     <div className={styles.root}>
-      {/* Header */}
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Offline Sync Center</h1>
           <p className={styles.pageSubtitle}>Actions saved while offline are queued here on this device and sent once you&apos;re back online.</p>
         </div>
-        <div className={styles.headerActions}>
-          <button className={styles.btnPrimary} onClick={handleSync} disabled={syncing || queue.length === 0}>
-            <Upload size={13} /> {syncing ? "Syncing…" : "Sync Now"}
-          </button>
-        </div>
+        <button className={styles.syncBtn} onClick={handleSync} disabled={syncing || queue.length === 0}>
+          <Upload size={15} className={syncing ? styles.spinning : undefined} /> {syncing ? "Syncing…" : "Sync Now"}
+        </button>
       </div>
 
-      {/* Status strip */}
       <div className={styles.statusStrip}>
-        <div className={styles.statusItem}>
-          {online ? <Wifi size={22} className={styles.statusIconGreen} /> : <WifiOff size={22} className={styles.statusIconError} />}
+        <div className={styles.statusCard}>
+          <div className={`${styles.statusIconCircle} ${online ? "" : styles.statusIconCircleOffline}`}>
+            {online ? <Wifi size={20} /> : <WifiOff size={20} />}
+          </div>
           <div>
             <div className={styles.statusLabel}>Online Status</div>
-            <div className={`${styles.statusValue} ${online ? styles.statusValueGreen : styles.statusValueError}`}>
-              {online ? "Connected" : "Offline"}
+            <div className={styles.statusValueRow}>
+              <span className={`${styles.statusDot} ${online ? "" : styles.statusDotError}`} />
+              <span className={`${styles.statusValue} ${online ? "" : styles.statusValueError}`}>{online ? "Connected" : "Offline"}</span>
             </div>
           </div>
         </div>
-        <div className={styles.statusItem}>
-          <Upload size={22} className={styles.statusIcon} />
+        <div className={styles.statusCard}>
+          <div className={`${styles.statusIconCircle} ${styles.statusIconCircleInfo}`}><Upload size={20} /></div>
           <div>
             <div className={styles.statusLabel}>Queue Items</div>
-            <div className={styles.statusValue}>{pendingCount}</div>
+            <span className={styles.statusValueBig}>{pendingCount}</span>
           </div>
         </div>
-        <div className={styles.statusItem}>
-          <AlertCircle size={22} className={failedCount > 0 ? styles.statusIconError : styles.statusIcon} />
+        <div className={`${styles.statusCard} ${failedCount > 0 ? styles.statusCardError : ""}`}>
+          <div className={`${styles.statusIconCircle} ${failedCount > 0 ? styles.statusIconCircleError : styles.statusIconCircleInfo}`}><AlertCircle size={20} /></div>
           <div>
             <div className={styles.statusLabel}>Failed Syncs</div>
-            <div className={`${styles.statusValue} ${failedCount > 0 ? styles.statusValueError : ""}`}>{failedCount}</div>
+            <span className={`${styles.statusValueBig} ${failedCount > 0 ? styles.statusValueError : ""}`}>{failedCount}</span>
           </div>
         </div>
       </div>
 
-      {/* Body */}
-      <div className={styles.body}>
-        <div className={styles.mainPanel}>
-          <div className={styles.queueHeader}>
-            <div className={styles.queueTitle}>Action Queue — this device</div>
-            <button className={styles.syncAllBtn} onClick={handleSync} disabled={syncing || queue.length === 0}>
-              <RefreshCw size={12} /> Retry All
-            </button>
-          </div>
-          <div className={styles.tableWrap}>
-            <div className={styles.tableScroll}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th className={styles.th}>Module</th>
-                    <th className={styles.th}>Method</th>
-                    <th className={styles.th}>Queued</th>
-                    <th className={styles.th}>Status</th>
+      <div className={styles.queueCard}>
+        <div className={styles.queueCardHeader}>
+          <h3 className={styles.queueCardTitle}>Action Queue — this device</h3>
+          <button className={styles.retryBtn} onClick={handleSync} disabled={syncing || queue.length === 0}>
+            <RefreshCw size={13} className={syncing ? styles.spinning : undefined} /> Retry All
+          </button>
+        </div>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.th}>Module</th>
+                <th className={styles.th}>Method</th>
+                <th className={styles.th}>Queued</th>
+                <th className={`${styles.th} ${styles.thRight}`}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading && (
+                <tr><td colSpan={4} className={styles.loadingRow}>Loading queue…</td></tr>
+              )}
+              {!loading && queue.length === 0 && (
+                <tr>
+                  <td colSpan={4}>
+                    <div className={styles.emptyState}>
+                      <CheckCircle2 size={26} style={{ opacity: 0.35 }} />
+                      No pending sync operations.
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {queue.map((job) => {
+                const failed = (job.attempts ?? 0) > 0;
+                return (
+                  <tr key={job.id} className={`${styles.tr} ${failed ? styles.trFailed : ""}`}>
+                    <td className={styles.td}>{moduleLabel(job.url)}</td>
+                    <td className={styles.td}><span className={styles.methodChip}>{job.method}</span></td>
+                    <td className={`${styles.td} ${styles.tdMuted}`}>{fmtCreated(job.createdAt)}</td>
+                    <td className={`${styles.td} ${styles.thRight}`}>
+                      {failed ? (
+                        <span title={job.lastError} className={styles.statusFailedPill}>Failed ({job.attempts})</span>
+                      ) : (
+                        <span className={styles.statusPendingPill}>Pending</span>
+                      )}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {loading && (
-                    <tr><td colSpan={4} style={{ textAlign: "center", padding: "40px 16px", color: "#71787b", fontSize: "var(--text-xs)" }}>Loading queue…</td></tr>
-                  )}
-                  {!loading && queue.length === 0 && (
-                    <tr>
-                      <td colSpan={4} style={{ textAlign: "center", padding: "40px 16px", color: "#71787b", fontSize: "var(--text-xs)" }}>
-                        <CheckCircle2 size={24} style={{ display: "block", margin: "0 auto 8px", opacity: 0.4 }} />
-                        No pending sync operations.
-                      </td>
-                    </tr>
-                  )}
-                  {queue.map((job) => {
-                    const failed = (job.attempts ?? 0) > 0;
-                    return (
-                      <tr key={job.id} className={`${styles.tr} ${failed ? styles.trFailed : ""}`}>
-                        <td className={styles.td} style={{ fontWeight: 600 }}>{moduleLabel(job.url)}</td>
-                        <td className={`${styles.td} ${styles.tdMuted}`}>{job.method}</td>
-                        <td className={`${styles.td} ${styles.tdMuted}`}>{fmtCreated(job.createdAt)}</td>
-                        <td className={styles.td}>
-                          {failed ? (
-                            <span title={job.lastError} className={styles.statusFailed}>Failed ({job.attempts})</span>
-                          ) : (
-                            <span className={styles.statusPending}>Pending</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
-
     </div>
   );
 }

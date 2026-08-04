@@ -1,0 +1,74 @@
+.root { display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
+
+.identityCard { position: relative; border: 1px solid var(--clr-app-border); border-radius: var(--radius-md, 8px); background: var(--clr-app-surface); padding: 14px; }
+.identityTop { display: flex; align-items: center; gap: 12px; }
+.crestAvatar { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--clr-app-border); background: var(--clr-app-surface-alt); overflow: hidden; }
+.identityText { min-width: 0; }
+.identityName { margin: 0; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
+.identityMotto { margin: 2px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); font-style: italic; }
+.savedCaption { position: absolute; top: 10px; right: 12px; margin: 0; color: var(--clr-app-muted); font-size: 10px; }
+
+.group { display: flex; flex-direction: column; gap: 8px; }
+.groupLabel { margin: 0 0 0 4px; color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.groupCard { border: 1px solid var(--clr-app-border); border-radius: var(--radius-md, 8px); background: var(--clr-app-surface); overflow: hidden; }
+
+.row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border: 0; border-bottom: 1px solid var(--clr-app-border); background: transparent; text-align: left; cursor: pointer; }
+.row:last-child { border-bottom: 0; }
+.rowIcon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--radius-sm); background: var(--clr-app-accent-soft); color: var(--clr-app-accent); }
+.rowText { flex: 1; min-width: 0; }
+.rowTitle { display: block; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
+.rowSubtitle { display: block; margin-top: 1px; color: var(--clr-app-muted); font-size: var(--text-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rowChevron { color: var(--clr-app-border); flex-shrink: 0; }
+.swatchRow { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+.swatch { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
+.notConnectedTag { flex-shrink: 0; padding: 2px 8px; border-radius: 999px; background: var(--clr-warning-bg); color: var(--clr-warning); font-size: 10px; font-weight: 700; border: 1px solid var(--clr-warning-border); }
+
+.unsavedBar { display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; border: 1px solid var(--clr-warning-border); background: var(--clr-warning-bg); border-radius: var(--radius-sm); }
+.unsavedNote { display: flex; align-items: center; gap: 6px; color: var(--clr-warning); font-size: var(--text-xs); font-weight: 600; justify-content: center; }
+.unsavedActions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.discardBtn { background: none; border: none; color: var(--clr-warning); font-size: var(--text-xs); font-weight: 700; text-decoration: underline; cursor: pointer; }
+.saveBtn { flex: 1; height: 40px; border: 0; border-radius: var(--radius-sm); background: var(--clr-app-accent); color: #fff; font-weight: 700; font-size: var(--text-sm); cursor: pointer; }
+.saveBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.sheetBody { display: flex; flex-direction: column; gap: 14px; }
+
+.uploadRow { display: flex; align-items: center; gap: 12px; margin-top: -6px; }
+.removeLink { background: none; border: none; color: var(--clr-error); font-size: var(--text-xs); font-weight: 600; cursor: pointer; }
+.previewBtn { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); color: var(--clr-app-muted); cursor: pointer; }
+
+.colorRow { display: flex; align-items: center; gap: 10px; }
+.colorInput { width: 42px; height: 42px; padding: 2px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); cursor: pointer; }
+
+.gradeList { display: flex; flex-direction: column; gap: 6px; }
+.gradeRow { display: grid; grid-template-columns: 36px 56px 1fr auto; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); }
+.gradeLetter { font-weight: 700; color: var(--clr-app-text); font-size: var(--text-sm); }
+.gradeMinInput { width: 52px; height: 32px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); text-align: center; font-size: var(--text-xs); background: var(--clr-app-surface); color: var(--clr-app-text); }
+.gradeRange { color: var(--clr-app-muted); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+.gradeRemark { color: var(--clr-app-muted); font-size: 10px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 90px; }
+
+.calcCard { padding: 12px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); }
+.calcTitle { margin: 0 0 8px; color: var(--clr-app-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.calcGradePill { display: flex; align-items: center; justify-content: center; height: 44px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface); color: var(--clr-app-accent); font-weight: 800; font-size: var(--text-lg); }
+.calcRemark { margin: 8px 0 0; color: var(--clr-app-muted); font-size: var(--text-xs); }
+
+.toggleRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--clr-app-border); }
+.toggleRow:last-child { border-bottom: 0; }
+.toggleLabel { margin: 0; color: var(--clr-app-text); font-size: var(--text-sm); font-weight: 600; }
+.toggleDesc { margin: 2px 0 0; color: var(--clr-app-muted); font-size: 11px; }
+
+.switch { position: relative; width: 44px; height: 26px; flex-shrink: 0; border: 0; border-radius: 999px; background: var(--clr-app-border); cursor: pointer; padding: 0; }
+.switchOn { background: var(--clr-app-accent); }
+.switchThumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #ffffff; transition: transform 0.15s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+.switchOn .switchThumb { transform: translateX(18px); }
+
+/* ── Letterhead preview ──────────────────────────────────────────────── */
+.lhPage { border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: #ffffff; overflow: hidden; }
+.lhHeaderBand { display: flex; align-items: center; gap: 12px; padding: 14px; border-top: 4px solid; }
+.lhLogoBox { width: 44px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.lhSchoolName { margin: 0; font-weight: 800; color: var(--clr-app-text); font-size: var(--text-sm); }
+.lhMotto { margin: 2px 0 0; color: var(--clr-app-muted); font-size: 11px; font-style: italic; }
+.lhContact { margin: 4px 0 0; color: var(--clr-app-muted); font-size: 10px; }
+.lhDivider { height: 2px; }
+.lhBodyLines { display: flex; flex-direction: column; gap: 8px; padding: 16px 14px; }
+.lhBodyLine { height: 7px; border-radius: 2px; background: var(--clr-app-surface-alt); }
+.lhFooter { padding: 8px 14px; border-top: 1px solid var(--clr-app-border); color: var(--clr-app-muted); font-size: 10px; text-align: center; }
