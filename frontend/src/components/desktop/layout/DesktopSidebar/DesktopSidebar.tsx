@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LogOut, ChevronDown, Search } from "lucide-react";
+import { Menu, X, LogOut, ChevronDown } from "lucide-react";
 import { NAV_ICON_MAP as ICON_MAP, type NavIconKey } from "@/lib/nav";
 import styles from "./DesktopSidebar.module.css";
 
@@ -108,14 +108,6 @@ export function DesktopSidebar({
         >
           <X size={20} />
         </button>
-      </div>
-      <div className={styles.searchBox}>
-        <Search size={14} aria-hidden />
-        <input
-          className={styles.searchInput}
-          placeholder="Search..."
-          type="search"
-        />
       </div>
       {/* Nav groups */}
       <nav className={styles.nav}>
