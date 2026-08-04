@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangle, CheckCircle, ChevronLeft, ChevronRight, MoreVertical,
@@ -113,7 +113,6 @@ export function FeesPaymentsContent({
   const [recordingPayment, setRecordingPayment] = useState(false);
 
   const { showToast: showToastFn } = useToast();
-  const initialActionHandled = useRef<string | null>(null);
 
   function toast(message: string) {
     showToastFn(message);
@@ -150,13 +149,6 @@ export function FeesPaymentsContent({
 
   useEffect(() => {
     if (!recordPaymentOnLoad) return;
-    // Keyed on the specific request, not just "has any auto-open ever
-    // fired" — this component stays mounted across client-side navigations
-    // within /fees (only these props change), so a plain one-shot boolean
-    // would open the modal for the first ?recordPayment=1 link clicked and
-    // then silently ignore every later one for a different student/invoice.
-    const key = `${initialStudentId ?? ""}|${initialFeeRecordId ?? ""}`;
-    if (initialActionHandled.current === key) return;
 
     const targetRow =
       (initialFeeRecordId ? rows.find((row) => row.id === initialFeeRecordId) : null) ??
@@ -165,8 +157,17 @@ export function FeesPaymentsContent({
         : rows.find((row) => row.balance > 0));
 
     if (!targetRow) return;
-    initialActionHandled.current = key;
     openPaymentModal(targetRow);
+    // The URL's ?recordPayment=1 is a one-time "open this" instruction, not
+    // persistent state — clear it immediately so the signal can't linger.
+    // This component never remounts across client-side navigations within
+    // /fees (only its props change), so any ref/flag meant to say "already
+    // handled" would itself become stale state that has to be reset
+    // correctly for every future case — including retrying the very same
+    // student. Consuming the URL instead means there is nothing to get out
+    // of sync: no `recordPayment=1` in the URL, no re-trigger, and a fresh
+    // link (even for the same student) always carries a fresh instruction.
+    router.replace("/fees", { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);
 

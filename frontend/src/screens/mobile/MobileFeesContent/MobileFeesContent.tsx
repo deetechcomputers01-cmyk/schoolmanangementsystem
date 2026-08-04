@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -90,17 +90,9 @@ export function MobileFeesContent({
   // Arriving here from another screen's "Record Payment" link (Students
   // list, Student Detail, Dashboard) via ?studentId=&recordPayment=1 should
   // open straight into that student's payment sheet, not just land on the
-  // plain list — same behaviour as the desktop Fees screen. Keyed on the
-  // specific request (not just "has any auto-open ever fired") — this
-  // component stays mounted across client-side navigations within /fees
-  // (only these props change), so a plain one-shot boolean would open the
-  // sheet for the first link clicked and silently ignore every later one
-  // for a different student/invoice.
-  const initialActionHandled = useRef<string | null>(null);
+  // plain list — same behaviour as the desktop Fees screen.
   useEffect(() => {
     if (!recordPaymentOnLoad) return;
-    const key = `${initialStudentId ?? ""}|${initialFeeRecordId ?? ""}`;
-    if (initialActionHandled.current === key) return;
 
     const targetRow =
       (initialFeeRecordId ? rows.find((row) => row.id === initialFeeRecordId) : null) ??
@@ -109,8 +101,16 @@ export function MobileFeesContent({
         : rows.find((row) => row.balance > 0));
 
     if (!targetRow) return;
-    initialActionHandled.current = key;
     openPaySheet(targetRow);
+    // The URL's ?recordPayment=1 is a one-time "open this" instruction, not
+    // persistent state — clear it immediately so the signal can't linger.
+    // This component never remounts across client-side navigations within
+    // /fees (only its props change), so a ref/flag meant to say "already
+    // handled" would itself become stale state, including for retrying the
+    // very same student. Consuming the URL means there's nothing to get out
+    // of sync: no recordPayment=1 left in the URL, no re-trigger, and a
+    // fresh link (even for the same student) always carries a fresh signal.
+    router.replace("/fees", { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);
 
