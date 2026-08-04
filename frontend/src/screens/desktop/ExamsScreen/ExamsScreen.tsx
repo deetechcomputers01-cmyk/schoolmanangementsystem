@@ -16,7 +16,8 @@ function passRate(scores: { score: number; maxScore: number }[], scale: GradeBan
 }
 
 export async function ExamsScreen({ initialExamId }: { initialExamId?: string } = {}) {
-  await requireRole("super_admin", "principal", "teacher", "staff");
+  const user = await requireRole("super_admin", "principal", "teacher", "staff");
+  const canDelete = ["super_admin", "principal"].includes(user.role);
 
   const now     = new Date();
   const in7days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -118,10 +119,12 @@ export async function ExamsScreen({ initialExamId }: { initialExamId?: string } 
           classOptions={classOptions}
           subjectOptions={subjectOptions}
           termOptions={termOptions}
+          canDelete={canDelete}
         />
       </div>
       <div className="desktopOnly">
         <ExamsContent
+          canDelete={canDelete}
           exams={examRows}
           stats={stats}
           classOptions={classOptions}

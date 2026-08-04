@@ -9,34 +9,35 @@ import { currency } from "@backend/utils";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import styles from "./PayrollScreen.module.css";
 
-type Num = { toString(): string } | number | string;
+export type Num = { toString(): string } | number | string;
 
-interface StaffRow {
+export interface StaffRow {
   id: string; firstName: string; lastName: string; roleTitle: string; staffNo: string;
   salary: { id: string; basicSalary: Num; allowances: Num; deductions: Num } | null;
   payslips: { id: string; month: string; netPay: Num; status: string }[];
 }
-interface PayslipRow {
+export interface PayslipRow {
   id: string; month: string; basicSalary: Num; allowances: Num;
   deductions: Num; netPay: Num; status: string; paidAt: Date | string | null;
   staff: { firstName: string; lastName: string; roleTitle: string; staffNo: string };
 }
 
-interface Props {
+export interface PayrollContentProps {
   staffList: StaffRow[];
   initialPayslips: PayslipRow[];
 }
+type Props = PayrollContentProps;
 
-function initials(first: string, last: string) {
+export function initials(first: string, last: string) {
   return `${first[0] ?? ""}${last[0] ?? ""}`.toUpperCase();
 }
 
-function currentMonthStr() {
+export function currentMonthStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
-function downloadSlip(p: PayslipRow) {
+export function downloadSlip(p: PayslipRow) {
   const lines = [
     `ScholarSphere — Payslip`,
     `Staff: ${p.staff.firstName} ${p.staff.lastName} (${p.staff.staffNo})`,

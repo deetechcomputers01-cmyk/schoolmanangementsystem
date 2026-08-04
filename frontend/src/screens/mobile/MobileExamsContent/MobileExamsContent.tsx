@@ -31,6 +31,7 @@ import {
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
+import { SwipeRow } from "@/components/mobile/ui/SwipeRow/SwipeRow";
 import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./MobileExamsContent.module.css";
 
@@ -56,6 +57,7 @@ interface Props {
   classOptions: ClassOption[];
   subjectOptions: SubjectOption[];
   termOptions: TermOption[];
+  canDelete?: boolean;
 }
 
 function fmtDate(iso: string) {
@@ -67,7 +69,7 @@ function fmtTime(iso: string) {
   return d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
-export function MobileExamsContent({ exams, stats, classOptions, subjectOptions, termOptions }: Props) {
+export function MobileExamsContent({ exams, stats, classOptions, subjectOptions, termOptions, canDelete }: Props) {
   const router = useRouter();
   const { showToast } = useToast();
   const confirm = useConfirm();
@@ -244,6 +246,27 @@ export function MobileExamsContent({ exams, stats, classOptions, subjectOptions,
     }
   }
 
+  const [deletingExamId, setDeletingExamId] = useState<string | null>(null);
+
+  async function deleteExamNow(exam: ExamRow) {
+    const sure = await confirm({
+      message: `Delete "${exam.title}"? This permanently removes the exam, its questions, and any recorded scores. This can't be undone.`,
+      confirmLabel: "Delete Exam",
+    });
+    if (!sure) return;
+    setDeletingExamId(exam.id);
+    try {
+      const res = await fetch(`/api/exams/${exam.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed");
+      showToast("Exam deleted");
+      router.refresh();
+    } catch {
+      showToast("Failed to delete exam", "error");
+    } finally {
+      setDeletingExamId(null);
+    }
+  }
+
   const questionTotalMarks = questions.reduce((s, q) => s + q.marks, 0);
 
   function switchQType(type: "mcq" | "short_answer") {
@@ -361,35 +384,46 @@ export function MobileExamsContent({ exams, stats, classOptions, subjectOptions,
         ) : filtered.map((e) => {
           const isOpen = openId === e.id;
           return (
-            <div key={e.id} className={`${styles.card} ${e.upcoming ? styles.cardUpcoming : ""}`}>
-              <button type="button" className={styles.cardTop} onClick={() => setOpenId(isOpen ? null : e.id)}>
-                <div className={styles.cardTopLeft}>
-                  <h4 className={styles.examTitle}>{e.title}</h4>
-                  <p className={styles.examSub}>{e.className} • {e.subjectName}</p>
+            <SwipeRow
+              key={e.id}
+              rightActions={[
+                { key: "scores", icon: ClipboardList, label: "Scores", tone: "primary", onClick: () => openScores(e) },
+                { key: "edit", icon: Pencil, label: "Edit", tone: "soft", onClick: () => openEditExam(e) },
+              ]}
+              leftActions={canDelete ? [
+                { key: "delete", icon: Trash2, label: "Delete", tone: "danger", onClick: () => deleteExamNow(e) },
+              ] : []}
+            >
+              <div className={`${styles.card} ${e.upcoming ? styles.cardUpcoming : ""}`}>
+                <button type="button" className={styles.cardTop} onClick={() => setOpenId(isOpen ? null : e.id)}>
+                  <div className={styles.cardTopLeft}>
+                    <h4 className={styles.examTitle}>{e.title}</h4>
+                    <p className={styles.examSub}>{e.className} • {e.subjectName}</p>
+                  </div>
+                  <span className={`${styles.statusPill} ${e.status === "scored" ? styles.statusScored : styles.statusPending}`}>
+                    {deletingExamId === e.id ? "Deleting…" : e.status === "scored" ? "Completed" : e.upcoming ? "Upcoming" : "Not Started"}
+                  </span>
+                </button>
+                <div className={styles.metaRow}>
+                  <span><Calendar size={13} /> {fmtDate(e.scheduledAt)}</span>
+                  <span><Clock size={13} /> {fmtTime(e.scheduledAt)}</span>
+                  {e.isOnline && <span><Wifi size={13} /> Online</span>}
                 </div>
-                <span className={`${styles.statusPill} ${e.status === "scored" ? styles.statusScored : styles.statusPending}`}>
-                  {e.status === "scored" ? "Completed" : e.upcoming ? "Upcoming" : "Not Started"}
-                </span>
-              </button>
-              <div className={styles.metaRow}>
-                <span><Calendar size={13} /> {fmtDate(e.scheduledAt)}</span>
-                <span><Clock size={13} /> {fmtTime(e.scheduledAt)}</span>
-                {e.isOnline && <span><Wifi size={13} /> Online</span>}
+                {isOpen && (
+                  <div className={styles.actionRow}>
+                    <button type="button" className={styles.actionBtnPrimary} onClick={() => openScores(e)}>
+                      <ClipboardList size={15} /> {e.status === "scored" ? "Update Scores" : "Enter Scores"}
+                    </button>
+                    <button type="button" className={styles.actionBtnOutline} onClick={() => openEditExam(e)}>
+                      <Pencil size={14} /> Edit
+                    </button>
+                    {e.status === "scored" && (
+                      <span className={styles.scoredHint}><CheckCircle2 size={13} /> {e.scoredCount} scored</span>
+                    )}
+                  </div>
+                )}
               </div>
-              {isOpen && (
-                <div className={styles.actionRow}>
-                  <button type="button" className={styles.actionBtnPrimary} onClick={() => openScores(e)}>
-                    <ClipboardList size={15} /> {e.status === "scored" ? "Update Scores" : "Enter Scores"}
-                  </button>
-                  <button type="button" className={styles.actionBtnOutline} onClick={() => openEditExam(e)}>
-                    <Pencil size={14} /> Edit
-                  </button>
-                  {e.status === "scored" && (
-                    <span className={styles.scoredHint}><CheckCircle2 size={13} /> {e.scoredCount} scored</span>
-                  )}
-                </div>
-              )}
-            </div>
+            </SwipeRow>
           );
         })}
       </div>

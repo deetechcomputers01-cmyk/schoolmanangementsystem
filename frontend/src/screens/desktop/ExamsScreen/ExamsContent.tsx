@@ -9,6 +9,7 @@ import {
   ChevronDown, ChevronLeft, Lightbulb, TrendingUp, ListChecks,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
 import styles from "./ExamsScreen.module.css";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -86,6 +87,7 @@ interface Props {
   initialExamId?: string;
   recentPerformance: RecentPerformance | null;
   termPassRate: TermPassRate | null;
+  canDelete?: boolean;
 }
 
 function fmt(iso: string) {
@@ -109,7 +111,7 @@ function exportExamsCSV(rows: ExamRow[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ExamsContent({ exams, stats, classOptions, subjectOptions, termOptions, initialExamId, recentPerformance, termPassRate }: Props) {
+export function ExamsContent({ exams, stats, classOptions, subjectOptions, termOptions, initialExamId, recentPerformance, termPassRate, canDelete }: Props) {
   const displayExams = exams;
   const displayStats = stats;
 
@@ -120,6 +122,8 @@ export function ExamsContent({ exams, stats, classOptions, subjectOptions, termO
   const [detailOpen,    setDetailOpen]   = useState(!!initialExamId);
   const [showModal,     setShowModal]     = useState(false);
   const { showToast: showToastFn } = useToast();
+  const confirm = useConfirm();
+  const [deletingExam, setDeletingExam] = useState(false);
 
   // Detail panel tab
   const [detailTab, setDetailTab] = useState<"info" | "questions" | "scores" | "results">("info");
@@ -274,6 +278,23 @@ export function ExamsContent({ exams, stats, classOptions, subjectOptions, termO
       }
     } finally {
       setScoresSaving(false);
+    }
+  }
+
+  async function deleteExamNow(exam: ExamRow) {
+    const sure = await confirm({
+      message: `Delete "${exam.title}"? This permanently removes the exam, its questions, and any recorded scores. This can't be undone.`,
+      confirmLabel: "Delete Exam",
+    });
+    if (!sure) return;
+    setDeletingExam(true);
+    try {
+      const res = await fetch(`/api/exams/${exam.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed");
+      window.location.reload();
+    } catch {
+      toast("Failed to delete exam.");
+      setDeletingExam(false);
     }
   }
 
@@ -717,6 +738,19 @@ export function ExamsContent({ exams, stats, classOptions, subjectOptions, termO
 
                   {selectedExam.upcoming && (
                     <div className={styles.upcomingBanner}><Calendar size={14} /><span>Scheduled in the next 7 days</span></div>
+                  )}
+
+                  {canDelete && (
+                    <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--clr-app-border)" }}>
+                      <button
+                        className={styles.btnOutline}
+                        style={{ color: "var(--clr-error)", borderColor: "var(--clr-error)" }}
+                        onClick={() => deleteExamNow(selectedExam)}
+                        disabled={deletingExam}
+                      >
+                        <Trash2 size={13} /> {deletingExam ? "Deleting…" : "Delete Exam"}
+                      </button>
+                    </div>
                   )}
                 </>
               )}

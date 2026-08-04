@@ -3,6 +3,7 @@ import { listBroadcasts, getBroadcastStats } from "@backend/services/broadcasts.
 import { getClasses } from "@backend/services/dashboard.service";
 import { redirect } from "next/navigation";
 import { ParentCommunicationsScreen } from "@/screens/desktop/ParentCommunicationsScreen/ParentCommunicationsScreen";
+import { MobileParentBroadcastsContent } from "@/screens/mobile/MobileParentBroadcastsContent/MobileParentBroadcastsContent";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Parent Broadcasts – ScholarSphere" };
@@ -20,5 +21,14 @@ export default async function ParentCommunicationsPage() {
 
   const classAudiences = classes.map((c) => ({ id: c.id, name: c.name }));
 
-  return <ParentCommunicationsScreen initialBroadcasts={broadcasts as any} initialStats={stats} classes={classAudiences} />;
+  return (
+    <>
+      <div className="mobileOnly">
+        <MobileParentBroadcastsContent initialBroadcasts={broadcasts as any} initialStats={stats} classes={classAudiences} />
+      </div>
+      <div className="desktopOnly">
+        <ParentCommunicationsScreen initialBroadcasts={broadcasts as any} initialStats={stats} classes={classAudiences} />
+      </div>
+    </>
+  );
 }

@@ -23,11 +23,11 @@
  *     omitted entirely when a vehicle has no assigned driver/phone.
  */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Bus, Users, Route as RouteIcon, Plus, Clock, MessageSquare, Phone,
-  ChevronDown, ChevronUp, UserPlus, Trash2, Pencil,
+  ChevronDown, ChevronUp, UserPlus, Trash2, Pencil, Search,
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
@@ -173,10 +173,18 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
   const [rosterRouteId, setRosterRouteId] = useState<string | null>(null);
   const [assignIds, setAssignIds] = useState<Set<string>>(new Set());
   const [assigning, setAssigning] = useState(false);
+  const [rosterSearch, setRosterSearch] = useState("");
   const rosterRoute = routes.find((r) => r.id === rosterRouteId) ?? null;
+
+  const filteredUnassigned = useMemo(() => {
+    const q = rosterSearch.trim().toLowerCase();
+    if (!q) return unassignedStudents;
+    return unassignedStudents.filter((s) => s.name.toLowerCase().includes(q) || s.admissionNo.toLowerCase().includes(q) || s.className.toLowerCase().includes(q));
+  }, [unassignedStudents, rosterSearch]);
 
   function openRoster(routeId: string) {
     setAssignIds(new Set());
+    setRosterSearch("");
     setRosterRouteId(routeId);
   }
 
@@ -452,9 +460,14 @@ export function MobileTransportContent({ vehicles, routes, stats, unassignedStud
             </div>
 
             <p className={kit.pickCount} style={{ marginTop: 14 }}>Add students</p>
+            <label className={kit.searchWrap}>
+              <Search size={16} className={kit.searchIcon} />
+              <input className={`${kit.input} ${kit.searchInput}`} placeholder="Search any student by name, adm. no, or class" value={rosterSearch} onChange={(e) => setRosterSearch(e.target.value)} />
+            </label>
             <div className={kit.pickList}>
               {unassignedStudents.length === 0 && <p className={kit.emptyText}>All students already have a transport route.</p>}
-              {unassignedStudents.map((s) => (
+              {unassignedStudents.length > 0 && filteredUnassigned.length === 0 && <p className={kit.emptyText}>No students match your search.</p>}
+              {filteredUnassigned.map((s) => (
                 <label key={s.id} className={`${kit.pickRow} ${assignIds.has(s.id) ? kit.pickRowActive : ""}`}>
                   <input type="checkbox" checked={assignIds.has(s.id)} onChange={() => toggleAssign(s.id)} style={{ accentColor: "var(--clr-app-accent)" }} />
                   <div className={kit.pickInfo}>

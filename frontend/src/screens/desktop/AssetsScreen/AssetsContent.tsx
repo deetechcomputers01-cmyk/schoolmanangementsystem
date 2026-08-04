@@ -4,33 +4,32 @@ import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Package, Plus, X, Search, ArrowLeftRight, Camera, ChevronDown, Pencil, Download } from "lucide-react";
 import styles from "./AssetsScreen.module.css";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 
-type AssetStatus = "active" | "maintenance" | "disposed" | "low_stock";
+export type AssetStatus = "active" | "maintenance" | "disposed" | "low_stock";
 
-interface AssetRow {
+export interface AssetRow {
   id: string; tag: string; name: string; category: string; status: AssetStatus;
   location: string | null; custodianId: string | null; custodianName: string | null;
   quantity: number; value: number | null; imageUrl: string | null; movementCount: number;
 }
-interface MovementRow {
+export interface MovementRow {
   id: string; assetName: string; assetTag: string; type: string; quantity: number;
   note: string | null; actedByName: string; createdAt: string;
 }
-interface StaffOption { id: string; name: string }
+export interface StaffOption { id: string; name: string }
 
-interface Props { assets: AssetRow[]; movements: MovementRow[]; staff: StaffOption[] }
+export interface AssetsContentProps { assets: AssetRow[]; movements: MovementRow[]; staff: StaffOption[] }
+type Props = AssetsContentProps;
 
-const CATEGORIES = ["ICT Equipment", "Furniture", "Lab Equipment", "Library", "Sports", "Kitchen"];
-const STATUS_LABEL: Record<AssetStatus, string> = {
+export const CATEGORIES = ["ICT Equipment", "Furniture", "Lab Equipment", "Library", "Sports", "Kitchen"];
+export const STATUS_LABEL: Record<AssetStatus, string> = {
   active: "Active", maintenance: "Maintenance", disposed: "Disposed", low_stock: "Low Stock",
 };
 const STATUS_BADGE: Record<AssetStatus, string> = {
   active: styles.badgeActive, maintenance: styles.badgeMaintenance, disposed: styles.badgeDisposed, low_stock: styles.badgeAlert,
 };
 
-function initials(name: string) {
+export function initials(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 }
 
@@ -360,9 +359,9 @@ export function AssetsContent({ assets, movements, staff }: Props) {
         </div>
       )}
 
-      {/* Add/Edit Asset modal — desktop (untouched) */}
+      {/* Add/Edit Asset modal */}
       {showAssetModal && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !saving && setShowAssetModal(false)}>
+        <div className={styles.modalOverlay} onClick={() => !saving && setShowAssetModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>{editingAsset ? `Edit ${editingAsset.tag}` : "Register Asset"}</h2>
@@ -422,65 +421,9 @@ export function AssetsContent({ assets, movements, staff }: Props) {
         </div>
       )}
 
-      {/* Add/Edit Asset sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showAssetModal}
-          onClose={() => !saving && setShowAssetModal(false)}
-          title={editingAsset ? `Edit ${editingAsset.tag}` : "Register Asset"}
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowAssetModal(false)} disabled={saving}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={submitAsset} disabled={saving}>{saving ? "Saving…" : "Save Asset"}</button>
-          </>}
-        >
-          {error && <p className={kit.errorText}>{error}</p>}
-          <div className={kit.dropzone} onClick={() => fileRef.current?.click()}>
-            {aImageFile
-              ? <img src={URL.createObjectURL(aImageFile)} alt="" style={{ width: 64, height: 64, borderRadius: "var(--radius-sm)", objectFit: "cover" }} />
-              : editingAsset?.imageUrl
-                ? <img src={editingAsset.imageUrl} alt="" style={{ width: 64, height: 64, borderRadius: "var(--radius-sm)", objectFit: "cover" }} />
-                : <Camera size={20} color="var(--clr-app-muted)" />}
-            <p className={kit.dropzoneText}>{aImageFile ? aImageFile.name : "Tap to upload a photo (JPEG, PNG or WebP)"}</p>
-          </div>
-          <div className={kit.field}>
-            <label>Name *</label>
-            <input className={kit.input} value={aName} onChange={(e) => setAName(e.target.value)} placeholder="e.g. Dell Latitude Laptop" />
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Category *</label>
-              <select className={kit.select} value={aCategory} onChange={(e) => setACategory(e.target.value)}>
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            <div className={kit.field}>
-              <label>Quantity</label>
-              <input className={kit.input} type="number" min={0} value={aQuantity} onChange={(e) => setAQuantity(e.target.value)} />
-            </div>
-          </div>
-          <div className={kit.fieldRow}>
-            <div className={kit.field}>
-              <label>Location</label>
-              <input className={kit.input} value={aLocation} onChange={(e) => setALocation(e.target.value)} placeholder="e.g. ICT Lab" />
-            </div>
-            <div className={kit.field}>
-              <label>Value (GHS)</label>
-              <input className={kit.input} type="number" min={0} value={aValue} onChange={(e) => setAValue(e.target.value)} />
-            </div>
-          </div>
-          <div className={kit.field}>
-            <label>Custodian</label>
-            <select className={kit.select} value={aCustodianId} onChange={(e) => setACustodianId(e.target.value)}>
-              <option value="">Unassigned</option>
-              {staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-            </select>
-          </div>
-        </MobileSheet>
-      </div>
-
-      {/* Record Movement modal — desktop (untouched) */}
+      {/* Record Movement modal */}
       {movementAsset && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => !recording && setMovementAsset(null)}>
+        <div className={styles.modalOverlay} onClick={() => !recording && setMovementAsset(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Stock Movement — {movementAsset.name}</h2>
@@ -511,36 +454,6 @@ export function AssetsContent({ assets, movements, staff }: Props) {
           </div>
         </div>
       )}
-
-      {/* Stock Movement sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={!!movementAsset}
-          onClose={() => !recording && setMovementAsset(null)}
-          title={`Stock Movement — ${movementAsset?.name ?? ""}`}
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setMovementAsset(null)} disabled={recording}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={submitMovement} disabled={recording}>{recording ? "Saving…" : "Record"}</button>
-          </>}
-        >
-          <p className={kit.helperText}>Current quantity: {movementAsset?.quantity}</p>
-          <div className={kit.field}>
-            <label>Type</label>
-            <select className={kit.select} value={mType} onChange={(e) => setMType(e.target.value as "issue" | "receive")}>
-              <option value="issue">Issue (remove stock)</option>
-              <option value="receive">Receive (add stock)</option>
-            </select>
-          </div>
-          <div className={kit.field}>
-            <label>Quantity</label>
-            <input className={kit.input} type="number" min={1} value={mQuantity} onChange={(e) => setMQuantity(e.target.value)} />
-          </div>
-          <div className={kit.field}>
-            <label>Note</label>
-            <input className={kit.input} value={mNote} onChange={(e) => setMNote(e.target.value)} placeholder="Optional" />
-          </div>
-        </MobileSheet>
-      </div>
     </div>
   );
 }

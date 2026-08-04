@@ -110,6 +110,7 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
   // Assign students modal
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [assignIds, setAssignIds] = useState<Set<string>>(new Set());
+  const [assignSearch, setAssignSearch] = useState("");
   const [assigning, setAssigning] = useState(false);
 
   // Route manifest bulk-select
@@ -277,6 +278,12 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
       setBulkRemoving(false);
     }
   }
+
+  const filteredUnassigned = (() => {
+    const q = assignSearch.trim().toLowerCase();
+    if (!q) return unassignedStudents;
+    return unassignedStudents.filter((s) => s.name.toLowerCase().includes(q) || s.admissionNo.toLowerCase().includes(q) || s.className.toLowerCase().includes(q));
+  })();
 
   const anyVehicleLive = vehicles.some((v) => {
     if (!v.locationUpdatedAt) return false;
@@ -451,7 +458,7 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
               <span className={styles.manifestCount}>
                 {selectedRoute?.students.length ?? 0} students on {selectedRoute?.name ?? "—"}
               </span>
-              <button className={styles.btnSmall} disabled={!selectedRoute} onClick={() => { setAssignIds(new Set()); setShowAssignModal(true); }}>
+              <button className={styles.btnSmall} disabled={!selectedRoute} onClick={() => { setAssignIds(new Set()); setAssignSearch(""); setShowAssignModal(true); }}>
                 <Plus size={13} /> Assign Students
               </button>
             </div>
@@ -812,8 +819,15 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
               <button className={styles.modalClose} onClick={() => setShowAssignModal(false)}><X size={18} /></button>
             </div>
             <div className={styles.modalBody}>
+              <input
+                className={styles.formInput}
+                style={{ marginBottom: 10 }}
+                placeholder="Search any student by name, adm. no, or class"
+                value={assignSearch}
+                onChange={(e) => setAssignSearch(e.target.value)}
+              />
               <div style={{ maxHeight: 260, overflowY: "auto", border: "1px solid var(--clr-app-border)", borderRadius: 6 }}>
-                {unassignedStudents.map((s) => (
+                {filteredUnassigned.map((s) => (
                   <label key={s.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 10px", fontSize: "var(--text-xs)", borderBottom: "1px solid var(--clr-app-border)", cursor: "pointer" }}>
                     <input type="checkbox" checked={assignIds.has(s.id)} onChange={() => toggleAssign(s.id)} />
                     <span>{s.name}</span>
@@ -822,6 +836,9 @@ export function TransportContent({ vehicles, routes, stats, unassignedStudents, 
                 ))}
                 {unassignedStudents.length === 0 && (
                   <p style={{ padding: 16, fontSize: "var(--text-xs)", color: "var(--clr-app-muted)", margin: 0 }}>All students already have a transport route assigned.</p>
+                )}
+                {unassignedStudents.length > 0 && filteredUnassigned.length === 0 && (
+                  <p style={{ padding: 16, fontSize: "var(--text-xs)", color: "var(--clr-app-muted)", margin: 0 }}>No students match your search.</p>
                 )}
               </div>
             </div>

@@ -8,13 +8,11 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { useConfirm } from "@/components/desktop/ui/ConfirmDialog/ConfirmDialog";
-import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
-import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import styles from "./ParentCommunicationsScreen.module.css";
 
-type BroadcastStatus = "draft" | "pending" | "delivered" | "scheduled" | "failed" | "partial";
+export type BroadcastStatus = "draft" | "pending" | "delivered" | "scheduled" | "failed" | "partial";
 
-interface Broadcast {
+export interface Broadcast {
   id: string;
   subject: string;
   body: string;
@@ -32,22 +30,23 @@ interface Broadcast {
   updatedAt: string;
 }
 
-interface BroadcastStats {
+export interface BroadcastStats {
   totalSent: number;
   totalFailed: number;
   totalPending: number;
   consents: number;
 }
 
-interface ClassOption { id: string; name: string }
+export interface ClassOption { id: string; name: string }
 
-interface Props {
+export interface ParentCommunicationsContentProps {
   initialBroadcasts: Broadcast[];
   initialStats:      BroadcastStats;
   classes:           ClassOption[];
 }
+type Props = ParentCommunicationsContentProps;
 
-const STATUS_META: Record<BroadcastStatus, { label: string; pillClass: string }> = {
+export const STATUS_META: Record<BroadcastStatus, { label: string; pillClass: string }> = {
   draft:     { label: "Draft",     pillClass: "pillDraft" },
   pending:   { label: "Sending…",  pillClass: "pillPending" },
   delivered: { label: "Delivered", pillClass: "pillDelivered" },
@@ -56,25 +55,34 @@ const STATUS_META: Record<BroadcastStatus, { label: string; pillClass: string }>
   partial:   { label: "Partial",   pillClass: "pillScheduled" },
 };
 
-const FIXED_AUDIENCE_LABEL: Record<string, string> = {
+export const FIXED_AUDIENCE_LABEL: Record<string, string> = {
   all:        "All Parents",
   defaulters: "Fee Defaulters",
   boarding:   "Boarding Students' Parents",
   pta:        "PTA Committee",
 };
 
-const CHANNEL_ICONS: Record<string, React.ReactNode> = {
+export const CHANNEL_ICONS: Record<string, React.ReactNode> = {
   sms:      <Phone size={12} />,
   email:    <Mail size={12} />,
   push:     <Bell size={12} />,
   whatsapp: <MessageSquare size={12} />,
 };
 
-function fmtDate(d: string) {
+export function fmtDate(d: string) {
   return new Date(d).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
-function DeliveryBar({ delivered, failed, pending }: { delivered: number; failed: number; pending: number }) {
+export function audienceLabel(value: string, classes: ClassOption[]): string {
+  if (FIXED_AUDIENCE_LABEL[value]) return FIXED_AUDIENCE_LABEL[value];
+  if (value.startsWith("class:")) {
+    const cls = classes.find((c) => c.id === value.slice("class:".length));
+    return cls ? `${cls.name} Parents` : value;
+  }
+  return value;
+}
+
+export function DeliveryBar({ delivered, failed, pending }: { delivered: number; failed: number; pending: number }) {
   const total = delivered + failed + pending;
   if (total === 0) return <span className={styles.deliveryDash}>—</span>;
   const dPct = Math.round((delivered / total) * 100);
@@ -89,15 +97,6 @@ function DeliveryBar({ delivered, failed, pending }: { delivered: number; failed
       <div className={styles.deliveryLabel}>{delivered} del · {failed} fail · {pending} pend</div>
     </div>
   );
-}
-
-function audienceLabel(value: string, classes: ClassOption[]): string {
-  if (FIXED_AUDIENCE_LABEL[value]) return FIXED_AUDIENCE_LABEL[value];
-  if (value.startsWith("class:")) {
-    const cls = classes.find((c) => c.id === value.slice("class:".length));
-    return cls ? `${cls.name} Parents` : value;
-  }
-  return value;
 }
 
 export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, classes }: Props) {
@@ -436,7 +435,7 @@ export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, cl
 
       {/* New broadcast modal */}
       {showNew && (
-        <div className={`${styles.modalOverlay} desktopOnly`} onClick={() => setShowNew(false)}>
+        <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}><Send size={16} />New Broadcast</h3>
@@ -486,57 +485,6 @@ export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, cl
           </div>
         </div>
       )}
-
-      {/* New broadcast sheet — mobile */}
-      <div className="mobileOnly">
-        <MobileSheet
-          open={showNew}
-          onClose={() => setShowNew(false)}
-          title="New Broadcast"
-          footer={<>
-            <button type="button" className={kit.btnOutline} onClick={() => setShowNew(false)}>Cancel</button>
-            <button type="button" className={kit.btnPrimary} onClick={handleSend} disabled={loading}>
-              {loading ? "Sending…" : "Send Broadcast"}
-            </button>
-          </>}
-        >
-          <div className={kit.field}>
-            <label>Subject *</label>
-            <input className={kit.input} value={nSubject} onChange={e => setNSubject(e.target.value)} placeholder="e.g. End-of-term fee notice" />
-          </div>
-          <div className={kit.field}>
-            <label>Message Body *</label>
-            <textarea className={kit.textarea} rows={4} value={nBody} onChange={e => setNBody(e.target.value)} placeholder="Write your message to parents here…" />
-            <p className={kit.helperText}>{nBody.length} characters</p>
-          </div>
-          <div className={kit.field}>
-            <label>Audience</label>
-            <select className={kit.select} value={nAudience} onChange={e => setNAudience(e.target.value)}>
-              {Object.entries(FIXED_AUDIENCE_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-              {classes.map((c) => <option key={c.id} value={`class:${c.id}`}>{c.name} Parents</option>)}
-            </select>
-          </div>
-          <div className={kit.field}>
-            <label>Channels *</label>
-            <div className={kit.chipRow}>
-              {["sms", "email", "push", "whatsapp"].map(c => (
-                <div key={c} onClick={() => toggleChannel(c)} className={`${kit.chip} ${nChannels.includes(c) ? kit.chipActive : ""}`}>
-                  {CHANNEL_ICONS[c]}{c}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className={kit.field}>
-            <label>Schedule (optional)</label>
-            <input className={kit.input} type="datetime-local" value={nScheduled} onChange={e => setNScheduled(e.target.value)} />
-            <p className={kit.helperText}>Leave blank to send now.</p>
-          </div>
-          <div className={kit.checkboxRow}>
-            <input type="checkbox" checked={nConsent} onChange={e => setNConsent(e.target.checked)} />
-            <label className={kit.checkboxLabel}>This is a consent / permission form request</label>
-          </div>
-        </MobileSheet>
-      </div>
 
       {/* Delete confirm */}
       {delConfirm && (
