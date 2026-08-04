@@ -95,7 +95,7 @@
    sibling of that page's content, not a replacement for it. Hide
    everything else on the page and re-reveal only this modal's subtree. */
 @media print {
-  body * { visibility: hidden !important; }
+  :global(body *) { visibility: hidden !important; }
   .overlay, .overlay * { visibility: visible !important; }
   .overlay { position: fixed; inset: 0; padding: 0; background: none; backdrop-filter: none; }
   .panel { width: 100%; max-height: none; border: none; box-shadow: none; }
