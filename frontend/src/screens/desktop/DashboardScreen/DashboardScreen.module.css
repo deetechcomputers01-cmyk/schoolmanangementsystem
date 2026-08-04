@@ -251,89 +251,12 @@
   color: var(--clr-app-accent);
 }
 
-.attendanceChart {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 192px;
-  min-height: 192px;
-}
-
-.chartScale {
-  display: none;
-}
-
-.attendancePlot {
-  position: relative;
-  grid-row: 1;
-  min-width: 0;
-  padding-bottom: 0;
-}
-
-.chartGridLines {
-  display: none;
-}
-
-.chartEmpty {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: var(--clr-app-muted);
-  font-size: var(--text-xs);
-}
-
-.barColumns {
-  position: absolute;
-  inset: 0 2px;
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.barColumn {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 6px;
-}
-
-.barPair {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 3px;
-  width: 100%;
-  height: 100%;
-}
-
-.attendanceBar {
-  display: block;
-  width: min(24px, 35%);
-  min-height: 0;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-}
-
-.presentBar { background: var(--clr-app-accent); }
-.absentBar { background: var(--clr-app-info); }
-
-.barLabel {
-  display: none;
-}
-
-.chartLegend {
-  display: none;
-}
-
-.chartLegend span,
 .genderLegend span {
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 
-.chartLegend i,
 .genderLegend i {
   display: inline-block;
   width: 7px;
@@ -341,9 +264,7 @@
   border-radius: 50%;
 }
 
-.legendPresent,
 .legendBoys { background: var(--clr-app-accent); }
-.legendAbsent,
 .legendGirls { background: var(--clr-app-info); }
 
 .genderChart {

@@ -13,7 +13,8 @@ import { DashboardStudentsTable, type DashboardStudentRow } from "@/components/m
 import { currency } from "@backend/utils";
 import { getCurrentUser } from "@backend/auth/cookies";
 import { isDatabaseUnavailable, prisma } from "@backend/prisma";
-import { listAttendance } from "@backend/services/attendance.service";
+import { listAttendance, getAttendanceTrend } from "@backend/services/attendance.service";
+import { AttendanceTrendCard } from "@/components/desktop/modules/dashboard/AttendanceTrendCard";
 import { getDashboardStats } from "@backend/services/dashboard.service";
 import { listFees } from "@backend/services/fee.service";
 import { listStudents } from "@backend/services/student.service";
@@ -27,12 +28,6 @@ import {
 import css from "./DashboardScreen.module.css";
 
 export const dynamic = "force-dynamic";
-
-type AttendancePoint = {
-  label: string;
-  present: number;
-  absent: number;
-};
 
 type GenderSummary = {
   boys: number;
@@ -91,9 +86,10 @@ export async function DashboardScreen() {
       return <ParentDashboard data={data} userName={user.name} />;
     }
 
-  const [stats, attendance, fees, adminExtras, rawStudents, upcomingEventRows] = await Promise.all([
+  const [stats, attendance, attendanceTrend, fees, adminExtras, rawStudents, upcomingEventRows] = await Promise.all([
     getDashboardStats(),
     listAttendance(),
+    getAttendanceTrend(),
     listFees(),
     user?.role === "super_admin" ? getSuperAdminExtras() : Promise.resolve(null),
     listStudents(),
@@ -122,18 +118,12 @@ export async function DashboardScreen() {
     })))
     .slice(0, 5);
   const students = mapStudents(rawStudents);
-  const attendanceSeries = buildWeeklyAttendance(attendance);
   const genderSummary = buildGenderSummary(rawStudents);
   const firstName = user?.name?.split(" ")[0] ?? "Administrator";
   const greetingName = user?.role === "super_admin" ? "Administrator" : firstName;
 
   const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
   const todaysAttendance = attendance.filter((a) => a.date >= todayStart);
-  const attendanceTodayBreakdown = {
-    present: todaysAttendance.filter((a) => a.status === "present").length,
-    absent: todaysAttendance.filter((a) => a.status === "absent" || a.status === "excused").length,
-    late: todaysAttendance.filter((a) => a.status === "late").length,
-  };
   const todayStatusByStudent = new Map(todaysAttendance.map((a) => [a.studentId, a.status]));
   const mobileRecentStudents = [...rawStudents]
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
@@ -167,7 +157,7 @@ export async function DashboardScreen() {
           staffCount={stats.staff}
           classesCount={stats.classes}
           feesCollected={collected}
-          attendanceToday={attendanceTodayBreakdown}
+          attendanceTrend={attendanceTrend}
           genderSummary={genderSummary}
           systemOverview={adminExtras ? {
             offlineQueue: 0,
@@ -239,9 +229,7 @@ export async function DashboardScreen() {
         </div>
 
         <div className={css.analyticsGrid}>
-          <SurfaceCard title="Attendance">
-            <AttendanceChart data={attendanceSeries} />
-          </SurfaceCard>
+          <AttendanceTrendCard week={attendanceTrend.week} month={attendanceTrend.month} />
 
           <SurfaceCard title="Students Boys/Girls">
             <GenderChart data={genderSummary} total={rawStudents.length} />
@@ -434,42 +422,6 @@ function StatusPill({ status }: { status: string }) {
   return <span className={`${css.statusPill} ${tone}`}>{status}</span>;
 }
 
-function AttendanceChart({ data }: { data: AttendancePoint[] }) {
-  const max = Math.max(...data.flatMap((point) => [point.present, point.absent]), 1);
-  const hasData = data.some((point) => point.present > 0 || point.absent > 0);
-  const scaleLabels = Array.from({ length: 5 }, (_, index) => {
-    const value = max * (1 - index * 0.25);
-    return value === 0 ? "0" : max < 10 ? value.toFixed(1) : Math.round(value).toLocaleString();
-  });
-  return (
-    <div className={css.attendanceChart}>
-      <div className={css.chartScale} aria-hidden>
-        {scaleLabels.map((label, index) => <span key={`${label}-${index}`}>{label}</span>)}
-      </div>
-      <div className={css.attendancePlot}>
-        <div className={css.chartGridLines} aria-hidden />
-        {hasData ? (
-          <div className={css.barColumns}>
-            {data.map((point) => (
-              <div key={point.label} className={css.barColumn}>
-                <div className={css.barPair}>
-                  <span className={`${css.attendanceBar} ${css.presentBar}`} style={{ height: `${Math.max(point.present ? 5 : 0, (point.present / max) * 100)}%` }} title={`${point.present} present`} />
-                  <span className={`${css.attendanceBar} ${css.absentBar}`} style={{ height: `${Math.max(point.absent ? 5 : 0, (point.absent / max) * 100)}%` }} title={`${point.absent} absent`} />
-                </div>
-                <span className={css.barLabel}>{point.label}</span>
-              </div>
-            ))}
-          </div>
-        ) : <span className={css.chartEmpty}>No attendance recorded this week.</span>}
-      </div>
-      <div className={css.chartLegend}>
-        <span><i className={css.legendPresent} />Present / late</span>
-        <span><i className={css.legendAbsent} />Absent / excused</span>
-      </div>
-    </div>
-  );
-}
-
 function GenderChart({ data, total }: { data: GenderSummary; total: number }) {
   const boysAngle = total ? (data.boys / total) * 360 : 0;
   const boysPercent = total ? Math.round((data.boys / total) * 100) : 0;
@@ -512,23 +464,6 @@ function mapStudents(rawStudents: Awaited<ReturnType<typeof listStudents>>): Das
   });
 }
 
-function buildWeeklyAttendance(attendance: Awaited<ReturnType<typeof listAttendance>>): AttendancePoint[] {
-  const today = new Date();
-  const days = Array.from({ length: 7 }, (_, index) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() - (6 - index));
-    return date;
-  });
-
-  return days.map((day) => {
-    const sameDay = attendance.filter((record) => record.date.toDateString() === day.toDateString());
-    return {
-      label: day.toLocaleDateString("en-GB", { weekday: "short" }),
-      present: sameDay.filter((record) => record.status === "present" || record.status === "late").length,
-      absent: sameDay.filter((record) => record.status === "absent" || record.status === "excused").length,
-    };
-  });
-}
 
 function buildGenderSummary(rawStudents: Awaited<ReturnType<typeof listStudents>>): GenderSummary {
   return rawStudents.reduce<GenderSummary>((summary, student) => {

@@ -44,6 +44,69 @@ export function listAttendance(classIds?: string[]) {
   });
 }
 
+export interface AttendanceTrendPoint { label: string; present: number; absent: number; late: number }
+
+function dayKey(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
+
+// Real, whole-school daily/weekly trend for the dashboard's Attendance
+// widget — grouped in the database, not sliced from listAttendance()'s
+// 200-row cap (which only covers a few days on a school with real
+// enrolment numbers, making a "monthly" view built from it inaccurate).
+export async function getAttendanceTrend(): Promise<{ week: AttendanceTrendPoint[]; month: AttendanceTrendPoint[] }> {
+  const now = new Date();
+  const start = new Date(now);
+  start.setDate(now.getDate() - 29);
+  start.setHours(0, 0, 0, 0);
+
+  const rows = await prisma.attendance.groupBy({
+    by: ["date", "status"],
+    where: { date: { gte: start } },
+    _count: { _all: true },
+  });
+
+  const byDay = new Map<string, { present: number; absent: number; late: number }>();
+  for (const row of rows) {
+    const key = dayKey(row.date);
+    const bucket = byDay.get(key) ?? { present: 0, absent: 0, late: 0 };
+    if (row.status === "present") bucket.present += row._count._all;
+    else if (row.status === "late") bucket.late += row._count._all;
+    else bucket.absent += row._count._all; // "absent" + "excused" folded together, matching the dashboard's existing convention
+    byDay.set(key, bucket);
+  }
+
+  const week: AttendanceTrendPoint[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(now);
+    d.setDate(now.getDate() - (6 - i));
+    const bucket = byDay.get(dayKey(d)) ?? { present: 0, absent: 0, late: 0 };
+    return { label: d.toLocaleDateString("en-GB", { weekday: "short" }), ...bucket };
+  });
+
+  // Last 30 days grouped into 5 weekly buckets (oldest first) — a 30-bar
+  // daily chart would be unreadable at this width, weekly buckets keep the
+  // "monthly" view legible while still real, not resampled/estimated.
+  const month: AttendanceTrendPoint[] = [];
+  for (let w = 4; w >= 0; w--) {
+    const bucket = { present: 0, absent: 0, late: 0 };
+    for (let d = 0; d < 7; d++) {
+      const dayOffset = w * 7 + d;
+      if (dayOffset > 29) continue;
+      const date = new Date(now);
+      date.setDate(now.getDate() - dayOffset);
+      const dayBucket = byDay.get(dayKey(date));
+      if (dayBucket) {
+        bucket.present += dayBucket.present;
+        bucket.absent += dayBucket.absent;
+        bucket.late += dayBucket.late;
+      }
+    }
+    month.unshift({ label: `Week ${5 - w}`, ...bucket });
+  }
+
+  return { week, month };
+}
+
 export async function recordAttendance(
   user: SessionUser | null,
   input: { classId: string; date: string; records: { studentId: string; status: AttendanceStatus; note?: string }[] }

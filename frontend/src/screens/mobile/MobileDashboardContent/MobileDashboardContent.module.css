@@ -71,8 +71,6 @@
 .cardTitle { margin: 0 0 12px; color: var(--clr-app-text); font-size: var(--text-base); font-weight: 700; }
 .cardHeaderRow .cardTitle { margin-bottom: 0; }
 
-.cardHeaderValue { color: var(--clr-success); font-size: var(--text-lg); font-weight: 700; }
-
 .segmentBar {
   display: flex;
   height: 10px;
@@ -81,11 +79,36 @@
   background: var(--clr-app-surface-alt);
 }
 
-.segPresent { background: var(--clr-success); height: 100%; }
-.segAbsent { background: var(--clr-error); height: 100%; }
-.segLate { background: var(--clr-warning); height: 100%; }
 .segBoys { background: var(--clr-app-accent); height: 100%; }
 .segGirls { background: var(--clr-app-accent-soft); height: 100%; }
+
+/* ── Attendance Trend card ────────────────────────────────────────────── */
+.trendToggle { display: flex; padding: 2px; border-radius: 999px; background: var(--clr-app-surface-alt); flex-shrink: 0; }
+.trendToggleBtn, .trendToggleBtnActive { height: 24px; padding: 0 10px; border: 0; border-radius: 999px; font-size: 10px; font-weight: 700; cursor: pointer; }
+.trendToggleBtn { background: transparent; color: var(--clr-app-muted); }
+.trendToggleBtnActive { background: var(--clr-app-accent); color: #ffffff; }
+
+.trendStatGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin: 12px 0; }
+.trendStatTile { display: flex; flex-direction: column; gap: 3px; padding: 8px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); background: var(--clr-app-surface-alt); min-height: 60px; justify-content: space-between; }
+.trendStatTop { display: flex; align-items: center; justify-content: space-between; }
+.trendStatLabel { color: var(--clr-app-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.trendIconGood { color: var(--clr-success); }
+.trendIconBad { color: var(--clr-error); }
+.trendIconWarn { color: var(--clr-warning); }
+.trendIconAccent { color: var(--clr-app-accent); }
+.trendStatValueGood { color: var(--clr-success); font-size: var(--text-md, 16px); font-weight: 800; }
+.trendStatValueBad { color: var(--clr-error); font-size: var(--text-md, 16px); font-weight: 800; }
+.trendStatValueWarn { color: var(--clr-warning); font-size: var(--text-md, 16px); font-weight: 800; }
+.trendStatValueAccent { color: var(--clr-app-accent); font-size: var(--text-md, 16px); font-weight: 800; }
+
+.trendChart { display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; height: 110px; padding: 0 2px; }
+.trendColumn { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; height: 100%; justify-content: flex-end; }
+.trendBarPair { position: relative; display: flex; align-items: flex-end; gap: 2px; height: 100%; }
+.trendBarPresent, .trendBarAbsent { width: 6px; border-radius: 2px 2px 0 0; min-height: 2px; }
+.trendBarPresent { background: var(--clr-app-accent); }
+.trendBarAbsent { background: var(--clr-error-border); }
+.trendLateDot { position: absolute; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; border-radius: 50%; background: var(--clr-warning); }
+.trendColumnLabel { color: var(--clr-app-muted); font-size: 9px; }
 
 .legendRow, .legendRowCenter {
   display: flex;
@@ -103,8 +126,8 @@
   height: 7px;
   border-radius: 50%;
 }
-.dotPresent { background: var(--clr-success); }
-.dotAbsent { background: var(--clr-error); }
+.dotPresent { background: var(--clr-app-accent); }
+.dotAbsent { background: var(--clr-error-border); }
 .dotLate { background: var(--clr-warning); }
 .dotBoys { background: var(--clr-app-accent); }
 .dotGirls { background: var(--clr-app-accent-soft); }

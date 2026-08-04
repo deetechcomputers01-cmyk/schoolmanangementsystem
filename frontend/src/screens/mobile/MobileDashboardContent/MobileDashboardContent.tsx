@@ -1,12 +1,15 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Users, IdCard, GraduationCap, Wallet, UserPlus, ClipboardCheck,
-  Receipt, UserCog, Inbox, CalendarDays,
+  Receipt, UserCog, Inbox, CalendarDays, Check, X, Clock, TrendingUp,
 } from "lucide-react";
 import { currency } from "@backend/utils";
 import styles from "./MobileDashboardContent.module.css";
+
+export interface AttendanceTrendPoint { label: string; present: number; absent: number; late: number }
 
 export interface MobileDashboardProps {
   greetingName: string;
@@ -15,7 +18,7 @@ export interface MobileDashboardProps {
   staffCount: number;
   classesCount: number;
   feesCollected: number;
-  attendanceToday: { present: number; absent: number; late: number };
+  attendanceTrend: { week: AttendanceTrendPoint[]; month: AttendanceTrendPoint[] };
   genderSummary: { boys: number; girls: number };
   systemOverview: { offlineQueue: number; pendingApprovals: number; auditEventsToday: number } | null;
   recentStudents: { id: string; name: string; initials: string; className: string; status: "present" | "absent" | "late" | "excused" | null }[];
@@ -28,11 +31,22 @@ const STATUS_LABEL: Record<string, string> = { present: "Present", absent: "Abse
 export function MobileDashboardContent(props: MobileDashboardProps) {
   const {
     greetingName, todayLabel, studentsCount, staffCount, classesCount, feesCollected,
-    attendanceToday, genderSummary, systemOverview, recentStudents, recentPayments, upcomingEvents,
+    attendanceTrend, genderSummary, systemOverview, recentStudents, recentPayments, upcomingEvents,
   } = props;
 
-  const attTotal = attendanceToday.present + attendanceToday.absent + attendanceToday.late;
-  const pct = (n: number) => (attTotal > 0 ? (n / attTotal) * 100 : 0);
+  const [range, setRange] = useState<"week" | "month">("week");
+  const trendData = range === "week" ? attendanceTrend.week : attendanceTrend.month;
+  const trendTotals = useMemo(() => {
+    const present = trendData.reduce((sum, p) => sum + p.present, 0);
+    const absent = trendData.reduce((sum, p) => sum + p.absent, 0);
+    const late = trendData.reduce((sum, p) => sum + p.late, 0);
+    const total = present + absent + late;
+    const rate = total > 0 ? Math.round(((present + late) / total) * 100) : 0;
+    return { present, absent, late, rate };
+  }, [trendData]);
+  const trendMax = Math.max(...trendData.flatMap((p) => [p.present, p.absent, p.late]), 1);
+  const trendHasData = trendData.some((p) => p.present > 0 || p.absent > 0 || p.late > 0);
+
   const genderTotal = genderSummary.boys + genderSummary.girls;
   const boysPct = genderTotal > 0 ? (genderSummary.boys / genderTotal) * 100 : 0;
 
@@ -72,18 +86,59 @@ export function MobileDashboardContent(props: MobileDashboardProps) {
 
       <section className={styles.card}>
         <div className={styles.cardHeaderRow}>
-          <h3 className={styles.cardTitle}>Today&apos;s Attendance</h3>
-          <span className={styles.cardHeaderValue}>{attTotal > 0 ? `${Math.round(pct(attendanceToday.present))}%` : "—"}</span>
+          <h3 className={styles.cardTitle}>Attendance Trend</h3>
+          <div className={styles.trendToggle}>
+            <button type="button" className={range === "week" ? styles.trendToggleBtnActive : styles.trendToggleBtn} onClick={() => setRange("week")}>Weekly</button>
+            <button type="button" className={range === "month" ? styles.trendToggleBtnActive : styles.trendToggleBtn} onClick={() => setRange("month")}>Monthly</button>
+          </div>
         </div>
-        <div className={styles.segmentBar}>
-          <span className={styles.segPresent} style={{ width: `${pct(attendanceToday.present)}%` }} />
-          <span className={styles.segAbsent} style={{ width: `${pct(attendanceToday.absent)}%` }} />
-          <span className={styles.segLate} style={{ width: `${pct(attendanceToday.late)}%` }} />
+
+        <div className={styles.trendStatGrid}>
+          <div className={styles.trendStatTile}>
+            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Present</span><Check size={12} className={styles.trendIconGood} /></div>
+            <strong className={styles.trendStatValueGood}>{trendTotals.present}</strong>
+          </div>
+          <div className={styles.trendStatTile}>
+            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Absent</span><X size={12} className={styles.trendIconBad} /></div>
+            <strong className={styles.trendStatValueBad}>{trendTotals.absent}</strong>
+          </div>
+          <div className={styles.trendStatTile}>
+            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Late</span><Clock size={12} className={styles.trendIconWarn} /></div>
+            <strong className={styles.trendStatValueWarn}>{trendTotals.late}</strong>
+          </div>
+          <div className={styles.trendStatTile}>
+            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Rate</span><TrendingUp size={12} className={styles.trendIconAccent} /></div>
+            <strong className={styles.trendStatValueAccent}>{trendTotals.rate}%</strong>
+          </div>
         </div>
+
+        {trendHasData ? (
+          <div className={styles.trendChart}>
+            {trendData.map((point) => {
+              const presentH = Math.max(point.present ? 6 : 0, (point.present / trendMax) * 100);
+              const absentH = Math.max(point.absent ? 6 : 0, (point.absent / trendMax) * 100);
+              return (
+                <div key={point.label} className={styles.trendColumn}>
+                  <div className={styles.trendBarPair}>
+                    {point.late > 0 && (
+                      <span className={styles.trendLateDot} style={{ bottom: `calc(${Math.max(presentH, absentH)}% + 5px)` }} title={`${point.late} late`} />
+                    )}
+                    <span className={styles.trendBarPresent} style={{ height: `${presentH}%` }} />
+                    <span className={styles.trendBarAbsent} style={{ height: `${absentH}%` }} />
+                  </div>
+                  <span className={styles.trendColumnLabel}>{point.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className={styles.emptyRow}>No attendance recorded {range === "week" ? "this week" : "this month"}.</p>
+        )}
+
         <div className={styles.legendRow}>
-          <span><i className={styles.dotPresent} />Present ({attendanceToday.present})</span>
-          <span><i className={styles.dotAbsent} />Absent ({attendanceToday.absent})</span>
-          <span><i className={styles.dotLate} />Late ({attendanceToday.late})</span>
+          <span><i className={styles.dotPresent} />Present</span>
+          <span><i className={styles.dotAbsent} />Absent</span>
+          <span><i className={styles.dotLate} />Late</span>
         </div>
       </section>
 
