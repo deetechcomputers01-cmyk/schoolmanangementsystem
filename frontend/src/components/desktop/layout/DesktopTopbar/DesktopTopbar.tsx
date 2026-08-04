@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, ChevronDown, RefreshCw, Search } from "lucide-react";
+import { Bell, ChevronDown, RefreshCw } from "lucide-react";
 import { deriveTitle } from "@/lib/pageTitles";
 import { useNotifications, timeAgo, type NotificationItem } from "@/hooks/useNotifications";
 import styles from "./DesktopTopbar.module.css";
@@ -26,7 +26,6 @@ export function DesktopTopbar({
   const pathname = usePathname();
   const router = useRouter();
   const title = deriveTitle(pathname) || pageTitle || "";
-  const showSearch = pathname !== "/dashboard";
 
   const [open, setOpen] = useState(false);
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications(notificationCount);
@@ -49,22 +48,9 @@ export function DesktopTopbar({
 
   return (
     <header className={styles.topbar} role="banner">
-      {showSearch ? (
-        <label className={styles.searchWrap} aria-label="Search">
-          <span className={styles.searchIcon} aria-hidden>
-            <Search size={14} />
-          </span>
-          <input
-            className={styles.searchInput}
-            placeholder="Search..."
-            type="search"
-          />
-        </label>
-      ) : (
-        <div className={styles.heading}>
-          <h1 className={styles.pageTitle}>{title}</h1>
-        </div>
-      )}
+      <div className={styles.heading}>
+        <h1 className={styles.pageTitle}>{title}</h1>
+      </div>
 
       <div className={styles.controls}>
         <div className={styles.notifWrap} ref={panelRef}>

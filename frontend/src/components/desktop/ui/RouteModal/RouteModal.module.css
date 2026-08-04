@@ -90,10 +90,14 @@
 
 /* Content inside a modal (e.g. a report card) can trigger window.print() —
    without this, the dark backdrop, panel shadow/border, and close button
-   would print too. Let the content's own print styles (e.g. `.no-print`)
-   take over cleanly instead. */
+   would print too, AND the real page sitting behind the modal (e.g. the
+   whole Report Cards list) since the intercepting-route modal renders as a
+   sibling of that page's content, not a replacement for it. Hide
+   everything else on the page and re-reveal only this modal's subtree. */
 @media print {
-  .overlay { position: static; padding: 0; background: none; backdrop-filter: none; }
+  body * { visibility: hidden !important; }
+  .overlay, .overlay * { visibility: visible !important; }
+  .overlay { position: fixed; inset: 0; padding: 0; background: none; backdrop-filter: none; }
   .panel { width: 100%; max-height: none; border: none; box-shadow: none; }
   .panelBody { overflow: visible; padding: 0; }
   .closeBtn, .dragHandle { display: none !important; }

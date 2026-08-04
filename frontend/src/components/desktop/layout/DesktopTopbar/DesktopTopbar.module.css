@@ -23,15 +23,6 @@
   flex: 1;
 }
 
-.searchWrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 212px;
-  min-width: 0;
-  flex-shrink: 1;
-}
-
 .pageTitle {
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
@@ -62,37 +53,6 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
-}
-
-/* Search */
-.searchIcon {
-  position: absolute;
-  left: 10px;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  color: var(--clr-app-muted);
-}
-
-.searchInput {
-  width: 100%;
-  height: 31px;
-  padding: 0 10px 0 32px;
-  background: var(--clr-app-surface);
-  border: 1px solid var(--clr-app-border);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-xs);
-  color: var(--clr-app-text);
-  outline: none;
-  transition: border-color var(--dur-fast) var(--ease-out);
-}
-
-.searchInput:focus {
-  border-color: var(--clr-app-accent);
-}
-
-.searchInput::placeholder {
-  color: var(--clr-app-muted);
 }
 
 /* Icon button (bell etc.) */
@@ -317,7 +277,6 @@
    profile block to just the avatar and let the search box shrink freely. ── */
 @media (max-width: 640px) {
   .topbar { padding: 0 12px; gap: var(--sp-2); }
-  .searchWrap { width: auto; flex: 1 1 auto; }
   .profileCopy,
   .profileChevron,
   .divider { display: none; }

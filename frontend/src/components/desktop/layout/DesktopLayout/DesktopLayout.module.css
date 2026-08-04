@@ -55,3 +55,20 @@
     padding-bottom: calc(64px + env(safe-area-inset-bottom) + var(--sp-4));
   }
 }
+
+/* App chrome (sidebar, topbar, mobile header/bottom nav) should never print —
+   only the actual page/modal content a user asked to print. Without this,
+   printing anything anywhere in the app (a report card, a bulk print route)
+   dragged the whole shell into the printout. */
+@media print {
+  .desktopOnly, .mobileOnly {
+    display: none !important;
+  }
+  .body {
+    margin-left: 0;
+  }
+  .content {
+    padding: 0;
+    background: none;
+  }
+}
