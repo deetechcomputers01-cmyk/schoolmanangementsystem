@@ -11,9 +11,9 @@ datasource db {
   // which a PgBouncer/transaction-pooled connection (e.g. Neon's pooled
   // connection string) cannot reliably support, causing deploys to fail
   // with P1002 "timed out trying to acquire a postgres advisory lock".
-  // DATABASE_URL stays the pooled connection for the running app; set
-  // DIRECT_URL to the *unpooled* connection string for migrations only.
-  directUrl = env("DIRECT_URL")
+  // DATABASE_URL_UNPOOLED is already provided by Neon's Vercel integration
+  // (same value as POSTGRES_URL_NON_POOLING) — no separate var to create.
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 enum Role {
