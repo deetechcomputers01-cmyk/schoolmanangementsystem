@@ -13,6 +13,8 @@ datasource db {
   // with P1002 "timed out trying to acquire a postgres advisory lock".
   // DATABASE_URL_UNPOOLED is already provided by Neon's Vercel integration
   // (same value as POSTGRES_URL_NON_POOLING) — no separate var to create.
+  // (Stale advisory lock from an earlier failed deploy was also cleared
+  // directly against the database — see chat/memory for that incident.)
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
