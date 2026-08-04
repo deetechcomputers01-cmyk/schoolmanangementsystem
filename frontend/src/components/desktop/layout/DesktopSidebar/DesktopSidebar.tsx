@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { NAV_ICON_MAP as ICON_MAP, type NavIconKey } from "@/lib/nav";
 import styles from "./DesktopSidebar.module.css";
 
@@ -13,6 +13,22 @@ export interface DesktopNavItem {
   icon: NavIconKey;
   group?: string;
 }
+
+// Same real groups nav.ts assigns every item to — display labels + the
+// order groups appear in, so the sidebar reflects the actual module
+// taxonomy instead of an arbitrary "primary 8 + everything else hidden"
+// split. Every item stays visible; grouping is purely organizational.
+const GROUP_LABELS: Record<string, string> = {
+  main: "Overview",
+  academics: "Academics",
+  campus: "Campus",
+  finance: "Finance",
+  management: "Management",
+  communication: "Communication",
+  system: "System",
+  portals: "My Portal",
+};
+const GROUP_ORDER = Object.keys(GROUP_LABELS);
 
 interface DesktopSidebarProps {
   navItems: DesktopNavItem[];
@@ -37,7 +53,6 @@ export function DesktopSidebar({
 }: DesktopSidebarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
 
   async function handleLogout() {
     try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
@@ -59,15 +74,16 @@ export function DesktopSidebar({
 
   const visibleNavItems = navItems;
 
-  const primaryLabels = ["Dashboard", "Students", "Staff", "Attendance", "Gradebook", "Fees", "Timetable", "Reports"];
-  const primaryItems = primaryLabels
-    .map((label) => visibleNavItems.find((item) => item.label === label))
-    .filter((item): item is DesktopNavItem => Boolean(item));
   const settingsItem = visibleNavItems.find((item) => item.href === "/settings");
   const supportItem = visibleNavItems.find((item) => item.href === "/helpdesk");
-  const secondaryItems = visibleNavItems.filter((item) =>
-    !primaryLabels.includes(item.label) && item.href !== "/settings" && item.href !== "/helpdesk"
-  );
+  const groupableItems = visibleNavItems.filter((item) => item.href !== "/settings" && item.href !== "/helpdesk");
+  const groups = GROUP_ORDER
+    .map((key) => ({ key, label: GROUP_LABELS[key], items: groupableItems.filter((item) => item.group === key) }))
+    .filter((group) => group.items.length > 0);
+  // Anything without a recognised group (shouldn't happen — every nav.ts
+  // entry has one — but keeps items visible instead of silently dropping
+  // them if that ever drifts).
+  const ungrouped = groupableItems.filter((item) => !item.group || !GROUP_LABELS[item.group]);
 
   function renderNavItem(item: DesktopNavItem) {
     const Icon = ICON_MAP[item.icon];
@@ -109,17 +125,16 @@ export function DesktopSidebar({
           <X size={20} />
         </button>
       </div>
-      {/* Nav groups */}
+      {/* Nav groups — every item visible, organised by real module group */}
       <nav className={styles.nav}>
-        <div className={styles.navGroup}>{primaryItems.map(renderNavItem)}</div>
-        {secondaryItems.length > 0 && (
-          <>
-            <button type="button" className={styles.moreToggle} onClick={() => setMoreOpen((open) => !open)} aria-expanded={moreOpen}>
-              <span>More modules</span>
-              <ChevronDown size={15} className={moreOpen ? styles.moreToggleOpen : ""} aria-hidden />
-            </button>
-            {moreOpen && <div className={styles.navGroup}>{secondaryItems.map(renderNavItem)}</div>}
-          </>
+        {groups.map((group) => (
+          <div key={group.key} className={styles.navGroupBlock}>
+            <p className={styles.navGroupLabel}>{group.label}</p>
+            <div className={styles.navGroup}>{group.items.map(renderNavItem)}</div>
+          </div>
+        ))}
+        {ungrouped.length > 0 && (
+          <div className={styles.navGroup}>{ungrouped.map(renderNavItem)}</div>
         )}
       </nav>
 
