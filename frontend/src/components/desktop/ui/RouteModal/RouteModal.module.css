@@ -90,13 +90,11 @@
 
 /* Content inside a modal (e.g. a report card) can trigger window.print() —
    without this, the dark backdrop, panel shadow/border, and close button
-   would print too, AND the real page sitting behind the modal (e.g. the
-   whole Report Cards list) since the intercepting-route modal renders as a
-   sibling of that page's content, not a replacement for it. Hide
-   everything else on the page and re-reveal only this modal's subtree. */
+   would print too. The "hide everything except this modal" isolation rule
+   (which needs a `body *` selector with no local class — not expressible
+   in a CSS Module, see globals.css) lives in globals.css instead, keyed
+   off the plain `route-modal-overlay` class also applied to this element. */
 @media print {
-  :global(body *) { visibility: hidden !important; }
-  .overlay, .overlay * { visibility: visible !important; }
   .overlay { position: fixed; inset: 0; padding: 0; background: none; backdrop-filter: none; }
   .panel { width: 100%; max-height: none; border: none; box-shadow: none; }
   .panelBody { overflow: visible; padding: 0; }

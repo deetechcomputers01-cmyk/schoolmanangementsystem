@@ -53,7 +53,7 @@ export function RouteModal({ children }: { children: React.ReactNode }) {
   if (stale) return null;
 
   return (
-    <div className={styles.overlay} onClick={close}>
+    <div className={`${styles.overlay} route-modal-overlay`} onClick={close}>
       <div
         className={styles.panel}
         style={contentWidth ? { width: `min(${contentWidth}px, min(1080px, 100%))` } : undefined}

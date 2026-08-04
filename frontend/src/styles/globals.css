@@ -121,3 +121,17 @@ ul, ol {
   .mobileOnly { display: block; }
   .desktopOnly { display: none !important; }
 }
+
+/* Printing from inside a RouteModal (e.g. a report card's Print/Download
+   button) must print only that modal, not the real page sitting behind it —
+   intercepting routes render the modal as a sibling of the underlying page,
+   not a replacement for it. `route-modal-overlay` is a plain class applied
+   alongside RouteModal's own CSS-module class specifically so this rule can
+   live here: a `body *` selector has no local class, which a .module.css
+   file's "pure selectors" requirement rejects outright, even wrapped in
+   :global(). This only takes effect on pages where a RouteModal is actually
+   open (the element has to exist for `.route-modal-overlay *` to match). */
+@media print {
+  body * { visibility: hidden !important; }
+  .route-modal-overlay, .route-modal-overlay * { visibility: visible !important; }
+}
