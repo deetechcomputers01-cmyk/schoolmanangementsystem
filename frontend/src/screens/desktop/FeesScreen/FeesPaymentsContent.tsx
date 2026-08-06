@@ -42,7 +42,8 @@ export interface FeesPaymentsProps {
     enrolledStudents: number;
   };
   classes: { id: string; name: string }[];
-  students: { id: string; name: string; className: string }[];
+  students: { id: string; name: string; className: string; classId: string }[];
+  feeStructureRows: { classId: string; term: string; category: string; amount: number }[];
   initialStudentId?: string;
   initialFeeRecordId?: string;
   recordPaymentOnLoad?: boolean;
@@ -79,6 +80,7 @@ export function FeesPaymentsContent({
   stats,
   classes,
   students,
+  feeStructureRows,
   initialStudentId,
   initialFeeRecordId,
   recordPaymentOnLoad = false,
@@ -172,7 +174,18 @@ export function FeesPaymentsContent({
   }, [initialFeeRecordId, initialStudentId, recordPaymentOnLoad, rows]);
 
   const invoiceTotal = lineItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  const createStudentClass = students.find((student) => student.id === createStudent)?.className ?? "";
+  const createStudentInfo = students.find((student) => student.id === createStudent);
+  const createStudentClass = createStudentInfo?.className ?? "";
+
+  const matchingStructure = useMemo(() => {
+    if (!createStudentInfo || !createTerm.trim()) return [];
+    return feeStructureRows.filter((r) => r.classId === createStudentInfo.classId && r.term.trim().toLowerCase() === createTerm.trim().toLowerCase());
+  }, [createStudentInfo, createTerm, feeStructureRows]);
+
+  function loadFromFeeStructure() {
+    if (matchingStructure.length === 0) return;
+    setLineItems(matchingStructure.map((r, i) => ({ id: `structure-${i}`, label: r.category, amount: String(r.amount) })));
+  }
 
   function addLineItem() {
     setLineItems((current) => [...current, { id: `item-${Date.now()}`, label: "", amount: "" }]);
@@ -653,7 +666,14 @@ export function FeesPaymentsContent({
 
               <div className={styles.lineItemsSection}>
                 <div className={styles.lineItemsHeader}>
-                  <label className={styles.formLabel}>Fee Particulars</label>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <label className={styles.formLabel}>Fee Particulars</label>
+                    {matchingStructure.length > 0 && (
+                      <button type="button" className={styles.loadStructureBtn} onClick={loadFromFeeStructure}>
+                        Load {createTerm.trim()} fees ({matchingStructure.length})
+                      </button>
+                    )}
+                  </div>
                   <span className={styles.lineItemsAmountLabel}>Amount (GHS)</span>
                 </div>
                 <div className={styles.lineItemsList}>

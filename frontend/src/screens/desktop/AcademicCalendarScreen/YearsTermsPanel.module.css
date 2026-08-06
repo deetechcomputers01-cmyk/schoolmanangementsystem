@@ -273,6 +273,8 @@
   border-radius: var(--radius-sm);
   width: 440px;
   max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
   padding: 28px;
   box-shadow: var(--shadow-xl);
 }

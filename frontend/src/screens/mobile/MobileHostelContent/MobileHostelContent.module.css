@@ -89,6 +89,7 @@
   cursor: pointer;
 }
 .vacateBtnSm { flex-shrink: 0; border: none; background: transparent; color: var(--clr-error); font-size: var(--text-xs); font-weight: 600; cursor: pointer; padding: 4px 6px; }
+.linkBtn { border: none; background: transparent; color: var(--clr-app-accent); font-size: var(--text-xs); font-weight: 600; cursor: pointer; padding: 6px 0 0; text-align: left; }
 
 .actionRow { display: flex; flex-wrap: wrap; gap: 8px; }
 .actionBtn {

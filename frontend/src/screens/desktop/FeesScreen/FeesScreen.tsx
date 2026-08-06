@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@backend/auth/cookies";
 import { prisma } from "@backend/prisma";
 import { getSettings } from "@backend/services/settings.service";
+import { listFeeStructure } from "@backend/services/feeStructure.service";
 import { FeesPaymentsContent, type FeesInvoiceRow, type FeesPaymentsProps } from "./FeesPaymentsContent";
 import { MobileFeesContent } from "@/screens/mobile/MobileFeesContent/MobileFeesContent";
 
@@ -31,7 +32,7 @@ export async function FeesScreen({
   if (!user) redirect("/login");
   if (!["super_admin", "principal", "staff"].includes(user.role)) redirect("/dashboard");
 
-  const [fees, enrolledStudents, studentList, settings] = await Promise.all([
+  const [fees, enrolledStudents, studentList, settings, feeStructureRowsRaw] = await Promise.all([
     prisma.feeRecord.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -51,7 +52,12 @@ export async function FeesScreen({
       include: { class: true },
     }),
     getSettings(),
+    listFeeStructure(),
   ]);
+
+  const feeStructureRows = feeStructureRowsRaw.map((r) => ({
+    classId: r.classId, term: r.term, category: r.category, amount: Number(r.amount),
+  }));
 
   // Late-payment penalty and grace period are admin-configured in Settings > Fees
   // (SchoolSettings.extra) rather than hardcoded, so an admin's change here takes
@@ -141,7 +147,9 @@ export async function FeesScreen({
       id: s.id,
       name: `${s.firstName} ${s.lastName}`,
       className: s.class.name,
+      classId: s.classId,
     })),
+    feeStructureRows,
     initialStudentId: studentId,
     initialFeeRecordId: feeRecordId,
     recordPaymentOnLoad: recordPayment === "1",

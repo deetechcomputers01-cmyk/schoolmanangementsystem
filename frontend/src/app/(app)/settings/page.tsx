@@ -1,10 +1,19 @@
 import { getSettings } from "@backend/services/settings.service";
 import { listAcademicYears } from "@backend/services/academic.service";
+import { getClasses } from "@backend/services/dashboard.service";
+import { listFeeStructure } from "@backend/services/feeStructure.service";
 import { SettingsScreen } from "@/screens/desktop/SettingsScreen/SettingsScreen";
 import { MobileSettingsContent } from "@/screens/mobile/MobileSettingsContent/MobileSettingsContent";
 
 export default async function Page() {
-  const [s, years] = await Promise.all([getSettings(), listAcademicYears()]);
+  const [s, years, classesRaw, feeStructureRowsRaw] = await Promise.all([
+    getSettings(), listAcademicYears(), getClasses(), listFeeStructure(),
+  ]);
+  const classes = classesRaw.map((c) => ({ id: c.id, name: c.name }));
+  const feeStructureRows = feeStructureRowsRaw.map((r) => ({
+    id: r.id, classId: r.classId, term: r.term, category: r.category,
+    amount: Number(r.amount), class: r.class,
+  }));
 
   const academicYears = years.map((y) => ({
     id: y.id,
@@ -39,10 +48,10 @@ export default async function Page() {
   return (
     <>
       <div className="mobileOnly">
-        <MobileSettingsContent initialSettings={initialSettings} academicYears={academicYears} />
+        <MobileSettingsContent initialSettings={initialSettings} academicYears={academicYears} classes={classes} feeStructureRows={feeStructureRows} />
       </div>
       <div className="desktopOnly">
-        <SettingsScreen initialSettings={initialSettings} academicYears={academicYears} />
+        <SettingsScreen initialSettings={initialSettings} academicYears={academicYears} classes={classes} feeStructureRows={feeStructureRows} />
       </div>
     </>
   );

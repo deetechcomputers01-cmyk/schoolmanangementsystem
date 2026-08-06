@@ -98,8 +98,9 @@ function VisitModal({
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const [studentSearch, setStudentSearch] = useState("");
   const [form, setForm] = useState({
-    studentId: students[0]?.id ?? "",
+    studentId: "",
     complaint: "",
     triage: "routine",
     vitalsTemp: "",
@@ -110,6 +111,14 @@ function VisitModal({
   function set(field: string, value: string) {
     setForm(prev => ({ ...prev, [field]: value }));
   }
+
+  const filteredStudents = useMemo(() => {
+    const q = studentSearch.trim().toLowerCase();
+    if (!q) return students;
+    return students.filter(s => `${s.firstName} ${s.lastName}`.toLowerCase().includes(q) || s.className.toLowerCase().includes(q));
+  }, [students, studentSearch]);
+
+  const selectedStudent = students.find(s => s.id === form.studentId);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -154,11 +163,35 @@ function VisitModal({
           <div className={styles.modalBody}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Student *</label>
-              <select className={styles.formSelect} value={form.studentId} onChange={e => set("studentId", e.target.value)} required>
-                {students.map(s => (
-                  <option key={s.id} value={s.id}>{s.firstName} {s.lastName} — {s.className}</option>
-                ))}
-              </select>
+              {selectedStudent ? (
+                <div className={styles.studentItem} style={{ cursor: "default", border: "1px solid var(--clr-app-border)", borderRadius: "var(--radius-sm)" }}>
+                  <span>{selectedStudent.firstName} {selectedStudent.lastName}</span>
+                  <span className={styles.studentItemMeta}>{selectedStudent.className}</span>
+                  <button type="button" className={styles.linkBtn} style={{ marginLeft: "auto" }} onClick={() => set("studentId", "")}>Change</button>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.searchWrap} style={{ width: "100%" }}>
+                    <Search size={14} className={styles.searchIcon} />
+                    <input
+                      className={styles.searchInput}
+                      style={{ width: "100%" }}
+                      placeholder="Search students by name or class…"
+                      value={studentSearch}
+                      onChange={e => setStudentSearch(e.target.value)}
+                    />
+                  </div>
+                  <div className={styles.studentList}>
+                    {filteredStudents.map(s => (
+                      <div key={s.id} className={styles.studentItem} onClick={() => set("studentId", s.id)}>
+                        <span>{s.firstName} {s.lastName}</span>
+                        <span className={styles.studentItemMeta}>{s.className}</span>
+                      </div>
+                    ))}
+                    {filteredStudents.length === 0 && <p className={styles.noStudentsHint}>No students match.</p>}
+                  </div>
+                </>
+              )}
             </div>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Complaint *</label>
@@ -192,7 +225,7 @@ function VisitModal({
           </div>
           <div className={styles.modalFooter}>
             <button type="button" className={styles.btnCancel} onClick={onClose}>Cancel</button>
-            <button type="submit" className={styles.btnPrimary} disabled={busy || !form.complaint.trim()}>{busy ? "Recording…" : "Record Visit"}</button>
+            <button type="submit" className={styles.btnPrimary} disabled={busy || !form.studentId || !form.complaint.trim()}>{busy ? "Recording…" : "Record Visit"}</button>
           </div>
         </form>
       </div>

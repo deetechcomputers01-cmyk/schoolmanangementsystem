@@ -463,12 +463,14 @@
 .modal {
   background: var(--clr-app-surface); border: 1px solid var(--clr-app-border);
   border-radius: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  width: 100%; max-width: 520px; overflow: hidden;
+  width: 100%; max-width: 520px; max-height: 90vh;
+  display: flex; flex-direction: column; overflow: hidden;
 }
 .modalHeader {
   display: flex; justify-content: space-between; align-items: center;
   padding: 16px 22px; border-bottom: 1px solid #ececf3;
   background: var(--clr-app-surface);
+  flex-shrink: 0;
 }
 .modalEyebrow { margin: 0 0 4px; color: var(--clr-app-accent); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .modalTitle { margin: 0; font-size: var(--text-xl); font-weight: 600; color: var(--clr-app-text); }
@@ -479,7 +481,7 @@
   background: transparent; border: none; color: #41484b; cursor: pointer;
 }
 .modalClose:hover { background: #e8e8e8; }
-.modalBody { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.modalBody { padding: 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
 
 .paymentSummaryLabel {
   font-size: var(--text-xs);
@@ -551,6 +553,12 @@
 
 .lineItemsSection { display: flex; flex-direction: column; gap: 10px; }
 .lineItemsHeader { display: flex; align-items: center; justify-content: space-between; }
+.loadStructureBtn {
+  border: 1px solid var(--clr-app-accent); border-radius: var(--radius-sm);
+  background: var(--clr-app-accent-soft); color: var(--clr-app-accent);
+  font-size: var(--text-xs); font-weight: 600; padding: 3px 10px; cursor: pointer;
+}
+.loadStructureBtn:hover { background: var(--clr-app-accent); color: #fff; }
 .lineItemsAmountLabel { color: var(--clr-app-muted); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 .lineItemsList { display: flex; flex-direction: column; gap: 8px; }
 .lineItemRow { display: flex; align-items: center; gap: 10px; }
@@ -655,6 +663,7 @@
 .modalFooter {
   display: flex; justify-content: flex-end; gap: 12px;
   padding: 16px 22px; border-top: 1px solid #ececf3; background: var(--clr-app-surface);
+  flex-shrink: 0;
 }
 .btnCancel {
   height: 40px; padding: 0 16px;

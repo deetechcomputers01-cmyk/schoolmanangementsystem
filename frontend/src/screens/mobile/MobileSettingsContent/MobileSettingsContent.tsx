@@ -24,6 +24,7 @@ import {
   AlertTriangle, FileText, Eye,
 } from "lucide-react";
 import { YearsTermsPanel } from "@/screens/desktop/AcademicCalendarScreen/YearsTermsPanel";
+import { FeeStructurePanel, type FeeStructureRow } from "@/screens/desktop/FeesScreen/FeeStructurePanel";
 import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
 import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import {
@@ -42,7 +43,12 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
   );
 }
 
-export function MobileSettingsContent({ initialSettings, academicYears }: { initialSettings: SettingsData; academicYears: YearData[] }) {
+export function MobileSettingsContent({ initialSettings, academicYears, classes, feeStructureRows }: {
+  initialSettings: SettingsData;
+  academicYears: YearData[];
+  classes: { id: string; name: string }[];
+  feeStructureRows: FeeStructureRow[];
+}) {
   const {
     form, set, dirty, saving, resetting, handleSave, handleReset,
     gradingScale, setBandMin, sortedScale,
@@ -266,6 +272,13 @@ export function MobileSettingsContent({ initialSettings, academicYears }: { init
                 <option value="manual">Manual only</option>
                 <option value="both">Both automatically and manually</option>
               </select>
+            </div>
+            <div className={kit.field}>
+              <label>School Fees by Class</label>
+              <p className={kit.helperText}>
+                The actual amount each class pays per term and category — used to prefill invoices.
+              </p>
+              <FeeStructurePanel classes={classes} rows={feeStructureRows} />
             </div>
           </div>
         )}

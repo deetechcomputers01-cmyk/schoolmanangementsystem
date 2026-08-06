@@ -141,6 +141,60 @@ export function MobileHostelContent({ hostels, incidents, unallocatedStudents }:
     }
   }
 
+  // ── Create room sheet ──────────────────────────────────────────────
+  const [createRoomOpen, setCreateRoomOpen] = useState(false);
+  const [newHostelId, setNewHostelId] = useState(hostels[0]?.id ?? "");
+  const [newHostelMode, setNewHostelMode] = useState(hostels.length === 0);
+  const [newHostelName, setNewHostelName] = useState("");
+  const [newRoomName, setNewRoomName] = useState("");
+  const [newRoomCapacity, setNewRoomCapacity] = useState("2");
+  const [savingRoom, setSavingRoom] = useState(false);
+
+  function openCreateRoom() {
+    setNewHostelId(hostels[0]?.id ?? "");
+    setNewHostelMode(hostels.length === 0);
+    setNewHostelName("");
+    setNewRoomName("");
+    setNewRoomCapacity("2");
+    setCreateRoomOpen(true);
+  }
+
+  async function submitCreateRoom() {
+    if (newHostelMode && !newHostelName.trim()) { showToast("Hostel name is required.", "error"); return; }
+    if (!newHostelMode && !newHostelId) { showToast("Select a hostel.", "error"); return; }
+    if (!newRoomName.trim()) { showToast("Room name is required.", "error"); return; }
+    const cap = Number(newRoomCapacity);
+    if (!Number.isFinite(cap) || cap <= 0) { showToast("Enter a valid capacity.", "error"); return; }
+
+    setSavingRoom(true);
+    try {
+      let targetHostelId = newHostelId;
+      if (newHostelMode) {
+        const hRes = await fetch("/api/hostel/hostels", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newHostelName.trim() }),
+        });
+        if (!hRes.ok) throw new Error("Failed to create hostel");
+        const hData = await hRes.json();
+        targetHostelId = hData.data?.id ?? hData.id;
+      }
+      const res = await fetch("/api/hostel/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hostelId: targetHostelId, name: newRoomName.trim(), capacity: cap }),
+      });
+      if (!res.ok) throw new Error("Failed to create room");
+      showToast("Room created");
+      router.refresh();
+      setCreateRoomOpen(false);
+    } catch {
+      showToast("Failed to create room", "error");
+    } finally {
+      setSavingRoom(false);
+    }
+  }
+
   // ── Incident sheet ─────────────────────────────────────────────────
   const [incidentOpen, setIncidentOpen] = useState(false);
   const [incidentRoomId, setIncidentRoomId] = useState<string | null>(null);
@@ -198,6 +252,7 @@ export function MobileHostelContent({ hostels, incidents, unallocatedStudents }:
 
       <div className={styles.actionRow}>
         <button type="button" className={styles.btnOutline} onClick={() => openIncident()}><AlertTriangle size={14} /> Log Incident</button>
+        <button type="button" className={styles.btnOutline} onClick={openCreateRoom}><DoorOpen size={14} /> New Room</button>
         <button type="button" className={styles.btnPrimary} onClick={() => openRoomSheet()}><Plus size={14} /> Allocate Room</button>
       </div>
 
@@ -386,6 +441,48 @@ export function MobileHostelContent({ hostels, incidents, unallocatedStudents }:
         <div className={kit.field}>
           <label>Description *</label>
           <textarea className={kit.textarea} rows={4} value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="What happened?" />
+        </div>
+      </MobileSheet>
+
+      {/* New Room sheet */}
+      <MobileSheet
+        open={createRoomOpen}
+        onClose={() => !savingRoom && setCreateRoomOpen(false)}
+        title="New Room"
+        subtitle="Add a room to an existing hostel, or create a new hostel first."
+        footer={<>
+          <button type="button" className={kit.btnOutline} onClick={() => setCreateRoomOpen(false)} disabled={savingRoom}>Cancel</button>
+          <button type="button" className={kit.btnPrimary} onClick={submitCreateRoom} disabled={savingRoom}>{savingRoom ? "Creating…" : "Create Room"}</button>
+        </>}
+      >
+        {hostels.length > 0 && (
+          <div className={kit.field}>
+            <label>Hostel</label>
+            {!newHostelMode ? (
+              <select className={kit.select} value={newHostelId} onChange={(e) => setNewHostelId(e.target.value)}>
+                {hostels.map((h) => <option key={h.id} value={h.id}>{h.name}</option>)}
+              </select>
+            ) : (
+              <input className={kit.input} placeholder="New hostel name" value={newHostelName} onChange={(e) => setNewHostelName(e.target.value)} />
+            )}
+            <button type="button" className={styles.linkBtn} onClick={() => setNewHostelMode((v) => !v)}>
+              {newHostelMode ? "Choose an existing hostel instead" : "+ Create a new hostel instead"}
+            </button>
+          </div>
+        )}
+        {hostels.length === 0 && (
+          <div className={kit.field}>
+            <label>Hostel Name *</label>
+            <input className={kit.input} placeholder="e.g. Unity Hall" value={newHostelName} onChange={(e) => setNewHostelName(e.target.value)} />
+          </div>
+        )}
+        <div className={kit.field}>
+          <label>Room Name *</label>
+          <input className={kit.input} placeholder="e.g. Room 12" value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
+        </div>
+        <div className={kit.field}>
+          <label>Capacity (beds) *</label>
+          <input className={kit.input} type="number" min={1} value={newRoomCapacity} onChange={(e) => setNewRoomCapacity(e.target.value)} />
         </div>
       </MobileSheet>
     </div>

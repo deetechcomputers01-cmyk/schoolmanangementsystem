@@ -228,6 +228,119 @@ function RoomModal({ flatRooms, unallocatedStudents, initialRoomId, onClose, onS
   );
 }
 
+// ── Create room modal: pick or create a hostel, then name + capacity ──────
+function CreateRoomModal({ hostels, onClose, onSuccess, onError }: {
+  hostels: HostelRow[];
+  onClose: () => void;
+  onSuccess: (msg: string) => void;
+  onError: (msg: string) => void;
+}) {
+  const router = useRouter();
+  const [hostelId, setHostelId] = useState(hostels[0]?.id ?? "");
+  const [newHostelMode, setNewHostelMode] = useState(hostels.length === 0);
+  const [newHostelName, setNewHostelName] = useState("");
+  const [name, setName] = useState("");
+  const [capacity, setCapacity] = useState("2");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function submit() {
+    if (newHostelMode && !newHostelName.trim()) { setError("Hostel name is required."); return; }
+    if (!newHostelMode && !hostelId) { setError("Select a hostel."); return; }
+    if (!name.trim()) { setError("Room name is required."); return; }
+    const cap = Number(capacity);
+    if (!Number.isFinite(cap) || cap <= 0) { setError("Enter a valid capacity."); return; }
+
+    setSaving(true);
+    setError("");
+    try {
+      let targetHostelId = hostelId;
+      if (newHostelMode) {
+        const hRes = await fetch("/api/hostel/hostels", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newHostelName.trim() }),
+        });
+        if (!hRes.ok) { setError("Failed to create hostel."); return; }
+        const hData = await hRes.json();
+        targetHostelId = hData.data?.id ?? hData.id;
+      }
+      const res = await fetch("/api/hostel/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hostelId: targetHostelId, name: name.trim(), capacity: cap }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => null);
+        setError(err?.error?.message ?? err?.message ?? "Failed to create room.");
+        return;
+      }
+      onSuccess("Room created");
+      router.refresh();
+      onClose();
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className={styles.modalOverlay} onClick={() => !saving && onClose()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <div>
+            <h2 className={styles.modalTitle}>New Room</h2>
+            <p className={styles.modalSub}>Add a room to an existing hostel, or create a new hostel first.</p>
+          </div>
+          <button className={styles.modalClose} onClick={onClose}><X size={18} /></button>
+        </div>
+        <div className={styles.modalBody}>
+          {error && <p className={styles.errorText}>{error}</p>}
+
+          {hostels.length > 0 && (
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Hostel</label>
+              {!newHostelMode ? (
+                <div className={styles.selectWrap}>
+                  <select className={styles.formSelect} value={hostelId} onChange={(e) => setHostelId(e.target.value)}>
+                    {hostels.map((h) => <option key={h.id} value={h.id}>{h.name}</option>)}
+                  </select>
+                  <ChevronDown size={14} className={styles.selectChevron} />
+                </div>
+              ) : (
+                <input className={styles.formInput} placeholder="New hostel name" value={newHostelName} onChange={(e) => setNewHostelName(e.target.value)} />
+              )}
+              <button type="button" className={styles.linkBtn} style={{ marginTop: 6 }} onClick={() => setNewHostelMode((v) => !v)}>
+                {newHostelMode ? "Choose an existing hostel instead" : "+ Create a new hostel instead"}
+              </button>
+            </div>
+          )}
+          {hostels.length === 0 && (
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Hostel Name *</label>
+              <input className={styles.formInput} placeholder="e.g. Unity Hall" value={newHostelName} onChange={(e) => setNewHostelName(e.target.value)} />
+            </div>
+          )}
+
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Room Name *</label>
+            <input className={styles.formInput} placeholder="e.g. Room 12" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Capacity (beds) *</label>
+            <input className={styles.formInput} type="number" min={1} value={capacity} onChange={(e) => setCapacity(e.target.value)} />
+          </div>
+        </div>
+        <div className={styles.modalFooter}>
+          <button className={styles.btnCancel} onClick={onClose} disabled={saving}>Cancel</button>
+          <button className={styles.btnPrimary} onClick={submit} disabled={saving}>{saving ? "Creating…" : "Create Room"}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Log incident modal ──────────────────────────────────────────────────────
 function IncidentModal({ onClose, onSuccess, onError }: { onClose: () => void; onSuccess: (msg: string) => void; onError: (msg: string) => void }) {
   const router = useRouter();
@@ -284,7 +397,7 @@ export function HostelContent({ hostels, incidents, unallocatedStudents }: Props
   const [hostelFilter, setHostelFilter] = useState("");
   const { showToast } = useToast();
 
-  type ModalState = { type: "room"; roomId?: string } | { type: "incident" } | null;
+  type ModalState = { type: "room"; roomId?: string } | { type: "incident" } | { type: "createRoom" } | null;
   const [modal, setModal] = useState<ModalState>(null);
 
   const flatRooms: FlatRoom[] = useMemo(
@@ -340,6 +453,9 @@ export function HostelContent({ hostels, incidents, unallocatedStudents }: Props
         <div className={styles.headerActions}>
           <button className={styles.btnOutline} onClick={() => setModal({ type: "incident" })}>
             <AlertTriangle size={15} /> Log Incident
+          </button>
+          <button className={styles.btnOutline} onClick={() => setModal({ type: "createRoom" })}>
+            <DoorOpen size={15} /> New Room
           </button>
           <button className={styles.btnPrimary} onClick={() => setModal({ type: "room" })}>
             <Plus size={15} /> Allocate Room
@@ -541,6 +657,14 @@ export function HostelContent({ hostels, incidents, unallocatedStudents }: Props
       )}
       {modal?.type === "incident" && (
         <IncidentModal
+          onClose={() => setModal(null)}
+          onSuccess={(msg) => showToast(msg, "success")}
+          onError={(msg) => showToast(msg, "error")}
+        />
+      )}
+      {modal?.type === "createRoom" && (
+        <CreateRoomModal
+          hostels={hostels}
           onClose={() => setModal(null)}
           onSuccess={(msg) => showToast(msg, "success")}
           onError={(msg) => showToast(msg, "error")}

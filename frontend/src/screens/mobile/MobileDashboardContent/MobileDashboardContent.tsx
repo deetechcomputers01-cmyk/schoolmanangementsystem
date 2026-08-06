@@ -2,14 +2,19 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import {
   Users, IdCard, GraduationCap, Wallet, UserPlus, ClipboardCheck,
-  Receipt, UserCog, Inbox, CalendarDays, Check, X, Clock, TrendingUp,
+  Receipt, UserCog, Inbox, CalendarDays, UserCheck, UserX, Clock3, Gauge,
 } from "lucide-react";
 import { currency } from "@backend/utils";
 import styles from "./MobileDashboardContent.module.css";
 
 export interface AttendanceTrendPoint { label: string; present: number; absent: number; late: number }
+
+const PRESENT_COLOR = "#5b50f5";
+const ABSENT_COLOR = "#e8a8a8";
+const LATE_COLOR = "#eab308";
 
 export interface MobileDashboardProps {
   greetingName: string;
@@ -44,7 +49,6 @@ export function MobileDashboardContent(props: MobileDashboardProps) {
     const rate = total > 0 ? Math.round(((present + late) / total) * 100) : 0;
     return { present, absent, late, rate };
   }, [trendData]);
-  const trendMax = Math.max(...trendData.flatMap((p) => [p.present, p.absent, p.late]), 1);
   const trendHasData = trendData.some((p) => p.present > 0 || p.absent > 0 || p.late > 0);
 
   const genderTotal = genderSummary.boys + genderSummary.girls;
@@ -95,51 +99,51 @@ export function MobileDashboardContent(props: MobileDashboardProps) {
 
         <div className={styles.trendStatGrid}>
           <div className={styles.trendStatTile}>
-            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Present</span><Check size={12} className={styles.trendIconGood} /></div>
-            <strong className={styles.trendStatValueGood}>{trendTotals.present}</strong>
+            <span className={`${styles.trendIconBadge} ${styles.trendBadgeGood}`}><UserCheck size={16} /></span>
+            <div>
+              <span className={styles.trendStatLabel}>Present</span>
+              <strong className={styles.trendStatValueGood}>{trendTotals.present}</strong>
+            </div>
           </div>
           <div className={styles.trendStatTile}>
-            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Absent</span><X size={12} className={styles.trendIconBad} /></div>
-            <strong className={styles.trendStatValueBad}>{trendTotals.absent}</strong>
+            <span className={`${styles.trendIconBadge} ${styles.trendBadgeBad}`}><UserX size={16} /></span>
+            <div>
+              <span className={styles.trendStatLabel}>Absent</span>
+              <strong className={styles.trendStatValueBad}>{trendTotals.absent}</strong>
+            </div>
           </div>
           <div className={styles.trendStatTile}>
-            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Late</span><Clock size={12} className={styles.trendIconWarn} /></div>
-            <strong className={styles.trendStatValueWarn}>{trendTotals.late}</strong>
+            <span className={`${styles.trendIconBadge} ${styles.trendBadgeWarn}`}><Clock3 size={16} /></span>
+            <div>
+              <span className={styles.trendStatLabel}>Late</span>
+              <strong className={styles.trendStatValueWarn}>{trendTotals.late}</strong>
+            </div>
           </div>
           <div className={styles.trendStatTile}>
-            <div className={styles.trendStatTop}><span className={styles.trendStatLabel}>Rate</span><TrendingUp size={12} className={styles.trendIconAccent} /></div>
-            <strong className={styles.trendStatValueAccent}>{trendTotals.rate}%</strong>
+            <span className={`${styles.trendIconBadge} ${styles.trendBadgeAccent}`}><Gauge size={16} /></span>
+            <div>
+              <span className={styles.trendStatLabel}>Rate</span>
+              <strong className={styles.trendStatValueAccent}>{trendTotals.rate}%</strong>
+            </div>
           </div>
         </div>
 
         {trendHasData ? (
-          <div className={styles.trendChart}>
-            {trendData.map((point) => {
-              const presentH = Math.max(point.present ? 6 : 0, (point.present / trendMax) * 100);
-              const absentH = Math.max(point.absent ? 6 : 0, (point.absent / trendMax) * 100);
-              return (
-                <div key={point.label} className={styles.trendColumn}>
-                  <div className={styles.trendBarPair}>
-                    {point.late > 0 && (
-                      <span className={styles.trendLateDot} style={{ bottom: `calc(${Math.max(presentH, absentH)}% + 5px)` }} title={`${point.late} late`} />
-                    )}
-                    <span className={styles.trendBarPresent} style={{ height: `${presentH}%` }} />
-                    <span className={styles.trendBarAbsent} style={{ height: `${absentH}%` }} />
-                  </div>
-                  <span className={styles.trendColumnLabel}>{point.label}</span>
-                </div>
-              );
-            })}
-          </div>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={trendData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }} barGap={2}>
+              <CartesianGrid stroke="var(--clr-app-border)" vertical={false} />
+              <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#858791" }} axisLine={{ stroke: "#e4e4ec" }} tickLine={false} />
+              <YAxis tick={{ fontSize: 10, fill: "#858791" }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <Tooltip contentStyle={{ fontSize: 11, borderRadius: 6, border: "1px solid #e4e4ec" }} />
+              <Legend wrapperStyle={{ fontSize: 11 }} formatter={(value) => <span style={{ color: "var(--clr-app-muted)" }}>{value}</span>} />
+              <Bar dataKey="present" name="Present" fill={PRESENT_COLOR} radius={[3, 3, 0, 0]} />
+              <Bar dataKey="absent" name="Absent" fill={ABSENT_COLOR} radius={[3, 3, 0, 0]} />
+              <Bar dataKey="late" name="Late" fill={LATE_COLOR} radius={[3, 3, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         ) : (
           <p className={styles.emptyRow}>No attendance recorded {range === "week" ? "this week" : "this month"}.</p>
         )}
-
-        <div className={styles.legendRow}>
-          <span><i className={styles.dotPresent} />Present</span>
-          <span><i className={styles.dotAbsent} />Absent</span>
-          <span><i className={styles.dotLate} />Late</span>
-        </div>
       </section>
 
       <section className={styles.card}>

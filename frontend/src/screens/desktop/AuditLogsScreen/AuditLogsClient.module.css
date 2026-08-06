@@ -106,7 +106,7 @@
 
 /* ── Modal (review note) ──────────────────────────────────────────────────── */
 .modalOverlay { position: fixed; inset: 0; background: var(--clr-overlay); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; }
-.modal { background: var(--clr-app-surface); border-radius: var(--radius-sm); width: 460px; max-width: 100%; box-shadow: var(--shadow-xl); padding: 28px; }
+.modal { background: var(--clr-app-surface); border-radius: var(--radius-sm); width: 460px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-xl); padding: 28px; }
 .modalHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .modalTitle { font-size: var(--text-lg); font-weight: 700; color: var(--clr-app-text); margin: 0; }
 .modalClose { background: none; border: none; cursor: pointer; color: var(--clr-app-muted); }

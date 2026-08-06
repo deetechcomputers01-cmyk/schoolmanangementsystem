@@ -91,8 +91,9 @@ export function MobileHealthContent({ visits, stats, students }: HealthClinicPro
 
   // ── Log Sick Visit sheet — same fields/endpoint as desktop's VisitModal ──
   const [logOpen, setLogOpen] = useState(false);
+  const [studentSearch, setStudentSearch] = useState("");
   const [form, setForm] = useState({
-    studentId: students[0]?.id ?? "",
+    studentId: "",
     complaint: "",
     triage: "routine",
     vitalsTemp: "",
@@ -102,12 +103,21 @@ export function MobileHealthContent({ visits, stats, students }: HealthClinicPro
   const [logSaving, setLogSaving] = useState(false);
 
   function openLog() {
-    setForm({ studentId: students[0]?.id ?? "", complaint: "", triage: "routine", vitalsTemp: "", vitalsBp: "", notes: "" });
+    setForm({ studentId: "", complaint: "", triage: "routine", vitalsTemp: "", vitalsBp: "", notes: "" });
+    setStudentSearch("");
     setLogOpen(true);
   }
   function setField(field: keyof typeof form, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
+
+  const filteredLogStudents = useMemo(() => {
+    const q = studentSearch.trim().toLowerCase();
+    if (!q) return students;
+    return students.filter((s) => `${s.firstName} ${s.lastName}`.toLowerCase().includes(q) || s.className.toLowerCase().includes(q));
+  }, [students, studentSearch]);
+
+  const selectedLogStudent = students.find((s) => s.id === form.studentId);
 
   async function submitLog() {
     if (!form.studentId || !form.complaint.trim()) {
@@ -350,18 +360,42 @@ export function MobileHealthContent({ visits, stats, students }: HealthClinicPro
         title="Log Sick Visit"
         footer={<>
           <button type="button" className={kit.btnOutline} onClick={() => setLogOpen(false)} disabled={logSaving}>Cancel</button>
-          <button type="button" className={kit.btnPrimary} onClick={submitLog} disabled={logSaving || !form.complaint.trim()}>
+          <button type="button" className={kit.btnPrimary} onClick={submitLog} disabled={logSaving || !form.studentId || !form.complaint.trim()}>
             {logSaving ? "Recording…" : "Log Visit"}
           </button>
         </>}
       >
         <div className={kit.field}>
           <label>Student *</label>
-          <select className={kit.select} value={form.studentId} onChange={(e) => setField("studentId", e.target.value)}>
-            {students.map((s) => (
-              <option key={s.id} value={s.id}>{s.firstName} {s.lastName} — {s.className}</option>
-            ))}
-          </select>
+          {selectedLogStudent ? (
+            <div className={kit.pickRow}>
+              <div className={kit.pickAvatar}>{selectedLogStudent.firstName[0]}{selectedLogStudent.lastName[0]}</div>
+              <div className={kit.pickInfo}>
+                <p className={kit.pickName}>{selectedLogStudent.firstName} {selectedLogStudent.lastName}</p>
+                <p className={kit.pickSub}>{selectedLogStudent.className}</p>
+              </div>
+              <button type="button" className={styles.linkBtn} onClick={() => setField("studentId", "")}>Change</button>
+            </div>
+          ) : (
+            <>
+              <div className={kit.searchWrap}>
+                <Search size={14} className={kit.searchIcon} />
+                <input className={`${kit.input} ${kit.searchInput}`} placeholder="Search students by name or class…" value={studentSearch} onChange={(e) => setStudentSearch(e.target.value)} />
+              </div>
+              <div className={kit.pickList}>
+                {filteredLogStudents.map((s) => (
+                  <div key={s.id} className={kit.pickRow} onClick={() => setField("studentId", s.id)}>
+                    <div className={kit.pickAvatar}>{s.firstName[0]}{s.lastName[0]}</div>
+                    <div className={kit.pickInfo}>
+                      <p className={kit.pickName}>{s.firstName} {s.lastName}</p>
+                      <p className={kit.pickSub}>{s.className}</p>
+                    </div>
+                  </div>
+                ))}
+                {filteredLogStudents.length === 0 && <p className={kit.emptyText}>No students match.</p>}
+              </div>
+            </>
+          )}
         </div>
         <div className={kit.field}>
           <label>Complaint *</label>

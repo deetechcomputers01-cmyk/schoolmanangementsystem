@@ -8,6 +8,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { YearsTermsPanel } from "@/screens/desktop/AcademicCalendarScreen/YearsTermsPanel";
+import { FeeStructurePanel, type FeeStructureRow } from "@/screens/desktop/FeesScreen/FeeStructurePanel";
 import {
   useSettingsForm, GH_REGIONS, SCHOOL_TYPES,
   type SettingsData, type YearData, type Form,
@@ -31,7 +32,12 @@ const NAV_ITEMS = [
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export function SettingsScreen({ initialSettings, academicYears }: { initialSettings: SettingsData; academicYears: YearData[] }) {
+export function SettingsScreen({ initialSettings, academicYears, classes, feeStructureRows }: {
+  initialSettings: SettingsData;
+  academicYears: YearData[];
+  classes: { id: string; name: string }[];
+  feeStructureRows: FeeStructureRow[];
+}) {
   const [activeSection,  setActiveSection]  = useState("profile");
   const [showLetterhead, setShowLetterhead] = useState(false);
   const [calcScore, setCalcScore] = useState("78");
@@ -368,6 +374,17 @@ export function SettingsScreen({ initialSettings, academicYears }: { initialSett
                   <ChevronDown size={14} className={styles.selectChevron} />
                 </div>
               </div>
+            </section>
+          )}
+
+          {activeSection === "fees" && (
+            <section className={styles.formSection}>
+              <h2 className={styles.sectionTitle}><CreditCard size={15} /> School Fees by Class</h2>
+              <p className={styles.sectionHint}>
+                Set the fee amount each class pays per term and category — this is the actual amount
+                students and guardians owe, and it is used to prefill invoices on the Fees screen.
+              </p>
+              <FeeStructurePanel classes={classes} rows={feeStructureRows} />
             </section>
           )}
 

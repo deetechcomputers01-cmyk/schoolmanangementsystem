@@ -195,6 +195,7 @@ model Class {
   subjects        Subject[]
   timetable       TimetableSlot[]
   exams           Exam[]
+  feeStructures   FeeStructure[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
@@ -255,6 +256,25 @@ model FeeRecord {
   payments        Payment[]
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
+}
+
+// The standard fee amount a class is expected to pay per term/category —
+// set once in Settings, then used to prefill real invoices (FeeRecord)
+// instead of every invoice being typed from scratch with no reference
+// value. `term` stays a free-text string, matching how FeeRecord.term
+// and the rest of the fees module already work (not linked to the Term
+// model anywhere else in this schema).
+model FeeStructure {
+  id        String   @id @default(cuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  term      String
+  category  String
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, term, category])
 }
 
 model Payment {
