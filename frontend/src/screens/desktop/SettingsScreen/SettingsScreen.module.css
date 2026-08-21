@@ -9,6 +9,14 @@
   background: var(--clr-app-surface-alt);
   padding: 32px;
   box-sizing: border-box;
+  /* Above ~1600px the middle form column (the only `1fr` track in .body)
+     had nothing to stop it stretching — a "School Name" input over 1600px
+     wide on a large monitor. Capping the whole page and centering it keeps
+     line lengths readable instead of one column ballooning to fill
+     whatever's left over. */
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* ── Unsaved banner ──────────────────────────────────────────────────────── */
@@ -55,6 +63,7 @@
   height: 42px; padding: 0 22px; background: var(--clr-app-accent); color: #fff;
   border: none; border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; cursor: pointer;
   box-shadow: var(--shadow-sm);
+  white-space: nowrap; flex-shrink: 0;
 }
 .btnPrimary:hover:not(:disabled) { background: var(--clr-app-accent-hover); }
 .btnOutline {
@@ -62,12 +71,14 @@
   height: 42px; padding: 0 18px; background: var(--clr-app-surface); color: var(--clr-app-text);
   border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; cursor: pointer;
   box-shadow: var(--shadow-sm);
+  white-space: nowrap; flex-shrink: 0;
 }
 .btnOutline:hover:not(:disabled) { background: var(--clr-app-surface-alt); }
 .btnGhost {
   display: inline-flex; align-items: center; gap: 8px;
   height: 42px; padding: 0 16px; background: none; color: var(--clr-error);
   border: none; border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0;
 }
 .btnGhost:hover:not(:disabled) { background: var(--clr-error-bg); }
 .btnDanger {
@@ -144,7 +155,7 @@
 .crestInfo { flex: 1; }
 .crestTitle { font-size: var(--text-base); font-weight: 700; color: var(--clr-app-text); margin: 0 0 6px; }
 .crestDesc { font-size: var(--text-sm); color: var(--clr-app-muted); line-height: 1.6; margin: 0 0 14px; }
-.crestBtns { display: flex; align-items: center; gap: 8px; }
+.crestBtns { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 /* ── Form sections ───────────────────────────────────────────────────────── */
 .formSection {
@@ -164,7 +175,11 @@
   padding-bottom: 12px; margin: 0; border-bottom: 1px solid var(--clr-app-border);
 }
 .fieldGroup { display: flex; flex-direction: column; gap: 6px; }
-.fieldRow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+/* auto-fit (not a hard "1fr 1fr") so a field never gets squeezed into an
+   unreadable half-width column once the 240px nav + 300px preview panel
+   eat into the center column at laptop widths — below ~416px of available
+   row width it drops to one field per row on its own, no breakpoint needed. */
+.fieldRow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
 .label { font-size: var(--text-xs); font-weight: 600; color: var(--clr-app-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .input {
   height: 40px; padding: 0 12px;
@@ -181,6 +196,7 @@
   font-size: var(--text-sm); color: var(--clr-app-text); background: var(--clr-app-surface);
   appearance: none; outline: none; width: 100%; cursor: pointer; box-sizing: border-box;
   transition: border-color 0.15s;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
 }
 .select:focus { border-color: var(--clr-app-accent); }
 .selectChevron {

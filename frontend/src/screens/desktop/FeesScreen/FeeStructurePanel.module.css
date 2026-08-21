@@ -35,7 +35,7 @@
 }
 .table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
 .th {
-  padding: 8px 14px;
+  padding: 8px 10px;
   text-align: left;
   font-size: var(--text-xs);
   font-weight: 700;
@@ -47,8 +47,13 @@
 }
 .tr { border-bottom: 1px solid var(--clr-app-border); }
 .tr:last-child { border-bottom: none; }
-.td { padding: 10px 14px; color: var(--clr-app-text); font-size: var(--text-xs); }
-.tdActions { padding: 10px 14px; }
+.td { padding: 10px; color: var(--clr-app-text); font-size: var(--text-xs); }
+/* This column only holds a 26px icon button — 10px of padding on each side
+   was more than the desktop Settings tab's narrow "SCHOOL FEES BY CLASS"
+   card had room for at laptop widths, pushing the table ~35px past its
+   container and forcing an extra horizontal scroll for a 4-column table
+   that should just fit. */
+.tdActions { padding: 10px 6px; }
 .emptyCell { padding: 22px 14px; text-align: center; color: var(--clr-app-muted); font-size: var(--text-xs); }
 
 /* Mobile card list — replaces the table (see FeeStructurePanel.tsx). No

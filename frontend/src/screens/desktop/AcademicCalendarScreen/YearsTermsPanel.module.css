@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* This component is embedded in two places with very different available
+     width: full-width on the standalone /academic-calendar page, but
+     squeezed into Settings' narrower center column (nav + form + preview
+     panel all sharing one row) when shown as a Settings tab. A viewport
+     media query can't tell those two contexts apart — it would collapse
+     the standalone page too, which already has plenty of room. A container
+     query reacts to this element's own rendered width instead, so the
+     desktop 3-column layout below only stacks when it's actually squeezed. */
+  container-type: inline-size;
 }
 
 /* ── Stat cards ───────────────────────────────────────────────────────────── */
@@ -184,7 +193,7 @@
 .tableWrap { flex: 1; overflow: auto; }
 .table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
 .th {
-  padding: 10px 18px;
+  padding: 10px 8px;
   text-align: left;
   font-size: var(--text-xs);
   font-weight: 700;
@@ -197,9 +206,14 @@
 .tr { border-bottom: 1px solid var(--clr-app-border); cursor: pointer; }
 .tr:hover { background: var(--clr-app-surface-alt); }
 .trSelected { background: var(--clr-app-accent-soft); }
-.td { padding: 12px 18px; color: var(--clr-app-muted); font-size: var(--text-xs); }
-.tdBold { padding: 12px 18px; font-weight: 700; color: var(--clr-app-text); }
-.tdActions { padding: 12px 18px; display: flex; gap: 6px; align-items: center; }
+.td { padding: 10px 8px; color: var(--clr-app-muted); font-size: var(--text-xs); }
+.tdBold { padding: 10px 8px; font-weight: 700; color: var(--clr-app-text); }
+/* This 5-column table sits in the narrowest of YearsTermsPanel's three
+   sub-columns (year list 200px + this table + a 260px detail panel) — with
+   the page now capped at a sane max-width (see SettingsScreen .root),
+   18px of horizontal padding per cell no longer left quite enough room,
+   forcing an unnecessary small horizontal scroll for a routine table. */
+.tdActions { padding: 10px 6px; display: flex; gap: 6px; align-items: center; }
 .emptyCell { padding: 40px 18px; text-align: center; color: var(--clr-app-muted); font-size: var(--text-xs); }
 
 .badge { border-radius: var(--radius-sm); padding: 3px 10px; font-size: var(--text-xs); font-weight: 700; }
@@ -370,5 +384,26 @@
     max-height: 88vh;
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Desktop 3-column (year list + terms table + detail panel) needs roughly
+   700-750px to show all three without squeezing the center table to
+   nothing — true on its full-width standalone page, but not when nested in
+   Settings' narrower form column. Stack instead of clipping/hiding a whole
+   column when there genuinely isn't room, regardless of viewport size. */
+@container (max-width: 750px) {
+  .mainLayout { flex-direction: column; min-height: 0; }
+  .yearList {
+    width: 100%;
+    max-height: 160px;
+    border-right: none;
+    border-bottom: 1px solid var(--clr-app-border);
+  }
+  .centerPanel { min-height: 280px; }
+  .detailPanel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--clr-app-border);
   }
 }
