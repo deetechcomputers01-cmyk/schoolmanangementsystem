@@ -130,6 +130,18 @@
   }
 }
 
+/* Continue the same students photo faintly behind the form on mobile,
+   instead of stark white, so the "real school, real kids" feel doesn't
+   stop at the hero banner. Heavily washed with white so the card and
+   text stay fully legible — this is texture, not a competing image. */
+@media (max-width: 767px) {
+  .rightPanel {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.55) 55%, rgba(255, 255, 255, 0.72) 100%),
+      url("/students-hero.png") center 15% / cover no-repeat;
+  }
+}
+
 /* Playful toy/school icons scattered behind the form — real illustrated
    PNGs (Noto Emoji, Apache-2.0), not flat shapes, so the plain white side
    of the page reads as warm and kid-friendly rather than clinical. Only
@@ -675,6 +687,16 @@
 @media (min-width: 768px) {
   .screenCard {
     padding: 32px;
+  }
+}
+
+/* Slight frosted-glass tint so the photo behind it reads through a
+   touch — desktop's card stays fully opaque, this is mobile-only. */
+@media (max-width: 767px) {
+  .screenCard {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px) saturate(1.15);
+    border-color: rgba(255, 255, 255, 0.6);
   }
 }
 
