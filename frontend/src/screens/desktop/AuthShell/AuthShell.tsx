@@ -16,27 +16,12 @@ export function AuthShell({ aside, children, footerNote, schoolName = "ScholarSp
 
         <section className={styles.rightPanel}>
           <div className={styles.rightDecor} aria-hidden="true">
-            <svg className={`${styles.decorShape} ${styles.decorStar1}`} viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l2.09 6.26L20.8 8.27l-5.09 4.36L17.8 19 12 15.4 6.2 19l2.09-6.37-5.09-4.36 6.71-.01z" />
-            </svg>
-            <svg className={`${styles.decorShape} ${styles.decorStar2}`} viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l2.09 6.26L20.8 8.27l-5.09 4.36L17.8 19 12 15.4 6.2 19l2.09-6.37-5.09-4.36 6.71-.01z" />
-            </svg>
-            <svg className={`${styles.decorShape} ${styles.decorBalloon}`} viewBox="0 0 24 32" fill="none">
-              <ellipse cx="12" cy="12" rx="10" ry="12" fill="currentColor" />
-              <path d="M12 24v6M9 30h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
-            <svg className={`${styles.decorShape} ${styles.decorPencil}`} viewBox="0 0 48 12" fill="currentColor">
-              <rect x="6" y="2" width="36" height="8" rx="2" />
-              <path d="M2 6l4-4v8z" />
-            </svg>
-            <svg className={`${styles.decorShape} ${styles.decorBlock}`} viewBox="0 0 32 32">
-              <rect x="2" y="2" width="28" height="28" rx="6" fill="currentColor" />
-              <text x="16" y="22" textAnchor="middle" fontSize="15" fontWeight="700" fill="#ffffff">A</text>
-            </svg>
-            <span className={`${styles.decorDot} ${styles.decorDot1}`} />
-            <span className={`${styles.decorDot} ${styles.decorDot2}`} />
-            <span className={`${styles.decorDot} ${styles.decorDot3}`} />
+            <img src="/decor/kite.png" alt="" className={`${styles.decorShape} ${styles.decorKite}`} />
+            <img src="/decor/star.png" alt="" className={`${styles.decorShape} ${styles.decorStar}`} />
+            <img src="/decor/crayon.png" alt="" className={`${styles.decorShape} ${styles.decorCrayon}`} />
+            <img src="/decor/puzzle.png" alt="" className={`${styles.decorShape} ${styles.decorPuzzle}`} />
+            <img src="/decor/balloon.png" alt="" className={`${styles.decorShape} ${styles.decorBalloon}`} />
+            <img src="/decor/teddy.png" alt="" className={`${styles.decorShape} ${styles.decorTeddy}`} />
           </div>
 
           <div className={styles.mobileHero}>
