@@ -155,25 +155,34 @@
   transform: rotate(-8deg);
 }
 
-.decorStar {
-  top: 48px;
-  right: 72px;
-  width: 60px;
-  transform: rotate(10deg);
+.decorPalette {
+  display: none;
+  top: 20%;
+  left: 100px;
+  width: 54px;
+  transform: rotate(-12deg);
 }
 
 .decorCrayon {
-  top: 42%;
+  top: 40%;
   left: 40px;
-  width: 66px;
+  width: 64px;
   transform: rotate(-18deg);
 }
 
-.decorPuzzle {
-  top: 38%;
-  right: 44px;
-  width: 62px;
-  transform: rotate(12deg);
+.decorRocket {
+  display: none;
+  top: 56%;
+  left: 96px;
+  width: 56px;
+  transform: rotate(24deg);
+}
+
+.decorSoccer {
+  top: 72%;
+  left: 52px;
+  width: 50px;
+  transform: rotate(-6deg);
 }
 
 .decorBalloon {
@@ -183,11 +192,60 @@
   transform: rotate(-6deg);
 }
 
+.decorStar {
+  top: 48px;
+  right: 72px;
+  width: 60px;
+  transform: rotate(10deg);
+}
+
+.decorGift {
+  display: none;
+  top: 20%;
+  right: 104px;
+  width: 52px;
+  transform: rotate(8deg);
+}
+
+.decorPuzzle {
+  top: 38%;
+  right: 44px;
+  width: 62px;
+  transform: rotate(12deg);
+}
+
+.decorYoyo {
+  display: none;
+  top: 56%;
+  right: 100px;
+  width: 46px;
+  transform: rotate(-10deg);
+}
+
+.decorDice {
+  top: 72%;
+  right: 50px;
+  width: 48px;
+  transform: rotate(14deg);
+}
+
 .decorTeddy {
   bottom: 56px;
   right: 88px;
   width: 96px;
   transform: rotate(6deg);
+}
+
+/* These four sit further inward toward the card, so they need more room
+   than the 1300px floor gives — only show once the panel is wide enough
+   (>=1600px) that they can't crowd it. */
+@media (min-width: 1600px) {
+  .decorPalette,
+  .decorRocket,
+  .decorGift,
+  .decorYoyo {
+    display: block;
+  }
 }
 
 /* Mobile hero banner — same cutout photo as the desktop panel, cropped to
@@ -199,7 +257,7 @@
   position: relative;
   width: calc(100% + 32px);
   height: clamp(140px, 28vh, 220px);
-  margin: -24px -16px 20px;
+  margin: -24px -16px 0;
   overflow: hidden;
   flex-shrink: 0;
 }

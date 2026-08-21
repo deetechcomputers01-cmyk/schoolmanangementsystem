@@ -17,10 +17,17 @@ export function AuthShell({ aside, children, footerNote, schoolName = "ScholarSp
         <section className={styles.rightPanel}>
           <div className={styles.rightDecor} aria-hidden="true">
             <img src="/decor/kite.png" alt="" className={`${styles.decorShape} ${styles.decorKite}`} />
-            <img src="/decor/star.png" alt="" className={`${styles.decorShape} ${styles.decorStar}`} />
+            <img src="/decor/palette.png" alt="" className={`${styles.decorShape} ${styles.decorPalette}`} />
             <img src="/decor/crayon.png" alt="" className={`${styles.decorShape} ${styles.decorCrayon}`} />
-            <img src="/decor/puzzle.png" alt="" className={`${styles.decorShape} ${styles.decorPuzzle}`} />
+            <img src="/decor/rocket.png" alt="" className={`${styles.decorShape} ${styles.decorRocket}`} />
+            <img src="/decor/soccer.png" alt="" className={`${styles.decorShape} ${styles.decorSoccer}`} />
             <img src="/decor/balloon.png" alt="" className={`${styles.decorShape} ${styles.decorBalloon}`} />
+
+            <img src="/decor/star.png" alt="" className={`${styles.decorShape} ${styles.decorStar}`} />
+            <img src="/decor/gift.png" alt="" className={`${styles.decorShape} ${styles.decorGift}`} />
+            <img src="/decor/puzzle.png" alt="" className={`${styles.decorShape} ${styles.decorPuzzle}`} />
+            <img src="/decor/yoyo.png" alt="" className={`${styles.decorShape} ${styles.decorYoyo}`} />
+            <img src="/decor/dice.png" alt="" className={`${styles.decorShape} ${styles.decorDice}`} />
             <img src="/decor/teddy.png" alt="" className={`${styles.decorShape} ${styles.decorTeddy}`} />
           </div>
 
