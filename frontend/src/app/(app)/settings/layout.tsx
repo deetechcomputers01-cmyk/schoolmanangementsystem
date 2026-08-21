@@ -2,10 +2,16 @@ import { getSettings } from "@backend/services/settings.service";
 import { listAcademicYears } from "@backend/services/academic.service";
 import { getClasses } from "@backend/services/dashboard.service";
 import { listFeeStructure } from "@backend/services/feeStructure.service";
-import { SettingsScreen } from "@/screens/desktop/SettingsScreen/SettingsScreen";
-import { MobileSettingsContent } from "@/screens/mobile/MobileSettingsContent/MobileSettingsContent";
+import { SettingsFormProvider } from "@/screens/mobile/MobileSettingsContent/SettingsFormContext";
 
-export default async function Page() {
+/**
+ * Settings route layout — fetches the same data `/settings/page.tsx` needs
+ * for the desktop screen, and additionally feeds it into SettingsFormProvider
+ * so the mobile section pages (`/settings/<section>`) share one form/dirty
+ * state across navigations. Next.js keeps this layout mounted while its
+ * child routes swap, which is what makes that sharing possible.
+ */
+export default async function SettingsLayout({ children }: { children: React.ReactNode }) {
   const [s, years, classesRaw, feeStructureRowsRaw] = await Promise.all([
     getSettings(), listAcademicYears(), getClasses(), listFeeStructure(),
   ]);
@@ -46,13 +52,13 @@ export default async function Page() {
   };
 
   return (
-    <>
-      <div className="mobileOnly">
-        <MobileSettingsContent />
-      </div>
-      <div className="desktopOnly">
-        <SettingsScreen initialSettings={initialSettings} academicYears={academicYears} classes={classes} feeStructureRows={feeStructureRows} />
-      </div>
-    </>
+    <SettingsFormProvider
+      initialSettings={initialSettings}
+      academicYears={academicYears}
+      classes={classes}
+      feeStructureRows={feeStructureRows}
+    >
+      {children}
+    </SettingsFormProvider>
   );
 }

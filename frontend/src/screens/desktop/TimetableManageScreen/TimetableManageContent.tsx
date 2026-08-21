@@ -490,7 +490,7 @@ export function TimetableManageContent({
                         onClick={() => openInspector(slot)}
                         title={hasConflict ? `${slot.teacherName} is also scheduled elsewhere at this time` : undefined}
                       >
-                        <div className={styles.periodSubject} style={{ color: hasConflict ? undefined : colour!.text }}>{slot.subjectName}</div>
+                        <div className={`${styles.periodSubject} ${slot.recurrence !== "weekly" ? styles.periodSubjectPadded : ""}`} style={{ color: hasConflict ? undefined : colour!.text }}>{slot.subjectName}</div>
                         {viewMode === "all" && (
                           <div className={styles.periodClass} style={{ color: hasConflict ? undefined : colour!.border }}>{slot.className}</div>
                         )}

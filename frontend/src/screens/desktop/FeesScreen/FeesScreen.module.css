@@ -532,7 +532,11 @@
   font-weight: 600;
   pointer-events: none;
 }
-.amountInput { padding-left: 44px; width: 100%; box-sizing: border-box; }
+/* Chained with .formInput (defined below) so this wins the cascade —
+   .formInput's shorthand `padding: 0 12px` is declared later in this file
+   and would otherwise clobber this padding-left back down to 12px, putting
+   the typed amount directly under the "GHS" prefix. */
+.formInput.amountInput { padding-left: 44px; width: 100%; box-sizing: border-box; }
 
 .formTextarea {
   padding: 10px 12px;
@@ -549,7 +553,10 @@
 
 .studentSearchWrap { position: relative; }
 .studentSearchIcon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--clr-app-muted); pointer-events: none; }
-.studentSearchSelect { padding-left: 34px; width: 100%; box-sizing: border-box; }
+/* Chained with .formSelect (defined below) so this wins the cascade — see
+   the .formInput.amountInput note above for why a plain .studentSearchSelect
+   rule would get its padding-left clobbered back down to 12px. */
+.formSelect.studentSearchSelect { padding-left: 34px; width: 100%; box-sizing: border-box; }
 
 .lineItemsSection { display: flex; flex-direction: column; gap: 10px; }
 .lineItemsHeader { display: flex; align-items: center; justify-content: space-between; }

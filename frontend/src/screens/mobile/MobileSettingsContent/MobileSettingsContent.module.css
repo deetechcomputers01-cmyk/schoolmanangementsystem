@@ -1,4 +1,5 @@
 .root { display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
+.page { display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
 
 .identityCard { position: relative; border: 1px solid var(--clr-app-border); border-radius: var(--radius-md, 8px); background: var(--clr-app-surface); padding: 14px; }
 .identityTop { display: flex; align-items: center; gap: 12px; }
