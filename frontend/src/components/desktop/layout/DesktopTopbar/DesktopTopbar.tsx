@@ -3,10 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, ChevronDown, RefreshCw } from "lucide-react";
+import { Bell, ChevronDown, RefreshCw, Settings, UserCog, FileText, LogOut } from "lucide-react";
 import { deriveTitle } from "@/lib/pageTitles";
 import { useNotifications, timeAgo, type NotificationItem } from "@/hooks/useNotifications";
 import styles from "./DesktopTopbar.module.css";
+
+const ADMIN_MENU_ITEMS = [
+  { href: "/settings",    label: "Settings",       icon: Settings },
+  { href: "/user-role",   label: "Roles & Users",  icon: UserCog },
+  { href: "/audit-logs",  label: "Compliance Logs", icon: FileText },
+];
 
 interface DesktopTopbarProps {
   pageTitle?:          string;
@@ -28,8 +34,10 @@ export function DesktopTopbar({
   const title = deriveTitle(pathname) || pageTitle || "";
 
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications(notificationCount);
   const panelRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -40,10 +48,30 @@ export function DesktopTopbar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
+  // Route changes should never leave a stale dropdown open behind the new page.
+  useEffect(() => {
+    setOpen(false);
+    setMenuOpen(false);
+  }, [pathname]);
+
   async function handleNotificationClick(n: NotificationItem) {
     if (!n.isRead) markRead(n.id);
     setOpen(false);
     if (n.link) router.push(n.link);
+  }
+
+  async function handleLogout() {
+    try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
+    window.location.href = "/login";
   }
 
   return (
@@ -114,14 +142,47 @@ export function DesktopTopbar({
 
         <span className={styles.divider} aria-hidden />
 
-        <button type="button" className={styles.profileBtn} aria-label="Account menu">
-          <span className={styles.avatar} aria-hidden>{userInitials}</span>
-          <span className={styles.profileCopy}>
-            <span className={styles.profileName}>{userName}</span>
-            <span className={styles.profileRole}>{userRole || "Administrator"}</span>
-          </span>
-          <ChevronDown size={14} className={styles.profileChevron} aria-hidden />
-        </button>
+        <div className={styles.profileWrap} ref={menuRef}>
+          <button
+            type="button"
+            className={styles.profileBtn}
+            aria-label="Account menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span className={styles.avatar} aria-hidden>{userInitials}</span>
+            <span className={styles.profileCopy}>
+              <span className={styles.profileName}>{userName}</span>
+              <span className={styles.profileRole}>{userRole || "Administrator"}</span>
+            </span>
+            <ChevronDown size={14} className={`${styles.profileChevron} ${menuOpen ? styles.profileChevronOpen : ""}`} aria-hidden />
+          </button>
+
+          {menuOpen && (
+            <div className={styles.profileMenu} role="menu">
+              <div className={styles.profileMenuHeader}>
+                <span className={styles.profileMenuName}>{userName}</span>
+                <span className={styles.profileMenuRole}>{userRole || "Administrator"}</span>
+              </div>
+              {userRole === "admin" && ADMIN_MENU_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={styles.profileMenuItem}
+                  role="menuitem"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <item.icon size={16} aria-hidden />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+              <button type="button" className={styles.profileMenuLogout} role="menuitem" onClick={handleLogout}>
+                <LogOut size={16} aria-hidden />
+                <span>Log out</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

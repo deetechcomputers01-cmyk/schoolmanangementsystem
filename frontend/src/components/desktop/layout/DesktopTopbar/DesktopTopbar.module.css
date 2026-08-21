@@ -272,6 +272,97 @@
   color: var(--clr-app-accent);
 }
 
+.profileChevron {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.profileChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Account dropdown */
+.profileWrap {
+  position: relative;
+  display: flex;
+}
+
+.profileMenu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 208px;
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-app-surface);
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: var(--z-sticky);
+  overflow: hidden;
+  padding: 6px;
+}
+
+.profileMenuHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--clr-app-border);
+}
+
+.profileMenuName {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--clr-app-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profileMenuRole {
+  font-size: var(--text-xs);
+  color: var(--clr-app-muted);
+  text-transform: capitalize;
+}
+
+.profileMenuItem,
+.profileMenuLogout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--clr-app-text);
+  text-align: left;
+  text-decoration: none;
+}
+
+.profileMenuItem:hover,
+.profileMenuLogout:hover {
+  background: var(--clr-app-accent-soft);
+  color: var(--clr-app-accent);
+}
+
+.profileMenuLogout {
+  margin-top: 4px;
+  border-top: 1px solid var(--clr-app-border);
+  border-radius: 0;
+  padding-top: 10px;
+  color: #B64B4B;
+}
+
+.profileMenuLogout:hover {
+  background: rgba(182, 75, 75, 0.08);
+  color: #B64B4B;
+}
+
 /* ── Narrow screens: hamburger button already eats into the left side, and
    the search box + full profile block no longer both fit — collapse the
    profile block to just the avatar and let the search box shrink freely. ── */

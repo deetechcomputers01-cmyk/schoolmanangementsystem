@@ -154,7 +154,17 @@ export function MobileSettingsContent({ initialSettings, academicYears, classes,
         </div>
       )}
 
-      <MobileSheet open={!!open} onClose={() => setOpenSection(null)} title={open?.label ?? ""}>
+      <MobileSheet
+        open={!!open}
+        onClose={() => setOpenSection(null)}
+        title={open?.label ?? ""}
+        footer={dirty ? (
+          <div className={styles.unsavedActions}>
+            <button type="button" className={styles.discardBtn} onClick={handleReset} disabled={resetting}>Discard</button>
+            <button type="button" className={styles.saveBtn} onClick={handleSave} disabled={saving}>{saving ? "Saving…" : "Save Now"}</button>
+          </div>
+        ) : undefined}
+      >
         {open?.id === "profile" && (
           <div className={styles.sheetBody}>
             <div className={kit.previewCard}>
