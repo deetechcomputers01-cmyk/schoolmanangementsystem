@@ -68,7 +68,7 @@ export function ResetPasswordScreen({ schoolName = "ScholarSphere" }: { schoolNa
         ) : (
           <>
             <div className={s.screenHeader}>
-              <Link href="/login" className={s.link} style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
+              <Link href="/login" className={s.link} style={{ display: "flex", width: "fit-content", alignItems: "center", gap: 6, marginBottom: 16 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="15 18 9 12 15 6" />
                 </svg>

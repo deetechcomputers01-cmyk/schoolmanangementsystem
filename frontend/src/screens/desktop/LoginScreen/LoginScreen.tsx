@@ -59,9 +59,9 @@ export function LoginScreen({ schoolName = "ScholarSphere" }: { schoolName?: str
             </p>
 
             <div className={s.panelMeta}>
-              <span className={s.panelPill}>Deep teal navigation</span>
-              <span className={s.panelPill}>Emerald action states</span>
-              <span className={s.panelPill}>Soft shell surfaces</span>
+              <span className={s.panelPill}>Role-based access</span>
+              <span className={s.panelPill}>Encrypted sessions</span>
+              <span className={s.panelPill}>Built for Ghanaian schools</span>
             </div>
           </div>
 
