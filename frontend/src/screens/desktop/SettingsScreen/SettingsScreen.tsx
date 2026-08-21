@@ -32,13 +32,14 @@ const NAV_ITEMS = [
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export function SettingsScreen({ initialSettings, academicYears, classes, feeStructureRows }: {
+export function SettingsScreen({ initialSettings, academicYears, classes, feeStructureRows, initialSection = "profile" }: {
   initialSettings: SettingsData;
   academicYears: YearData[];
   classes: { id: string; name: string }[];
   feeStructureRows: FeeStructureRow[];
+  initialSection?: string;
 }) {
-  const [activeSection,  setActiveSection]  = useState("profile");
+  const [activeSection,  setActiveSection]  = useState(initialSection);
   const [showLetterhead, setShowLetterhead] = useState(false);
   const [calcScore, setCalcScore] = useState("78");
   const logoInputRef = useRef<HTMLInputElement>(null);

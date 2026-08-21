@@ -98,7 +98,10 @@ export function FeeStructurePanel({ classes, rows }: Props) {
         </select>
       </div>
 
-      <div className={styles.tableWrap}>
+      {/* Desktop: table. Mobile: card list — a 4-column table can't fit a
+          phone width without horizontal scroll, so this is a genuinely
+          different layout, not just a CSS reflow of the same markup. */}
+      <div className={`${styles.tableWrap} desktopOnly`}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -126,6 +129,24 @@ export function FeeStructurePanel({ classes, rows }: Props) {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className={`${styles.cardList} mobileOnly`}>
+        {classRows.length === 0 && (
+          <p className={styles.emptyCell}>No fee amounts set for this class yet.</p>
+        )}
+        {classRows.map((row) => (
+          <div key={row.id} className={styles.feeCard}>
+            <div className={styles.feeCardInfo}>
+              <span className={styles.feeCardTerm}>{row.term}</span>
+              <span className={styles.feeCardCategory}>{row.category}</span>
+            </div>
+            <span className={styles.feeCardAmount}>GHS {row.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+            <button type="button" className={styles.deleteBtn} onClick={() => handleDeleteRow(row.id)} disabled={deletingId === row.id} title="Remove">
+              <Trash2 size={14} />
+            </button>
+          </div>
+        ))}
       </div>
 
       <div className={styles.addRow}>

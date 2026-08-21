@@ -47,6 +47,11 @@ export function MobileBottomNav({ tabs, moreItems = [], userName = "User", userR
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
 
+  // Settings' inner section pages (/settings/<section>) replace this bar with
+  // their own fixed Apply/Discard bar (see MobileSettingsSectionPage) — the
+  // list page itself (/settings) keeps the normal tab bar.
+  if (/^\/settings\/[^/]+$/.test(pathname)) return null;
+
   const groups = moreItems.reduce<Record<string, MobileMoreItem[]>>((acc, item) => {
     (acc[item.group] ??= []).push(item);
     return acc;

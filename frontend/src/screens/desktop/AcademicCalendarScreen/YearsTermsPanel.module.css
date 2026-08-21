@@ -39,6 +39,55 @@
   font-weight: 700;
 }
 
+/* ── Mobile layout (year select + term cards) ────────────────────────────── */
+.mobileYearRow { display: flex; gap: 8px; margin-bottom: 12px; }
+.mobileYearSelect {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  padding: 0 12px;
+  font-size: var(--text-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+}
+.mobileIconBtn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-accent);
+  cursor: pointer;
+}
+.mobileTermsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clr-app-muted);
+}
+.mobileTermList { display: flex; flex-direction: column; gap: 8px; }
+.mobileTermCard {
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-app-surface);
+  padding: 12px;
+}
+.mobileTermTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mobileTermDates { margin: 4px 0 10px; font-size: var(--text-xs); color: var(--clr-app-muted); }
+.mobileTermActions { display: flex; gap: 8px; }
+
 /* ── Main 3-column layout ─────────────────────────────────────────────────── */
 .mainLayout {
   display: flex;
@@ -310,3 +359,16 @@
 .confirmHeader { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .confirmBody { font-size: var(--text-xs); color: var(--clr-app-muted); margin: 0 0 22px; }
 .dangerIcon { color: var(--clr-error); flex-shrink: 0; }
+
+/* Mobile: anchor the Add Year/Add Term/Delete-confirm dialogs to the bottom
+   edge as a full-width sheet instead of a small centered desktop dialog. */
+@media (max-width: 1024px) {
+  .modalBackdrop { align-items: flex-end; }
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+}

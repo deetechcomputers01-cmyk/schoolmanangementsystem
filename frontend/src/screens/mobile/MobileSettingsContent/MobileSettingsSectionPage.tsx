@@ -288,16 +288,6 @@ export function MobileSettingsSectionPage({ section }: { section: SectionId }) {
         </div>
       )}
 
-      {dirty && (
-        <div className={styles.unsavedBar}>
-          <div className={styles.unsavedNote}><AlertTriangle size={14} /> You have unsaved changes</div>
-          <div className={styles.unsavedActions}>
-            <button type="button" className={styles.discardBtn} onClick={handleReset} disabled={resetting}>Discard</button>
-            <button type="button" className={styles.saveBtn} onClick={handleSave} disabled={saving}>{saving ? "Saving…" : "Save Now"}</button>
-          </div>
-        </div>
-      )}
-
       {section === "profile" && (
         <MobileSheet open={showLetterhead} onClose={() => setShowLetterhead(false)} title="Letterhead Preview" compact>
           <div className={styles.lhPage}>
@@ -322,6 +312,18 @@ export function MobileSettingsSectionPage({ section }: { section: SectionId }) {
           </div>
         </MobileSheet>
       )}
+
+      {/* Replaces the bottom tab bar on this route (MobileBottomNav bails out
+          for /settings/<section>) so Apply/Discard sit exactly where the nav
+          normally does — the primary way to commit or drop edits here. */}
+      <div className={styles.sectionActionBar}>
+        <button type="button" className={styles.sectionDiscardBtn} onClick={handleReset} disabled={!dirty || resetting || saving}>
+          {resetting ? "Discarding…" : "Discard"}
+        </button>
+        <button type="button" className={styles.sectionApplyBtn} onClick={handleSave} disabled={!dirty || saving || resetting}>
+          {saving ? "Applying…" : "Apply"}
+        </button>
+      </div>
     </div>
   );
 }

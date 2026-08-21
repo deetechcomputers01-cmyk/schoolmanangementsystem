@@ -25,6 +25,43 @@
 .notConnectedTag { flex-shrink: 0; padding: 2px 8px; border-radius: 999px; background: var(--clr-warning-bg); color: var(--clr-warning); font-size: 10px; font-weight: 700; border: 1px solid var(--clr-warning-border); }
 
 .unsavedBar { display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; border: 1px solid var(--clr-warning-border); background: var(--clr-warning-bg); border-radius: var(--radius-sm); }
+
+/* Section pages' bottom-nav replacement — same fixed slot/height as
+   MobileBottomNav (which bails out on these routes) so Apply/Discard sit
+   exactly where the tab bar normally does. */
+.sectionActionBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  gap: 10px;
+  min-height: var(--mobile-bottom-h);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
+  box-shadow: 0 -4px 12px rgba(20, 29, 35, 0.05);
+}
+.sectionDiscardBtn, .sectionApplyBtn {
+  flex: 1;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+.sectionDiscardBtn {
+  border: 1px solid var(--clr-app-border);
+  background: var(--clr-app-surface);
+  color: var(--clr-app-text);
+}
+.sectionDiscardBtn:disabled, .sectionApplyBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.sectionApplyBtn {
+  border: 0;
+  background: var(--clr-app-accent);
+  color: #fff;
+}
 .unsavedNote { display: flex; align-items: center; gap: 6px; color: var(--clr-warning); font-size: var(--text-xs); font-weight: 600; justify-content: center; }
 .unsavedActions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .discardBtn { background: none; border: none; color: var(--clr-warning); font-size: var(--text-xs); font-weight: 700; text-decoration: underline; cursor: pointer; }

@@ -199,6 +199,82 @@ export function YearsTermsPanel({ years }: { years: YearData[] }) {
         </div>
       </div>
 
+      {/* Mobile: year picker + term cards. Not a CSS reflow of the desktop
+          3-column layout below — a 200px sidebar + table + 260px detail
+          panel has no sensible narrow-width form, so this is a genuinely
+          different, purpose-built mobile structure sharing the same state
+          and handlers. */}
+      <div className="mobileOnly">
+        <div className={styles.mobileYearRow}>
+          <select
+            className={styles.mobileYearSelect}
+            value={selectedYearId}
+            onChange={(e) => { setSelectedYearId(e.target.value); setSelectedTermId(years.find((y) => y.id === e.target.value)?.terms[0]?.id ?? ""); }}
+          >
+            {years.length === 0 && <option value="">No academic years yet</option>}
+            {years.map((y) => <option key={y.id} value={y.id}>{y.name}{y.isCurrent ? " (Current)" : ""}</option>)}
+          </select>
+          <button type="button" className={styles.mobileIconBtn} onClick={() => setShowAddYear(true)} title="Create academic year">
+            <Plus size={16} />
+          </button>
+        </div>
+
+        {selectedYear && !selectedYear.isCurrent && (
+          <button type="button" className={styles.btnOutline} onClick={handlePublishYear} disabled={saving} style={{ width: "100%", justifyContent: "center", marginBottom: 12 }}>
+            Set as Active Year
+          </button>
+        )}
+
+        <div className={styles.mobileTermsHeader}>
+          <span>Terms ({selectedYear?.name ?? "—"})</span>
+          <button type="button" className={styles.btnFilled} onClick={() => setShowAddTerm(true)} disabled={!selectedYear}>
+            <Plus size={13} /> Add Term
+          </button>
+        </div>
+
+        <div className={styles.mobileTermList}>
+          {(selectedYear?.terms ?? []).length === 0 && (
+            <p className={styles.emptyCell}>No terms yet. Tap &quot;+ Add Term&quot; to create one.</p>
+          )}
+          {(selectedYear?.terms ?? []).map((t) => {
+            const lbl = termLabel(t);
+            return (
+              <div key={t.id} className={styles.mobileTermCard}>
+                <div className={styles.mobileTermTop}>
+                  <span className={styles.detailName}>{t.name}</span>
+                  <span className={`${styles.badge} ${TERM_STATUS_STYLE[lbl]}`}>{lbl}</span>
+                </div>
+                <p className={styles.mobileTermDates}>
+                  {fmtDate(t.startDate)} – {fmtDate(t.endDate)} · {teachingDays(t.startDate, t.endDate)} teaching days
+                </p>
+                <div className={styles.mobileTermActions}>
+                  {!t.isCurrent ? (
+                    <>
+                      <button type="button" className={styles.btnOutline} onClick={() => handleSetActiveTerm(t.id)} disabled={saving} style={{ flex: 1, justifyContent: "center" }}>
+                        Set Active
+                      </button>
+                      <button type="button" className={styles.dangerOutlineBtn} onClick={() => setConfirmDeleteTermId(t.id)} style={{ flex: 1 }}>
+                        Delete
+                      </button>
+                    </>
+                  ) : (
+                    <button type="button" className={styles.btnOutline} disabled style={{ flex: 1, justifyContent: "center" }} title="Active term cannot be deleted">
+                      Active Term
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Wrapper div carries the mobileOnly/desktopOnly toggle so it never
+          competes with .mainLayout's own `display: flex` for the cascade —
+          .mainLayout sets display directly (unlike FeeStructurePanel's
+          .tableWrap/.cardList above), so combining the two classes on one
+          element would risk the same clobber bug fixed elsewhere in Fees. */}
+      <div className="desktopOnly">
       <div className={styles.mainLayout}>
         {/* Left: year list */}
         <aside className={styles.yearList}>
@@ -316,6 +392,7 @@ export function YearsTermsPanel({ years }: { years: YearData[] }) {
             <div className={styles.noSelection}>Select a term to view details</div>
           )}
         </aside>
+      </div>
       </div>
 
       {/* Confirm delete term */}
