@@ -5,9 +5,10 @@ type AuthShellProps = {
   aside: ReactNode;
   children: ReactNode;
   footerNote?: ReactNode;
+  schoolName?: string;
 };
 
-export function AuthShell({ aside, children, footerNote }: AuthShellProps) {
+export function AuthShell({ aside, children, footerNote, schoolName = "ScholarSphere" }: AuthShellProps) {
   return (
     <>
       <main className={styles.root}>
@@ -20,7 +21,7 @@ export function AuthShell({ aside, children, footerNote }: AuthShellProps) {
                 <path d="M3 22h18M2 11h20M12 2L2 7h20L12 2zM5 11v7M9 11v7M15 11v7M19 11v7" />
               </svg>
             </div>
-            <span className={styles.mobileBrandTitle}>ScholarSphere</span>
+            <span className={styles.mobileBrandTitle}>{schoolName}</span>
           </div>
 
           <div className={styles.formWrap}>{children}</div>
@@ -28,9 +29,9 @@ export function AuthShell({ aside, children, footerNote }: AuthShellProps) {
       </main>
 
       <footer className={styles.footer}>
-        <span className={styles.footerBrand}>ScholarSphere</span>
+        <span className={styles.footerBrand}>{schoolName}</span>
         <span className={styles.footerCopy}>
-          &copy; {new Date().getFullYear()} ScholarSphere Systems. Institutional Security Protocol v4.2.
+          &copy; {new Date().getFullYear()} {schoolName}. Institutional Security Protocol v4.2.
         </span>
         <div className={styles.footerLinks}>
           <a href="#" className={styles.footerLink}>Privacy Policy</a>

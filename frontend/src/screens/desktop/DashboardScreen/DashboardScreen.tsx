@@ -16,6 +16,7 @@ import { isDatabaseUnavailable, prisma } from "@backend/prisma";
 import { listAttendance, getAttendanceTrend } from "@backend/services/attendance.service";
 import { AttendanceTrendCard } from "@/components/desktop/modules/dashboard/AttendanceTrendCard";
 import { getDashboardStats } from "@backend/services/dashboard.service";
+import { getSettings } from "@backend/services/settings.service";
 import { listFees } from "@backend/services/fee.service";
 import { listStudents } from "@backend/services/student.service";
 import {
@@ -86,7 +87,7 @@ export async function DashboardScreen() {
       return <ParentDashboard data={data} userName={user.name} />;
     }
 
-  const [stats, attendance, attendanceTrend, fees, adminExtras, rawStudents, upcomingEventRows] = await Promise.all([
+  const [stats, attendance, attendanceTrend, fees, adminExtras, rawStudents, upcomingEventRows, settings] = await Promise.all([
     getDashboardStats(),
     listAttendance(),
     getAttendanceTrend(),
@@ -98,7 +99,9 @@ export async function DashboardScreen() {
       orderBy: { date: "asc" },
       take: 3,
     }),
+    getSettings(),
   ]);
+  const schoolName = settings.name || "the school";
 
   const present = stats.attendanceToday;
   const attendanceRate = stats.students ? Math.round((present / stats.students) * 100) : 0;
@@ -152,6 +155,7 @@ export async function DashboardScreen() {
       <>
       <div className="mobileOnly">
         <MobileDashboardContent
+          schoolName={schoolName}
           greetingName={greetingName}
           todayLabel={new Date().toLocaleDateString("en-GB", { weekday: "long", day: "2-digit", month: "long", year: "numeric" })}
           studentsCount={stats.students}
@@ -331,7 +335,7 @@ export async function DashboardScreen() {
         </Link>
 
         <footer className={css.footer}>
-          © {new Date().getFullYear()} School Administration · ScholarSphere
+          © {new Date().getFullYear()} {schoolName}
         </footer>
       </div>
       </DesktopPageFrame>

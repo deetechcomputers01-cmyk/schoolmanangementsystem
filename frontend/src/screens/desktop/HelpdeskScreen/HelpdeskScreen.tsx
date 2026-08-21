@@ -48,6 +48,7 @@ export interface Stats {
 export interface HelpdeskContentProps {
   initialTickets: Ticket[];
   initialStats:   Stats;
+  schoolName:     string;
 }
 
 export const PRIORITY_COLOR: Record<TicketPriority, { bg: string; text: string; label: string }> = {
@@ -74,13 +75,15 @@ export const QUEUE_COLOR: Record<Queue, string> = {
   general:     "#71787c",
 };
 
-export const KB_TEMPLATES = [
-  "Thank you for contacting ScholarSphere support. We have received your request (#TICKET_NO) and will respond within 24 hours.",
-  "This issue has been escalated to the relevant department. You will receive an update within 2 business days.",
-  "Your issue has been resolved. Please let us know if you need further assistance. Reply to this message to reopen.",
-  "We need additional information to process your request. Please provide the following details: [specify]",
-  "Your request has been forwarded to the Finance department. They will contact you within 1 business day.",
-];
+export function getKbTemplates(schoolName: string) {
+  return [
+    `Thank you for contacting ${schoolName} support. We have received your request (#TICKET_NO) and will respond within 24 hours.`,
+    "This issue has been escalated to the relevant department. You will receive an update within 2 business days.",
+    "Your issue has been resolved. Please let us know if you need further assistance. Reply to this message to reopen.",
+    "We need additional information to process your request. Please provide the following details: [specify]",
+    "Your request has been forwarded to the Finance department. They will contact you within 1 business day.",
+  ];
+}
 
 export function PriorityBadge({ p }: { p: TicketPriority }) {
   const c = PRIORITY_COLOR[p];
@@ -111,7 +114,7 @@ export function fmtDate(d: string) {
  *  since /api/admin/users is super_admin-only and Helpdesk also allows
  *  principal). Shown read-only here; wiring a picker is a follow-up, not
  *  part of this visual refresh. */
-export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContentProps) {
+export function HelpdeskScreen({ initialTickets, initialStats, schoolName }: HelpdeskContentProps) {
   const [tickets, setTickets]         = useState<Ticket[]>(initialTickets);
   const [stats, setStats]             = useState<Stats>(initialStats);
   const [selectedId, setSelectedId]   = useState<string>(initialTickets[0]?.id ?? "");
@@ -516,7 +519,7 @@ export function HelpdeskScreen({ initialTickets, initialStats }: HelpdeskContent
               <h3 className={styles.modalTitle}><BookOpen size={16} />Knowledge Base Templates</h3>
               <button className={styles.modalCloseBtn} onClick={() => setShowKb(false)}><X size={18} /></button>
             </div>
-            {KB_TEMPLATES.map((t, i) => (
+            {getKbTemplates(schoolName).map((t, i) => (
               <div key={i} className={styles.kbItem} onClick={() => { setReplyText(t.replace("#TICKET_NO", selected?.ticketNo ?? "")); setShowKb(false); }}>
                 {t}
               </div>

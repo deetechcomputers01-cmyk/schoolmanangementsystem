@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AuthShell } from "../AuthShell/AuthShell";
 import s from "../AuthShell/AuthShell.module.css";
 
-export function ResetPasswordScreen() {
+export function ResetPasswordScreen({ schoolName = "ScholarSphere" }: { schoolName?: string }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -20,6 +20,7 @@ export function ResetPasswordScreen() {
 
   return (
     <AuthShell
+      schoolName={schoolName}
       aside={(
         <>
           <div className={s.panelBrandRow}>
@@ -28,7 +29,7 @@ export function ResetPasswordScreen() {
                 <path d="M3 22h18M2 11h20M12 2L2 7h20L12 2zM5 11v7M9 11v7M15 11v7M19 11v7" />
               </svg>
             </div>
-            <h1 className={s.panelBrandName}>ScholarSphere</h1>
+            <h1 className={s.panelBrandName}>{schoolName}</h1>
           </div>
 
           <div>

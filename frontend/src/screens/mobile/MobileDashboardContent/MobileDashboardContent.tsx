@@ -17,6 +17,7 @@ const ABSENT_COLOR = "#e8a8a8";
 const LATE_COLOR = "#eab308";
 
 export interface MobileDashboardProps {
+  schoolName: string;
   greetingName: string;
   todayLabel: string;
   studentsCount: number;
@@ -35,7 +36,7 @@ const STATUS_LABEL: Record<string, string> = { present: "Present", absent: "Abse
 
 export function MobileDashboardContent(props: MobileDashboardProps) {
   const {
-    greetingName, todayLabel, studentsCount, staffCount, classesCount, feesCollected,
+    schoolName, greetingName, todayLabel, studentsCount, staffCount, classesCount, feesCollected,
     attendanceTrend, genderSummary, systemOverview, recentStudents, recentPayments, upcomingEvents,
   } = props;
 
@@ -252,7 +253,7 @@ export function MobileDashboardContent(props: MobileDashboardProps) {
         )}
       </section>
 
-      <footer className={styles.footer}>© {new Date().getFullYear()} School Administration · ScholarSphere</footer>
+      <footer className={styles.footer}>© {new Date().getFullYear()} {schoolName}</footer>
     </div>
   );
 }

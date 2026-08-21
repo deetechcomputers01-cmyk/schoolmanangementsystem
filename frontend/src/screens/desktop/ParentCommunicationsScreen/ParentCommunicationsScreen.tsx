@@ -43,6 +43,7 @@ export interface ParentCommunicationsContentProps {
   initialBroadcasts: Broadcast[];
   initialStats:      BroadcastStats;
   classes:           ClassOption[];
+  schoolName:        string;
 }
 type Props = ParentCommunicationsContentProps;
 
@@ -99,7 +100,7 @@ export function DeliveryBar({ delivered, failed, pending }: { delivered: number;
   );
 }
 
-export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, classes }: Props) {
+export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, classes, schoolName }: Props) {
   const [broadcasts, setBroadcasts] = useState<Broadcast[]>(initialBroadcasts);
   const [stats, setStats]           = useState<BroadcastStats>(initialStats);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -400,7 +401,7 @@ export function ParentCommunicationsScreen({ initialBroadcasts, initialStats, cl
                   </div>
                   <div className={styles.phoneAppHeader}>
                     {CHANNEL_ICONS[primaryChannel] ?? <MessageSquare size={12} />}
-                    <span className={styles.phoneAppHeaderText}>ScholarSphere Academy</span>
+                    <span className={styles.phoneAppHeaderText}>{schoolName}</span>
                   </div>
                   <div className={styles.phoneMessages}>
                     <div className={styles.phoneBubble}>

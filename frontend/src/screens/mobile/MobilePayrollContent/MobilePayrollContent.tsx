@@ -35,7 +35,7 @@ import { initials, currentMonthStr, downloadSlip } from "@/screens/desktop/Payro
 import type { PayrollContentProps, PayslipRow } from "@/screens/desktop/PayrollScreen/PayrollContent";
 import styles from "./MobilePayrollContent.module.css";
 
-export function MobilePayrollContent({ staffList, initialPayslips }: PayrollContentProps) {
+export function MobilePayrollContent({ staffList, initialPayslips, schoolName }: PayrollContentProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const [payslips] = useState<PayslipRow[]>(initialPayslips);
@@ -197,7 +197,7 @@ export function MobilePayrollContent({ staffList, initialPayslips }: PayrollCont
                       <div className={styles.breakdownRowTotal}><span>Net Payable</span><strong>{currency(Number(p.netPay))}</strong></div>
 
                       <div className={styles.actionRow}>
-                        <button type="button" className={styles.actionBtn} onClick={() => downloadSlip(p)}><Download size={13} /> Slip</button>
+                        <button type="button" className={styles.actionBtn} onClick={() => downloadSlip(p, schoolName)}><Download size={13} /> Slip</button>
                         {p.status === "draft" && (
                           <button type="button" className={styles.actionBtnPrimary} disabled={!!busy} onClick={() => updateStatus(p.id, "approved")}>Approve</button>
                         )}

@@ -41,7 +41,7 @@ import { useToast } from "@/components/desktop/ui/Toast/Toast";
 import { MobileSheet } from "@/components/mobile/ui/MobileSheet/MobileSheet";
 import kit from "@/components/mobile/ui/MobileFormKit/MobileFormKit.module.css";
 import {
-  STATUS_COLOR, PRIORITY_COLOR, QUEUE_COLOR, KB_TEMPLATES, StatusBadge, PriorityBadge, Avatar, fmtDate,
+  STATUS_COLOR, PRIORITY_COLOR, QUEUE_COLOR, getKbTemplates, StatusBadge, PriorityBadge, Avatar, fmtDate,
 } from "@/screens/desktop/HelpdeskScreen/HelpdeskScreen";
 import type {
   Ticket, TicketStatus, TicketPriority, Queue, HelpdeskContentProps,
@@ -55,7 +55,7 @@ function isToday(iso: string) {
   return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate();
 }
 
-export function MobileHelpdeskContent({ initialTickets, initialStats }: HelpdeskContentProps) {
+export function MobileHelpdeskContent({ initialTickets, initialStats, schoolName }: HelpdeskContentProps) {
   const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
   const [stats, setStats] = useState(initialStats);
   const [search, setSearch] = useState("");
@@ -330,7 +330,7 @@ export function MobileHelpdeskContent({ initialTickets, initialStats }: Helpdesk
               />
               {showKb && (
                 <div className={styles.kbList}>
-                  {KB_TEMPLATES.map((t, i) => (
+                  {getKbTemplates(schoolName).map((t, i) => (
                     <button key={i} type="button" className={styles.kbItem} onClick={() => { setReplyText(t.replace("#TICKET_NO", selected.ticketNo)); setShowKb(false); }}>{t}</button>
                   ))}
                 </div>

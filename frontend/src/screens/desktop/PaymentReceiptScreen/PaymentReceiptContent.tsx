@@ -43,9 +43,22 @@ export interface ReceiptPayment {
   siblingPayments: SiblingPayment[];
 }
 
+export interface ReceiptSchool {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+
 export interface ReceiptProps {
   payments: ReceiptPayment[];
   defaultPaymentId: string | null;
+  school: ReceiptSchool;
+}
+
+function schoolInitials(name: string) {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  return (words[0]?.[0] ?? "") + (words[1]?.[0] ?? "");
 }
 
 function fmtCurrency(n: number) {
@@ -101,7 +114,7 @@ function numToWords(n: number): string {
   return result + " Ghana Cedis Only";
 }
 
-export function PaymentReceiptContent({ payments, defaultPaymentId }: ReceiptProps) {
+export function PaymentReceiptContent({ payments, defaultPaymentId, school }: ReceiptProps) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(defaultPaymentId);
   const [showReverse, setShowReverse] = useState(false);
@@ -293,11 +306,11 @@ export function PaymentReceiptContent({ payments, defaultPaymentId }: ReceiptPro
               <div className={styles.receiptDoc}>
                 {/* Letterhead */}
                 <div className={styles.letterhead}>
-                  <div className={styles.schoolSeal}>SS</div>
+                  <div className={styles.schoolSeal}>{schoolInitials(school.name) || "SS"}</div>
                   <div className={styles.schoolInfo}>
-                    <p className={styles.schoolName}>ScholarSphere School</p>
-                    <p className={styles.schoolAddress}>P.O. Box 1234, Accra, Ghana</p>
-                    <p className={styles.schoolContact}>Tel: +233 000 000 000 &bull; finance@scholarsphere.edu.gh</p>
+                    <p className={styles.schoolName}>{school.name}</p>
+                    <p className={styles.schoolAddress}>{school.address}</p>
+                    <p className={styles.schoolContact}>Tel: {school.phone} &bull; {school.email}</p>
                   </div>
                 </div>
 
@@ -374,7 +387,7 @@ export function PaymentReceiptContent({ payments, defaultPaymentId }: ReceiptPro
                 </div>
 
                 <p className={styles.receiptFooter}>
-                  This is an official receipt issued by ScholarSphere School. Please retain for your records.
+                  This is an official receipt issued by {school.name}. Please retain for your records.
                 </p>
               </div>
             </div>

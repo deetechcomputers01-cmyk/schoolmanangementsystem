@@ -206,6 +206,27 @@
 .sectionHint { font-size: var(--text-sm); color: var(--clr-app-muted); margin: -6px 0 4px; line-height: 1.5; }
 .colorInput { width: 40px; height: 40px; border: 1px solid var(--clr-app-border); border-radius: var(--radius-sm); padding: 2px; cursor: pointer; flex-shrink: 0; }
 
+/* Quick per-field undo — shown only while the field differs from what's
+   actually saved, so a mistaken colour change can be reverted without the
+   blunter Reset Defaults action. */
+.prevValueTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--clr-app-border);
+  border-radius: var(--radius-full, 999px);
+  background: var(--clr-app-surface-alt);
+  color: var(--clr-app-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.prevValueTag:hover { border-color: var(--clr-app-accent); color: var(--clr-app-accent); }
+.prevValueSwatch { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); flex-shrink: 0; }
+
 .infoBar {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 14px; background: var(--clr-info-bg); border: 1px solid var(--clr-info-border);

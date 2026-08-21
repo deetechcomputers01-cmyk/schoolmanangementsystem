@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useToast } from "@/components/desktop/ui/Toast/Toast";
+import { DEFAULT_GRADING_SCALE } from "@backend/utils";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 export interface GradeBand { grade: string; min: number; max: number; remark?: string }
@@ -50,6 +51,38 @@ export const GH_REGIONS = [
 export const SCHOOL_TYPES = [
   "Public / Government", "Private / Independent", "Mission / Religious", "International",
 ];
+
+/** "Reset Defaults" reverts every preference/config field to this — school
+ *  identity (name, motto, address, phone, email, logo, GES code, region,
+ *  district, website, headteacher) is deliberately excluded: there's no
+ *  sensible "default" school name to fall back to, and resetting it would
+ *  destroy real entered data instead of just undoing a preference change. */
+const PREFERENCE_DEFAULTS = {
+  primaryColor: "#5b50f5",
+  accentColor: "#3b92e8",
+  letterheadMode: "generated",
+  currency: "GHS",
+  latePaymentPenalty: "5",
+  gracePeriod: "14",
+  invoiceAutoSend: "start",
+  minAttendanceRate: "75",
+  alertThreshold: "60",
+  lateArrivalCutoff: "15",
+  minPasswordLength: "8",
+  sessionTimeout: "60",
+  passwordResetPolicy: "90",
+  feeReminders: true,
+  attendanceAlerts: true,
+  examResultNotifications: true,
+  staffAnnouncements: true,
+  syncInterval: "5",
+  cacheSizeMb: "50",
+  offlineModeEnabled: true,
+  smsProvider: "hubtel",
+  smsApiKey: "",
+  paymentGateway: "paystack",
+  paymentApiKey: "",
+} as const satisfies Partial<Form>;
 
 function initForm(s: SettingsData): Form {
   const ex = s.extra ?? {};
@@ -139,6 +172,7 @@ export function useSettingsForm(initialSettings: SettingsData) {
   const [updatedAt,      setUpdatedAt]      = useState(initialSettings.updatedAt);
   const [saving,         setSaving]         = useState(false);
   const [resetting,      setResetting]      = useState(false);
+  const [resettingDefaults, setResettingDefaults] = useState(false);
   const { showToast } = useToast();
   const [logoUrl, setLogoUrl] = useState(initialSettings.logoUrl);
   const [logoUploading, setLogoUploading] = useState(false);
@@ -214,6 +248,41 @@ export function useSettingsForm(initialSettings: SettingsData) {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // "Reset Defaults" — distinct from handleReset (which only discards
+  // unsaved edits back to whatever was last *saved*, so it does nothing if
+  // the unwanted value was already saved, e.g. a branding colour). This
+  // actually restores the built-in defaults for preference/config fields
+  // and persists immediately, same as clicking Save — school identity
+  // fields are left exactly as last saved, see PREFERENCE_DEFAULTS above.
+  const handleResetToDefaults = useCallback(async () => {
+    setResettingDefaults(true);
+    try {
+      const nextForm: Form = { ...savedForm, ...PREFERENCE_DEFAULTS };
+      const res = await fetch("/api/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildPayload(nextForm, DEFAULT_GRADING_SCALE)),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({})) as { message?: string };
+        throw new Error(err.message ?? `Error ${res.status}`);
+      }
+      const saved = await res.json() as SettingsData & { extra: Record<string,unknown>; updatedAt: string };
+      const next = initForm({ ...saved, extra: saved.extra ?? null, updatedAt: saved.updatedAt });
+      setForm(next);
+      setSavedForm(next);
+      setGradingScale(saved.gradingScale);
+      setSavedGradingScale(saved.gradingScale);
+      setUpdatedAt(saved.updatedAt);
+      showToast("Preferences reset to defaults.", "success");
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : "Failed to reset to defaults.", "error");
+    } finally {
+      setResettingDefaults(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedForm]);
 
   async function handleLogoFile(file: File) {
     setLogoUploading(true);
@@ -297,7 +366,8 @@ export function useSettingsForm(initialSettings: SettingsData) {
   })();
 
   return {
-    form, set, dirty, saving, resetting, handleSave, handleReset,
+    form, savedForm, set, dirty, saving, resetting, handleSave, handleReset,
+    resettingDefaults, handleResetToDefaults,
     gradingScale, setBandMin, sortedScale,
     updatedAt, formattedDate,
     logoUrl, logoUploading, handleLogoFile, handleLogoRemove,

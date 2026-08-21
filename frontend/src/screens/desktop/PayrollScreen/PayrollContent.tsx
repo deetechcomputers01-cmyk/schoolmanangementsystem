@@ -25,6 +25,7 @@ export interface PayslipRow {
 export interface PayrollContentProps {
   staffList: StaffRow[];
   initialPayslips: PayslipRow[];
+  schoolName: string;
 }
 type Props = PayrollContentProps;
 
@@ -37,9 +38,9 @@ export function currentMonthStr() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
-export function downloadSlip(p: PayslipRow) {
+export function downloadSlip(p: PayslipRow, schoolName = "ScholarSphere") {
   const lines = [
-    `ScholarSphere — Payslip`,
+    `${schoolName} — Payslip`,
     `Staff: ${p.staff.firstName} ${p.staff.lastName} (${p.staff.staffNo})`,
     `Role: ${p.staff.roleTitle}`,
     `Month: ${p.month}`,
@@ -60,7 +61,7 @@ export function downloadSlip(p: PayslipRow) {
   URL.revokeObjectURL(url);
 }
 
-export function PayrollContent({ staffList, initialPayslips }: Props) {
+export function PayrollContent({ staffList, initialPayslips, schoolName }: Props) {
   const router = useRouter();
   const [payslips] = useState<PayslipRow[]>(initialPayslips);
   const [tab, setTab] = useState<"payslips" | "setup">("payslips");
@@ -276,7 +277,7 @@ export function PayrollContent({ staffList, initialPayslips }: Props) {
                     <span className={styles.netPayableValue}>{currency(Number(selected.netPay))}</span>
                   </div>
                   <div className={styles.detailActions}>
-                    <button className={styles.btnOutline} onClick={() => downloadSlip(selected)}><Download size={13} /> Slip</button>
+                    <button className={styles.btnOutline} onClick={() => downloadSlip(selected, schoolName)}><Download size={13} /> Slip</button>
                     {selected.status === "draft" && (
                       <button className={`${styles.btnOutline} ${styles.btnApproveOutline}`} disabled={!!busy} onClick={() => updateStatus(selected.id, "approved")}>Approve</button>
                     )}

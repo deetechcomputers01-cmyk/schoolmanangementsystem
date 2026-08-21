@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@backend/auth/cookies";
 import { prisma } from "@backend/prisma";
+import { getSettings } from "@backend/services/settings.service";
 import {
   PaymentReceiptContent,
   type ReceiptPayment,
@@ -94,6 +95,14 @@ export async function PaymentReceiptScreen() {
   }
 
   // ── Admin / staff branch ─────────────────────────────────────────────────────
+  const settings = await getSettings();
+  const school = {
+    name: settings.name || "the school",
+    address: settings.address || "—",
+    phone: settings.phone || "—",
+    email: settings.email || "—",
+  };
+
   const payments = await prisma.payment.findMany({
     orderBy: { paidAt: "desc" },
     include: {
@@ -112,7 +121,7 @@ export async function PaymentReceiptScreen() {
   });
 
   if (payments.length === 0) {
-    return <PaymentReceiptContent payments={[]} defaultPaymentId={null} />;
+    return <PaymentReceiptContent payments={[]} defaultPaymentId={null} school={school} />;
   }
 
   const year = new Date().getFullYear();
@@ -167,6 +176,7 @@ export async function PaymentReceiptScreen() {
     <PaymentReceiptContent
       payments={rows}
       defaultPaymentId={rows[0]?.id ?? null}
+      school={school}
     />
   );
 }

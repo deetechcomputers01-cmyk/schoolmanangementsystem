@@ -5,7 +5,7 @@ import {
   School, CalendarDays, Palette, CreditCard, ClipboardList,
   BookOpen, ShieldCheck, Bell, Wifi, Puzzle, Save, RotateCcw,
   FileText, Upload, ChevronDown, AlertTriangle, Eye, X,
-  CheckCircle2,
+  CheckCircle2, Undo2,
 } from "lucide-react";
 import { YearsTermsPanel } from "@/screens/desktop/AcademicCalendarScreen/YearsTermsPanel";
 import { FeeStructurePanel, type FeeStructureRow } from "@/screens/desktop/FeesScreen/FeeStructurePanel";
@@ -31,6 +31,19 @@ const NAV_ITEMS = [
   { id: "integrations",  label: "Integrations",      Icon: Puzzle },
 ];
 
+/** Shown under a Branding field once its value differs from what's actually
+ *  saved — a quick "undo just this" that doesn't require the blunter
+ *  Reset Defaults action or knowing the old value from memory. */
+function PrevValueTag({ label, oldValue, onRevert }: { label: string; oldValue: string; onRevert: () => void }) {
+  return (
+    <button type="button" className={styles.prevValueTag} onClick={onRevert} title={`Revert ${label} to ${oldValue}`}>
+      <span className={styles.prevValueSwatch} style={{ background: oldValue }} aria-hidden />
+      Previous: {oldValue}
+      <Undo2 size={12} />
+    </button>
+  );
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export function SettingsScreen({ initialSettings, academicYears, classes, feeStructureRows, initialSection = "profile" }: {
   initialSettings: SettingsData;
@@ -46,7 +59,8 @@ export function SettingsScreen({ initialSettings, academicYears, classes, feeStr
   const letterheadInputRef = useRef<HTMLInputElement>(null);
 
   const {
-    form, set, dirty, saving, resetting, handleSave, handleReset,
+    form, savedForm, set, dirty, saving, resetting, handleSave, handleReset,
+    resettingDefaults, handleResetToDefaults,
     gradingScale, setBandMin, sortedScale,
     formattedDate,
     logoUrl, logoUploading, handleLogoFile, handleLogoRemove,
@@ -85,8 +99,8 @@ export function SettingsScreen({ initialSettings, academicYears, classes, feeStr
           <p className={styles.pageSubtitle}>Configure institutional identity and system-wide preferences.</p>
         </div>
         <div className={styles.pageHeaderActions}>
-          <button className={styles.btnGhost} onClick={handleReset} disabled={resetting}>
-            <RotateCcw size={15} /> {resetting ? "Resetting…" : "Reset Defaults"}
+          <button className={styles.btnGhost} onClick={handleResetToDefaults} disabled={resettingDefaults} title="Reset preference/config fields (branding, fees, attendance, security, notifications, offline sync, integrations) to defaults. School identity fields are untouched.">
+            <RotateCcw size={15} /> {resettingDefaults ? "Resetting…" : "Reset Defaults"}
           </button>
           <button className={styles.btnOutline} onClick={() => setShowLetterhead(true)}>
             <Eye size={15} /> Preview Letterhead
@@ -315,6 +329,9 @@ export function SettingsScreen({ initialSettings, academicYears, classes, feeStr
                   <input className={styles.input} value={form.primaryColor}
                     onChange={(e) => set("primaryColor", e.target.value)} style={{ flex: 1 }} />
                 </div>
+                {form.primaryColor !== savedForm.primaryColor && (
+                  <PrevValueTag label="Primary Brand Colour" oldValue={savedForm.primaryColor} onRevert={() => set("primaryColor", savedForm.primaryColor)} />
+                )}
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.label}>Accent Colour</label>
@@ -325,6 +342,9 @@ export function SettingsScreen({ initialSettings, academicYears, classes, feeStr
                   <input className={styles.input} value={form.accentColor}
                     onChange={(e) => set("accentColor", e.target.value)} style={{ flex: 1 }} />
                 </div>
+                {form.accentColor !== savedForm.accentColor && (
+                  <PrevValueTag label="Accent Colour" oldValue={savedForm.accentColor} onRevert={() => set("accentColor", savedForm.accentColor)} />
+                )}
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.label}>Report Card Footer Text</label>
