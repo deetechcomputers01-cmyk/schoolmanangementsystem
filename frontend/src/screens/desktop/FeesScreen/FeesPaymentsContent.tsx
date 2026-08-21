@@ -372,6 +372,7 @@ export function FeesPaymentsContent({
         </div>
 
         <div className={styles.tableCard}>
+          <div className={styles.tableScroll}>
           <table className={styles.table}>
             <thead>
               <tr>
@@ -425,6 +426,7 @@ export function FeesPaymentsContent({
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 

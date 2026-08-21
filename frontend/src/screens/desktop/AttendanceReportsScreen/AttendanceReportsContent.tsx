@@ -327,7 +327,7 @@ export function AttendanceReportsContent({
                         )}
                       </td>
                       <td className={styles.tdMono}>{s.admissionNo}</td>
-                      <td>{s.className}</td>
+                      <td className={styles.tdNowrap}>{s.className}</td>
                       <td className={`${styles.tdRight} ${s.status === "Critical" ? styles.tdError : s.status === "Monitor" ? styles.tdWarning : ""}`}>
                         <strong>{s.daysAbsent}</strong>
                       </td>

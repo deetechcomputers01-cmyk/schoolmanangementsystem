@@ -71,9 +71,9 @@
 
 .tableWrap { overflow-x: auto; }
 .table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
-.table th { padding: 10px 16px; text-align: left; font-size: var(--text-xs); font-weight: 700; color: var(--clr-app-muted); text-transform: uppercase; letter-spacing: 0.05em; background: var(--clr-app-surface-alt); border-bottom: 1px solid var(--clr-app-border); white-space: nowrap; }
+.table th { padding: 10px 9px; text-align: left; font-size: var(--text-xs); font-weight: 700; color: var(--clr-app-muted); text-transform: uppercase; letter-spacing: 0.05em; background: var(--clr-app-surface-alt); border-bottom: 1px solid var(--clr-app-border); white-space: nowrap; }
 .table th.netCol { color: var(--clr-app-accent); background: var(--clr-app-accent-soft); }
-.table td { padding: 12px 16px; color: var(--clr-app-text); border-top: 1px solid var(--clr-app-border); vertical-align: middle; }
+.table td { padding: 12px 9px; color: var(--clr-app-text); border-top: 1px solid var(--clr-app-border); vertical-align: middle; }
 .right { text-align: right !important; }
 .center { text-align: center !important; }
 .dataRow { cursor: pointer; border-left: 2px solid transparent; }

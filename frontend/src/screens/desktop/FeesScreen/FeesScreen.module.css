@@ -197,6 +197,15 @@
   overflow: hidden;
 }
 
+/* The invoice table has enough columns that once the persistent detail
+   panel (.detailPanel, 320px) is open, the remaining width can't fit all of
+   them at laptop widths — .tableCard's own `overflow: hidden` (needed to
+   clip the table to its rounded corners) was silently cropping the last
+   column and the row-action button with no way to reach them. This inner
+   wrapper scrolls instead, matching the pattern already used in
+   AuditLogsClient/DocumentCenterScreen/ParentCommunicationsScreen. */
+.tableScroll { overflow-x: auto; }
+
 .table { width: 100%; border-collapse: collapse; text-align: left; }
 .table thead { background: var(--clr-app-surface-alt); border-bottom: 1px solid var(--clr-app-border); }
 

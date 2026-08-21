@@ -353,6 +353,7 @@
 .tdMono {
   color: #5f6475;
   font-size: var(--text-xs);
+  white-space: nowrap;
 }
 
 .tdAction {
