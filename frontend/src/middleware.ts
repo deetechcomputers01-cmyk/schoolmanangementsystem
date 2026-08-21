@@ -4,6 +4,7 @@ import { jwtVerify, SignJWT } from "jose";
 const PUBLIC_PATHS   = ["/login", "/sign-in", "/forgot-password", "/reset-password"];
 const AUTH_API       = "/api/auth/";
 const STATIC_SKIP    = ["/_next/static", "/_next/image", "/favicon.ico", "/manifest.json", "/sw.js"];
+const STATIC_EXT     = /\.(png|jpe?g|gif|svg|webp|ico|css|woff2?|ttf|eot|mp4|pdf)$/i;
 
 // Role → allowed page prefixes
 const ROLE_ROUTES: Record<string, string[]> = {
@@ -66,6 +67,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (STATIC_SKIP.some((p) => pathname.startsWith(p))) return NextResponse.next();
+  if (STATIC_EXT.test(pathname))                        return NextResponse.next();
   if (pathname.startsWith(AUTH_API))                    return NextResponse.next();
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) return NextResponse.next();
 

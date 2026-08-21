@@ -15,8 +15,6 @@
   flex-direction: column;
   width: 50%;
   min-width: 520px;
-  padding: 48px;
-  justify-content: space-between;
   position: relative;
   overflow: hidden;
   color: #ffffff;
@@ -49,12 +47,51 @@
   pointer-events: none;
 }
 
-/* Real content sits above the decorative pseudo-elements, which are
-   position:absolute and would otherwise paint on top regardless of
+/* Text content block — sits above the decorative pseudo-elements, which
+   are position:absolute and would otherwise paint on top regardless of
    source order. */
-.leftPanel > div {
+.leftTop {
   position: relative;
   z-index: 1;
+  padding: 48px 48px 24px;
+}
+
+/* Hero photo — fills all remaining panel height so the brand block never
+   leaves a big flat expanse of colour underneath it. The source PNG has
+   a transparent background, so it composites straight onto the dot-grid
+   and gradient behind it rather than sitting in a boxed-off rectangle. */
+.leftPhoto {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.leftPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom center;
+}
+
+/* Scrim so the floating support/demo-account card stays legible over the
+   photo instead of fighting with faces and uniform colours. */
+.leftPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(28, 20, 92, 0.68) 100%);
+  pointer-events: none;
+}
+
+.leftPhotoOverlay {
+  position: absolute;
+  z-index: 2;
+  left: 48px;
+  right: 48px;
+  bottom: 32px;
 }
 
 @media (min-width: 768px) {
@@ -79,11 +116,63 @@
   }
 }
 
+/* Mobile hero banner — same cutout photo as the desktop panel, cropped to
+   a short full-bleed strip so small screens get the same "real school,
+   real kids" identity instead of a plain white header. Height scales with
+   viewport height (clamped) so short landscape phones don't lose the form
+   below the fold. */
+.mobileHero {
+  position: relative;
+  width: calc(100% + 32px);
+  height: clamp(140px, 28vh, 220px);
+  margin: -24px -16px 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mobileHero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.mobileHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(77, 66, 232, 0.1) 0%, rgba(28, 20, 92, 0.72) 100%);
+}
+
+@media (min-width: 768px) {
+  .mobileHero {
+    display: none;
+  }
+}
+
 .mobileBrand {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 28px;
+}
+
+.mobileHero .mobileBrand {
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+}
+
+.mobileHero .brandIcon {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.mobileHero .mobileBrandTitle {
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {

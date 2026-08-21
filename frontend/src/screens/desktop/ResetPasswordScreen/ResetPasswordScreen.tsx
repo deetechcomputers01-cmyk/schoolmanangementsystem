@@ -23,28 +23,31 @@ export function ResetPasswordScreen({ schoolName = "ScholarSphere" }: { schoolNa
       schoolName={schoolName}
       aside={(
         <>
-          <div className={s.panelBrandRow}>
-            <div className={s.brandIcon} aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 22h18M2 11h20M12 2L2 7h20L12 2zM5 11v7M9 11v7M15 11v7M19 11v7" />
-              </svg>
+          <div className={s.leftTop}>
+            <div className={s.panelBrandRow}>
+              <div className={s.brandIcon} aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 22h18M2 11h20M12 2L2 7h20L12 2zM5 11v7M9 11v7M15 11v7M19 11v7" />
+                </svg>
+              </div>
+              <h1 className={s.panelBrandName}>{schoolName}</h1>
             </div>
-            <h1 className={s.panelBrandName}>{schoolName}</h1>
-          </div>
 
-          <div>
             <h2 className={s.panelTitle}>Secure account recovery for school staff.</h2>
             <p className={s.panelSubtitle}>
               Submit your institutional email and a secure, time-limited reset link will be dispatched to you.
             </p>
           </div>
 
-          <div>
-            <div className={s.panelSupport}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-              Support: ict-support@scholarsphere.edu.gh
+          <div className={s.leftPhoto}>
+            <img src="/students-hero.png" alt="" aria-hidden="true" />
+            <div className={s.leftPhotoOverlay}>
+              <div className={s.panelSupport}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                Support: ict-support@scholarsphere.edu.gh
+              </div>
             </div>
           </div>
         </>
