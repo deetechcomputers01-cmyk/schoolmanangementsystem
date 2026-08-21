@@ -101,6 +101,7 @@
 }
 
 .rightPanel {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -113,6 +114,97 @@
 @media (min-width: 768px) {
   .rightPanel {
     padding: 48px;
+  }
+}
+
+/* Playful shapes scattered behind the form — stars, a balloon, a pencil,
+   an alphabet block — so the plain white side of the page reads as warm
+   and kid-friendly rather than clinical. Purely decorative, low-opacity,
+   never under the card itself. */
+.rightDecor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mobileHero,
+.formWrap {
+  position: relative;
+  z-index: 1;
+}
+
+.decorShape {
+  position: absolute;
+}
+
+.decorStar1 {
+  top: 7%;
+  right: 10%;
+  width: 30px;
+  height: 30px;
+  color: var(--clr-app-accent);
+  opacity: 0.18;
+  transform: rotate(-10deg);
+}
+
+.decorStar2 {
+  top: 62%;
+  right: 6%;
+  width: 18px;
+  height: 18px;
+  color: #f59e0b;
+  opacity: 0.28;
+  transform: rotate(14deg);
+}
+
+.decorBalloon {
+  top: 16%;
+  left: 8%;
+  width: 26px;
+  height: 36px;
+  color: #fb7185;
+  opacity: 0.22;
+  transform: rotate(-6deg);
+}
+
+.decorPencil {
+  bottom: 20%;
+  right: 14%;
+  width: 56px;
+  height: 14px;
+  color: #f59e0b;
+  opacity: 0.22;
+  transform: rotate(-32deg);
+}
+
+.decorBlock {
+  bottom: 10%;
+  left: 9%;
+  width: 42px;
+  height: 42px;
+  color: var(--clr-app-accent);
+  opacity: 0.14;
+  transform: rotate(8deg);
+}
+
+.decorDot {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.decorDot1 { top: 30%; left: 22%; width: 8px; height: 8px; background: var(--clr-app-info); opacity: 0.25; }
+.decorDot2 { top: 44%; right: 24%; width: 10px; height: 10px; background: #f59e0b; opacity: 0.2; }
+.decorDot3 { bottom: 34%; left: 30%; width: 6px; height: 6px; background: #fb7185; opacity: 0.3; }
+
+@media (max-width: 767px) {
+  /* The mobile hero photo already carries the "friendly" feel — keep the
+     decor here to a light sprinkle so it doesn't compete with the card. */
+  .decorPencil,
+  .decorBlock,
+  .decorBalloon {
+    display: none;
   }
 }
 

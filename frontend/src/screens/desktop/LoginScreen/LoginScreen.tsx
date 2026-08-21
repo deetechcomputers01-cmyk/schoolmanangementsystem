@@ -53,14 +53,15 @@ export function LoginScreen({ schoolName = "ScholarSphere" }: { schoolName?: str
               <h1 className={s.panelBrandName}>{schoolName}</h1>
             </div>
 
-            <h2 className={s.panelTitle}>Manage your school, all in one place.</h2>
+            <h2 className={s.panelTitle}>Where your whole school comes together.</h2>
             <p className={s.panelSubtitle}>
-              Sign in to access student records, attendance, fees, and more.
+              Manage students, attendance, and fees in one place — built to keep every child&apos;s information safe and private.
             </p>
 
             <div className={s.panelMeta}>
+              <span className={s.panelPill}>Kid-safe &amp; secure</span>
               <span className={s.panelPill}>Role-based access</span>
-              <span className={s.panelPill}>Built for Ghanaian schools</span>
+              <span className={s.panelPill}>Made for Ghana</span>
             </div>
           </div>
 
