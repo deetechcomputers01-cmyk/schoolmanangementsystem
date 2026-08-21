@@ -144,15 +144,88 @@
 }
 
 .decorShape {
+  --rot: 0deg;
   position: absolute;
+  pointer-events: auto;
+  cursor: default;
   filter: drop-shadow(0 8px 16px rgba(28, 20, 92, 0.14));
+  transform: rotate(var(--rot));
+  transition: transform 0.25s var(--ease-spring, ease-out), filter 0.25s ease-out;
+}
+
+/* Hovering (desktop/mouse only — decor never shows on touch-sized
+   viewports anyway) freezes the idle motion and pops the icon a little,
+   like it noticed the cursor. */
+.decorShape:hover {
+  animation-play-state: paused;
+  transform: rotate(var(--rot)) scale(1.3);
+  filter: drop-shadow(0 14px 22px rgba(28, 20, 92, 0.24));
+  z-index: 1;
+}
+
+@keyframes decorFlutter {
+  0%, 100% { transform: rotate(var(--rot)) translateX(0); }
+  25%      { transform: rotate(calc(var(--rot) + 5deg)) translateX(3px); }
+  75%      { transform: rotate(calc(var(--rot) - 5deg)) translateX(-3px); }
+}
+
+@keyframes decorTwinkle {
+  0%, 100% { transform: rotate(var(--rot)) scale(1); opacity: 1; }
+  50%      { transform: rotate(var(--rot)) scale(1.18); opacity: 0.72; }
+}
+
+@keyframes decorWiggle {
+  0%, 100% { transform: rotate(var(--rot)); }
+  50%      { transform: rotate(calc(var(--rot) - 9deg)); }
+}
+
+@keyframes decorRock {
+  0%, 100% { transform: rotate(var(--rot)); }
+  50%      { transform: rotate(calc(var(--rot) + 9deg)); }
+}
+
+@keyframes decorFloat {
+  0%, 100% { transform: rotate(var(--rot)) translateY(0); }
+  50%      { transform: rotate(calc(var(--rot) + 3deg)) translateY(-13px); }
+}
+
+@keyframes decorSway {
+  0%, 100% { transform: rotate(var(--rot)); }
+  50%      { transform: rotate(calc(var(--rot) - 7deg)); }
+}
+
+@keyframes decorThrust {
+  0%, 100% { transform: rotate(var(--rot)) translateY(0); }
+  50%      { transform: rotate(var(--rot)) translateY(-11px); }
+}
+
+@keyframes decorSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes decorShake {
+  0%, 100% { transform: rotate(var(--rot)); }
+  25%      { transform: rotate(calc(var(--rot) + 7deg)); }
+  75%      { transform: rotate(calc(var(--rot) - 7deg)); }
+}
+
+@keyframes decorTumble {
+  0%, 100% { transform: rotate(var(--rot)); }
+  50%      { transform: rotate(calc(var(--rot) - 26deg)); }
+}
+
+@keyframes decorYoyoMotion {
+  0%, 100% { transform: rotate(var(--rot)) translateY(0); }
+  50%      { transform: rotate(var(--rot)) translateY(18px); }
 }
 
 .decorKite {
   top: 56px;
   left: 48px;
   width: 72px;
-  transform: rotate(-8deg);
+  --rot: -8deg;
+  animation: decorFlutter 3.2s ease-in-out infinite;
 }
 
 .decorPalette {
@@ -160,14 +233,16 @@
   top: 20%;
   left: 100px;
   width: 54px;
-  transform: rotate(-12deg);
+  --rot: -12deg;
+  animation: decorRock 2.6s ease-in-out 0.4s infinite;
 }
 
 .decorCrayon {
   top: 40%;
   left: 40px;
   width: 64px;
-  transform: rotate(-18deg);
+  --rot: -18deg;
+  animation: decorWiggle 2.4s ease-in-out 0.2s infinite;
 }
 
 .decorRocket {
@@ -175,28 +250,31 @@
   top: 56%;
   left: 96px;
   width: 56px;
-  transform: rotate(24deg);
+  --rot: 24deg;
+  animation: decorThrust 1.8s ease-in-out 0.6s infinite;
 }
 
 .decorSoccer {
   top: 72%;
   left: 52px;
   width: 50px;
-  transform: rotate(-6deg);
+  animation: decorSpin 4.5s linear infinite;
 }
 
 .decorBalloon {
   bottom: 140px;
   left: 64px;
   width: 66px;
-  transform: rotate(-6deg);
+  --rot: -6deg;
+  animation: decorFloat 3.6s ease-in-out 0.8s infinite;
 }
 
 .decorStar {
   top: 48px;
   right: 72px;
   width: 60px;
-  transform: rotate(10deg);
+  --rot: 10deg;
+  animation: decorTwinkle 2.1s ease-in-out infinite;
 }
 
 .decorGift {
@@ -204,14 +282,16 @@
   top: 20%;
   right: 104px;
   width: 52px;
-  transform: rotate(8deg);
+  --rot: 8deg;
+  animation: decorShake 1.6s ease-in-out 0.3s infinite;
 }
 
 .decorPuzzle {
   top: 38%;
   right: 44px;
   width: 62px;
-  transform: rotate(12deg);
+  --rot: 12deg;
+  animation: decorRock 3s ease-in-out 0.5s infinite;
 }
 
 .decorYoyo {
@@ -219,21 +299,31 @@
   top: 56%;
   right: 100px;
   width: 46px;
-  transform: rotate(-10deg);
+  --rot: -10deg;
+  animation: decorYoyoMotion 2s ease-in-out 0.7s infinite;
 }
 
 .decorDice {
   top: 72%;
   right: 50px;
   width: 48px;
-  transform: rotate(14deg);
+  --rot: 14deg;
+  animation: decorTumble 2.8s ease-in-out 0.9s infinite;
 }
 
 .decorTeddy {
   bottom: 56px;
   right: 88px;
   width: 96px;
-  transform: rotate(6deg);
+  --rot: 6deg;
+  animation: decorSway 4s ease-in-out 0.1s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decorShape {
+    animation: none;
+    transform: rotate(var(--rot));
+  }
 }
 
 /* These four sit further inward toward the card, so they need more room
