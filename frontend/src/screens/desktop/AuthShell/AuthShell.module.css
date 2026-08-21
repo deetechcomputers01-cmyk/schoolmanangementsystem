@@ -355,7 +355,7 @@
   flex-shrink: 0;
 }
 
-.mobileHero img {
+.mobileHeroPhoto {
   display: block;
   width: 100%;
   height: 100%;
@@ -368,6 +368,36 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(77, 66, 232, 0.1) 0%, rgba(28, 20, 92, 0.72) 100%);
+}
+
+/* Small decor icons overlaid directly on the mobile hero photo — the
+   card fills almost the full width at phone sizes (only ~16px margin
+   each side), so the photo is the only place with real room for these. */
+.mobileDecorStar {
+  top: 14px;
+  right: 16px;
+  width: 34px;
+  z-index: 1;
+  --rot: 10deg;
+  animation: decorTwinkle 2.1s ease-in-out infinite;
+}
+
+.mobileDecorBalloon {
+  top: 12px;
+  left: 16px;
+  width: 30px;
+  z-index: 1;
+  --rot: -6deg;
+  animation: decorFloat 3.6s ease-in-out infinite;
+}
+
+.mobileDecorPuzzle {
+  top: 64px;
+  right: 22px;
+  width: 26px;
+  z-index: 1;
+  --rot: 12deg;
+  animation: decorRock 3s ease-in-out 0.5s infinite;
 }
 
 @media (min-width: 768px) {
@@ -639,7 +669,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--clr-app-accent), var(--clr-app-info));
+  background: var(--clr-app-accent);
 }
 
 @media (min-width: 768px) {

@@ -32,7 +32,10 @@ export function AuthShell({ aside, children, footerNote, schoolName = "ScholarSp
           </div>
 
           <div className={styles.mobileHero}>
-            <img src="/students-hero.png" alt="" aria-hidden="true" />
+            <img src="/students-hero.png" alt="" aria-hidden="true" className={styles.mobileHeroPhoto} />
+            <img src="/decor/star.png" alt="" aria-hidden="true" className={`${styles.decorShape} ${styles.mobileDecorStar}`} />
+            <img src="/decor/balloon.png" alt="" aria-hidden="true" className={`${styles.decorShape} ${styles.mobileDecorBalloon}`} />
+            <img src="/decor/puzzle.png" alt="" aria-hidden="true" className={`${styles.decorShape} ${styles.mobileDecorPuzzle}`} />
             <div className={styles.mobileBrand}>
               <div className={styles.brandIcon} aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
