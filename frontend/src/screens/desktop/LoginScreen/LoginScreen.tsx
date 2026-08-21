@@ -53,14 +53,13 @@ export function LoginScreen({ schoolName = "ScholarSphere" }: { schoolName?: str
               <h1 className={s.panelBrandName}>{schoolName}</h1>
             </div>
 
-            <h2 className={s.panelTitle}>Secure school operations for Ghanaian schools.</h2>
+            <h2 className={s.panelTitle}>Manage your school, all in one place.</h2>
             <p className={s.panelSubtitle}>
-              Institutional Security Protocol v4.2 active. Access restricted to authorized administration and faculty.
+              Sign in to access student records, attendance, fees, and more.
             </p>
 
             <div className={s.panelMeta}>
               <span className={s.panelPill}>Role-based access</span>
-              <span className={s.panelPill}>Encrypted sessions</span>
               <span className={s.panelPill}>Built for Ghanaian schools</span>
             </div>
           </div>

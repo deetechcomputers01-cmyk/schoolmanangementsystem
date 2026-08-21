@@ -33,9 +33,9 @@ export function ResetPasswordScreen({ schoolName = "ScholarSphere" }: { schoolNa
               <h1 className={s.panelBrandName}>{schoolName}</h1>
             </div>
 
-            <h2 className={s.panelTitle}>Secure account recovery for school staff.</h2>
+            <h2 className={s.panelTitle}>Forgot your password?</h2>
             <p className={s.panelSubtitle}>
-              Submit your institutional email and a secure, time-limited reset link will be dispatched to you.
+              Enter your email and we&apos;ll send you a secure reset link.
             </p>
           </div>
 
