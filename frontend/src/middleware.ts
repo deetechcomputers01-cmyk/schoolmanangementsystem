@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify, SignJWT } from "jose";
 
-const PUBLIC_PATHS   = ["/login", "/sign-in", "/forgot-password", "/reset-password", "/enter-otp", "/new-password"];
+const PUBLIC_PATHS   = ["/login", "/sign-in", "/forgot-password", "/reset-password"];
 const AUTH_API       = "/api/auth/";
 const STATIC_SKIP    = ["/_next/static", "/_next/image", "/favicon.ico", "/manifest.json", "/sw.js"];
 const STATIC_EXT     = /\.(png|jpe?g|gif|svg|webp|ico|css|woff2?|ttf|eot|mp4|pdf)$/i;
