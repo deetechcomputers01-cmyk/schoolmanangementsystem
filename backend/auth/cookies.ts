@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import type { SessionUser } from "@/types/auth";
-import { signAccessToken, signRefreshToken, verifyAccessToken } from "./tokens";
+import { signAccessToken, signRefreshToken, verifyAccessToken, signPasswordResetToken, verifyPasswordResetToken } from "./tokens";
 import { getSettings } from "../services/settings.service";
 
 const secure = process.env.NODE_ENV === "production";
@@ -44,6 +44,32 @@ export async function setAuthCookies(user: SessionUser, options: AuthCookieOptio
 export function clearAuthCookies() {
   cookies().delete("accessToken");
   cookies().delete("refreshToken");
+}
+
+export async function setPasswordResetCookie(userId: string) {
+  cookies().set("passwordResetToken", await signPasswordResetToken(userId), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure,
+    path: "/",
+    maxAge: 600,
+  });
+}
+
+export function clearPasswordResetCookie() {
+  cookies().delete("passwordResetToken");
+}
+
+export async function getPasswordResetUserId(): Promise<string | null> {
+  const token = cookies().get("passwordResetToken")?.value;
+  if (!token) return null;
+  try {
+    const payload = await verifyPasswordResetToken(token);
+    if (payload.tokenType !== "password_reset") return null;
+    return payload.userId;
+  } catch {
+    return null;
+  }
 }
 
 export async function getCurrentUser(): Promise<SessionUser | null> {

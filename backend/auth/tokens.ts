@@ -32,3 +32,18 @@ export async function verifyRefreshToken(token: string) {
   const { payload } = await jwtVerify(token, refreshSecret());
   return payload as JwtPayload;
 }
+
+const passwordResetSecret = () => encoder.encode(readLocalEnvValue("JWT_ACCESS_SECRET") ?? "dev-access-secret-change-me");
+
+export async function signPasswordResetToken(userId: string) {
+  return new SignJWT({ userId, tokenType: "password_reset" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("10m")
+    .sign(passwordResetSecret());
+}
+
+export async function verifyPasswordResetToken(token: string) {
+  const { payload } = await jwtVerify(token, passwordResetSecret());
+  return payload as { userId: string; tokenType: string };
+}
